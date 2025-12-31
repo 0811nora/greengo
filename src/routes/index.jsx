@@ -1,5 +1,5 @@
 import App from '../App.jsx';
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import Home from '../pages/Home.jsx';
 import Product from '../pages/Product.jsx';
 import Custom from '../pages/Custom.jsx';
@@ -36,6 +36,6 @@ const routes = [
 ]
 
 
-const router = createBrowserRouter(routes);
+const router = createHashRouter(routes);
 
 export default router;
