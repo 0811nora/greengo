@@ -1,0 +1,177 @@
+// 引入英文字型 Clash Display
+@font-face {
+  font-family: "Clash";
+  src: url("../fonts/ClashDisplay-Variable.woff2") format("woff2"),
+    url("../fonts/ClashDisplay-Variable.woff") format("woff");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+// 設定變數
+// 中文字型 - Noto Sans TC
+$font-zh: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI",
+  sans-serif;
+// 英文字型 - Clash Display
+$font-en: "Clash", sans-serif;
+
+// 設定 base
+// 中文字型
+.font-zh {
+  font-family: $font-zh;
+}
+// 英文字型
+.font-en {
+  font-family: $font-en;
+}
+
+// fw 設定
+$fw-extraLight: 200;
+$fw-light: 300;
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+
+@mixin zh-base($size, $weight: $fw-bold, $lh: 1.2) {
+  font-family: $font-zh;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $lh;
+}
+@mixin en-base($size, $weight: $fw-bold, $lh: 1.2) {
+  font-family: $font-en;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $lh;
+}
+.font-zh-d1 {
+  @include zh-base($size: 72px);
+}
+.font-zh-h1-b {
+  @include zh-base($size: 56px);
+}
+.font-zh-h1-m {
+  @include zh-base($size: 56px, $weight: $fw-medium);
+}
+.font-zh-h2-b {
+  @include zh-base($size: 40px);
+}
+.font-zh-h2-m {
+  @include zh-base($size: 40px, $weight: $fw-medium);
+}
+.font-zh-h3-b {
+  @include zh-base($size: 32px);
+}
+.font-zh-h3-m {
+  @include zh-base($size: 32px, $weight: $fw-medium);
+}
+.font-zh-h4-b {
+  @include zh-base($size: 28px);
+}
+.font-zh-h4-m {
+  @include zh-base($size: 28px, $weight: $fw-medium);
+}
+.font-zh-h4-r {
+  @include zh-base($size: 28px, $weight: $fw-regular);
+}
+.font-zh-h5-b {
+  @include zh-base($size: 24px);
+}
+.font-zh-h5-m {
+  @include zh-base($size: 24px, $weight: $fw-medium);
+}
+.font-zh-h5-r {
+  @include zh-base($size: 24px, $weight: $fw-regular);
+}
+.font-zh-h6-b {
+  @include zh-base($size: 20px);
+}
+.font-zh-h6-m {
+  @include zh-base($size: 20px, $weight: $fw-medium);
+}
+.font-zh-h6-r {
+  @include zh-base($size: 20px, $weight: $fw-regular);
+}
+
+.font-zh-b1-m {
+  @include zh-base($size: 16px, $weight: $fw-medium, $lh: 1.5);
+}
+.font-zh-b1-r {
+  @include zh-base($size: 16px, $weight: $fw-regular, $lh: 1.5);
+}
+.font-zh-b2-m {
+  @include zh-base($size: 14px, $weight: $fw-medium, $lh: 1.5);
+}
+.font-zh-b2-r {
+  @include zh-base($size: 14px, $weight: $fw-regular, $lh: 1.5);
+}
+
+// 英文
+.font-en-d1 {
+  @include en-base($size: 72px);
+}
+.font-en-h1-b {
+  @include en-base($size: 56px);
+}
+.font-en-h1-m {
+  @include en-base($size: 56px, $weight: $fw-medium);
+}
+.font-en-h2-b {
+  @include en-base($size: 40px);
+}
+.font-en-h2-m {
+  @include en-base($size: 40px, $weight: $fw-medium);
+}
+
+.font-en-h3-b {
+  @include en-base($size: 32px);
+}
+.font-en-h3-m {
+  @include en-base($size: 32px, $weight: $fw-medium);
+}
+.font-en-h4-b {
+  @include en-base($size: 28px);
+}
+.font-en-h4-m {
+  @include en-base($size: 28px, $weight: $fw-medium);
+}
+.font-en-h4-r {
+  @include en-base($size: 28px, $weight: $fw-regular);
+}
+.font-en-h5-b {
+  @include en-base($size: 24px);
+}
+.font-en-h5-m {
+  @include en-base($size: 24px, $weight: $fw-medium);
+}
+.font-en-h5-r {
+  @include en-base($size: 24px, $weight: $fw-regular);
+}
+.font-en-h6-b {
+  @include en-base($size: 20px);
+}
+.font-en-h6-m {
+  @include en-base($size: 20px, $weight: $fw-medium);
+}
+.font-en-h6-r {
+  @include en-base($size: 20px, $weight: $fw-regular);
+}
+
+.font-en-b1-m {
+  @include en-base($size: 16px, $weight: $fw-medium, $lh: 1.5);
+}
+.font-en-b1-r {
+  @include en-base($size: 16px, $weight: $fw-regular, $lh: 1.5);
+}
+.font-en-b2-m {
+  @include en-base($size: 14px, $weight: $fw-medium, $lh: 1.5);
+}
+.font-en-b2-r {
+  @include en-base($size: 14px, $weight: $fw-regular, $lh: 1.5);
+}
+
+// footer logo font
+.font-en-logo {
+  @include en-base($size: 60px, $weight: $fw-semibold);
+}

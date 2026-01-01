@@ -1,6 +1,7 @@
-@import 'bootstrap/scss/functions'; 
-@import './style/variables';
-@import './style/variables-dark';
-@import 'bootstrap/scss/bootstrap.scss'; 
+@import "bootstrap/scss/functions";
+@import "./style/variables";
+@import "./style/variables-dark";
+@import "./style/typography";
+@import "bootstrap/scss/bootstrap.scss";
 
-@import './style/home';
+@import "./style/home";
