@@ -662,10 +662,12 @@ $font-family-code: var(--#{$prefix}font-monospace) !default;
 // $font-size-base affects the font size of the body text
 $font-size-root: null !default;
 $font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
-$font-size-sm: $font-size-base * 0.875 !default;
-$font-size-lg: $font-size-base * 1.25 !default;
+$font-size-sm: $font-size-base * 0.875 !default; // 14px
+$font-size-md: $font-size-base !default; // 16px
+$font-size-lg: $font-size-base * 1.625 !default; // 26px
 
-$font-weight-lighter: lighter !default;
+$font-weight-lighter: 200 !default;
+// $font-weight-lighter: lighter !default;
 $font-weight-light: 300 !default;
 $font-weight-normal: 400 !default;
 $font-weight-medium: 500 !default;
@@ -676,15 +678,22 @@ $font-weight-bolder: bolder !default;
 $font-weight-base: $font-weight-normal !default;
 
 $line-height-base: 1.5 !default;
-$line-height-sm: 1.25 !default;
+$line-height-sm: 1.2 !default;
+// $line-height-sm: 1.25 !default;
 $line-height-lg: 2 !default;
 
-$h1-font-size: $font-size-base * 2.5 !default;
-$h2-font-size: $font-size-base * 2 !default;
-$h3-font-size: $font-size-base * 1.75 !default;
-$h4-font-size: $font-size-base * 1.5 !default;
-$h5-font-size: $font-size-base * 1.25 !default;
-$h6-font-size: $font-size-base !default;
+$h1-font-size: $font-size-base * 3.5 !default; // 56px
+// $h1-font-size: $font-size-base * 2.5 !default;
+$h2-font-size: $font-size-base * 2.5 !default; // 40px
+// $h2-font-size: $font-size-base * 2 !default;
+$h3-font-size: $font-size-base * 2 !default; // 32px
+// $h3-font-size: $font-size-base * 1.75 !default;
+$h4-font-size: $font-size-base * 1.75 !default; // 28px
+// $h4-font-size: $font-size-base * 1.5 !default;
+$h5-font-size: $font-size-base * 1.5 !default; // 24px
+// $h5-font-size: $font-size-base * 1.25 !default;
+$h6-font-size: $font-size-base * 1.25 !default; // 20px
+// $h6-font-size: $font-size-base !default;
 // scss-docs-end font-variables
 
 // scss-docs-start font-sizes
@@ -709,9 +718,12 @@ $headings-color: inherit !default;
 
 // scss-docs-start display-headings
 $display-font-sizes: (
-  1: 5rem,
-  2: 4.5rem,
-  3: 4rem,
+  1: 4.5rem,
+  // 4.5rem 72px
+  2: 4rem,
+  // 4rem 64px
+  3: 3.75rem,
+  // 3.75rem 60px
   4: 3.5rem,
   5: 3rem,
   6: 2.5rem,
