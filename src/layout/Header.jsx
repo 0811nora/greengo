@@ -12,37 +12,32 @@ const NavbarData = {
     { title: "關於綠果", url: "/about" },
     { title: "綠果專欄", url: "/article" },
   ],
-  subLinks: [
-    {
-      name: "cart",
-      icon: "bi-bag",
-      modalId: "cartModal",
-    },
-  ],
 };
 
 export default function Header() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid">
-        <NavLink className="nav-link" to="/">
-          GreenGo
-        </NavLink>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/product">
-                菜單頁
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/about">
-                關於我們頁
-              </NavLink>
-            </li>
-          </ul>
+    <header className="header">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          <NavLink className="navbar-brand" to={NavbarData.brand.url}>
+            {NavbarData.brand.title}
+          </NavLink>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/product">
+                  菜單頁
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/about">
+                  關於我們頁
+                </NavLink>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 }
