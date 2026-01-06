@@ -11,52 +11,78 @@ import AdminHome from "../pages/admin/AdminHome.jsx";
 import AdminBlog from "../pages/admin/AdminBlog.jsx";
 import AdminOrder from "../pages/admin/AdminOrder.jsx";
 
+// const routes = [
+//   {
+//     path: "/",
+//     element: <App />,
+//     children: [
+//       {
+//         index: true,
+//         element: <Home />,
+//       },
+//       {
+//         path: "product",
+//         element: <Product />,
+//       },
+//       {
+//         path: "about",
+//         element: <About />,
+//       },
+//       {
+//         path: "custom",
+//         element: <Custom />,
+//       },
+//       {
+//         path: "admin",
+//         element: <AdminPages />,
+//         children: [
+//           {
+//             index: true,
+//             element: <AdminHome />, 
+//           },
+//           {
+//             path: "order",
+//             element: <AdminOrder />,          
+//           },
+//           {
+//             path: "blog",
+//             element: <AdminBlog />,           
+//           },
+//         ],
+//       },
+      
+//       // {
+//       //   path:'*',
+//       //   element: <NotFound/>
+//       // }
+//     ],
+//   },
+// ];
+
 const routes = [
   {
     path: "/",
-    element: <App />,
+    element: <App />, 
     children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "product",
-        element: <Product />,
-      },
-      {
-        path: "about",
-        element: <About />,
-      },
-      {
-        path: "custom",
-        element: <Custom />,
-      },
-      {
-        path: "admin",
-        element: <AdminPages />,
-        children: [
-          {
-            index: true,
-            element: <AdminHome />, 
-          },
-          {
-            path: "order",
-            element: <AdminOrder />,          
-          },
-          {
-            path: "blog",
-            element: <AdminBlog />,           
-          },
-        ],
-      },
-      
-      // {
-      //   path:'*',
-      //   element: <NotFound/>
-      // }
+      { index: true, element: <Home /> },
+      { path: "product", element: <Product /> },
+      { path: "about", element: <About /> },
+      { path: "custom", element: <Custom /> },
     ],
   },
+  {
+    path: "/admin",
+    element: <AdminPages />, 
+    children: [
+      { index: true, element: <AdminHome /> },
+      { path: "order", element: <AdminOrder /> },
+      { path: "blog", element: <AdminBlog /> },
+    ],
+  },
+  // {
+  //   path: "*",
+  //   element: <NotFound />,
+  // }
 ];
 
 const router = createHashRouter(routes);
