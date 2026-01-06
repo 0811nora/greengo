@@ -5,3 +5,7 @@
 @import "bootstrap/scss/bootstrap.scss";
 
 @import "./style/home";
+
+body {
+  font-family: $font-zh;
+}
