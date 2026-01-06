@@ -21,7 +21,14 @@ $font-en: "Clash", sans-serif;
   font-family: $font-en;
 }
 
+@mixin en-base($size, $weight: $fw-bold, $lh: 1.2) {
+  font-family: $font-en;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $lh;
+}
+
 // footer logo font
 .font-en-logo {
-  @include en-base($size: 60px, $weight: $fw-semibold);
+  @include en-base($size: 60px, $weight: 600);
 }
