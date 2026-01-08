@@ -14,7 +14,9 @@
 @import "bootstrap/scss/bootstrap.scss";
 
 @import "./style/typography";
+
 @import "./style/home";
+@import "./style/admin/adm-blog";
 
 body {
   font-family: $font-zh;
