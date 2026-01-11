@@ -1,4 +1,4 @@
-import { Outlet , NavLink } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 
 export default function AdminPages() {
     return (
@@ -12,6 +12,7 @@ export default function AdminPages() {
                         <li className="nav-item">
                             <NavLink className="nav-link" to='blog'>文章管理</NavLink>
                         </li>
+
                     </ul>
                 </div>
                 <div className='col-10'>

@@ -11,54 +11,8 @@ import AdminPages from "../pages/admin/AdminPages.jsx";
 import AdminHome from "../pages/admin/AdminHome.jsx";
 import AdminBlog from "../pages/admin/AdminBlog.jsx";
 import AdminOrder from "../pages/admin/AdminOrder.jsx";
+import AdminLogin from "../pages/admin/AdminLogin.jsx";
 
-// const routes = [
-//   {
-//     path: "/",
-//     element: <App />,
-//     children: [
-//       {
-//         index: true,
-//         element: <Home />,
-//       },
-//       {
-//         path: "product",
-//         element: <Product />,
-//       },
-//       {
-//         path: "about",
-//         element: <About />,
-//       },
-//       {
-//         path: "custom",
-//         element: <Custom />,
-//       },
-//       {
-//         path: "admin",
-//         element: <AdminPages />,
-//         children: [
-//           {
-//             index: true,
-//             element: <AdminHome />,
-//           },
-//           {
-//             path: "order",
-//             element: <AdminOrder />,
-//           },
-//           {
-//             path: "blog",
-//             element: <AdminBlog />,
-//           },
-//         ],
-//       },
-
-//       // {
-//       //   path:'*',
-//       //   element: <NotFound/>
-//       // }
-//     ],
-//   },
-// ];
 
 const routes = [
   {
@@ -73,12 +27,17 @@ const routes = [
     ],
   },
   {
+    path: "/admin/login",
+    element: <AdminLogin />,
+  },
+  {
     path: "/admin",
     element: <AdminPages />,
     children: [
       { index: true, element: <AdminHome /> },
       { path: "order", element: <AdminOrder /> },
       { path: "blog", element: <AdminBlog /> },
+      // { path: "login", element: <AdminLogin /> },
     ],
   },
   // {
