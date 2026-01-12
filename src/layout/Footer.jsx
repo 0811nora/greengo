@@ -43,7 +43,7 @@ const FooterBrand = ({ brand, socialMedia }) => {
   return (
     <div>
       <NavLink className="nav-link" to="/">
-        <div className="ft-en fs-2 display-md-3 text-primary-50">
+        <div className="font-en-logo fs-2 display-md-3 text-primary-50">
           {brand.name}
         </div>
       </NavLink>
@@ -153,10 +153,10 @@ export default function Footer() {
                 <ul className="list-unstyled">
                   <li className="mb-2">{FooterData.contact.address}</li>
                   <li className="ft-en mb-2">{FooterData.contact.phone}</li>
-                  <li className="ft-en mb-2">
+                  <li className="ft-en fs-md-sm fs-lg-md mb-2">
                     <a
                       href={`mailto:${FooterData.contact.email}`}
-                      className="text-white text-decoration-none hover-underline"
+                      className="text-white text-decoration-none hover-underline fs-sm fs-lg-md"
                     >
                       {FooterData.contact.email}
                     </a>
