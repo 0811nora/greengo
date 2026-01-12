@@ -7,4 +7,20 @@
     background-color: #ffff;
 }
 
-.maincard {}
+.maincard {
+    max-width: 800px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.5);
+
+    /* 2. 模糊效果 (這是靈魂) */
+    backdrop-filter: blur(50px);
+
+
+    /* 3. 邊框與陰影 (增加立體感與玻璃邊緣) */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    /* 圓角讓玻璃感更柔和 */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+
+
+}
