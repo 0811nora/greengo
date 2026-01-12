@@ -1,0 +1,81 @@
+// time filter
+.time-filter-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 4px 16px;
+  gap: 8px;
+
+  // liquid glass 效果
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.6) 100%
+    ),
+    linear-gradient(
+      225deg,
+      rgba(77, 147, 43, 0.1) 0%,
+      rgba(77, 147, 43, 0.05) 100%
+    );
+
+  backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(7, 78, 48, 0.12), 0 2px 8px rgba(7, 78, 48, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+
+  &:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.7) 100%
+      ),
+      linear-gradient(
+        225deg,
+        rgba(206, 236, 98, 0.15) 0%,
+        rgba(77, 147, 43, 0.08) 100%
+      );
+    box-shadow: 0 12px 40px rgba(7, 78, 48, 0.15),
+      0 4px 12px rgba(7, 78, 48, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+  }
+}
+
+.btn-filter {
+  position: relative;
+  padding: 4px 8px;
+  text-decoration: none;
+  border-radius: 40px;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.5);
+  &:hover {
+    color: $white;
+    background: linear-gradient(
+      135deg,
+      rgba(77, 147, 43, 0.5),
+      rgba(77, 147, 43, 0.15)
+    );
+    box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.25),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 20px 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+  }
+}
+
+.btn-filter.active {
+  color: $white;
+  background: $primary-300;
+  box-shadow: inset 1px 1px 1px 0 rgba(255, 255, 255, 0.5),
+    inset -0.5px -0.5px 1px 1px rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
