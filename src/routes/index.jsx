@@ -11,6 +11,7 @@ import AdminPages from "../pages/admin/AdminPages.jsx";
 import AdminHome from "../pages/admin/AdminHome.jsx";
 import AdminBlog from "../pages/admin/AdminBlog.jsx";
 import AdminOrder from "../pages/admin/AdminOrder.jsx";
+import AdminReport from "../pages/admin/AdminReport.jsx";
 
 // const routes = [
 //   {
@@ -79,6 +80,7 @@ const routes = [
       { index: true, element: <AdminHome /> },
       { path: "order", element: <AdminOrder /> },
       { path: "blog", element: <AdminBlog /> },
+      { path: "report", element: <AdminReport /> },
     ],
   },
   // {
