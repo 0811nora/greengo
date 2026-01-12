@@ -1,7 +1,10 @@
 export default function AdminLogin() {
     return (
         <>
-            <div className="adminLogin">我是登入</div>
+            <main className="mainBody">
+                <div >我是登入</div>
+            </main>
+
         </>
     )
 }
