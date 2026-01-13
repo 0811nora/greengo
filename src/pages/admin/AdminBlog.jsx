@@ -1,29 +1,14 @@
-import { useEffect, useState ,useRef, use } from "react"
-import { getArticles , admSignin , getSingleArticle } from "../../api/Api";
+import { useEffect, useState ,useRef, } from "react"
+import { getAdmArticles , getAdmSingleArticle } from "../../api/ApiAdmin";
 import { Modal } from 'bootstrap'; 
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
+import { getAdmProductsCategory } from "../../api/ApiAdmin";
+
 
 
 export default function AdminBlog() {
-
-
-    //登入做好以後刪除
-    const userInfo = {
-        username: "greengo@test.com",
-        password: "12345678"
-    }
-    //登入做好以後刪除
-    const [ token , setToken ] = useState('')
-    //登入做好以後刪除
-    useEffect( () => {
-        (async()=>{
-            const res = await admSignin(userInfo);
-            setToken(res.data.token)
-            
-        })()
-    },[])
     
 
     const detailModal = useRef(null);
@@ -56,25 +41,25 @@ export default function AdminBlog() {
 
     // 網頁初始化
     useEffect(()=>{
-        if(!token) return;
 
         detailModal.current = new Modal(detailModalRef.current);
-        const getArticle = async (token) => {
+        const getArticle = async () => {
             try{
-                const res = await getArticles(token)
+                const res = await getAdmArticles()
                 console.log(res)
                 setArticleList(res.data.articles);
+
             }catch(err){
                 console.log(err)
             }
         }
-        getArticle(token);
-    },[token])
+        getArticle();
+    },[])
 
     // 取得單一文章資料
-    const getOneArticle = async (token,id) => {
+    const getOneArticle = async (id) => {
         try{
-            const res = await  getSingleArticle(token,id);
+            const res = await  getAdmSingleArticle(id);
             setSingleDetail(res.data.article)
             setContent(res.data.article.content)
             
@@ -106,10 +91,10 @@ export default function AdminBlog() {
         detailModal.current.show();
     };
 
-    const openDetailModal = (token,id) => {
+    const openDetailModal = (id) => {
         setMode('edit');   
         setIsEdit(false);  
-        getOneArticle(token,id)
+        getOneArticle(id)
         detailModal.current.show();
     };
 
@@ -179,7 +164,7 @@ export default function AdminBlog() {
                                         ))}
                                     </td>
                                     <td>
-                                        <button type="button" className="btn btn-accent-200" onClick={()=>openDetailModal(token,item.id)}>查看</button>
+                                        <button type="button" className="btn btn-accent-200" onClick={()=>openDetailModal(item.id)}>查看</button>
                                     </td>
                                 </tr>
                             ))}
