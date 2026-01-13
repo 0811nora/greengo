@@ -3,7 +3,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 
 
 //登入做好以後刪除
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { admSignin } from "../../api/ApiAdmin";
 
@@ -12,6 +12,7 @@ import { admSignin } from "../../api/ApiAdmin";
 export default function AdminPages() {
     
     //登入做好以後刪除
+    const [isAuth, setIsAuth] = useState(false);
     const userInfo = {
         username: "greengo@test.com",
         password: "12345678"
@@ -21,9 +22,13 @@ export default function AdminPages() {
         (async()=>{
             const res = await admSignin(userInfo);
             axios.defaults.headers.common['Authorization'] = res.data.token;
-            document.cookie = `greengoToken=${res.data.token};expires=${new Date(res.data.expired)};path=/;"`;
+            document.cookie = `greengoToken=${res.data.token};expires=${new Date(res.data.expired)};path=/;`;
+            setIsAuth(true);
         })()
     },[])
+
+    if (!isAuth) return ;
+
 
     return (
         <main className='adm_bg'>
