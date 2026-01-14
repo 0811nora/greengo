@@ -153,7 +153,29 @@ export const getAdmArticles = (page = 1) =>{
 }
 
 
-// [GET] - 後台取得單一文章列表
+
+// [GET] - 後台取得單一文章
 export const getAdmSingleArticle = (id) =>{
     return axios.get(`${apiUrl}/api/${apiPath}/admin/article/${id}`);
 }
+
+
+
+// [POST] - 新增文章
+export const postAdminAddArticle = (content) => {
+    return axios.post(`${apiUrl}/api/${apiPath}/admin/article`, {
+        data: content
+    });
+};
+
+// [PUT] - 修改文章
+export const putAdmEditArticle = (id, content) => {
+    return axios.put(`${apiUrl}/api/${apiPath}/admin/article/${id}`, {
+        data: content
+    });
+};
+
+// [DELETE] - 刪除文章
+export const delAdmSingleArticle = (id) => {
+    return axios.delete(`${apiUrl}/api/${apiPath}/admin/article/${id}`);
+};
