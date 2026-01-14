@@ -21,6 +21,10 @@
 @import "./style/admin/adm-login";
 @import "./style/admin/adm-base";
 
+
+// 暫時使用
+@import "./style/canDelet/noraModal";
+
 body {
   font-family: $font-zh;
 }
