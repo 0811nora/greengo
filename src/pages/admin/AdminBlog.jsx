@@ -490,7 +490,6 @@ export default function AdminBlog() {
             modalText={modalText}
             handleComfirmBtn={handleComfirmBtn}
             />
-
     </main>
     </>
         
