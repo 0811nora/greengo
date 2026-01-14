@@ -1,5 +1,5 @@
 import App from "../App.jsx";
-import { createHashRouter } from "react-router-dom";
+import { createHashRouter, Navigate } from "react-router-dom";
 import Home from "../pages/Home.jsx";
 import Product from "../pages/Product.jsx";
 import Custom from "../pages/Custom.jsx";
@@ -13,7 +13,6 @@ import AdminBlog from "../pages/admin/AdminBlog.jsx";
 import AdminOrder from "../pages/admin/AdminOrder.jsx";
 import AdminReport from "../pages/admin/AdminReport.jsx";
 import AdminLogin from "../pages/admin/AdminLogin.jsx";
-
 
 const routes = [
   {
@@ -35,7 +34,8 @@ const routes = [
     path: "/admin",
     element: <AdminPages />,
     children: [
-      { index: true, element: <AdminHome /> },
+      // { index: true, element: <AdminHome /> },
+      { index: true, element: <Navigate to="/admin/order" replace /> },
       { path: "order", element: <AdminOrder /> },
       { path: "blog", element: <AdminBlog /> },
       { path: "report", element: <AdminReport /> },

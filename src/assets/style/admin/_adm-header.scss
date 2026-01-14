@@ -1,0 +1,49 @@
+// navbar
+.navbar-nav.delete__navbar_nav__glassbg {
+  background: none;
+  backdrop-filter: none;
+  border-radius: none;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+  transition: none;
+}
+.admNavbar {
+  border-radius: 50px;
+  padding: 8px 16px;
+}
+.adm__navbar--disable {
+  color: $disable-color;
+  pointer-events: none;
+  &::after {
+    content: "\F47A";
+    font-family: "bootstrap-icons";
+    margin-left: 0.125rem;
+    vertical-align: middle;
+    color: $disable-color;
+  }
+}
+
+// adm__mode
+.adm__mode__circle {
+  border-radius: 100px;
+  width: 14px;
+  height: 14px;
+}
+.adm__mode__show {
+  background-color: $adm-gray-white;
+}
+.adm__mode__bg {
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  padding: 0.25rem;
+  gap: 0.15rem;
+  background-color: $disable-color;
+  border: none;
+  margin-right: 0.5rem;
+}

@@ -1,8 +1,109 @@
-.adm_bg {
-    min-height: 100vh;
-    background-image:
-        radial-gradient(at 0% 0%, rgba(230, 230, 230, 1) 0px, transparent 110%),
-        radial-gradient(at 70% 80%, rgba(233, 215, 88, 0.8) 0px, transparent 90%);
+//primitive
+$adm-gray-white: #fff;
+$adm-gray-200: #ededed;
+$adm-gray-300: #cecece;
+$adm-gray-500: #8c8e90;
+$adm-gray-800: #363a3f;
+$adm-gray-black: #1b2028;
 
-    background-color: #ffff;
+//Semantic, component
+$disable-color: $adm-gray-300;
+$tag-bg: $adm-gray-200;
+$border: $adm-gray-300;
+$subtitle: $adm-gray-500;
+$icon-default: $adm-gray-800;
+
+.adm_bg {
+  min-height: 100vh;
+  background-image: radial-gradient(
+      at 0% 0%,
+      rgba(230, 230, 230, 1) 0px,
+      transparent 110%
+    ),
+    radial-gradient(at 70% 80%, rgba(233, 215, 88, 0.8) 0px, transparent 90%);
+
+  background-color: #ffff;
+}
+
+// adm__glassbg
+.adm__glassbg {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.6) 100%
+    ),
+    linear-gradient(
+      225deg,
+      rgba(77, 147, 43, 0.1) 0%,
+      rgba(77, 147, 43, 0.05) 100%
+    );
+
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(7, 78, 48, 0.12), 0 2px 8px rgba(7, 78, 48, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+
+// adm__Button
+.adm__Button__primary {
+  background-color: $adm-gray-black;
+  color: $adm-gray-white;
+}
+.adm__Button__secondary {
+  //   background-color: $adm-gray-black;
+  border-color: $adm-gray-black;
+  color: $adm-gray-black;
+}
+.adm__Button__nav {
+  border-radius: 100px;
+  padding: 6px 16px;
+}
+.adm__Button__md {
+  border-radius: 100px;
+  padding: 12px 24px;
+}
+
+// adm_modal
+.modal-body {
+  padding: 0;
+}
+.adm__modal__comfirm {
+  border-radius: 20px;
+  padding: 48px 48px;
+  h1 {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  p {
+    text-align: center;
+    color: $subtitle;
+  }
+  .form-floating {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+  input {
+    border-color: $border;
+  }
+  .label_title {
+    color: $adm-gray-800;
+  }
+  .label_input {
+    color: $adm-gray-300;
+  }
+}
+.adm__modal__info {
+  border-radius: 20px;
+  padding: 40px;
+}
+
+// icon
+.modal-icon.bi-lock-fill {
+  color: $adm-gray-black;
+  font-size: 60px;
+  text-align: center;
+  margin-bottom: 16px;
 }
