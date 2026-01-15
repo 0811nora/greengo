@@ -29,8 +29,8 @@ export default function Custom() {
     return (
         <main className="custom-main">
             <div className="container " style={{ 
-                    height: "87vh",     
-                    maxHeight: "87vh",   
+                    height: "calc(99vh - 10px)",     
+                    maxHeight: "calc(99vh - 108px)",   
                     overflow: "hidden",  
                 }}>
 
