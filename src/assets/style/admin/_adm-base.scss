@@ -5,6 +5,8 @@ $adm-gray-300: #cecece;
 $adm-gray-500: #8c8e90;
 $adm-gray-800: #363a3f;
 $adm-gray-black: #1b2028;
+$success: #33b277;
+$success-light: #d0f1e2;
 
 //Semantic, component
 $disable-color: $adm-gray-300;
@@ -81,9 +83,10 @@ $icon-default: $adm-gray-800;
     text-align: center;
     color: $subtitle;
   }
-  .form-floating {
-    margin-top: 40px;
-    margin-bottom: 40px;
+  .adm__modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
   }
   input {
     border-color: $border;
@@ -100,8 +103,8 @@ $icon-default: $adm-gray-800;
   padding: 40px;
 }
 
-// icon
-.modal-icon.bi-lock-fill {
+// modal_icon
+.modal-icon {
   color: $adm-gray-black;
   font-size: 60px;
   text-align: center;
