@@ -1,12 +1,21 @@
 //primitive
+//gray
 $adm-gray-white: #fff;
 $adm-gray-200: #ededed;
 $adm-gray-300: #cecece;
 $adm-gray-500: #8c8e90;
 $adm-gray-800: #363a3f;
 $adm-gray-black: #1b2028;
+
+//primary
+$adm-primary: #fe8546;
+$adm-primary-light: #ffeee0;
 $success: #33b277;
 $success-light: #d0f1e2;
+$danger: #d93e4d;
+$btn-primary-shadow: #fe854633; // opacity:40%
+$btn-secondary-shadow: #1b202866; // opacity:40%
+$btn-tertiary-shadow: #1b202833; // opacity:20%
 
 //Semantic, component
 $disable-color: $adm-gray-300;
@@ -27,7 +36,7 @@ $icon-default: $adm-gray-800;
   background-color: #ffff;
 }
 
-// adm__glassbg
+// adm__glassbg 毛玻璃背景
 .adm__glassbg {
   background: linear-gradient(
       135deg,
@@ -49,64 +58,90 @@ $icon-default: $adm-gray-800;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
 }
 
-// adm__Button
-.adm__Button__primary {
-  background-color: $adm-gray-black;
-  color: $adm-gray-white;
-}
-.adm__Button__secondary {
-  //   background-color: $adm-gray-black;
-  border-color: $adm-gray-black;
-  color: $adm-gray-black;
-}
-.adm__Button__nav {
-  border-radius: 100px;
-  padding: 6px 16px;
-}
-.adm__Button__md {
-  border-radius: 100px;
-  padding: 12px 24px;
+// adm__Button 按鈕
+.adm-theme {
+  .adm__button__primary {
+    background-color: $adm-primary;
+    color: $adm-gray-white;
+  }
+  .adm__button__secondary {
+    background-color: $adm-gray-black;
+    color: $adm-gray-white;
+    &:hover {
+      box-shadow: 0 0 8px $btn-secondary-shadow;
+      transform: scale(1.05);
+      transition: all 0.1s ease;
+    }
+  }
+  .adm__button__tertiary {
+    border: 1px solid $adm-gray-500;
+    color: $adm-gray-black;
+    background-color: $adm-gray-white;
+    &:hover {
+      box-shadow: 0 0 8px $btn-tertiary-shadow;
+      transform: scale(1.05);
+      transition: all 0.1s ease;
+    }
+  }
+  .lg {
+    border-radius: 100px;
+    padding: 16px 32px;
+  }
+  .md {
+    border-radius: 100px;
+    padding: 12px 24px;
+  }
+  .sm {
+    border-radius: 100px;
+    padding: 4px 16px;
+  }
 }
 
-// adm_modal
-.modal-body {
-  padding: 0;
-}
-.adm__modal__comfirm {
-  border-radius: 20px;
-  padding: 48px 48px;
+// adm__modal 彈跳視窗
+.adm-theme {
+  .adm__modal__comfirm {
+    border-radius: 20px;
+    padding: 48px 48px;
+  }
+  .adm__modal__info {
+    border-radius: 20px;
+    padding: 40px;
+  }
+  .adm__modal__body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
   h1 {
     text-align: center;
-    margin-bottom: 4px;
+    margin-bottom: 16px;
   }
   p {
     text-align: center;
     color: $subtitle;
   }
-  .adm__modal__body {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-  }
+}
+
+// adm__input 輸入框
+.adm-theme {
   input {
     border-color: $border;
   }
-  .label_title {
+  .adm__label__normal {
     color: $adm-gray-800;
   }
-  .label_input {
+  .adm__label__floating {
     color: $adm-gray-300;
   }
 }
-.adm__modal__info {
-  border-radius: 20px;
-  padding: 40px;
-}
 
-// modal_icon
-.modal-icon {
-  color: $adm-gray-black;
-  font-size: 60px;
-  text-align: center;
-  margin-bottom: 16px;
+// adm_icon
+.adm-theme {
+  .adm__modal__icon {
+    color: $adm-gray-black;
+    font-size: 60px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
 }
