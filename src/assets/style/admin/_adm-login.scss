@@ -24,3 +24,15 @@
 
 
 }
+
+.btn_primary_color {
+    background-color: #e9d758cc;
+    border-color: #e9d758cc;
+
+    &:hover,
+    &:active {
+        background-color: #d8d4d5;
+        border: #ffffff80;
+        --bs-btn-active-bg: rgb(216, 212, 213, 0.5)
+    }
+}
