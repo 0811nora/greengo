@@ -25,9 +25,11 @@
 
 }
 
-.btn_primary_color {
+.btn_login_color {
     background-color: #e9d758cc;
     border-color: #e9d758cc;
+    border-radius: 50px;
+
 
     &:hover,
     &:active {
@@ -35,4 +37,21 @@
         border: #ffffff80;
         --bs-btn-active-bg: rgb(216, 212, 213, 0.5)
     }
+}
+
+.input_login {
+    border-radius: 50px;
+    border-color: #ffffff80;
+    box-shadow: 0 4px 12px rgba(233, 215, 88, 0.2);
+    font-size: 18px;
+
+
+    &:hover,
+    &:focus,
+    &:active {
+        box-shadow: 3px 4px 12px rgba(233, 215, 88, 0.8);
+        border-color: #ffffff80;
+
+    }
+
 }
