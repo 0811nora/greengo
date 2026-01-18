@@ -21,7 +21,6 @@ export default function AdminPages() {
         );
         //戳check API
         if (!greenCookie) {
-            alert("您尚未登入");
             navigate('/admin/login');
         }
 
