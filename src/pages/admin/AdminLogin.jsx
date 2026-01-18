@@ -1,30 +1,50 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { admSignin } from '../../api/ApiAdmin';
 
 export default function AdminLogin() {
 
-    const url = "https://ec-course-api.hexschool.io/v2/";
-
-
     const [accountLogin, setAccountLogin] = useState("");
     const [passwordLogin, setPasswordLogin] = useState("");
-    const [greenGoToken, setGreenGoToken] = useState("");
+    // const [greenGoToken, setGreenGoToken] = useState("");
+    const navigate = useNavigate();
 
     const Login = async () => {
+        const userInfo = {
+            username: accountLogin,
+            password: passwordLogin
+        };
         try {
-            const res = await axios.post(`${url}admin/signin`, {
-                username: accountLogin,
-                password: passwordLogin
-            });
+            const res = await admSignin(userInfo);
             // console.log(res);
-            setGreenGoToken(res.data.token);
-            document.cookie = `greenToken=${greenGoToken}; expires=${new Date(res.data.expired)};`;
+            // setGreenGoToken(res.data.token);
+            const { token, expired } = res.data;
+
+            document.cookie = `greenToken=${token}; expires=${new Date(expired)}; path=/`;
+
+
+            axios.defaults.headers.common['Authorization'] = token;
+
+            navigate('/admin');
+
         } catch (error) {
-
             console.error(error);
-
+            alert(`登入失敗：${error.message}`);
         }
     };
+
+    useEffect(() => {
+        const greenCookie = document.cookie.replace(
+            /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
+            "$1",
+        );
+
+        if (greenCookie) {
+
+            navigate('/admin');
+        }
+    }, [navigate]);
 
     const getAccount = (e) => {
         setAccountLogin(e.target.value)

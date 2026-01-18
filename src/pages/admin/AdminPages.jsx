@@ -1,33 +1,51 @@
-
-import { Outlet, NavLink } from 'react-router-dom';
+import axios from 'axios';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 
 
 //登入做好以後刪除
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { admSignin } from "../../api/ApiAdmin";
+// import axios from 'axios';
+// import { admSignin } from "../../api/ApiAdmin";
 
 
 
 export default function AdminPages() {
-    
-    //登入做好以後刪除
-    const [isAuth, setIsAuth] = useState(false);
-    const userInfo = {
-        username: "greengo@test.com",
-        password: "12345678"
-    }
-    //登入做好以後刪除
-    useEffect( () => {
-        (async()=>{
-            const res = await admSignin(userInfo);
-            axios.defaults.headers.common['Authorization'] = res.data.token;
-            document.cookie = `greengoToken=${res.data.token};expires=${new Date(res.data.expired)};path=/;`;
-            setIsAuth(true);
-        })()
-    },[])
 
-    if (!isAuth) return ;
+    const navigate = useNavigate();
+
+    //芋頭修改
+    useEffect(() => {
+        const greenCookie = document.cookie.replace(
+            /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
+            "$1",
+        );
+        //戳check API
+        if (!greenCookie) {
+            alert("您尚未登入");
+            navigate('/admin/login');
+        }
+
+    }, [navigate]);
+
+    //芋頭修改結束
+
+    // //登入做好以後刪除
+    // const [isAuth, setIsAuth] = useState(false);
+    // const userInfo = {
+    //     username: "greengo@test.com",
+    //     password: "12345678"
+    // }
+    // //登入做好以後刪除
+    // useEffect( () => {
+    //     (async()=>{
+    //         const res = await admSignin(userInfo);
+    //         axios.defaults.headers.common['Authorization'] = res.data.token;
+    //         document.cookie = `greengoToken=${res.data.token};expires=${new Date(res.data.expired)};path=/;`;
+    //         setIsAuth(true);
+    //     })()
+    // },[])
+
+    // if (!isAuth) return ;
 
 
     return (
