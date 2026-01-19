@@ -29,12 +29,12 @@ export default function AdminOrder() {
   }, []);
 
   // 新增訂單狀態
-  const orders = useMemo(() => {
-    return originOrders.map((order) => ({
-      ...order,
-      status: order.is_paid ? "prepare" : "new",
-    }));
-  }, [apiData]);
+  // const orders = useMemo(() => {
+  //   return originOrders.map((order) => ({
+  //     ...order,
+  //     status: order.is_paid ? "prepare" : "new",
+  //   }));
+  // }, [apiData]);
 
   function changeTimeStamp(timeStamp) {
     const time = new Date(timeStamp * 1000);
