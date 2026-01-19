@@ -119,8 +119,6 @@ export default function AdminPages() {
     }
   }, [navigate]);
 
-  if (!isAuth) return;
-
   return (
     <main className="adm_bg adm-theme">
       <div className="container">
