@@ -24,7 +24,7 @@ export function AdmModal_password({
             <div className="form-floating">
               <input
                 type="password"
-                className="form-control"
+                className="form-control adm__input"
                 id="admPasswordInput"
                 placeholder="管理員密碼"
                 value={admPassword}

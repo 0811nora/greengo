@@ -1,0 +1,78 @@
+.adm__block__glassbg {
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(255, 255, 255, 0.7) 100%
+    ),
+    linear-gradient(
+      225deg,
+      rgba(147, 97, 43, 0.1) 0%,
+      rgba(147, 97, 43, 0.05) 100%
+    );
+
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(27, 32, 40, 0.12),
+    0 2px 8px rgba(27, 32, 40, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+
+.adm-theme .order-page {
+  padding: 40px 16px;
+
+  .header {
+    background: none; // 清除別人的設定
+    backdrop-filter: none; // 清除別人的設定
+    border: 0px; // 清除別人的設定
+    margin-bottom: 40px;
+  }
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    color: $adm-gray-black;
+  }
+  .search-bar {
+    height: 45px;
+    border-radius: 100px;
+    padding-left: 40px;
+    padding-right: 12px;
+  }
+  .search-bar__icon {
+    color: $adm-gray-800;
+    position: absolute;
+    left: 16px;
+    top: 10px;
+  }
+
+  .filter__block {
+    padding: 20px 40px;
+    border-radius: 20px;
+    p {
+      font-size: 14px;
+    }
+    i {
+      font-size: 24px;
+    }
+    .num {
+      font-size: 28px;
+      color: $adm-gray-black;
+      font-weight: bold;
+      text-align: left;
+      margin-bottom: 4px;
+    }
+  }
+
+  .content {
+    padding: 32px 40px;
+    border-radius: 32px 32px 0px 0px;
+  }
+  .table {
+    vertical-align: middle;
+    --bs-table-bg: ;
+  }
+  .table i {
+    font-size: 20px;
+  }
+}

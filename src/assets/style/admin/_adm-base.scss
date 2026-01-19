@@ -40,7 +40,7 @@ $icon-default: $adm-gray-800;
 .adm__glassbg {
   background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.8) 0%,
       rgba(255, 255, 255, 0.6) 100%
     ),
     linear-gradient(
@@ -51,8 +51,8 @@ $icon-default: $adm-gray-800;
 
   backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 32px rgba(7, 78, 48, 0.12), 0 2px 8px rgba(7, 78, 48, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+  box-shadow: 0 8px 32px rgba(27, 32, 40, 0.12),
+    0 2px 8px rgba(27, 32, 40, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8),
     inset 0 -1px 0 rgba(255, 255, 255, 0.2);
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
@@ -89,7 +89,7 @@ $icon-default: $adm-gray-800;
   }
   .md {
     border-radius: 100px;
-    padding: 12px 24px;
+    padding: 10px 20px;
   }
   .sm {
     border-radius: 100px;
@@ -112,21 +112,25 @@ $icon-default: $adm-gray-800;
     display: flex;
     flex-direction: column;
     gap: 40px;
-  }
-  h1 {
-    text-align: center;
-    margin-bottom: 16px;
-  }
-  p {
-    text-align: center;
-    color: $subtitle;
+
+    h1 {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    p {
+      text-align: center;
+      color: $subtitle;
+    }
   }
 }
 
 // adm__input 輸入框
 .adm-theme {
-  input {
+  .adm__input {
     border-color: $border;
+    &::placeholder {
+      color: $adm-gray-300;
+    }
   }
   .adm__label__normal {
     color: $adm-gray-800;
@@ -143,5 +147,8 @@ $icon-default: $adm-gray-800;
     font-size: 60px;
     text-align: center;
     margin-bottom: 8px;
+  }
+  .adm__text__icon {
+    color: $adm-gray-800;
   }
 }

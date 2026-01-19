@@ -100,6 +100,33 @@ export default function AdminPages() {
     closeLogoutModal();
     console.log("登出成功");
   }
+  ////////////////
+  // function toggleModal(path) {
+  //   if (!admMode) {
+  //     setIsShowLoginModal(true); // loginModal的class變成show
+  //     setpagePath(path);
+  //   } else {
+  //     setIsShowLogoutModal(true);
+  //   }
+  // }
+  // function admLogin() {
+  //   if (admPassword === "0000") {
+  //     setAdmMode(true);
+  //     setIsShowLoginModal(false);
+  //     navigate(pagePath);
+  //     alert("登入成功");
+  //   } else {
+  //     alert("登入失敗");
+  //   }
+  //   setAdmPassword("");
+  // }
+  // function admLogout() {
+  //   setAdmMode(false);
+  //   setIsShowLogoutModal(false);
+  //   console.log("登出成功");
+  // }
+
+  ////////////////
 
   if (!isAuth) return;
 
@@ -136,6 +163,7 @@ export default function AdminPages() {
           confirmText={ADM_MODE_LOGOUT.confirmText}
           cancelText={ADM_MODE_LOGOUT.cancelText}
         />
+
         <Outlet />
       </div>
     </main>
