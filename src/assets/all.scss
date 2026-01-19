@@ -1,31 +1,32 @@
-@import "bootstrap/scss/functions";
+@import 'bootstrap/scss/functions';
 
-@import "./style/variables";
-@import "./style/variables-dark";
+@import './style/variables';
+@import './style/variables-dark';
 
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
 
-@import "./style/utilities";
-@import "bootstrap/scss/utilities/api";
-@import "bootstrap/scss/bootstrap.scss";
+@import './style/utilities';
+@import 'bootstrap/scss/utilities/api';
+@import 'bootstrap/scss/bootstrap.scss';
 
-@import "./style/typography";
+@import './style/typography';
 
-@import "./style/home";
-@import "./style/admin/adm-blog";
-@import "./style/admin/adm-report";
-@import "./style/admin/adm-login";
-@import "./style/admin/adm-base";
-@import "./style/admin/adm-header";
-@import "./style/admin/adm-order";
-@import "./style/custom";
+@import './style/home';
+@import './style/admin/adm-blog';
+@import './style/admin/adm-report';
+@import './style/admin/adm-login';
+@import './style/admin/adm-base';
+@import './style/admin/adm-header';
+@import './style/admin/adm-order';
+@import './style/custom';
+@import './style/admin/adm-product';
 
 // 暫時使用
-@import "./style/canDelet/noraModal";
+@import './style/canDelet/noraModal';
 
 body {
   font-family: $font-zh;
