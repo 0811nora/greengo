@@ -48,9 +48,9 @@ export default function AdminOrder() {
 
   const [apiData, setApiData] = useState([]);
 
-  useEffect(() => {
-    fetchOrders().then(setApiData);
-  }, []);
+  // useEffect(() => {
+  //   fetchOrders().then(setApiData);
+  // }, []);
 
   return (
     <main className=" container-fluid px-0">
