@@ -1,29 +1,82 @@
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { admSignin } from '../../api/ApiAdmin';
+
 export default function AdminLogin() {
+
+    const [accountLogin, setAccountLogin] = useState("");
+    const [passwordLogin, setPasswordLogin] = useState("");
+    // const [greenGoToken, setGreenGoToken] = useState("");
+    const navigate = useNavigate();
+
+    const Login = async () => {
+        const userInfo = {
+            username: accountLogin,
+            password: passwordLogin
+        };
+        try {
+            const res = await admSignin(userInfo);
+            // console.log(res);
+            // setGreenGoToken(res.data.token);
+            const { token, expired } = res.data;
+
+            document.cookie = `greenToken=${token}; expires=${new Date(expired)}; path=/`;
+
+
+            axios.defaults.headers.common['Authorization'] = token;
+
+            navigate('/admin');
+
+        } catch (error) {
+            console.error(error);
+            alert(`登入失敗：${error.message}`);
+        }
+    };
+
+    useEffect(() => {
+        const greenCookie = document.cookie.replace(
+            /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
+            "$1",
+        );
+
+        if (greenCookie) {
+
+            navigate('/admin');
+        }
+    }, [navigate]);
+
+    const getAccount = (e) => {
+        setAccountLogin(e.target.value)
+    }
+
+    const getPassword = (e) => {
+        setPasswordLogin(e.target.value)
+    }
+
+
     return (
         <>
             <main className="mainBody d-flex align-items-center justify-content-center">
 
                 <div className="card maincard py-4">
-                    <div class="card-body d-flex flex-column align-items-center">
-                        <h5 class="card-title text-center mb-4">登入
+                    <div className="card-body d-flex flex-column align-items-center">
+                        <h5 className="card-title text-center mb-4">登入
                         </h5>
-
-
 
                         <div className="col-auto mb-3">
                             <label htmlFor="accountInput" className="form-label">帳號</label>
-                            <input type="email" id="accountInput" className="form-control" placeholder="請輸入帳號" />
+                            <input value={accountLogin}
+                                onChange={getAccount} type="email" id="accountInput" className="input_login form-control px-4 py-2" placeholder="請輸入帳號" />
 
                         </div>
-
-
 
                         <div className="col-auto mb-3">
                             <label htmlFor="passwordInput" className="form-label mt-2">密碼</label>
-                            <input type="password" id="passwordInput" className="form-control" placeholder="請輸入密碼" />
+                            <input value={passwordLogin}
+                                onChange={getPassword} type="password" id="passwordInput" className="form-control input_login  px-4 py-2" placeholder="請輸入密碼" />
                         </div>
-
-                        <a href="#" className="btn btn-primary mt-4 px-3 py-2">送出</a>
+                        <button type="button" className="btn btn-primary mt-4 px-5 py-2 btn_login_color" onClick={Login}>送出</button>
 
                     </div>
 

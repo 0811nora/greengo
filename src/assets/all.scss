@@ -22,6 +22,10 @@
 @import "./style/admin/adm-base";
 @import "./style/admin/adm-header";
 @import "./style/admin/adm-order";
+@import "./style/custom";
+
+// 暫時使用
+@import "./style/canDelet/noraModal";
 
 body {
   font-family: $font-zh;

@@ -4,33 +4,13 @@ import { useEffect, useState, useRef } from "react";
 import AdminHeader from "../../layout/AdminHeader";
 import { AdmModal_confirm, AdmModal_password } from "../../component/AdmModal";
 import { ADM_MODE_LOGOUT } from "../../config/confirmModal";
+import axios from "axios";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 
 let loginModal;
 let logoutModal;
 
-//登入做好以後刪除
-import axios from "axios";
-import { admSignin } from "../../api/ApiAdmin";
-
 export default function AdminPages() {
-  //登入做好以後刪除
-  const [isAuth, setIsAuth] = useState(false);
-  const userInfo = {
-    username: "greengo@test.com",
-    password: "12345678",
-  };
-  //登入做好以後刪除
-  useEffect(() => {
-    (async () => {
-      const res = await admSignin(userInfo);
-      axios.defaults.headers.common["Authorization"] = res.data.token;
-      document.cookie = `greengoToken=${res.data.token};expires=${new Date(
-        res.data.expired
-      )};path=/;`;
-      setIsAuth(true);
-    })();
-  }, []);
-
   const [admMode, setAdmMode] = useState(false); // 管理員模式
   const [admPassword, setAdmPassword] = useState(""); // 管理員密碼
   const [pagePath, setpagePath] = useState(""); // navLink 指定的路由
@@ -127,6 +107,18 @@ export default function AdminPages() {
   // }
 
   ////////////////
+
+  //芋頭修改
+  useEffect(() => {
+    const greenCookie = document.cookie.replace(
+      /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+    //戳check API
+    if (!greenCookie) {
+      navigate("/admin/login");
+    }
+  }, [navigate]);
 
   if (!isAuth) return;
 
