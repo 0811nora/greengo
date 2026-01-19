@@ -14,6 +14,7 @@ export default function AdminOrder() {
     }
   }, [originOrders, filterType]);
 
+  // 取得 api 原始資料
   useEffect(() => {
     const getOrders = async () => {
       try {
@@ -27,6 +28,14 @@ export default function AdminOrder() {
     getOrders();
   }, []);
 
+  // 新增訂單狀態
+  const orders = useMemo(() => {
+    return originOrders.map((order) => ({
+      ...order,
+      status: order.is_paid ? "prepare" : "new",
+    }));
+  }, [apiData]);
+
   function changeTimeStamp(timeStamp) {
     const time = new Date(timeStamp * 1000);
     const year = time.getFullYear();
@@ -36,6 +45,12 @@ export default function AdminOrder() {
     const minute = time.getMinutes();
     return `${year}-${month}-${date} ${hour}:${minute}`;
   }
+
+  const [apiData, setApiData] = useState([]);
+
+  useEffect(() => {
+    fetchOrders().then(setApiData);
+  }, []);
 
   return (
     <main className=" container-fluid px-0">
