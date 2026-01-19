@@ -139,6 +139,11 @@ export const delAdmSingleCoupon = (id) => {
 
 
 
+// ********** [ 上傳圖片 ] **********
+export const upload = (content) =>{
+    return axios.post(`${apiUrl}/api/${apiPath}/admin/upload`, content);
+};
+
 
 
 // ********** [ 文章管理 ] **********

@@ -34,9 +34,11 @@ const routes = [
   {
     path: "/admin",
     element: <AdminPages />,
+    // element: <AdminOrder /> ,
     children: [
-      // { index: true, element: <AdminHome /> },
-      { index: true, element: <Navigate to="/admin/order" replace /> },
+      { index: true, element: <AdminHome /> },
+      // { index: true, element: <AdminOrder /> },
+      // { index: true, element: <Navigate to="/admin/order" replace /> },
       { path: "order", element: <AdminOrder /> },
       { path: "stock", element: <AdminStock /> },
       { path: "blog", element: <AdminBlog /> },
