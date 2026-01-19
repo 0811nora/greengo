@@ -23,6 +23,8 @@ export default function AdminPages() {
     return;
   }, []);
 
+
+
   function handleNavMode(path) {
     if (!admMode) {
       openLoginModal();
@@ -79,31 +81,31 @@ export default function AdminPages() {
     closeLogoutModal();
     console.log("登出成功");
   }
-  ////////////////
-  // function toggleModal(path) {
-  //   if (!admMode) {
-  //     setIsShowLoginModal(true); // loginModal的class變成show
-  //     setpagePath(path);
-  //   } else {
-  //     setIsShowLogoutModal(true);
-  //   }
-  // }
-  // function admLogin() {
-  //   if (admPassword === "0000") {
-  //     setAdmMode(true);
-  //     setIsShowLoginModal(false);
-  //     navigate(pagePath);
-  //     alert("登入成功");
-  //   } else {
-  //     alert("登入失敗");
-  //   }
-  //   setAdmPassword("");
-  // }
-  // function admLogout() {
-  //   setAdmMode(false);
-  //   setIsShowLogoutModal(false);
-  //   console.log("登出成功");
-  // }
+  //////////////
+  function toggleModal(path) {
+    if (!admMode) {
+      setIsShowLoginModal(true); // loginModal的class變成show
+      setpagePath(path);
+    } else {
+      setIsShowLogoutModal(true);
+    }
+  }
+  function admLogin() {
+    if (admPassword === "0000") {
+      setAdmMode(true);
+      setIsShowLoginModal(false);
+      navigate(pagePath);
+      alert("登入成功");
+    } else {
+      alert("登入失敗");
+    }
+    setAdmPassword("");
+  }
+  function admLogout() {
+    setAdmMode(false);
+    setIsShowLogoutModal(false);
+    console.log("登出成功");
+  }
 
   ////////////////
 
@@ -117,6 +119,8 @@ export default function AdminPages() {
     if (!greenCookie) {
       navigate("/admin/login");
     }
+
+  
   }, [navigate]);
 
   return (
