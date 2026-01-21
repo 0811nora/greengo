@@ -1,8 +1,21 @@
+$all-colors: map-merge-multiple(
+  $blues,
+  $indigos,
+  $purples,
+  $pinks,
+  $reds,
+  $oranges,
+  $yellows,
+  $greens,
+  $teals,
+  $cyans,
+  $grays
+);
+
 $utilities: map-merge(
   $utilities,
   (
-    "font-size":
-      map-merge(
+    "font-size": map-merge(
         map-get($utilities, "font-size"),
         (
           responsive: true,
@@ -16,5 +29,14 @@ $utilities: map-merge(
       responsive: true,
       rfs: false,
     ),
+    "color": map-merge(
+        map-get($utilities, "color"),
+        (
+          values: map-merge(
+              map-get(map-get($utilities, "color"), "values"),
+              $all-colors
+            ),
+        )
+      ),
   )
 );
