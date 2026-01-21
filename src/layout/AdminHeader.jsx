@@ -10,7 +10,7 @@ const admNavbarData = {
     route: "order",
   },
   navLink_needAdmMode: [
-    { title: "商品管理", route: "stock" },
+    { title: "商品管理", route: "products" },
     { title: "文章管理", route: "blog" },
     { title: "報表統整", route: "report" },
   ],
@@ -23,8 +23,8 @@ export default function AdminHeader({
 }) {
   return (
     <>
-      <nav className=" navbar">
-        <div className="container-fluid adm__navbar adm__glassbg ">
+      <nav className="navbar fixed-top">
+        <div className="container adm__navbar adm__glassbg ">
           {/* brand */}
           <span className="navbar-brand ft-en fw-semibold">
             <img
