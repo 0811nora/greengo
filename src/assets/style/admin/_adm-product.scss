@@ -1,0 +1,83 @@
+// .h3 {
+//   font-size: clamp(24px, 6vw, 64px);
+//   max-width: 400px;
+//   text-align: center;
+//   font-weight: bold;
+//   text-transform: uppercase;
+//   opacity: 0.8;
+//   mix-blend-mode: overlay;
+// }
+
+// .custom-table {
+//   min-width: 900px;
+//   --bs-table-bg: transparent;
+// }
+// .custom-table thead tr,
+// .custom-table thead th {
+//   border-top: none;
+//   border-bottom: none !important;
+//   font-weight: 400;
+// }
+// .custom-table tbody th,
+// .custom-table tbody td {
+//   color: #5a5a5a;
+//   font-weight: 400;
+//   padding-bottom: 20px;
+//   padding-top: 20px;
+//   font-weight: 300;
+//   border: none;
+//   text-align: center !important;
+// }
+
+// .custom-table tbody tr:hover,
+// .custom-table tbody tr:focus {
+//   background: #ffffff7d;
+// }
+// .custom-table tbody tr:hover td:first-child {
+//   border-top-left-radius: 100px;
+//   border-bottom-left-radius: 100px;
+// }
+
+// .custom-table tbody tr:hover td:last-child {
+//   border-top-right-radius: 100px;
+//   border-bottom-right-radius: 100px;
+// }
+
+// .btn-main {
+//   padding: 8px 24px;
+//   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+//   transform: translateY(0);
+//   border: 1px solid #bbbbbb7c;
+//   border-radius: 100px;
+//   height: 100%;
+// }
+
+// .btn-main:hover {
+//   transform: translateY(-2px);
+//   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+// }
+
+// .btn-main:active {
+//   transform: translateY(0);
+//   transition: all 0.1s;
+// }
+
+// .primary-text {
+//   color: rgb(237, 143, 158);
+// }
+
+// .primary-bg {
+//   background-color: rgb(255, 132, 241);
+// }
+
+// .custom-modal {
+//   background-color: rgba(240, 248, 255, 0.3);
+//   backdrop-filter: blur(4px);
+//   -webkit-backdrop-filter: blur(4px);
+//   border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+//   border-radius: 28px;
+// }
+
+// .custom-modal-content {
+//   background-color: rgba(240, 248, 255, 0.3);
+// }

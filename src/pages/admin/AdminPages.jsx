@@ -1,29 +1,27 @@
-import * as bootstrap from "bootstrap";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
-import AdminHeader from "../../layout/AdminHeader";
-import { AdmModal_confirm, AdmModal_password } from "../../component/AdmModal";
-import { ADM_MODE_LOGOUT } from "../../config/confirmModal";
-import axios from "axios";
+import * as bootstrap from 'bootstrap';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import AdminHeader from '../../layout/AdminHeader';
+import { AdmModal_confirm, AdmModal_password } from '../../component/AdmModal';
+import { ADM_MODE_LOGOUT } from '../../config/confirmModal';
+import axios from 'axios';
 
 let loginModal;
 let logoutModal;
 
 export default function AdminPages() {
   const [admMode, setAdmMode] = useState(false); // 管理員模式
-  const [admPassword, setAdmPassword] = useState(""); // 管理員密碼
-  const [pagePath, setpagePath] = useState(""); // navLink 指定的路由
+  const [admPassword, setAdmPassword] = useState(''); // 管理員密碼
+  const [pagePath, setpagePath] = useState(''); // navLink 指定的路由
   const loginModalRef = useRef(null);
   const logoutModalRef = useRef(null);
   const navigate = useNavigate();
 
   // 重新整理都指向訂單管理
   useEffect(() => {
-    if (!admMode) navigate("/admin/order");
+    if (!admMode) navigate('/admin/order');
     return;
   }, []);
-
-
 
   function handleNavMode(path) {
     if (!admMode) {
@@ -56,30 +54,30 @@ export default function AdminPages() {
   function closeLogoutModal() {
     document.activeElement?.blur();
     logoutModal.hide();
-    navigate("/admin/order");
+    navigate('/admin/order');
   }
   function cancelModal() {
     document.activeElement?.blur();
     logoutModal.hide();
   }
   function checkAdmPassword() {
-    if (admPassword === "0000") {
+    if (admPassword === '0000') {
       handlePasswordSuccess();
     } else {
-      alert("登入失敗");
+      alert('登入失敗');
     }
-    setAdmPassword("");
+    setAdmPassword('');
   }
   function handlePasswordSuccess() {
     setAdmMode(true);
     closeLoginModal();
     navigate(pagePath);
-    alert("登入成功");
+    alert('登入成功');
   }
   function logoutMode() {
     setAdmMode(false);
     closeLogoutModal();
-    console.log("登出成功");
+    console.log('登出成功');
   }
   //////////////
   function toggleModal(path) {
@@ -91,20 +89,20 @@ export default function AdminPages() {
     }
   }
   function admLogin() {
-    if (admPassword === "0000") {
+    if (admPassword === '0000') {
       setAdmMode(true);
       setIsShowLoginModal(false);
       navigate(pagePath);
-      alert("登入成功");
+      alert('登入成功');
     } else {
-      alert("登入失敗");
+      alert('登入失敗');
     }
-    setAdmPassword("");
+    setAdmPassword('');
   }
   function admLogout() {
     setAdmMode(false);
     setIsShowLogoutModal(false);
-    console.log("登出成功");
+    console.log('登出成功');
   }
 
   ////////////////
@@ -113,14 +111,12 @@ export default function AdminPages() {
   useEffect(() => {
     const greenCookie = document.cookie.replace(
       /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
+      '$1'
     );
     //戳check API
     if (!greenCookie) {
-      navigate("/admin/login");
+      navigate('/admin/login');
     }
-
-  
   }, [navigate]);
 
   return (
