@@ -69,10 +69,7 @@ export default function Custom() {
 
 
     const getCustom = allProducts.filter(item => item.category === "custom");
-    console.log('getCustom:',getCustom)
-
     const getAllitem = allProducts.filter(item => item.category === "item");
-
     const renderItemList = getAllitem.filter(item => item.product_type === activeTab);
 
 
@@ -83,12 +80,34 @@ export default function Custom() {
 
     const pickProduct = (e) => {
 
-        const { name , value } = e.target
-        console.log( name , value )
-        setSelectedProduct((pre) => ({
-            ...pre,
-            [name]: value
-        }))
+        const { name , value , checked } = e.target
+        const maxCount = {
+            base: limit.base_limit,
+            protein: limit.protein_limit,
+            side: limit.side_limit,
+            sauce: limit.sauce_limit
+        }
+
+        if(checked){
+            if(selectedProduct[name].length >= maxCount[name]){
+                e.target.checked = false
+                return;
+            }
+
+            setSelectedProduct((pre) => ({
+                ...pre,
+                [name]: [...pre[name],value]
+            }))
+        }else{
+            setSelectedProduct((pre) => ({
+                ...pre,
+                [name]: [...pre[name].filter(i => i !== value)]
+            }))
+        }
+
+        
+        
+
 
     }
 
@@ -170,16 +189,24 @@ export default function Custom() {
                         <div className="row">
                             <div className="col-3">
                                 <div>
-                                    <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('base')}>基底</button>
+                                    <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('base')}>
+                                        基底 {selectedProduct.base.length}/{limit.base_limit}
+                                    </button>
                                 </div>
                                 <div>
-                                    <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('protein')}>蛋白質</button>
+                                    <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('protein')}>
+                                        蛋白質 {selectedProduct.protein.length}/{limit.protein_limit}
+                                    </button>
                                 </div>
                                 <div>
-                                    <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('side')}>配菜</button>
+                                    <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('side')}>
+                                        配菜 {selectedProduct.side.length}/{limit.side_limit}
+                                    </button>
                                 </div>
                                 <div>
-                                    <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('sauce')}>醬汁</button>
+                                    <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('sauce')}>
+                                        醬料 {selectedProduct.sauce.length}/{limit.sauce_limit}
+                                    </button>
                                 </div>
                             </div>
                             <div className="col-6">
@@ -188,7 +215,8 @@ export default function Custom() {
                                         <div className="col" key={item.id}>
                                             <div className="form-check">
                                                 <input className="form-check-input" type="checkbox" name={activeTab} value={item.title} id={item.id}
-                                                    onChange={(e)=>pickProduct(e)}/>
+                                                    onChange={(e)=>pickProduct(e)}
+                                                    checked={selectedProduct[activeTab].includes(item.title) || false}/>
                                                 <label className="form-check-label" htmlFor={item.id}>
                                                     <div className="card p-1 ">
                                                         <div className="d-flex justify-content-center align-items-center gap-2">
@@ -205,7 +233,22 @@ export default function Custom() {
                                     ))}
                                 </div>
                             </div>
-                            <div className="col-3">計算熱量區</div>
+                            <div className="col-3">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        計算熱量區
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5>已選品項</h5>
+                                        <p>基底：{selectedProduct.base.join('、')}</p>
+                                        <p>蛋白質：{selectedProduct.protein.join('、')}</p>
+                                        <p>配菜：{selectedProduct.side.join('、')}</p>
+                                        <p>醬料：{selectedProduct.sauce.join('、')}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
 
