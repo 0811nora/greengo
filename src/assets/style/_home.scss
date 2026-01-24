@@ -187,7 +187,6 @@ li {
   .visual-area {
     position: relative;
     min-height: 500px;
-
     .main-bowl-img {
       max-width: 375px;
       width: 60%;
@@ -201,7 +200,6 @@ li {
         left: 50%;
       }
     }
-
     .ingredient-card {
       width: 150px;
       height: 75px;
@@ -215,7 +213,6 @@ li {
       border-radius: 20px;
       opacity: 0.8;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-
       &:hover {
         opacity: 0.9;
         box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
@@ -224,7 +221,7 @@ li {
         width: 60px;
         margin-right: 8px;
       }
-
+      // 配菜位置
       &.pos-btm-left {
         // 鮭魚
         img {
@@ -285,18 +282,114 @@ li {
         }
       }
     }
-
-    .content-card {
-      position: relative;
-      z-index: 50;
-    }
   }
 }
+// 精選卡片內容
+.content-card {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  border-radius: 24px;
+  margin: 32px 16px;
+  padding: 60px 48px;
+  position: relative;
+  z-index: 50;
+  @media (max-width: 992px) {
+    margin: 16px 8px;
+    padding: 24px 32px;
+    gap: 12px;
+  }
+  .homeBtn--primary {
+    max-width: 100%;
+  }
+}
+// 固定菜單卡片
 .home__fixed-card {
   img {
     padding: 12px;
-    margin-bottom: 16px;
     border-radius: 16px;
     background-color: #e2e2e4;
+  }
+  button {
+    background-color: $white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 16px;
+    // box-shadow: 0px 2px 24px rgba(27, 32, 40, 0.12);
+    box-shadow:
+      0px 2px 24px rgba(27, 32, 40, 0.12),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    &:hover {
+      box-shadow:
+        0px 2px 4px rgba(0, 0, 0, 0.15),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 4px 0 rgba(255, 255, 255, 0.15);
+      transform: translateY(1px);
+    }
+  }
+}
+// swiper 樣式
+.custom-swiper {
+  --swiper-navigation-color: #000000;
+  --swiper-navigation-size: 60px;
+}
+
+.custom-swiper .swiper-button-prev {
+  left: 0;
+}
+
+.custom-swiper .swiper-button-next {
+  right: 0;
+}
+
+.custom-swiper .swiper-button-prev,
+.custom-swiper .swiper-button-next {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 8px 12px 0 rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+// swiper 樣式
+.fixed-swiper {
+  --swiper-navigation-color: #000000;
+  --swiper-navigation-size: 60px;
+}
+.fixed-swiper .swiper-button-prev {
+  left: 2%;
+  top: 35%;
+}
+.fixed-swiper .swiper-button-next {
+  right: 2%;
+  top: 35%;
+}
+.fixed-swiper .swiper-button-prev,
+.fixed-swiper .swiper-button-next {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+.makeBite-section {
+  margin-top: 280px;
+  padding-left: 60px;
+  z-index: 15;
+  @media (max-width: 992px) {
+    margin: 12px auto;
+    padding: 12px 32px;
+    gap: 12px;
   }
 }
