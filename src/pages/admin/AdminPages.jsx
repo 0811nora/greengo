@@ -118,7 +118,7 @@ export default function AdminPages() {
   ////////////////
 
   return (
-    <main className="adm_bg adm-theme">
+    <main className="adm_bg1 adm-theme">
       <div className="container">
         <AdminHeader
           admMode={admMode}
