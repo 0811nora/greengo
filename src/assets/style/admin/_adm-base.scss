@@ -10,9 +10,9 @@ $adm-gray-black: #1b2028;
 //primary
 $adm-primary: #fe8546;
 $adm-primary-light: #ffeee0;
-$success: #33b277;
-$success-light: #d0f1e2;
-$danger: #d93e4d;
+$adm-success: #33b277;
+$adm-success-light: #d0f1e2;
+$adm-danger: #d93e4d;
 $btn-primary-shadow: #fe854633; // opacity:40%
 $btn-secondary-shadow: #1b202866; // opacity:40%
 $btn-tertiary-shadow: #1b202833; // opacity:20%
@@ -35,18 +35,73 @@ $icon-default: $adm-gray-800;
 
   background-color: #ffff;
 }
+.adm_bg1 {
+  min-height: 100vh;
+  background-image: radial-gradient(
+      at 0% 0%,
+      rgba(230, 230, 230, 1) 0px,
+      transparent 110%
+    ),
+    radial-gradient(
+      at 70% 80%,
+      oklch(99.338% 0.0098 155.696 / 0.8) 0px,
+      transparent 90%
+    );
+
+  background-color: #f1f3f1;
+}
 
 // adm__glassbg 毛玻璃背景
+// .adm__glassbg {
+//   background: linear-gradient(
+//       135deg,
+//       rgba(255, 255, 255, 0.8) 0%,
+//       rgba(255, 255, 255, 0.6) 100%
+//     ),
+//     linear-gradient(
+//       225deg,
+//       rgba(77, 147, 43, 0.1) 0%,
+//       rgba(77, 147, 43, 0.05) 100%
+//     );
+
+//   backdrop-filter: blur(16px) saturate(180%);
+//   border: 1px solid rgba(255, 255, 255, 0.6);
+//   box-shadow: 0 8px 32px rgba(27, 32, 40, 0.12),
+//     0 2px 8px rgba(27, 32, 40, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8),
+//     inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+//   overflow: hidden;
+//   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+// }
 .adm__glassbg {
   background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.8) 0%,
-      rgba(255, 255, 255, 0.6) 100%
+      180deg,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(255, 255, 255, 0.7) 100%
     ),
     linear-gradient(
       225deg,
-      rgba(77, 147, 43, 0.1) 0%,
-      rgba(77, 147, 43, 0.05) 100%
+      rgba(147, 97, 43, 0.1) 0%,
+      rgba(147, 97, 43, 0.05) 100%
+    );
+
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(27, 32, 40, 0.12),
+    0 2px 8px rgba(27, 32, 40, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+.adm__glassbg__info {
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.95) 100%
+    ),
+    linear-gradient(
+      225deg,
+      rgba(147, 97, 43, 0.1) 0%,
+      rgba(147, 97, 43, 0.05) 100%
     );
 
   backdrop-filter: blur(16px) saturate(180%);
@@ -105,7 +160,6 @@ $icon-default: $adm-gray-800;
   }
   .adm__modal__info {
     border-radius: 20px;
-    padding: 40px;
   }
   .adm__modal__body {
     padding: 0;
