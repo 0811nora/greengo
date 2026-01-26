@@ -38,5 +38,37 @@ $utilities: map-merge(
             ),
         )
       ),
+    "rounded": (
+      property: border-radius,
+      class: rounded,
+      values: (
+        null: $border-radius,
+        // 預設是 16px
+        0: 0,
+        1: $border-radius-s,
+        // 8px
+        2: $border-radius-m,
+        // 16px
+        3: $border-radius-l,
+        // 24px
+        4: $border-radius-xl,
+        // 32px
+        5: $border-radius-rounded,
+        // 80px
+        circle: 50%,
+        pill: var(--#{$prefix}border-radius-pill),
+      ),
+    ),
+    "shadow": (
+      property: box-shadow,
+      class: shadow,
+      values: (
+        null: $box-shadow,
+        m: $box-shadow-m,
+        navbar: $box-shadow-navbar,
+        top: $box-shadow-top,
+        none: none,
+      ),
+    ),
   )
 );
