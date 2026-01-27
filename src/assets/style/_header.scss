@@ -1,24 +1,43 @@
 // Header 區
+
+// 版本一
+// .header {
+//   position: sticky;
+//   top: 0;
+//   z-index: 1000;
+//   @media (min-width: 992px) {
+//     background: rgba(255, 255, 255, 0.85);
+//     backdrop-filter: blur(12px);
+//     mask-image: linear-gradient(
+//       to bottom,
+//       black 0%,
+//       black 70%,
+//       rgba(0, 0, 0, 0.98) 72%,
+//       rgba(0, 0, 0, 0.88) 75%,
+//       rgba(0, 0, 0, 0.72) 80%,
+//       rgba(0, 0, 0, 0.5) 88%,
+//       rgba(0, 0, 0, 0.25) 95%,
+//       transparent 100%
+//     );
+//   }
+// }
+// 版本二
 .header {
   position: sticky;
+  height: 0;
   top: 0;
   z-index: 1000;
+  background: transparent;
   @media (min-width: 992px) {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    mask-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 1) 70%,
-      rgba(0, 0, 0, 0.9) 72%,
-      rgba(0, 0, 0, 0.8) 80%,
-      rgba(0, 0, 0, 0.75) 82%,
-      rgba(0, 0, 0, 0.6) 84%,
-      rgba(0, 0, 0, 0.5) 85%,
-      rgba(0, 0, 0, 0.3) 90%,
-      rgba(0, 0, 0, 0.2) 95%,
-      rgba(0, 0, 0, 0) 100%
-    );
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(40px);
+      mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+    }
   }
 }
 
