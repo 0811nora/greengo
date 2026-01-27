@@ -10,15 +10,9 @@ const admNavbarData = {
     route: 'order',
   },
   navLink_needAdmMode: [
-<<<<<<< HEAD
-    { title: "商品管理", route: "products" },
-    { title: "文章管理", route: "blog" },
-    { title: "報表統整", route: "report" },
-=======
     { title: '商品管理', route: 'products' },
     { title: '文章管理', route: 'blog' },
     { title: '報表統整', route: 'report' },
->>>>>>> origin/f/e-adm_products
   ],
 };
 
