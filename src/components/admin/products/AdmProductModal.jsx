@@ -47,7 +47,7 @@ export default function AdmProductModal({
   return (
     <div className="adm-product-modal-overlay" onClick={onClose}>
       <div
-        className="adm-product-modal-content adm__block__glassbg"
+        className="adm-product-modal-content adm__glassbg"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -224,7 +224,7 @@ export default function AdmProductModal({
               </div>
 
               {/* 營養標示 */}
-              <div className="p-3 mb-4 adm__glassbg rounded-5">
+              <div className="p-3 mb-4 adm__glassbg rounded-4">
                 <h4 className="mb-3">營養標示 (Nutrition)</h4>
                 <div className="row g-3">
                   {/* 定義中文標籤對照表 */}

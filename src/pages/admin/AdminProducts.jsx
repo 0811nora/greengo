@@ -164,7 +164,7 @@ export default function AdminProducts() {
     if (currentTab === 'fixed') {
       return (
         <>
-          <div className="adm-pro-table-layout mt-4 adm__block__glassbg">
+          <div className="adm-pro-table-layout mt-4 adm__glassbg">
             <table className="table adm-pro-table mb-0">
               <thead>
                 <tr>
@@ -211,7 +211,7 @@ export default function AdminProducts() {
                         {product.tab_collection.map((tag, index) => (
                           <span
                             key={index}
-                            className="badge rounded-pill bg-secondary me-1 fw-normal"
+                            className="badge px-3 py-2 rounded-pill bg-primary me-2 fw-normal"
                           >
                             {tag}
                           </span>
@@ -220,24 +220,22 @@ export default function AdminProducts() {
                       <td>{product.price}</td>
                       <td>{product.nutrition.calories}</td>
                       <td>
-                        <div className="btn-group">
-                          <button
-                            type="button"
-                            className="btn btn-sm "
-                            onClick={() =>
-                              openProductModal('edit', currentTab, product)
-                            }
-                          >
-                            <i className="bi bi-pencil-fill"></i>
-                          </button>
-                          <button
-                            type="button"
-                            className="btn  btn-sm"
-                            onClick={() => openConfirmModal(product.id)}
-                          >
-                            <i className="bi bi-trash-fill"></i>
-                          </button>
-                        </div>
+                        <button
+                          type="button"
+                          className="btn btn-sm rounded-pill"
+                          onClick={() =>
+                            openProductModal('edit', currentTab, product)
+                          }
+                        >
+                          <i className="bi bi-pencil-fill"></i>
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-sm rounded-pill"
+                          onClick={() => openConfirmModal(product.id)}
+                        >
+                          <i className="bi bi-trash-fill"></i>
+                        </button>
                       </td>
                     </tr>
                   );
@@ -253,9 +251,9 @@ export default function AdminProducts() {
     if (currentTab === 'item') {
       return (
         <>
-          <div className="adm-pro-table-layout mt-4 adm__block__glassbg">
-            <div className="nav mt-3 mb-5">
-              <div className="nav-item d-flex mx-auto rounded-pill adm__block__glassbg p-2">
+          <div className="adm-pro-table-layout mt-4 adm__glassbg">
+            <div className="nav mt-3 mb-8">
+              <div className="nav-item d-flex mx-auto rounded-pill adm__glassbg p-2">
                 {itemSubTabs.map((tab) => (
                   <button
                     key={tab.value}
@@ -302,7 +300,7 @@ export default function AdminProducts() {
                       </td> */}
                         <td>
                           <span
-                            className={`badge rounded-pill ${TYPE_COLORS[product.product_type] || 'bg-light text-dark'}`}
+                            className={`badge rounded-pill px-3 py-2 ${TYPE_COLORS[product.product_type] || 'bg-light text-dark'}`}
                           >
                             {PRODUCT_TYPE_LABELS[product.product_type] ||
                               product.product_type}
@@ -329,24 +327,22 @@ export default function AdminProducts() {
                           {product.nutrition.calories}
                         </td>
                         <td>
-                          <div className="btn-group">
-                            <button
-                              type="button"
-                              className="btn btn-sm "
-                              onClick={() =>
-                                openProductModal('edit', currentTab, product)
-                              }
-                            >
-                              <i className="bi bi-pencil-fill"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn  btn-sm"
-                              onClick={() => deleteProduct(product.id)}
-                            >
-                              <i className="bi bi-trash-fill"></i>
-                            </button>
-                          </div>
+                          <button
+                            type="button"
+                            className="btn btn-sm rounded-pill"
+                            onClick={() =>
+                              openProductModal('edit', currentTab, product)
+                            }
+                          >
+                            <i className="bi bi-pencil-fill"></i>
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm rounded-pill"
+                            onClick={() => openConfirmModal(product.id)}
+                          >
+                            <i className="bi bi-trash-fill"></i>
+                          </button>
                         </td>
                       </tr>
                     );
@@ -363,9 +359,9 @@ export default function AdminProducts() {
     if (currentTab === 'other') {
       return (
         <>
-          <div className="adm-pro-table-layout mt-4 adm__block__glassbg">
-            <div className="nav  mt-3 mb-5">
-              <div className="nav-item d-flex mx-auto rounded-pill adm__block__glassbg p-2">
+          <div className="adm-pro-table-layout mt-4 adm__glassbg">
+            <div className="nav mt-3 mb-8">
+              <div className="nav-item d-flex mx-auto rounded-pill adm__glassbg p-2">
                 {otherSubTabs.map((tab) => (
                   <button
                     key={tab.value}
@@ -409,7 +405,7 @@ export default function AdminProducts() {
                         </td>
                         <td>
                           <span
-                            className={`badge rounded-pill ${TYPE_COLORS[product.product_type] || 'bg-light text-dark'}`}
+                            className={`badge rounded-pill px-3 py-2 ${TYPE_COLORS[product.product_type] || 'bg-light text-dark'}`}
                           >
                             {PRODUCT_TYPE_LABELS[product.product_type] ||
                               product.product_type}
@@ -436,24 +432,22 @@ export default function AdminProducts() {
                           {product.nutrition.calories}
                         </td>
                         <td>
-                          <div className="btn-group">
-                            <button
-                              type="button"
-                              className="btn btn-sm "
-                              onClick={() =>
-                                openProductModal('edit', currentTab, product)
-                              }
-                            >
-                              <i className="bi bi-pencil-fill"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn  btn-sm"
-                              onClick={() => deleteProduct(product.id)}
-                            >
-                              <i className="bi bi-trash-fill"></i>
-                            </button>
-                          </div>
+                          <button
+                            type="button"
+                            className="btn btn-sm rounded-pill"
+                            onClick={() =>
+                              openProductModal('edit', currentTab, product)
+                            }
+                          >
+                            <i className="bi bi-pencil-fill"></i>
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm rounded-pill"
+                            onClick={() => openConfirmModal(product.id)}
+                          >
+                            <i className="bi bi-trash-fill"></i>
+                          </button>
                         </td>
                       </tr>
                     );
@@ -548,7 +542,6 @@ export default function AdminProducts() {
   };
 
   const openConfirmModal = (id) => {
-    console.log(id);
     setConfirmModalOpen(true);
     setDelProductId(id);
   };
@@ -606,25 +599,25 @@ export default function AdminProducts() {
 
         {confirmModalOpen && (
           <div className="adm-product-modal-overlay">
-            <div className="adm-product-confirmModal-content adm__block__glassbg">
+            <div className="adm-product-confirmModal-content adm__glassbg">
               <div className="text-center">
-                <i class="bi bi-trash-fill fs-1"></i>
-                <p className="fs-6 p-5">確認要刪除此產品嗎？</p>
+                <i className="bi bi-trash-fill fs-1"></i>
+                <p className="fs-6 px-5 py-8">確認要刪除此產品嗎？</p>
               </div>
-              <div className="d-flex pt-2">
+              <div className="d-flex pt-4">
                 <AdmButton
                   onClick={() => setConfirmModalOpen(false)}
                   text={'取消'}
                   color={'tertiary'}
-                  size={'lg'}
-                  className={'me-3 flex-fill'}
+                  size={'md'}
+                  className={'me-5 flex-fill'}
                 />
 
                 <AdmButton
                   onClick={() => deleteProduct(delProductId)}
                   text={'確認'}
                   color={'secondary'}
-                  size={'lg'}
+                  size={'md'}
                   className="flex-fill"
                 />
               </div>
