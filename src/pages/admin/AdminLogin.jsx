@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { admSignin } from '../../api/ApiAdmin';
+import { admSignin, admUserCheck } from '../../api/ApiAdmin';
+
 
 export default function AdminLogin() {
 
@@ -34,15 +35,33 @@ export default function AdminLogin() {
         }
     };
 
+    // useEffect(() => {
+    //     const greenCookie = document.cookie.replace(
+    //         /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
+    //         "$1",
+    //     );
+    //     if (greenCookie) {
+    //         navigate('/admin');
+    //     }
+    // }, [navigate]);
+
     useEffect(() => {
         const greenCookie = document.cookie.replace(
             /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
             "$1",
         );
-
+        axios.defaults.headers.common['Authorization'] = greenCookie;
+        const checkLogin = async () => {
+            try {
+                const res = await admUserCheck;
+                console.log(res.data);
+                // navigate('/admin');
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
         if (greenCookie) {
-
-            navigate('/admin');
+            checkLogin();
         }
     }, [navigate]);
 
