@@ -23,12 +23,9 @@ export default function AdminLogin() {
             const { token, expired } = res.data;
 
             document.cookie = `greenToken=${token}; expires=${new Date(expired)}; path=/`;
-
-
             axios.defaults.headers.common['Authorization'] = token;
 
-            navigate('/admin');
-
+            navigate('/admin/order');
         } catch (error) {
             console.error(error);
             alert(`登入失敗：${error.message}`);
@@ -53,9 +50,9 @@ export default function AdminLogin() {
         axios.defaults.headers.common['Authorization'] = greenCookie;
         const checkLogin = async () => {
             try {
-                const res = await admUserCheck;
+                const res = await admUserCheck();
                 console.log(res.data);
-                // navigate('/admin');
+                navigate('/admin/order');
             } catch (error) {
                 console.log(error.message);
             }
