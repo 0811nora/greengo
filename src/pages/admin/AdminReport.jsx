@@ -1,208 +1,179 @@
-// import { useState, useEffect, useRef } from "react";
-// import * as Chart from "chart.js";
 import { useState } from "react";
+import dayjs from "dayjs";
+import useAllOrders from "../../hooks/useAllOrders";
+import useReportData from "../../hooks/useReportData";
+import { DATE_RANGE_TYPES, getDateRange } from "../../utils/dateHelpers";
 
-// 假資料(先算一天)
-const MockData = {
-  revenue: { total: 36220, cash: 17650, card: 18570 },
-  orders: { total: 150, productsType: { set: 75, custom: 75 } },
-  rankings: {
-    set: [
-      { name: "三重蛋白活力碗", count: 31 },
-      { name: "經典雙雞蛋白碗", count: 20 },
-      { name: "海陸三拼能量碗", count: 11 },
-      { name: "低脂雞胸活力碗", count: 5 },
-      { name: "豆香高纖和風碗", count: 4 },
-    ],
-    custom: [
-      { name: "雞胸肉", count: 60 },
-      { name: "胡麻醬", count: 55 },
-      { name: "水煮蛋", count: 47 },
-      { name: "花椰菜", count: 22 },
-      { name: "櫛瓜", count: 16 },
-    ],
-  },
-};
+// 元件們
+import DateRange from "../../components/admin/report/DateRange";
+import StatCard from "../../components/admin/report/StatCard";
+import SalesTrendChart from "../../components/admin/report/SalesTrendChart";
+import PaymentPieChart from "../../components/admin/report/PaymentPieChart";
+import TopRankingCard from "../../components/admin/report/TopRankingCard";
 
-// 時間篩選
-const TimeFilter = ({ timeRange, setTimeRange }) => {
-  const ranges = ["今日", "昨日", "當周", "當月", "本年度"];
+const AdminReport = () => {
+  // 選擇時間（預設今日）
+  const [rangeType, setRangeType] = useState(DATE_RANGE_TYPES.TODAY);
+  // 自訂時間
+  const [customRange, setCustomRange] = useState(null);
+  // 根據選擇時間的類型，抓開始跟結束的時間
+  const { startTime, endTime } = getDateRange(rangeType, customRange);
+  // 抓取所有訂單資料
+  const { orders: allOrders, loading, error } = useAllOrders();
+  // 根據被選擇的時間範圍處理資料
+  const reportData = useReportData(allOrders, rangeType, startTime, endTime);
+  // 處理時間切換
+  const handleRangeChange = (newRangeType) => {
+    setRangeType(newRangeType);
+  };
+  // 處理自訂範圍
+  const handleCustomRangeChange = (range) => {
+    setCustomRange(range);
+  };
+
+  // loading (樣式可以再調整)
+  if (loading) {
+    return (
+      <div className="container py-5 text-center">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">載入中...</span>
+        </div>
+        <p className="mt-3">正在載入報表資料...</p>
+      </div>
+    );
+  }
+
+  // if error
+  if (error) {
+    return (
+      <div className="container py-5">
+        <div className="alert alert-danger" role="alert">
+          <h4 className="alert-heading">載入失敗</h4>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 解構 useReportData 資料
+  const {
+    statistics,
+    paymentMethod,
+    salesTrend,
+    topFixed,
+    topCustom,
+    topOthers,
+    filterOrders,
+  } = reportData;
+
+  // 測試 API 抓訂單用，先不要刪
+  console.log("-----時間範圍:-----", rangeType);
+  console.log(
+    "-----起始時間:-----",
+    startTime,
+    dayjs.unix(startTime).format("YYYY/MM/DD HH:mm"),
+  );
+  console.log(
+    "-----結束時間:-----",
+    endTime,
+    dayjs.unix(endTime).format("YYYY/MM/DD HH:mm"),
+  );
+  console.log("-----篩選後訂單數:-----", filterOrders.length);
+  console.log("-----銷售趨勢資料:-----", salesTrend);
+  console.log("-----支付方式分布:-----", paymentMethod);
+
+  // 計算今日未付款訂單（會跳提示）
+  const unpaidTodayOrders = filterOrders.filter(
+    (order) => !order.is_paid && rangeType === DATE_RANGE_TYPES.TODAY,
+  );
+  const unpaidTodayAmount = unpaidTodayOrders.reduce(
+    (sum, order) => sum + (order.total || 0),
+    0,
+  );
 
   return (
-    <div className="d-flex flex-column flex-md-row flex-wrap flex-lg-nowrap justify-content-between align-items-center mb-4">
-      <h1>營運報表</h1>
-      <div className="time-filter-container rounded-pill-custom d-flex">
-        {ranges.map((item) => (
-          <button
-            key={item}
-            className={`btn-filter rounded-pill-custom ${
-              timeRange === item ? "active" : ""
-            }`}
-            onClick={() => setTimeRange(item)}
-          >
-            {item}
-          </button>
-        ))}
+    <div className="container-fluid py-4">
+      <h2 className="mb-4">營運報表</h2>
+
+      {/* 時間選擇區 */}
+      <DateRange
+        activeRange={rangeType}
+        onRangeChange={handleRangeChange}
+        onCustomRangeChange={handleCustomRangeChange}
+      />
+
+      {/* 自訂的提示區 */}
+      {rangeType === DATE_RANGE_TYPES.CUSTOM && customRange && (
+        <div className="alert alert-primary mb-4" role="alert">
+          <i className="bi bi-calendar-range me-2"></i>
+          <span>自訂範圍：</span>
+          {customRange.startDate.format("YYYY/MM/DD")} ~{" "}
+          {customRange.endDate.format("YYYY/MM/DD")}
+          （共 {customRange.endDate.diff(customRange.startDate, "day") + 1} 天）
+        </div>
+      )}
+
+      {/* 統計卡片區 */}
+      <div className="row mb-4">
+        <StatCard
+          title="營業額"
+          value={`NT$ ${statistics.revenue.total.toLocaleString()}`}
+          subtitle={`信用卡: ${statistics.revenue.creditCard.toLocaleString()} / 現金: ${statistics.revenue.cash.toLocaleString()}`}
+          icon="bi bi-cash-stack"
+        />
+        <StatCard
+          title="總訂單數"
+          value={statistics.orderCount.total}
+          subtitle={`固定套餐: ${statistics.orderCount.fixed} / 自由配: ${statistics.orderCount.custom}`}
+          icon="bi bi-receipt"
+        />
+        <StatCard
+          title="已付款訂單"
+          value={statistics.paidOrderCount}
+          subtitle={`未付款: ${statistics.orderCount.total - statistics.paidOrderCount}`}
+          icon="bi bi-check-circle"
+        />
+        <StatCard
+          title="平均客單價"
+          value={`NT$ ${statistics.averageOrderValue.toLocaleString()}`}
+          subtitle="每筆訂單平均金額"
+          icon="bi bi-graph-up"
+        />
+      </div>
+
+      {/* 今日未付款的提示（ TODAY + unpaidTodayOrders ） */}
+      {rangeType === DATE_RANGE_TYPES.TODAY && unpaidTodayOrders.length > 0 && (
+        <div className="alert alert-primary mb-4" role="alert">
+          <i className="bi bi-info-circle me-2"></i>
+          <span>提示：</span>
+          今日尚有 {unpaidTodayOrders.length} 筆未付款訂單（金額：NT${" "}
+          {unpaidTodayAmount.toLocaleString()}）， 未計入營業額統計。
+        </div>
+      )}
+
+      {/* 圖表區 */}
+      <div className="row mb-4">
+        {/* 折線圖 */}
+        <div className="col-lg-8 mb-3">
+          <SalesTrendChart data={salesTrend} />
+        </div>
+        {/* 圓餅圖 */}
+        <div className="col-lg-4 mb-3">
+          <PaymentPieChart data={paymentMethod} />
+        </div>
+      </div>
+
+      {/* 排行區 */}
+      <div className="row">
+        <div className="col-12 mb-3">
+          <h4>熱銷排行榜</h4>
+        </div>
+        <TopRankingCard title="固定套餐 Top 5" data={topFixed} />
+        <TopRankingCard title="自由配 Top 5" data={topCustom} />
+        <TopRankingCard title="其他附餐 Top 5" data={topOthers} />
       </div>
     </div>
   );
 };
-// 卡片區
-// 付款方式
-const RevenueCard = () => {
-  const { total, card } = MockData.revenue;
-  const cardPercent = Math.round((card / total) * 100);
 
-  return (
-    <div className="card rounded-4 h-100 p-3">
-      <div className="card-body d-flex flex-column justify-content-between">
-        <div>
-          <h6 className="mb-2">
-            <i class="bi bi-cash-coin me-1"></i>總營收
-          </h6>
-          <h2 className=" mb-3">${total.toLocaleString()}</h2>
-        </div>
-
-        <div>
-          <div className="progress mb-2">
-            <div
-              className="progress-bar"
-              style={{ width: `${cardPercent}%`, backgroundColor: "#1B2028" }}
-            ></div>
-            <div
-              className="progress-bar"
-              style={{
-                width: `${100 - cardPercent}%`,
-                backgroundColor: "#FAB62C",
-              }}
-            ></div>
-          </div>
-          <div className="d-flex justify-content-between text-muted small">
-            <span>
-              <span className="text-gray-500">●</span> 信用卡 ({cardPercent}%)
-            </span>
-            <span>
-              <span className="text-accent-200">●</span> 現金 (
-              {100 - cardPercent}
-              %)
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-// 訂單+銷售類型(預計加上小圓餅圖)
-const OrdersCard = () => {
-  const { total } = MockData.orders;
-  const { set } = MockData.orders.productsType;
-  const cardPercent = Math.round((set / total) * 100);
-  return (
-    <div className="card card-custom rounded-4 h-100 p-3">
-      <div className="card-body">
-        <div className="d-flex flex-column justify-content-between mb-2">
-          <h6 className="mb-2">
-            <i class="bi bi-card-checklist me-1"></i>總訂單數
-          </h6>
-          <h2 className="fw-bold mb-3">
-            {MockData.orders.total}
-            <span className="fs-6 ps-2">單</span>
-          </h2>
-        </div>
-        <div>
-          <div className="d-flex justify-content-between mb-2 border-bottom pb-1">
-            <span>
-              <span className="text-gray-500 pe-1">●</span>固定套餐
-            </span>
-            <span>{cardPercent}%</span>
-          </div>
-          <div className="d-flex justify-content-between border-bottom pb-1">
-            <span>
-              <span className="text-accent-200 pe-1">●</span>自由配
-            </span>
-            <span>{100 - cardPercent}%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// 圖表還在研究
-
-// Top5 熱銷排行
-const RankingList = ({ title, items }) => (
-  <div className="">
-    <h6 className="d-flex align-items-center mb-3 ">
-      <span
-        className={`d-inline-block rounded-circle me-2`}
-        style={{ width: "8px", height: "8px" }}
-      ></span>
-      <i class="bi bi-trophy me-1"></i>
-      {title}
-    </h6>
-    <div className="d-flex flex-column gap-2 ps-4">
-      {items.map((item, index) => (
-        <div
-          key={index}
-          className=" d-flex justify-content-between align-items-center py-2"
-        >
-          <span className="fs-sm">
-            {index + 1}. {item.name}
-          </span>
-          <span className=" rounded-pill px-3 py-1">{item.count}</span>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-export default function AdminReport() {
-  const [timeRange, setTimeRange] = useState("今日");
-  return (
-    <>
-      <div className="container my-5">
-        {/* 時間篩選區 */}
-        <TimeFilter timeRange={timeRange} setTimeRange={setTimeRange} />
-        {/* 資料呈現區 */}
-        <div className="row my-2 g-2">
-          {/* 付款方式 */}
-          <div className="col-12 col-md-6 col-lg-3">
-            <RevenueCard />
-          </div>
-          {/* 訂單數 */}
-          <div className="col-12 col-md-6 col-lg-3">
-            <OrdersCard />
-          </div>
-        </div>
-        {/* 圖表區 */}
-        <div className="admChart__container">
-          <h3>圖表</h3>
-        </div>
-        {/* 銷售排行區 */}
-        <div className="row my-2 g-2">
-          <div className="col-md-6">
-            <div className="card rounded-4 p-4">
-              <div className="d-flex flex-column gap-4">
-                <RankingList
-                  title="固定套餐 Top 5"
-                  items={MockData.rankings.set}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="card rounded-4 p-4">
-              <div className="d-flex flex-column gap-4">
-                <RankingList
-                  title="自由配 Top 5"
-                  items={MockData.rankings.custom}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+export default AdminReport;
