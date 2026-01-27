@@ -77,7 +77,7 @@ export default function Header() {
                 >
                   <i className="bi bi-bag"></i>
                 </button>
-                <button className="btn btn-outline-primary-300 rounded-pill">
+                <button className="btn btn-outline-primary-300 rounded-3">
                   登入 / 註冊
                 </button>
               </div>

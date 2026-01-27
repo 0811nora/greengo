@@ -34,13 +34,14 @@
     background-color: $adm-gray-black;
   }
   .adm__navLink.disable {
+    display: flex;
+    align-items: center;
     color: $disable-color;
     cursor: default;
     &::after {
       content: "\F47A";
       font-family: "bootstrap-icons";
       margin-left: 0.125rem;
-      vertical-align: middle;
       color: $disable-color;
     }
   }
