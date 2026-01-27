@@ -1,18 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 const admNavbarData = {
   brand: {
-    title: "GreenGo",
-    imgageSrc: "../../public/circle.svg",
+    title: 'GreenGo',
+    imgageSrc: '../../public/circle.svg',
   },
   navLink: {
-    title: "訂單管理",
-    route: "order",
+    title: '訂單管理',
+    route: 'order',
   },
   navLink_needAdmMode: [
-    { title: "商品管理", route: "stock" },
-    { title: "文章管理", route: "blog" },
-    { title: "報表統整", route: "report" },
+    { title: '商品管理', route: 'products' },
+    { title: '文章管理', route: 'blog' },
+    { title: '報表統整', route: 'report' },
   ],
 };
 
@@ -50,8 +50,8 @@ export default function AdminHeader({
                 <NavLink
                   className={({ isActive }) =>
                     `d-flex aligns-item-center nav-link adm__navLink ${
-                      admMode ? "" : "disable"
-                    } ${isActive ? "active" : ""}`
+                      admMode ? '' : 'disable'
+                    } ${isActive ? 'active' : ''}`
                   }
                   to={item.route}
                   onClick={(e) => {
@@ -70,16 +70,16 @@ export default function AdminHeader({
             <div className="d-flex align-items-center">
               <button
                 type="button"
-                className={`adm__mode__bg ${admMode ? "show" : ""}`}
+                className={`adm__mode__bg ${admMode ? 'show' : ''}`}
                 onClick={() => {
-                  handleToggleMode("/admin/order");
+                  handleToggleMode('/admin/order');
                 }}
               >
                 <span
-                  className={`adm__mode__circle ${admMode ? "" : "show"}`}
+                  className={`adm__mode__circle ${admMode ? '' : 'show'}`}
                 ></span>
                 <span
-                  className={`adm__mode__circle ${admMode ? "show" : ""}`}
+                  className={`adm__mode__circle ${admMode ? 'show' : ''}`}
                 ></span>
               </button>
               <label htmlFor="admModeToggle">管理員模式</label>
