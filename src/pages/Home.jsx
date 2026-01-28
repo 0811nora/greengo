@@ -21,14 +21,14 @@ const PageLinks = {
 const HERO_DECORS = [
   {
     id: "left",
-    src: "/img/bowl-2.png",
+    src: "../../public/img/bowl-2.png",
     alt: "bowl-2",
     posX: "start-0",
     posY: "top-10",
   },
   {
     id: "right",
-    src: "/img/bowl-1.png",
+    src: "../../public/img/bowl-1.png",
     alt: "bowl-1",
     posX: "start-100",
     posY: "top-50",
@@ -106,7 +106,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "26g",
     pos: "pos-btm-left",
-    src: "/img/items/salmon.png",
+    src: "../../public/img/items/salmon.png",
   },
   // 熱量：約 250 kcal/蛋白質：約 26 g/脂肪：約 16 g
   {
@@ -115,7 +115,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "1.1g",
     pos: "pos-top-mid",
-    src: "/img/items/tomato.png",
+    src: "../../public/img/items/tomato.png",
   },
   // 熱量：約 11 kcal/碳水化合物：約 2.5 g/膳食纖維：約 0.8 g
   {
@@ -124,7 +124,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "1.2g",
     pos: "pos-top-mid-left",
-    src: "/img/items/pumpkin.png",
+    src: "../../public/img/items/pumpkin.png",
   },
   // 熱量：約 45 kcal/碳水化合物：約 11 g/膳食纖維：約 2 g
   {
@@ -133,7 +133,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "2.5g",
     pos: "pos-top-right",
-    src: "/img/items/broccoli.png",
+    src: "../../public/img/items/broccoli.png",
   },
   // 熱量：約 28 kcal/碳水化合物：約 5 g/蛋白質：約 2.5 g/膳食纖維：約 2.2 g
   {
@@ -142,7 +142,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "0.7g",
     pos: "pos-btm-right",
-    src: "/img/items/cucumber.png",
+    src: "../../public/img/items/cucumber.png",
   },
   // 熱量：約 9 kcal/碳水化合物：約 2 g
 ];
@@ -155,7 +155,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/bowl-3.png",
+    img: "../../public/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP1",
   },
@@ -164,7 +164,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/bowl-3.png",
+    img: "../../public/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP2",
   },
@@ -173,7 +173,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/bowl-3.png",
+    img: "../../public/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP3",
   },
@@ -182,7 +182,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/bowl-3.png",
+    img: "../../public/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP4",
   },
@@ -191,7 +191,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/bowl-3.png",
+    img: "../../public/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP5",
   },
@@ -267,7 +267,7 @@ export default function Home() {
             {VEGGIE_ITEMS.map((item) => (
               <img
                 key={item.name}
-                src={`/img/items/${item.name}.png`}
+                src={`../../public/img/items/${item.name}.png`}
                 className="veggie"
                 alt={item.name}
                 style={{
@@ -358,7 +358,7 @@ export default function Home() {
                 {/* 碗 */}
                 <div className="main-bowl-container">
                   <img
-                    src="/img/bowl-5.png"
+                    src="../../public/img/bowl-5.png"
                     alt="bowl-5"
                     className="main-bowl-img"
                   />
@@ -566,7 +566,7 @@ export default function Home() {
               <div className="row align-items-center">
                 <div className="col-md-6 position-relative">
                   <img
-                    src="/img/bowl-5.png"
+                    src="../../public/img/bowl-5.png"
                     alt="bowl"
                     className="position-absolute start-0 top-50 translate-middle-y"
                     style={{ width: "80%", left: "-20%" }}
