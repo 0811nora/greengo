@@ -1,83 +1,114 @@
-// .h3 {
-//   font-size: clamp(24px, 6vw, 64px);
-//   max-width: 400px;
-//   text-align: center;
-//   font-weight: bold;
-//   text-transform: uppercase;
-//   opacity: 0.8;
-//   mix-blend-mode: overlay;
-// }
+.adm-product-page {
+  padding-top: 120px;
+  padding-bottom: 40px;
+  .adm-pro-table-layout {
+    border-radius: 32px;
+    padding: 20px;
+  }
 
-// .custom-table {
-//   min-width: 900px;
-//   --bs-table-bg: transparent;
-// }
-// .custom-table thead tr,
-// .custom-table thead th {
-//   border-top: none;
-//   border-bottom: none !important;
-//   font-weight: 400;
-// }
-// .custom-table tbody th,
-// .custom-table tbody td {
-//   color: #5a5a5a;
-//   font-weight: 400;
-//   padding-bottom: 20px;
-//   padding-top: 20px;
-//   font-weight: 300;
-//   border: none;
-//   text-align: center !important;
-// }
+  .adm-pro-table {
+    --bs-table-bg: none;
+  }
+  .adm-pro-table thead tr,
+  .adm-pro-table thead th {
+    border-bottom: none !important;
+    text-align: center;
+  }
+  .adm-pro-table tbody th,
+  .adm-pro-table tbody td {
+    color: #5a5a5a;
+    font-weight: 400;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-weight: 300;
+    border: none;
+    text-align: center !important;
+    vertical-align: middle;
+  }
 
-// .custom-table tbody tr:hover,
-// .custom-table tbody tr:focus {
-//   background: #ffffff7d;
-// }
-// .custom-table tbody tr:hover td:first-child {
-//   border-top-left-radius: 100px;
-//   border-bottom-left-radius: 100px;
-// }
+  .nav-link.active {
+    background: #000;
+    color: #fff;
+  }
 
-// .custom-table tbody tr:hover td:last-child {
-//   border-top-right-radius: 100px;
-//   border-bottom-right-radius: 100px;
-// }
+  .adm-pro-table tbody tr:hover,
+  .adm-pro-table tbody tr:focus {
+    background: #ffffffd5;
+  }
 
-// .btn-main {
-//   padding: 8px 24px;
-//   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-//   transform: translateY(0);
-//   border: 1px solid #bbbbbb7c;
-//   border-radius: 100px;
-//   height: 100%;
-// }
+  // Modal
 
-// .btn-main:hover {
-//   transform: translateY(-2px);
-//   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-// }
+  .adm-product-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
 
-// .btn-main:active {
-//   transform: translateY(0);
-//   transition: all 0.1s;
-// }
+  .adm-product-modal-content {
+    margin: 20px;
+    padding: 32px;
+    width: 90%;
+    max-width: 900px;
+    height: 80%;
+    overflow-y: auto;
+    display: grid;
+    border-radius: 20px;
+    box-shadow: 0px 6px 10px rgba(255, 255, 255, 0.25);
+    // background: radial-gradient(#f5f2c1, rgba(227, 227, 227, 0.75));
+    transition: all 0.2s;
 
-// .primary-text {
-//   color: rgb(237, 143, 158);
-// }
+    .adm-product-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #fff;
+      padding-bottom: 16px;
+      color: #1a1a1a;
 
-// .primary-bg {
-//   background-color: rgb(255, 132, 241);
-// }
+      .close-x {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+    }
 
-// .custom-modal {
-//   background-color: rgba(240, 248, 255, 0.3);
-//   backdrop-filter: blur(4px);
-//   -webkit-backdrop-filter: blur(4px);
-//   border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-//   border-radius: 28px;
-// }
+    .adm-product-modal-body {
+      padding: 20px 0;
+    }
 
-// .custom-modal-content {
-//   background-color: rgba(240, 248, 255, 0.3);
-// }
+    .adm-product-modal-footer {
+      text-align: center;
+      border-top: 1px solid #eee;
+      padding-top: 24px;
+    }
+  }
+
+  .adm-product-modal-content:hover {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+    transform: scale(1.01);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .adm-product-confirmModal-content {
+    padding: 48px;
+    border-radius: 20px;
+  }
+}

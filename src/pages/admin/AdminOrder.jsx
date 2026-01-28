@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { getAdmOrders } from "../../api/ApiAdmin";
+import { getAdmOrders, admUserCheck } from "../../api/ApiAdmin";
+import { useNavigate } from "react-router-dom";
 import EmptyDataHint from "../../components/admin/order/EmptyDataHint";
 import Loading from "../../components/admin/order/Loading";
 import Modal from "../../components/admin/order/Modal";
@@ -10,6 +12,26 @@ export default function AdminOrder() {
   const [filterType, setFilterType] = useState("all");
   const [modalType, setModalType] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const greenCookie = document.cookie.replace(
+      /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1",
+    );
+    axios.defaults.headers.common["Authorization"] = greenCookie;
+    const checkLogin = async () => {
+      try {
+        const res = await admUserCheck();
+        console.log(res.data);
+        navigate("/admin/order");
+      } catch (error) {
+        console.log(error.message);
+        navigate("/admin/login");
+      }
+    };
+    checkLogin();
+  }, [navigate]);
 
   // 取得 api 原始資料，新增訂單和付款狀態
   useEffect(() => {
