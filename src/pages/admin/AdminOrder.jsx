@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { getAdmOrders } from "../../api/ApiAdmin";
-import AdmOrderEmpty from "../../components/AdmOrderEmpty";
-import AdmOrderLoading from "../../components/AdmOrderLoading";
-import AdmOrderDetailModal from "../../components/AdmOrderDetailModal";
+import EmptyDataHint from "../../components/admin/order/EmptyDataHint";
+import Loading from "../../components/admin/order/Loading";
+import Modal from "../../components/admin/order/Modal";
 
 export default function AdminOrder() {
   const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [filterType, setFilterType] = useState("all");
-  const [openDetailModal, setOpenDetailModal] = useState(false);
-  const [openCheckoutModal, setOpenCheckoutModal] = useState(false);
   const [specificOrder, setSpecificOrder] = useState(null);
+  const [filterType, setFilterType] = useState("all");
+  const [modalType, setModalType] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 取得 api 原始資料，新增訂單和付款狀態
   useEffect(() => {
@@ -45,6 +44,11 @@ export default function AdminOrder() {
     getApiOrders();
   }, []);
 
+  // 視窗背景不滑動
+  useEffect(() => {
+    document.body.style.overflow = modalType !== null ? "hidden" : "";
+  }, [modalType]);
+
   // 透過狀態篩選，決定訂單列表的渲染
   const displayOrders = orders.filter((order) => {
     if (filterType === "all") return true;
@@ -52,6 +56,8 @@ export default function AdminOrder() {
       filterType === order.order_status || filterType === order.payment_status
     );
   });
+
+  // 時間戳轉換
   const changeTimeStamp_date = (timeStamp) => {
     const time = new Date(timeStamp * 1000);
     const year = time.getFullYear();
@@ -65,6 +71,8 @@ export default function AdminOrder() {
     const minute = String(time.getMinutes()).padStart(2, "0");
     return `${hour}:${minute}`;
   };
+
+  // 選染列表上的狀態標籤
   const renderTagStatus = (status) => {
     switch (status) {
       case "prepare":
@@ -89,30 +97,36 @@ export default function AdminOrder() {
         return <span className="tag status-new">新訂單</span>;
     }
   };
+
+  // 查看產品詳細視窗
   const handleOpenSpecificOrder = (order) => {
-    setOpenDetailModal(true);
+    setModalType("detail");
     setSpecificOrder(order);
   };
 
-  // 點擊tag狀態轉換
-  // function changeTagStatus(id, status) {
-  //   switch (status) {
-  //     case "prepare":
-  //       setOriginOrders((preOrders) => {
-  //         return preOrders.map((order) =>
-  //           order.id === id ? { ...order, order_status: "ready" } : order,
-  //         );
-  //       });
-  //       break;
-  //     case "ready":
-  //       setOriginOrders((preOrders) => {
-  //         return preOrders.map((order) =>
-  //           order.id === id ? { ...order, order_status: "done" } : order,
-  //         );
-  //       });
-  //       break;
-  //   }
-  // }
+  // 關閉視窗
+  const handleCloseModal = () => {
+    setModalType(null);
+  };
+
+  // 回到上一頁視窗
+  const handleBackToLast = (lastModalType) => {
+    setModalType(lastModalType);
+  };
+
+  // 進入取餐頁面
+  const handlePickOrder = (order) => {
+    setSpecificOrder(order);
+    console.log(order);
+    setModalType("confirm");
+  };
+
+  // 進入結帳頁面
+  const handleCheckoutOrder = (order) => {
+    setSpecificOrder(order);
+    console.log(order);
+    setModalType("checkout");
+  };
 
   return (
     <>
@@ -229,9 +243,9 @@ export default function AdminOrder() {
 
               <tbody>
                 {isLoading ? (
-                  <AdmOrderLoading />
+                  <Loading />
                 ) : displayOrders.length === 0 ? (
-                  <AdmOrderEmpty />
+                  <EmptyDataHint />
                 ) : (
                   displayOrders.map((order) => {
                     return (
@@ -260,9 +274,6 @@ export default function AdminOrder() {
                             <i className="bi bi-eye-fill"></i>
                           </button>
                           <button className="btn">
-                            <i className="bi bi-pencil-fill"></i>
-                          </button>
-                          <button className="btn">
                             <i className="bi bi-trash-fill"></i>
                           </button>
                         </td>
@@ -276,320 +287,20 @@ export default function AdminOrder() {
         </div>
       </main>
 
-      {openDetailModal && (
-        <>
-          <AdmOrderDetailModal
-            order={specificOrder}
-            onCloseBtn={() => setOpenDetailModal(false)}
-            onBackdrop={() => setOpenDetailModal(false)}
-            timeStamp_date={changeTimeStamp_date}
-            timeStamp_time={changeTimeStamp_time}
-            renderTagStatus={renderTagStatus}
-          />
-          {/* <div className="modal order-detail d-block">
-            <div className="modal-dialog adm__glassbg__info adm__modal__info">
-              <div className="modal-content">
-                <div className="modal-header position-relative">
-                  <div>
-                    <h5 className="modal-title">臨櫃結帳</h5>
-                    <p className="fw-medium  adm_text-primary mt-1 ">
-                      -L9u44GHI3p3VsVEXGLt
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn-close modal-close-button"
-                    onClick={() => setOpenDetailModal(false)}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <div className="payment-method">
-                    <p className="subtitle">
-                      <i className="bi bi-tag-fill me-2"></i> 選擇付款方式
-                    </p>
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-4">
-                          <input
-                            className="d-none"
-                            type="radio"
-                            name="payment-method"
-                            id="cash"
-                          />
-                          <label htmlFor="cash" className="w-100">
-                            <i class="bi bi-cash"></i>現金
-                          </label>
-                        </div>
-                        <div className="col-4">
-                          <input
-                            className="d-none"
-                            type="radio"
-                            name="payment-method"
-                            id="creditCard"
-                          />
-                          <label htmlFor="creditCard" className="w-100">
-                            <i class="bi bi-credit-card-2-back"></i>信用卡
-                          </label>
-                        </div>
-                        <div className="col-4">
-                          <input
-                            className="d-none"
-                            type="radio"
-                            name="payment-method"
-                            id="thirdParty"
-                          />
-                          <label htmlFor="thirdParty" className="w-100">
-                            <i class="bi bi-phone"></i>第三方支付
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <div className="container-fluid">
-                    <div className="d-flex justify-content-between  total-price">
-                      <p>總計</p>
-                      <p className="adm_text-primary ">$2000</p>
-                    </div>
-                    <div className="row">
-                      <div className="col-6">
-                        <button
-                          type="button"
-                          className="adm__button__tertiary lg w-100"
-                        >
-                          取消付款
-                        </button>
-                      </div>
-                      <div className="col-6">
-                        <button
-                          type="button"
-                          className="adm__button__secondary lg w-100"
-                        >
-                          確定付款
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="order-detail backdrop"
-              onClick={() => setOpenDetailModal(false)}
-            ></div>
-          </div> */}
-        </>
+      {modalType && (
+        <Modal
+          modalType={modalType}
+          order={specificOrder}
+          timeStamp_date={changeTimeStamp_date}
+          timeStamp_time={changeTimeStamp_time}
+          renderTagStatus={renderTagStatus}
+          onCloseBtn={handleCloseModal}
+          onBackBtn={handleBackToLast}
+          onPickBtn={handlePickOrder}
+          onBackdrop={handleCloseModal}
+          onCheckoutBtn={handleCheckoutOrder}
+        />
       )}
-
-      {/* <div className="vertical">
-            <div class="modal order-detail d-block">
-              <div class="modal-dialog modal-lg adm__glassbg__info adm__modal__info animate__animated animate__slideInDown">
-                <div class="modal-content">
-                  <div class="modal-header position-relative">
-                    <div>
-                      <h5 class="modal-title">訂單詳情</h5>
-                      <p className="fw-medium mt-1">-L9u44GHI3p3VsVEXGLt</p>
-                    </div>
-
-                    <button
-                      type="button"
-                      class="btn-close modal-close-button"
-                      onClick={() => {
-                        setOpenDetailModal(false);
-                      }}
-                    ></button>
-                  </div>
-                  <div class="modal-body d-flex">
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-6">
-                          <div
-                            class="accordion pe-3"
-                            id="accordionFlushExample"
-                          >
-                            <div class="accordion-item">
-                              <h2 class="accordion-header">
-                                <button
-                                  class="accordion-button collapsed fw-medium"
-                                  type="button"
-                                  data-bs-toggle="collapse"
-                                  data-bs-target="#1"
-                                  aria-expanded="false"
-                                  aria-controls="flush-collapseOne"
-                                >
-                                  149自由配 - 均衡
-                                  <span className="me-2 ms-auto">x 1</span>
-                                  <span className="fw-bold price">$520</span>
-                                </button>
-                              </h2>
-                              <div id="1" class="accordion-collapse collapse">
-                                <div class="accordion-body">
-                                  <div className="d-flex flex-column gap-1">
-                                    <p>基底 : 糙米飯</p>
-                                    <p>主食 : 雞胸肉</p>
-                                    <p>
-                                      配菜 :
-                                      番茄、玉米、洋蔥、花椰菜、杏苞菇、酪梨
-                                    </p>
-                                    <p>醬料 : 優格醬</p>
-                                  </div>
-                                  <hr />
-                                  <div className="d-flex flex-column gap-1">
-                                    <p className="d-flex">
-                                      + 酪梨
-                                      <span className="ms-auto fw-medium">
-                                        + $20
-                                      </span>
-                                    </p>
-                                    <p className="d-flex">
-                                      + 番茄
-                                      <span className="ms-auto fw-medium">
-                                        + $20
-                                      </span>
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="accordion-item">
-                              <h2 class="accordion-header">
-                                <button
-                                  class="accordion-button collapsed fw-medium"
-                                  type="button"
-                                  data-bs-toggle="collapse"
-                                  data-bs-target="#2"
-                                  aria-expanded="false"
-                                  aria-controls="flush-collapseOne"
-                                >
-                                  經典雙雞蛋白碗
-                                  <span className="me-2 ms-auto">x 1</span>
-                                  <span className="fw-bold price">$520</span>
-                                </button>
-                              </h2>
-                              <div id="2" class="accordion-collapse collapse">
-                                <div class="accordion-body">
-                                  <div className="d-flex flex-column gap-1">
-                                    <p className="d-flex">
-                                      + 酪梨
-                                      <span className="ms-auto fw-medium">
-                                        + $20
-                                      </span>
-                                    </p>
-                                    <p className="d-flex">
-                                      + 番茄
-                                      <span className="ms-auto fw-medium">
-                                        + $20
-                                      </span>
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="accordion-item">
-                              <h2 class="accordion-header">
-                                <button
-                                  class="accordion-button collapsed fw-medium"
-                                  type="button"
-                                >
-                                  日式味噌湯
-                                  <span className="me-2 ms-auto">x 1</span>
-                                  <span className="fw-bold price">$40</span>
-                                </button>
-                              </h2>
-                            </div>
-                            <div class="accordion-item">
-                              <h2 class="accordion-header">
-                                <button
-                                  class="accordion-button collapsed fw-medium"
-                                  type="button"
-                                >
-                                  無糖蕎麥烏龍​茶
-                                  <span className="me-2 ms-auto">x 1</span>
-                                  <span className="fw-bold price">$40</span>
-                                </button>
-                              </h2>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-6 member-content">
-                          <ul className="d-flex flex-column gap-3">
-                            <li>
-                              <p className="fw-medium">訂單時間：</p>
-                              <p>2026-01-20 10:30</p>
-                            </li>
-                            <li>
-                              <p className="fw-medium">姓名：</p>
-                              <p>王小明</p>
-                            </li>
-                            <li>
-                              <p className="fw-medium">電子郵件：</p>
-                              <p>monica1209@gmail.com</p>
-                            </li>
-                            <li>
-                              <p className="fw-medium">電話號碼：</p>
-                              <p>0930-098-456</p>
-                            </li>
-                            <li>
-                              <p className="fw-medium">付款方式：</p>
-                              <p>線上-信用卡付款</p>
-                            </li>
-                            <li>
-                              <p className="fw-medium">訂單狀態：</p>
-                              <div>
-                                <span className="me-3">新訂單</span>
-                                <span className="me-3">|</span>
-                                <span className="adm_text-danger fw-medium">
-                                  未付款
-                                </span>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <div className="container-fluid">
-                      <div className="row align-items-center">
-                        <div className="col-6">
-                          <div className="pe-3">
-                            <div className="d-flex justify-content-between  total-price">
-                              <p>總計</p>
-                              <p className="adm_text-primary ">$2000</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-6 d-flex gap-2 justify-content-between">
-                          <button
-                            type="button"
-                            class="status-done lg w-50"
-                            data-bs-dismiss="modal"
-                          >
-                            <i class="bi bi-check-circle-fill"></i> 領取餐點
-                          </button>
-                          <button
-                            type="button"
-                            class="adm__button__secondary lg w-50"
-                          >
-                            <i class="bi bi-credit-card-2-back-fill"></i>{" "}
-                            臨櫃結帳
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="order-detail backdrop animate__animated animate__fadeIn"
-                onClick={() => {
-                  setOpenDetailModal(false);
-                }}
-              ></div>
-            </div>
-          </div> */}
     </>
   );
 }
