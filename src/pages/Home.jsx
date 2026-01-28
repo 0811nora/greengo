@@ -44,7 +44,7 @@ const VEGGIE_ITEMS = [
     delay: "-15s",
     dur: "25s",
   },
-  { name: "cabbage", angle: "150deg", dist: "330px", delay: "-5s", dur: "20s" },
+  { name: "cabbage", angle: "150deg", dist: "330px", delay: "-5s", dur: "22s" },
   { name: "carrot", angle: "90deg", dist: "320px", delay: "-8s", dur: "20s" },
   {
     name: "eggplant",
@@ -52,6 +52,27 @@ const VEGGIE_ITEMS = [
     dist: "330px",
     delay: "-10s",
     dur: "20s",
+  },
+  {
+    name: "scallion",
+    angle: "-90deg",
+    dist: "350px",
+    delay: "-10s",
+    dur: "20s",
+  },
+  {
+    name: "spinach",
+    angle: "-120deg",
+    dist: "320px",
+    delay: "-4s",
+    dur: "30s",
+  },
+  {
+    name: "bellPepper",
+    angle: "30deg",
+    dist: "330px",
+    delay: "-8s",
+    dur: "25s",
   },
 ];
 
@@ -126,6 +147,56 @@ const INGREDIENTS = [
   // 熱量：約 9 kcal/碳水化合物：約 2 g
 ];
 
+// 餐點卡片區
+// 模擬資料，待接 API
+const FIXED_PRODUCTS = [
+  {
+    id: 1,
+    name: "經典雙雞蛋白碗",
+    price: 230,
+    kcal: 550,
+    img: "/img/bowl-3.png",
+    tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
+    rank: "TOP1",
+  },
+  {
+    id: 2,
+    name: "經典雙雞蛋白碗",
+    price: 230,
+    kcal: 550,
+    img: "/img/bowl-3.png",
+    tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
+    rank: "TOP2",
+  },
+  {
+    id: 3,
+    name: "經典雙雞蛋白碗",
+    price: 230,
+    kcal: 550,
+    img: "/img/bowl-3.png",
+    tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
+    rank: "TOP3",
+  },
+  {
+    id: 4,
+    name: "經典雙雞蛋白碗",
+    price: 230,
+    kcal: 550,
+    img: "/img/bowl-3.png",
+    tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
+    rank: "TOP4",
+  },
+  {
+    id: 5,
+    name: "經典雙雞蛋白碗",
+    price: 230,
+    kcal: 550,
+    img: "/img/bowl-3.png",
+    tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
+    rank: "TOP5",
+  },
+];
+
 export default function Home() {
   // 監聽區
   const [isVisible, setIsVisible] = useState(false);
@@ -149,6 +220,7 @@ export default function Home() {
       observer.disconnect();
     };
   }, []);
+
   return (
     <>
       <main className="container-fluid p-0">
@@ -329,309 +401,71 @@ export default function Home() {
         </section>
         {/* Best seller + swiper 套件*/}
         <section className="bg-white">
-          <div className="container py-5">
-            <div className="row d-flex gap-2 gap-md-0">
-              {/* 待接 API + 整理*/}
+          <div className="container py-8 py-md-10">
+            <div className="row">
               <Swiper
                 className="fixed-swiper"
                 modules={[Navigation, A11y]}
                 spaceBetween={24}
-                slidesPerView={4}
+                slidesPerView={1.5}
                 navigation
                 breakpoints={{
-                  768: {
-                    slidesPerView: 3,
-                  },
-                  576: {
-                    slidesPerView: 2,
-                  },
+                  576: { slidesPerView: 2 },
+                  768: { slidesPerView: 3 },
+                  992: { slidesPerView: 4 },
                 }}
                 style={{
                   paddingBottom: "10px",
-                  paddingLeft: "50px",
-                  paddingRight: "50px",
+                  paddingLeft: "80px",
+                  paddingRight: "80px",
                 }}
               >
-                <SwiperSlide>
-                  <div className="home__fixed-card">
-                    <div className="position-relative mb-0">
-                      <span className="badge rounded-pill bg-success position-absolute top-0 start-0 mt-2 ms-2">
-                        TOP1
-                      </span>
-                      <button
-                        type="button"
-                        className=" position-absolute bottom-0 end-0 mb-2 me-2"
-                      >
-                        <i className="bi bi-bag"></i>
-                      </button>
-                      <img
-                        src="../../public/img/bowl-3.png"
-                        className="card-img-top"
-                        alt="bowl-3"
-                      />
-                    </div>
-                    <div className="card-body mt-4">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="fs-6 fs-md-5 fw-bold">經典雙雞蛋白碗</h5>
-                        <span className="ft-en fs-6 fs-md-5 fw-bold">$230</span>
+                {/* 待調整 */}
+                {FIXED_PRODUCTS.map((product) => (
+                  <SwiperSlide key={product.id}>
+                    <div className="home__fixed-card h-100">
+                      <div className="position-relative overflow-hidden rounded-3">
+                        {product.rank && (
+                          <span className="badge rounded-pill bg-success position-absolute top-0 start-0 mt-2 ms-2 z-3">
+                            {product.rank}
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          className="btn-add-cart position-absolute bottom-0 end-0 mb-2 me-2 z-3"
+                          aria-label="加入購物車"
+                        >
+                          <i className="bi bi-bag"></i>
+                        </button>
+                        <img
+                          src={product.img}
+                          className="card-img-top object-fit-cover"
+                          alt={product.name}
+                        />
                       </div>
-
-                      <p className="ft-en fw-medium text-gray-300 mb-3">
-                        550 kcal
-                      </p>
-                      <ul className="tag-area d-flex gap-2">
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            豐富蛋白質
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            輕盈低卡
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            優質油脂
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="home__fixed-card">
-                    <div className="position-relative mb-0">
-                      <span className="badge rounded-pill bg-success position-absolute top-0 start-0 mt-2 ms-2">
-                        TOP1
-                      </span>
-                      <button
-                        type="button"
-                        className=" position-absolute bottom-0 end-0 mb-2 me-2"
-                      >
-                        <i className="bi bi-bag"></i>
-                      </button>
-                      <img
-                        src="../../public/img/bowl-3.png"
-                        className="card-img-top"
-                        alt="bowl-3"
-                      />
-                    </div>
-                    <div className="card-body mt-4">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="fs-6 fs-md-5 fw-bold">經典雙雞蛋白碗</h5>
-                        <span className="ft-en fs-6 fs-md-5 fw-bold">$230</span>
+                      <div className="card-body mt-4">
+                        <div className="d-flex justify-content-between align-items-center mb-1">
+                          <h5 className="fs-6 fs-md-5 fw-bold mb-0">
+                            {product.name}
+                          </h5>
+                          <span className="ft-en fs-6 fs-md-5 fw-bold">
+                            ${product.price}
+                          </span>
+                        </div>
+                        <p className="ft-en fw-medium text-gray-300 mb-3">
+                          {product.kcal} kcal
+                        </p>
+                        <div className="d-flex flex-wrap gap-2">
+                          {product.tags.map((item, index) => (
+                            <span key={index} className="tag-item">
+                              {item}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-
-                      <p className="ft-en fw-medium text-gray-300 mb-3">
-                        550 kcal
-                      </p>
-                      <ul className="tag-area d-flex gap-2">
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            豐富蛋白質
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            輕盈低卡
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            優質油脂
-                          </a>
-                        </li>
-                      </ul>
                     </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="home__fixed-card">
-                    <div className="position-relative mb-0">
-                      <span className="badge rounded-pill bg-success position-absolute top-0 start-0 mt-2 ms-2">
-                        TOP1
-                      </span>
-                      <button
-                        type="button"
-                        className=" position-absolute bottom-0 end-0 mb-2 me-2"
-                      >
-                        <i className="bi bi-bag"></i>
-                      </button>
-                      <img
-                        src="../../public/img/bowl-3.png"
-                        className="card-img-top"
-                        alt="bowl-3"
-                      />
-                    </div>
-                    <div className="card-body mt-4">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="fs-6 fs-md-5 fw-bold">經典雙雞蛋白碗</h5>
-                        <span className="ft-en fs-6 fs-md-5 fw-bold">$230</span>
-                      </div>
-
-                      <p className="ft-en fw-medium text-gray-300 mb-3">
-                        550 kcal
-                      </p>
-                      <ul className="tag-area d-flex gap-2">
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            豐富蛋白質
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            輕盈低卡
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            優質油脂
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="home__fixed-card">
-                    <div className="position-relative mb-0">
-                      <span className="badge rounded-pill bg-success position-absolute top-0 start-0 mt-2 ms-2">
-                        TOP1
-                      </span>
-                      <button
-                        type="button"
-                        className=" position-absolute bottom-0 end-0 mb-2 me-2"
-                      >
-                        <i className="bi bi-bag"></i>
-                      </button>
-                      <img
-                        src="../../public/img/bowl-3.png"
-                        className="card-img-top"
-                        alt="bowl-3"
-                      />
-                    </div>
-                    <div className="card-body mt-4">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="fs-6 fs-md-5 fw-bold">經典雙雞蛋白碗</h5>
-                        <span className="ft-en fs-6 fs-md-5 fw-bold">$230</span>
-                      </div>
-
-                      <p className="ft-en fw-medium text-gray-300 mb-3">
-                        550 kcal
-                      </p>
-                      <ul className="tag-area d-flex gap-2">
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            豐富蛋白質
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            輕盈低卡
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            優質油脂
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className="home__fixed-card">
-                    <div className="position-relative mb-0">
-                      <span className="badge rounded-pill bg-success position-absolute top-0 start-0 mt-2 ms-2">
-                        TOP1
-                      </span>
-                      <button
-                        type="button"
-                        className=" position-absolute bottom-0 end-0 mb-2 me-2"
-                      >
-                        <i className="bi bi-bag"></i>
-                      </button>
-                      <img
-                        src="../../public/img/bowl-3.png"
-                        className="card-img-top"
-                        alt="bowl-3"
-                      />
-                    </div>
-                    <div className="card-body mt-4">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="fs-6 fs-md-5 fw-bold">經典雙雞蛋白碗</h5>
-                        <span className="ft-en fs-6 fs-md-5 fw-bold">$230</span>
-                      </div>
-
-                      <p className="ft-en fw-medium text-gray-300 mb-3">
-                        550 kcal
-                      </p>
-                      <ul className="tag-area d-flex gap-2">
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            豐富蛋白質
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            輕盈低卡
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="text-decoration-none text-secondary-200 bg-secondary-50 py-1 px-2 my-3 rounded-pill"
-                          >
-                            優質油脂
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </SwiperSlide>
+                  </SwiperSlide>
+                ))}
               </Swiper>
             </div>
           </div>
@@ -644,13 +478,18 @@ export default function Home() {
           <img
             src="../../public/img/custom-bowl.png"
             className="position-absolute top-0 start-50 translate-middle-x"
-            style={{ maxWidth: "600px", maxHeight: "500px", opacity: "0.5" }}
+            style={{
+              maxWidth: "600px",
+              width: "80%",
+              maxHeight: "400px",
+              opacity: "0.5",
+            }}
             alt="custom-bowl"
           />
           <div className="container">
             <div className="row">
               {/* 左側卡片介紹 */}
-              <div className="col-lg-4">
+              <div className="col-lg-6">
                 <div className=" content-card bg-white border border-1 border-gray-200 shadow">
                   <h4 className="text-gray-200 ft-en">MAKE YOUR BITE</h4>
                   <h2 className="fw-bold">
@@ -664,7 +503,7 @@ export default function Home() {
                     健康其實不難，他只需要一點點透明與理解。
                   </p>
                   <NavLink
-                    className="homeBtn--primary fw-medium text-decoration-none"
+                    className="home__btn-primary fw-medium text-decoration-none"
                     to={PageLinks.customLink.url}
                   >
                     前往客製化點餐
@@ -672,7 +511,7 @@ export default function Home() {
                 </div>
               </div>
               {/* 右側卡片說明 */}
-              <ul className="col-lg-8 d-flex flex-column justify-content-center makeBite-section">
+              <ul className="col-lg-6 d-flex flex-column justify-content-center makeBite-section">
                 <li className="d-flex align-items-center">
                   <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 ms-1 me-4">
                     1
