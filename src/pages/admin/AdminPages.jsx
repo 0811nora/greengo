@@ -19,7 +19,7 @@ export default function AdminPages() {
   useEffect(() => {
     const greenCookie = document.cookie.replace(
       /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
+      "$1",
     );
     //戳check API
     if (!greenCookie) {
@@ -89,33 +89,6 @@ export default function AdminPages() {
     closeLogoutModal();
     console.log("登出成功");
   }
-  //////////////
-  // function toggleModal(path) {
-  //   if (!admMode) {
-  //     setIsShowLoginModal(true); // loginModal的class變成show
-  //     setpagePath(path);
-  //   } else {
-  //     setIsShowLogoutModal(true);
-  //   }
-  // }
-  // function admLogin() {
-  //   if (admPassword === '0000') {
-  //     setAdmMode(true);
-  //     setIsShowLoginModal(false);
-  //     navigate(pagePath);
-  //     alert('登入成功');
-  //   } else {
-  //     alert('登入失敗');
-  //   }
-  //   setAdmPassword('');
-  // }
-  // function admLogout() {
-  //   setAdmMode(false);
-  //   setIsShowLogoutModal(false);
-  //   console.log('登出成功');
-  // }
-
-  ////////////////
 
   return (
     <main className="adm_bg1 adm-theme">

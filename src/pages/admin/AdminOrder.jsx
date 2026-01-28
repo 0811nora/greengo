@@ -137,6 +137,7 @@ export default function AdminOrder() {
               <div className="d-flex align-items-center">
                 <h1 className="title me-3">今日訂單</h1>
                 <p className="history disable">/ 全部訂單</p>
+                {/* {JSON.stringify(admMode)} */}
               </div>
               <div className="d-flex align-items-center gap-2">
                 <div className="position-relative">
