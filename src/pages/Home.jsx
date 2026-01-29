@@ -24,14 +24,14 @@ const PageLinks = {
 const HERO_DECORS = [
   {
     id: "left",
-    src: "../../public/img/bowl-2.png",
+    src: "/img/items/bowl-2.png",
     alt: "bowl-2",
     posX: "start-0",
     posY: "top-10",
   },
   {
     id: "right",
-    src: "../../public/img/bowl-1.png",
+    src: "/img/items/bowl-1.png",
     alt: "bowl-1",
     posX: "start-100",
     posY: "top-50",
@@ -109,7 +109,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "26g",
     pos: "pos-btm-left",
-    src: "../../public/img/items/salmon.png",
+    src: "/img/items/salmon.png",
   },
   // 熱量：約 250 kcal/蛋白質：約 26 g/脂肪：約 16 g
   {
@@ -118,7 +118,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "1.1g",
     pos: "pos-top-mid",
-    src: "../../public/img/items/tomato.png",
+    src: "/img/items/tomato.png",
   },
   // 熱量：約 11 kcal/碳水化合物：約 2.5 g/膳食纖維：約 0.8 g
   {
@@ -127,7 +127,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "1.2g",
     pos: "pos-top-mid-left",
-    src: "../../public/img/items/pumpkin.png",
+    src: "/img/items/pumpkin.png",
   },
   // 熱量：約 45 kcal/碳水化合物：約 11 g/膳食纖維：約 2 g
   {
@@ -136,7 +136,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "2.5g",
     pos: "pos-top-right",
-    src: "../../public/img/items/broccoli.png",
+    src: "/img/items/broccoli.png",
   },
   // 熱量：約 28 kcal/碳水化合物：約 5 g/蛋白質：約 2.5 g/膳食纖維：約 2.2 g
   {
@@ -145,7 +145,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "0.7g",
     pos: "pos-btm-right",
-    src: "../../public/img/items/cucumber.png",
+    src: "/img/items/cucumber.png",
   },
   // 熱量：約 9 kcal/碳水化合物：約 2 g
 ];
@@ -158,7 +158,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/items/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP1",
   },
@@ -167,7 +167,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/items/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP2",
   },
@@ -176,7 +176,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/items/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP3",
   },
@@ -185,7 +185,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/items/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP4",
   },
@@ -194,10 +194,30 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/items/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP5",
   },
+];
+
+// 步驟區
+const STEP_CARDS = [
+  {
+    id: 1,
+    step_title: "選擇基底",
+    step_content: "白米、糙米、紫米、藜麥、生菜",
+  },
+  {
+    id: 2,
+    step_title: "挑選主食",
+    step_content: "雞胸肉、牛肉、鮭魚、蝦仁，為你包山包海",
+  },
+  {
+    id: 3,
+    step_title: "搭配蔬果",
+    step_content: "配角可以比主角搶戲，季節時蔬任選 5 種",
+  },
+  { id: 4, step_title: "淋上醬汁", step_content: "為你的餐盒來點靈魂" },
 ];
 
 export default function Home() {
@@ -262,7 +282,7 @@ export default function Home() {
           {/* 中央碗 */}
           <div className="hero__decorations position-absolute top-100 start-50 translate-middle pt-10">
             <img
-              src="../../public/img/bowl-3.png"
+              src="/img/items/bowl-3.png"
               className="position-relative"
               alt="bowl-3"
             />
@@ -271,7 +291,7 @@ export default function Home() {
             {VEGGIE_ITEMS.map((item) => (
               <img
                 key={item.name}
-                src={`../../public/img/items/${item.name}.png`}
+                src={`/img/items/${item.name}.png`}
                 className="veggie"
                 alt={item.name}
                 style={{
@@ -367,7 +387,7 @@ export default function Home() {
                 {/* 碗 */}
                 <div className="main-bowl-container">
                   <img
-                    src="../../public/img/bowl-5.png"
+                    src="/img/items/bowl-5.png"
                     alt="bowl-5"
                     className="main-bowl-img"
                   />
@@ -485,7 +505,7 @@ export default function Home() {
           style={{ paddingTop: "80px" }}
         >
           <img
-            src="../../public/img/custom-bowl.png"
+            src="/img/items/custom-bowl.png"
             className="position-absolute top-0 start-50 translate-middle-x"
             style={{
               maxWidth: "600px",
@@ -520,7 +540,7 @@ export default function Home() {
                 />
               </div>
               {/* 右側卡片說明 */}
-              <ul className="col-lg-6 d-flex flex-column justify-content-center makeBite-section">
+              {/* <ul className="col-lg-6 d-flex flex-column justify-content-center makeBite-section">
                 <li className="d-flex align-items-center">
                   <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 ms-1 me-4">
                     1
@@ -563,7 +583,30 @@ export default function Home() {
                   </span>
                   <span className="text-gray-400">為你的餐盒來點靈魂</span>
                 </li>
-              </ul>
+              </ul> */}
+              <Swiper
+                className="col-lg-6 step-card"
+                modules={[Pagination, A11y]}
+                spaceBetween={24}
+                slidesPerView={1.2}
+                centeredSlides={true}
+                pagination={{ clickable: true }}
+              >
+                {/* 待調整 */}
+                {STEP_CARDS.map((item) => (
+                  <SwiperSlide key={item.id}>
+                    <div className="d-flex align-items-center justify-content-center">
+                      <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 ms-1 me-4">
+                        {item.id}
+                      </span>
+                      <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
+                        {item.step_title}
+                      </span>
+                      <span className="text-gray-400">{item.step_content}</span>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           </div>
         </section>
@@ -575,7 +618,7 @@ export default function Home() {
               <div className="row align-items-center">
                 <div className="col-md-6 position-relative">
                   <img
-                    src="../../public/img/bowl-5.png"
+                    src="/img/items/bowl-5.png"
                     alt="bowl"
                     className="position-absolute start-0 top-50 translate-middle-y"
                     style={{ width: "80%", left: "-20%" }}
