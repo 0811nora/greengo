@@ -84,28 +84,21 @@ export default function AdminProducts() {
     }
 
     let newValue = value;
-    if (type === "checkbox") {
+
+    if (type === "checkbox" && !Array.isArray(value)) {
       newValue = name === "is_enabled" ? (checked ? 1 : 0) : checked;
     } else if (type === "number") {
       newValue = value === "" ? 0 : Number(value);
     }
 
     setter((prevData) => {
-      // 如果有分組 (例如：nutrition, ingredients)
       if (group) {
         return {
           ...prevData,
-          [group]: {
-            ...prevData[group],
-            [name]: newValue,
-          },
+          [group]: { ...prevData[group], [name]: newValue },
         };
       }
-      // 如果是第一層 (例如：title, price)
-      return {
-        ...prevData,
-        [name]: newValue,
-      };
+      return { ...prevData, [name]: newValue };
     });
   };
 
