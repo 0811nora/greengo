@@ -9,6 +9,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
+// component
+import ContentCard from "../components/home/ContentCard";
+
 // 頁面 router
 const PageLinks = {
   productLink: { title: "綠果精選系列", url: "/product" },
@@ -36,41 +39,41 @@ const HERO_DECORS = [
 ];
 // 果菜區
 const VEGGIE_ITEMS = [
-  { name: "tomato", angle: "-120deg", dist: "330px", delay: "-2s", dur: "20s" },
+  { name: "tomato", angle: "-120deg", dist: "26vw", delay: "-2s", dur: "20s" },
   {
     name: "broccoli",
     angle: "45deg",
-    dist: "320px",
+    dist: "26vw",
     delay: "-15s",
     dur: "25s",
   },
-  { name: "cabbage", angle: "150deg", dist: "330px", delay: "-5s", dur: "22s" },
-  { name: "carrot", angle: "90deg", dist: "320px", delay: "-8s", dur: "20s" },
+  { name: "cabbage", angle: "150deg", dist: "26vw", delay: "-5s", dur: "22s" },
+  { name: "carrot", angle: "90deg", dist: "26vw", delay: "-8s", dur: "20s" },
   {
     name: "eggplant",
     angle: "-45deg",
-    dist: "330px",
+    dist: "26vw",
     delay: "-10s",
     dur: "20s",
   },
   {
     name: "scallion",
     angle: "-90deg",
-    dist: "350px",
+    dist: "26vw",
     delay: "-10s",
     dur: "20s",
   },
   {
     name: "spinach",
     angle: "-120deg",
-    dist: "320px",
+    dist: "26vw",
     delay: "-4s",
     dur: "30s",
   },
   {
     name: "bellPepper",
     angle: "30deg",
-    dist: "330px",
+    dist: "26vw",
     delay: "-8s",
     dur: "25s",
   },
@@ -230,10 +233,11 @@ export default function Home() {
           <div className="home__hero-section py-8 py-md-10 my-md-10 text-center">
             <h1 className="fs-2 display-md-1 fw-bold text-center mb-7">
               生活<span className="comma">，</span>
-              <br />從<span className="text-primary">好好吃飯</span>開始
+              <br />從<span className="text-primary">好好吃飯</span>
+              開始
             </h1>
             <p className="ft-en mb-2">Elevate Your Day, Nourish Your Body.</p>
-            <p className="mb-8 mb-md-9">
+            <p className="mb-3 mb-md-5">
               綠果相信，每一次的選擇都值得被用心對待
             </p>
             <NavLink
@@ -272,7 +276,6 @@ export default function Home() {
                 alt={item.name}
                 style={{
                   "--a": item.angle,
-                  "--d": item.dist,
                   animationDelay: item.delay,
                   animationDuration: item.dur,
                 }}
@@ -281,70 +284,76 @@ export default function Home() {
           </div>
         </section>
         {/* Smart Nutrition */}
-        <section className="container my-8 my-md-10 py-5">
-          <div className="row">
-            {/* 說明 */}
-            <div className="col-md-7 mb-5">
-              <h4 className="ft-en text-gray-200 fs-6 fs-md-4 fw-semibold mb-2">
-                YOUR NUTRITION, DECODED
-              </h4>
-              <h2 className="fs-3 fs-md-1 fw-bold mb-2 mb-md-5">
-                拒絕盲吃！
-                <br />
-                營養成分，
-                <span className="">即時看得見</span>。
-              </h2>
-              <p className="mb-3 mb-md-6">
-                <span className="ft-en">GreenGo</span> 就像你的
-                <span className="text-primary-300 fw-medium">專屬營養師</span>。
-              </p>
-              <p className="mb-3 mb-md-6">
-                選擇
-                <NavLink
-                  className="home__btn-link fw-medium mx-1"
-                  to={PageLinks.productLink.url}
-                >
-                  {PageLinks.productLink.title}
-                </NavLink>
-                ，
-                <br />
-                綠果提供主廚的精心搭配，為你的營養把關！
-              </p>
-              <p className="mb-3 mb-md-6">
-                選擇
-                <NavLink
-                  className="home__btn-link fw-medium mx-1"
-                  to={PageLinks.customLink.url}
-                >
-                  {PageLinks.customLink.title}
-                </NavLink>
-                ，
-                <br />
-                綠果自動計算總熱量與三大營養素比例， 營養隨選隨見！
-              </p>
-            </div>
-            {/* 過去的困擾 */}
-            <div ref={sectionRef} className="col-md-5 d-flex flex-column gap-4">
-              {TROUBLE_CARDS.map((card) => (
-                <div
-                  key={card.id}
-                  className={`sub-card bg-gray-50 rounded-4 position-relative py-3 px-4 py-md-5 px-md-6 ${card.align} ${isVisible ? "is-visible" : ""}`}
-                >
-                  <p className="text-warning fw-medium mb-1">過去的困擾</p>
-                  <p className="mb-0">{card.text}</p>
-                  <svg
-                    className="position-absolute"
-                    width="20"
-                    height="20"
-                    style={{
-                      bottom: "-15px",
-                      [card.tailSide]: "20px",
-                    }}
+        <section className="container-fluid home__nur-section py-8 py-md-10 ">
+          <div className="container py-5 ">
+            <div className="row">
+              {/* 說明 */}
+              <div className="col-md-7 mb-5">
+                <h4 className="text-gray-200 fs-6 fs-md-4 fw-semibold mb-2">
+                  YOUR NUTRITION, DECODED
+                </h4>
+                <h2 className="fs-3 fs-md-1 fw-bold mb-2 mb-md-5">
+                  拒絕盲吃！
+                  <br />
+                  營養成分，
+                  <span className="">即時看得見</span>。
+                </h2>
+                <p className="mb-3 mb-md-6">
+                  <span className="ft-en">GreenGo</span> 就像你的
+                  <span className="text-primary-300 fw-medium">專屬營養師</span>
+                  。
+                </p>
+                <p className="mb-3 mb-md-6">
+                  選擇
+                  <NavLink
+                    className="home__btn-link fw-medium mx-1"
+                    to={PageLinks.productLink.url}
                   >
-                    <path d="M0,0 L20,0 L10,20 Z" fill="#F2F4F3" />
-                  </svg>
-                </div>
-              ))}
+                    {PageLinks.productLink.title}
+                  </NavLink>
+                  ，
+                  <br />
+                  綠果提供主廚的精心搭配，為你的營養把關！
+                </p>
+                <p className="mb-3 mb-md-6">
+                  選擇
+                  <NavLink
+                    className="home__btn-link fw-medium mx-1"
+                    to={PageLinks.customLink.url}
+                  >
+                    {PageLinks.customLink.title}
+                  </NavLink>
+                  ，
+                  <br />
+                  綠果自動計算總熱量與三大營養素比例， 營養隨選隨見！
+                </p>
+              </div>
+              {/* 過去的困擾 */}
+              <div
+                ref={sectionRef}
+                className="col-md-5 d-flex flex-column gap-4"
+              >
+                {TROUBLE_CARDS.map((card) => (
+                  <div
+                    key={card.id}
+                    className={`sub-card bg-gray-50 rounded-4 position-relative py-3 px-4 py-md-5 px-md-6 ${card.align} ${isVisible ? "is-visible" : ""}`}
+                  >
+                    <p className="text-warning fw-medium mb-1">過去的困擾</p>
+                    <p className="mb-0">{card.text}</p>
+                    <svg
+                      className="position-absolute"
+                      width="20"
+                      height="20"
+                      style={{
+                        bottom: "-15px",
+                        [card.tailSide]: "20px",
+                      }}
+                    >
+                      <path d="M0,0 L20,0 L10,20 Z" fill="#F2F4F3" />
+                    </svg>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -377,24 +386,24 @@ export default function Home() {
                 </div>
               </div>
               {/* 右邊文字區 */}
-              <div className="col-lg-4 ">
-                <div className="content-card bg-white">
-                  <h4 className="text-gray-200 ft-en">SIGNATURE BOWLS</h4>
-                  <h2 className="fw-bold">
-                    綠果 <br /> 精選系列
-                  </h2>
-                  <p className="text-gray-300">
-                    綠果堅持由營養團隊精心設計的黃金比例組合，
-                    <br />
-                    無須思考，打開就能享用一份零失誤的健康。
-                  </p>
-                  <NavLink
-                    to={PageLinks.productLink.url}
-                    className="home__btn-primary text-center fw-medium text-decoration-none"
-                  >
-                    查看精選菜單
-                  </NavLink>
-                </div>
+              <div className="col-lg-5">
+                <ContentCard
+                  subTitle="SIGNATURE BOWLS"
+                  title={
+                    <>
+                      綠果 <br /> 精選系列
+                    </>
+                  }
+                  description={
+                    <>
+                      綠果堅持由營養團隊精心設計的黃金比例組合，
+                      <br />
+                      無須思考，打開就能享用一份零失誤的健康。
+                    </>
+                  }
+                  buttonText="查看精選菜單"
+                  to={PageLinks.productLink.url}
+                />
               </div>
             </div>
           </div>
@@ -490,25 +499,25 @@ export default function Home() {
             <div className="row">
               {/* 左側卡片介紹 */}
               <div className="col-lg-6">
-                <div className=" content-card bg-white border border-1 border-gray-200 shadow">
-                  <h4 className="text-gray-200 ft-en">MAKE YOUR BITE</h4>
-                  <h2 className="fw-bold">
-                    訂製自己的健康，
-                    <br />
-                    不需要複雜
-                  </h2>
-                  <p className="text-gray-300">
-                    從基底、主食到蔬菜與醬料，慢慢堆疊屬於自己的風味。
-                    <br />
-                    健康其實不難，他只需要一點點透明與理解。
-                  </p>
-                  <NavLink
-                    className="home__btn-primary fw-medium text-decoration-none"
-                    to={PageLinks.customLink.url}
-                  >
-                    前往客製化點餐
-                  </NavLink>
-                </div>
+                <ContentCard
+                  subTitle="MAKE YOUR BITE"
+                  title={
+                    <>
+                      訂製自己的健康，
+                      <br />
+                      不需要複雜
+                    </>
+                  }
+                  description={
+                    <>
+                      從基底、主食到蔬菜與醬料，慢慢堆疊屬於自己的風味。
+                      <br />
+                      健康其實不難，他只需要一點點透明與理解。
+                    </>
+                  }
+                  buttonText="前往客製化點餐"
+                  to={PageLinks.customLink.url}
+                />
               </div>
               {/* 右側卡片說明 */}
               <ul className="col-lg-6 d-flex flex-column justify-content-center makeBite-section">
@@ -574,74 +583,41 @@ export default function Home() {
                 </div>
                 {/* 文字區 */}
                 <div className="col-md-5 offset-md-1">
-                  <h4 className="ft-en text-gray-200 fs-6 fw-semibold mb-2">
-                    OUR BELIEF
-                  </h4>
-                  <h2 className="fs-1 fw-bold mb-4">綠果的堅持</h2>
-                  <p className="mb-4 text-secondary">
-                    我們深信，真正的健康不應是道難題。
-                    <br />
-                    這份信念，驅使著綠果的每一步。
-                  </p>
-                  <NavLink
+                  <ContentCard
+                    subTitle="OUR BELIEF"
+                    title="綠果的堅持"
+                    description={
+                      <>
+                        我們深信，真正的健康不應是道難題。
+                        <br />
+                        這份信念，驅使著綠果的每一步。
+                      </>
+                    }
+                    buttonText="聽聽我們的故事"
                     to={PageLinks.aboutLink.url}
-                    className="home__btn-primary text-decoration-none rounded-pill my-5"
-                  >
-                    聽聽我們的故事
-                  </NavLink>
+                  />
                 </div>
               </div>
             </div>
           </section>
-          {/* <div className="container py-7">
-            <div className="row">
-              <div className="col-md-3 d-none d-md-flex"></div>
-              <div className="col-md-6">
-                <img
-                  src="../../public/img/bowl-5.png"
-                  alt="bowl-5"
-                  className="position-absolute top-50 start-0 translate-middle"
-                />
-                <h4 className="ft-en text-gray-200 fs-6 fs-md-4 fw-semibold mb-2">
-                  OUR BELIEF
-                </h4>
-                <h2 className="fs-3 fs-md-1 fw-bold mb-4">綠果的初心與堅持</h2>
-                <p className="mb-3">
-                  我們深信，真正的健康不應是道難題。 <br />
-                  這份信念，驅使著綠果的每一步。
-                </p>
-                <NavLink
-                  to={PageLinks.aboutLink.url}
-                  className="homeBtn--primary fw-medium mt-3 text-decoration-none"
-                >
-                  聽聽我們的故事
-                </NavLink>
-                <img
-                  src="../../public/img/bowl-5.png"
-                  alt="bowl-5"
-                  className="position-absolute top-50 start-100 translate-middle"
-                />
-              </div>
-              <div className="col-md-3 d-none d-md-flex"></div>
-            </div>
-          </div> */}
+
           {/* 專欄 */}
           <section className="container py-7">
             <div className="row">
               <div className="col-lg-4 mb-5 mb-lg-0">
-                <h4 className="text-gray-200 fs-6 fw-semibold mb-2">
-                  YOUR INSPIRATION
-                </h4>
-                <h2 className="fs-1 fw-bold mb-4">綠果的專欄</h2>
-                <p className="mb-4">
-                  讓我們的信念透過文字，成為你往後飲食的靈感
-                </p>
-                <NavLink
-                  to="..."
-                  className="home__btn-primary text-decoration-none rounded-pill px-4 py-2"
-                >
-                  看看我們的文章
-                </NavLink>
+                <ContentCard
+                  subTitle="YOUR INSPIRATION"
+                  title="綠果的專欄"
+                  description={
+                    <>
+                      讓我們的信念透過文字，
+                      <br />
+                      成為你往後飲食的靈感
+                    </>
+                  }
+                  buttonText="看看我們的文章"
+                  to={PageLinks.articleLink.url}
+                />
               </div>
 
               {/* 文章區 */}
@@ -693,47 +669,7 @@ export default function Home() {
             </div>
           </section>
 
-          <div className="container">
-            {/* 介紹 */}
-            {/* <div className="">
-              <h4 className="ft-en text-gray-200 fs-6 fs-md-4 fw-semibold mb-2">
-                YOUR INSPIRATION
-              </h4>
-              <h2 className="fs-3 fs-md-1 fw-bold mb-4">綠果的靈感食刻</h2>
-              <p className="mb-3">
-                讓我們的信念透過文字， 成為你往後飲食的靈感
-              </p>
-              <NavLink
-                to={PageLinks.articleLink.url}
-                className="homeBtn--primary fw-medium mt-3 text-decoration-none"
-              >
-                看看我們的文章
-              </NavLink>
-            </div> */}
-            {/* 文章卡片 */}
-            {/* <div className="container">
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="card home__art-card">
-                    <img src="..." className="card-img-top" alt="..." />
-                    <div className="card-body">
-                      <h5 className="card-title">
-                        桌上的好食材：為什麼你要吃酪梨？
-                      </h5>
-                      <p className="card-text">
-                        <span>5 分鐘閱讀</span>．
-                        <span>健身教練的減脂菜單指定</span>
-                      </p>
-                      <button className="">
-                        閱讀全文 <i className="bi bi-chevron-right"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6"></div>
-              </div>
-            </div> */}
-          </div>
+          <div className="container"></div>
         </section>
       </main>
     </>

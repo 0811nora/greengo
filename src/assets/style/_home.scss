@@ -25,11 +25,16 @@ li {
   position: relative;
   margin: 0 auto;
   z-index: 100;
+  @media (max-width: 992px) {
+    margin-top: 108px;
+    height: calc(80vh - 108px);
+  }
   @media (max-width: 768px) {
     margin-top: 108px;
-    height: calc(70vh - 54px);
+    height: calc(70vh - 108px);
   }
 }
+
 .home__btn-primary {
   max-width: 306px;
   width: 100%;
@@ -64,15 +69,16 @@ li {
 // 左右碗裝飾
 .hero__decor {
   position: relative;
-  max-width: 550px;
+  max-width: 700px;
+  min-width: 250px;
+  width: 40vw;
   aspect-ratio: 1 / 1;
   margin: 0 auto;
-  opacity: 0.7;
+  opacity: 0.5;
   z-index: 0;
   transition: all 0.3s ease-in-out;
   @media (max-width: 992px) {
-    max-width: 450px;
-    opacity: 0.5;
+    max-width: 40vw;
   }
   @media (max-width: 576px) {
     max-width: 300px;
@@ -99,17 +105,16 @@ li {
 @mixin veggie-style($angle, $distance, $delay, $duration: 20s) {
   --a: #{$angle}; // 初始角度
   --d: #{$distance}; // 距離
-  @media (max-width: 992px) {
-    --d: calc(#{$distance} * 0.45);
+  @media (max-width: 768px) {
+    --d: 50vw;
   }
-  @media (max-width: 576px) {
-    --d: calc(#{$distance} * 0.35);
-  }
+
   animation-delay: $delay;
   animation-duration: $duration;
 }
 .hero__decorations {
-  max-width: 600px;
+  max-width: 50vw;
+  min-width: 300px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -118,22 +123,22 @@ li {
   aspect-ratio: 1 / 1;
   margin: 0 auto;
   transition: all 0.3s ease-in-out;
-  @media (max-width: 992px) {
-    max-width: 450px;
-  }
+  // @media (max-width: 768px) {
+  //   min-width: 300px;
+  // }
 }
 .veggie {
-  opacity: 0.9;
+  opacity: 0.8;
   position: absolute;
   width: 6vw;
   min-width: 30px;
   max-width: 60px;
   z-index: 1;
-  animation: orbit-float 20s linear infinite;
-  @media (max-width: 768px) {
-    --d-responsive: calc(var(--d) * 0.6);
-    transform: rotate(var(--a)) translateX(var(--d-responsive));
+  --d: 26vw;
+  @media (max-width: 576px) {
+    --d: max(35vw, 160px);
   }
+  animation: orbit-float 20s linear infinite;
 }
 // 果菜區動畫
 @keyframes orbit-float {
@@ -211,6 +216,15 @@ li {
   &:hover::after {
     width: 100%;
   }
+}
+
+.home__nur-section {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url(../../../public/img/items/bg-decor-1.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 // SIGNATURE BOWLS
 // 配菜位置(待調整)
@@ -331,7 +345,6 @@ li {
 .content-card {
   display: flex;
   flex-direction: column;
-  gap: 28px;
   border-radius: 24px;
   margin: 32px 16px;
   padding: 60px 48px;
@@ -341,9 +354,6 @@ li {
     margin: 16px 8px;
     padding: 24px 32px;
     gap: 12px;
-  }
-  .homeBtn--primary {
-    max-width: 100%;
   }
 }
 
