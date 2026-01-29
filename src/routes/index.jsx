@@ -12,8 +12,9 @@ import AdminBlog from "../pages/admin/AdminBlog.jsx";
 import AdminOrder from "../pages/admin/AdminOrder.jsx";
 import AdminReport from "../pages/admin/AdminReport.jsx";
 import AdminLogin from "../pages/admin/AdminLogin.jsx";
-import AdminStock from "../pages/admin/AdminStock.jsx";
 import AdminProducts from "../pages/admin/AdminProducts.jsx";
+import AdminOrder_today from "../pages/admin/AdminOrder_today.jsx";
+import AdminOrder_history from "../pages/admin/AdminOrder_history.jsx";
 
 const routes = [
   {
@@ -34,13 +35,20 @@ const routes = [
   {
     path: "/admin",
     element: <AdminPages />,
-    // element: <AdminOrder /> ,
     children: [
-      // { index: true, element: <AdminHome /> },
-      // { index: true, element: <AdminOrder /> },
-      { index: true, element: <Navigate to="/admin/order" replace /> },
-      // { index: true, element: <Navigate to="/admin/login" replace /> },
-      { path: "order", element: <AdminOrder /> },
+      { index: true, element: <Navigate to="order" replace /> },
+      {
+        path: "order",
+        element: <AdminOrder />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="today" replace />,
+          },
+          { path: "today", element: <AdminOrder_today /> },
+          { path: "history", element: <AdminOrder_history /> },
+        ],
+      },
       { path: "products", element: <AdminProducts /> },
       { path: "blog", element: <AdminBlog /> },
       { path: "report", element: <AdminReport /> },

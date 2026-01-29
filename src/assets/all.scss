@@ -15,17 +15,29 @@
 
 @import "./style/typography";
 
+// 前台
+@import "./style/header";
 @import "./style/home";
+@import "./style/custom";
+
+// 後台 - base
+@import "./style/admin/base/adm-variables";
+@import "./style/admin/base/adm-base";
+
+// 後台 - components
+@import "./style/admin/components/button";
+
+// 後台 - layout
+@import "./style/admin/layout/adm-header";
+
+// 後台 - pages
+@import "./style/admin/adm-login";
+@import "./style/admin/adm-order";
+@import "./style/admin/adm-order-today";
+@import "./style/admin/adm-order-history";
+@import "./style/admin/adm-product";
 @import "./style/admin/adm-blog";
 @import "./style/admin/adm-report";
-@import "./style/admin/adm-login";
-@import "./style/admin/adm-base";
-@import "./style/admin/adm-header";
-@import "./style/admin/adm-order";
-@import "./style/custom";
-@import "./style/admin/adm-product";
-@import "./style/admin/components/button";
-@import "./style/header";
 
 // 暫時使用
 @import "./style/canDelet/noraModal";

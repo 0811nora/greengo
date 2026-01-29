@@ -1,0 +1,25 @@
+//primitive
+//gray
+$adm-gray-white: #fff;
+$adm-gray-200: #ededed;
+$adm-gray-300: #cecece;
+$adm-gray-500: #8c8e90;
+$adm-gray-800: #363a3f;
+$adm-gray-black: #1b2028;
+
+//primary
+$adm-primary: #fe8546;
+$adm-primary-light: #ffeee0;
+$adm-success: #33b277;
+$adm-success-light: #d0f1e2;
+$adm-danger: #d93e4d;
+$btn-primary-shadow: #fe854633; // opacity:40%
+$btn-secondary-shadow: #1b202866; // opacity:40%
+$btn-tertiary-shadow: #1b202833; // opacity:20%
+
+//Semantic, component-> 這裡會刪掉或是重新寫
+$disable-color: $adm-gray-300;
+$tag-bg: $adm-gray-200;
+$border: $adm-gray-300;
+$subtitle: $adm-gray-500;
+$icon-default: $adm-gray-800;
