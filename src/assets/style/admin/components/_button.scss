@@ -1,3 +1,42 @@
+// adm__Button 按鈕
+.adm-theme {
+  .adm__button__primary {
+    background-color: $adm-primary;
+    color: $adm-gray-white;
+  }
+  .adm__button__secondary {
+    background-color: $adm-gray-black;
+    color: $adm-gray-white;
+    &:hover {
+      box-shadow: 0 0 8px $btn-secondary-shadow;
+      transform: scale(1.05);
+      transition: all 0.1s ease;
+    }
+  }
+  .adm__button__tertiary {
+    border: 1px solid $adm-gray-500;
+    color: $adm-gray-black;
+    background-color: $adm-gray-white;
+    &:hover {
+      box-shadow: 0 0 8px $btn-tertiary-shadow;
+      transform: scale(1.05);
+      transition: all 0.1s ease;
+    }
+  }
+  .lg {
+    border-radius: 100px;
+    padding: 16px 32px;
+  }
+  .md {
+    border-radius: 100px;
+    padding: 10px 20px;
+  }
+  .sm {
+    border-radius: 100px;
+    padding: 4px 16px;
+  }
+}
+
 /* From Uiverse.io by Wendell47 */
 .adm-button {
   display: inline-flex;

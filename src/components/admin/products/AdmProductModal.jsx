@@ -1,5 +1,4 @@
-import AdmButton from '../../../component/AdmButton';
-
+import AdmButton from "../../../components/admin/common/AdmButton";
 export default function AdmProductModal({
   isOpen,
   mode,
@@ -14,29 +13,29 @@ export default function AdmProductModal({
   // --- 配置對照表 (核心優化) ---
   const categoryConfig = {
     fixed: {
-      titleLabel: '商品名稱 (Title)',
-      gramsLabel: '份量 (Grams)',
+      titleLabel: "商品名稱 (Title)",
+      gramsLabel: "份量 (Grams)",
       showProductType: false,
       showComplexFields: true, // 顯示 Poke 專用的複雜欄位
     },
     item: {
-      titleLabel: '食材名稱 (Title)',
-      gramsLabel: '份量 (Grams)',
+      titleLabel: "食材名稱 (Title)",
+      gramsLabel: "份量 (Grams)",
       showProductType: true,
       options: [
-        { value: 'base', label: '基底 (Base)' },
-        { value: 'protein', label: '蛋白質 (Protein)' },
-        { value: 'side', label: '配菜 (Side)' },
-        { value: 'sauce', label: '醬汁 (Sauce)' },
+        { value: "base", label: "基底 (Base)" },
+        { value: "protein", label: "蛋白質 (Protein)" },
+        { value: "side", label: "配菜 (Side)" },
+        { value: "sauce", label: "醬汁 (Sauce)" },
       ],
     },
     other: {
-      titleLabel: '飲品湯品名稱 (Title)',
-      gramsLabel: '容量 (Grams)',
+      titleLabel: "飲品湯品名稱 (Title)",
+      gramsLabel: "容量 (Grams)",
       showProductType: true,
       options: [
-        { value: 'soup', label: '湯品 (Soup)' },
-        { value: 'drinks', label: '飲料 (Drinks)' },
+        { value: "soup", label: "湯品 (Soup)" },
+        { value: "drinks", label: "飲料 (Drinks)" },
       ],
     },
   };
@@ -53,7 +52,7 @@ export default function AdmProductModal({
         {/* Header */}
         <div className="adm-product-modal-header">
           <h5 className="adm-product-modal-title">
-            <span>{mode === 'add' ? '新增產品' : '編輯產品'}</span>
+            <span>{mode === "add" ? "新增產品" : "編輯產品"}</span>
           </h5>
           <button className="close-x" onClick={onClose}>
             &times;
@@ -70,13 +69,13 @@ export default function AdmProductModal({
                   name="imageUrl"
                   type="text"
                   className="form-control rounded-pill"
-                  value={data.imageUrl || ''}
-                  onChange={(e) => onChange(e, 'product')}
+                  value={data.imageUrl || ""}
+                  onChange={(e) => onChange(e, "product")}
                 />
               </div>
               <img
                 src={
-                  mode === 'add' ? preImageUrl || data.imageUrl : data.imageUrl
+                  mode === "add" ? preImageUrl || data.imageUrl : data.imageUrl
                 }
                 className="img-fluid rounded"
                 alt=""
@@ -97,7 +96,7 @@ export default function AdmProductModal({
                         role="switch"
                         name="is_enabled"
                         checked={!!data.is_enabled}
-                        onChange={(e) => onChange(e, 'product')}
+                        onChange={(e) => onChange(e, "product")}
                       />
                     </label>
                   </div>
@@ -112,7 +111,7 @@ export default function AdmProductModal({
                         role="switch"
                         name="is_stock"
                         checked={!!data.is_stock}
-                        onChange={(e) => onChange(e, 'product')}
+                        onChange={(e) => onChange(e, "product")}
                       />
                     </label>
                   </div>
@@ -128,13 +127,13 @@ export default function AdmProductModal({
                       type="text"
                       name="title"
                       className="form-control rounded-pill mt-1"
-                      value={data.title || ''}
-                      onChange={(e) => onChange(e, 'product')}
+                      value={data.title || ""}
+                      onChange={(e) => onChange(e, "product")}
                     />
                   </label>
                 </div>
 
-                <div className={config.showProductType ? 'col-6' : 'col-12'}>
+                <div className={config.showProductType ? "col-6" : "col-12"}>
                   <label className="form-label d-block">類別 (Category)</label>
                   <select
                     name="category"
@@ -156,8 +155,8 @@ export default function AdmProductModal({
                     <select
                       name="product_type"
                       className="form-select rounded-pill mt-1"
-                      value={data.product_type || ''}
-                      onChange={(e) => onChange(e, 'product')}
+                      value={data.product_type || ""}
+                      onChange={(e) => onChange(e, "product")}
                     >
                       <option value=" " disabled>
                         請選擇分類
@@ -177,7 +176,7 @@ export default function AdmProductModal({
                     name="price"
                     className="form-control rounded-pill mt-1"
                     value={data.price}
-                    onChange={(e) => onChange(e, 'product')}
+                    onChange={(e) => onChange(e, "product")}
                   />
                 </div>
                 <div className="col-6">
@@ -188,8 +187,8 @@ export default function AdmProductModal({
                     type="text"
                     name="grams"
                     className="form-control rounded-pill mt-1"
-                    value={data.grams || ''}
-                    onChange={(e) => onChange(e, 'product')}
+                    value={data.grams || ""}
+                    onChange={(e) => onChange(e, "product")}
                   />
                 </div>
                 {config.showComplexFields && (
@@ -202,7 +201,7 @@ export default function AdmProductModal({
                           className="form-control rounded-3 mt-1"
                           rows="2"
                           value={data.ingredients.description}
-                          onChange={(e) => onChange(e, 'product')}
+                          onChange={(e) => onChange(e, "product")}
                         ></textarea>
                       </label>
                     </div>
@@ -215,7 +214,7 @@ export default function AdmProductModal({
                           className="form-control rounded-pill mt-1"
                           value={data.tab_collection}
                           placeholder="多多蛋白,低脂低卡,人氣推薦"
-                          onChange={(e) => onChange(e, 'product')}
+                          onChange={(e) => onChange(e, "product")}
                         />
                       </label>
                     </div>
@@ -229,10 +228,10 @@ export default function AdmProductModal({
                 <div className="row g-3">
                   {/* 定義中文標籤對照表 */}
                   {Object.entries({
-                    calories: '卡路里',
-                    protein: '蛋白質 (g)',
-                    fat: '脂肪 (g)',
-                    carbs: '碳水化合物 (g)',
+                    calories: "卡路里",
+                    protein: "蛋白質 (g)",
+                    fat: "脂肪 (g)",
+                    carbs: "碳水化合物 (g)",
                   }).map(([field, label]) => (
                     <div className="col-md-6" key={field}>
                       <label className="form-label d-block">
@@ -244,7 +243,7 @@ export default function AdmProductModal({
                           className="form-control rounded-pill mt-1"
                           min="0"
                           value={data.nutrition?.[field]}
-                          onChange={(e) => onChange(e, 'product')}
+                          onChange={(e) => onChange(e, "product")}
                         />
                       </label>
                     </div>
@@ -264,7 +263,7 @@ export default function AdmProductModal({
                           name="plan_type"
                           className="form-select rounded-pill mt-1"
                           value={data.content.plan_type}
-                          onChange={(e) => onChange(e, 'product')}
+                          onChange={(e) => onChange(e, "product")}
                         >
                           <option value=" " disabled>
                             請選擇方案
@@ -344,7 +343,7 @@ export default function AdmProductModal({
                           type="text"
                           className="form-control rounded-pill mt-1"
                           value={data.ingredients.base}
-                          onChange={(e) => onChange(e, 'product')}
+                          onChange={(e) => onChange(e, "product")}
                         />
                       </label>
                     </div>
@@ -357,7 +356,7 @@ export default function AdmProductModal({
                           type="text"
                           className="form-control rounded-pill mt-1"
                           value={data.ingredients.main}
-                          onChange={(e) => onChange(e, 'product')}
+                          onChange={(e) => onChange(e, "product")}
                         />
                       </label>
                     </div>
@@ -370,7 +369,7 @@ export default function AdmProductModal({
                           className="form-control rounded-3 mt-1"
                           rows="2"
                           value={data.ingredients.side}
-                          onChange={(e) => onChange(e, 'product')}
+                          onChange={(e) => onChange(e, "product")}
                         ></textarea>
                       </label>
                     </div>
@@ -383,7 +382,7 @@ export default function AdmProductModal({
                           type="text"
                           className="form-control rounded-pill mt-1"
                           value={data.ingredients.source}
-                          onChange={(e) => onChange(e, 'product')}
+                          onChange={(e) => onChange(e, "product")}
                         />
                       </label>
                     </div>
@@ -397,16 +396,16 @@ export default function AdmProductModal({
         <div className="adm-product-modal-footer">
           <AdmButton
             onClick={onClose}
-            text={'取消'}
-            color={'tertiary'}
-            size={'lg'}
-            className={'me-5'}
+            text={"取消"}
+            color={"tertiary"}
+            size={"lg"}
+            className={"me-5"}
           />
           <AdmButton
             onClick={onConfirm}
-            text={mode === 'add' ? '新增' : '修改'}
-            color={'secondary'}
-            size={'lg'}
+            text={mode === "add" ? "新增" : "修改"}
+            color={"secondary"}
+            size={"lg"}
           />
         </div>
       </div>

@@ -1,10 +1,4 @@
-.adm-theme .order-page {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding: 120px 16px 40px 16px;
-}
-
+// order-page 文字
 .adm_text-primary {
   color: $adm-primary;
 }
@@ -14,96 +8,48 @@
 .adm_text-danger {
   color: $adm-danger;
 }
-// order-page 的 header
+
+// order-page 全域
 .adm-theme .order-page {
-  .header {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 120px 16px 40px 16px;
+}
+
+// order-page navbar
+.adm-theme .order-page {
+  .order-navbar {
     background: none; // 清除別人的設定
     backdrop-filter: none; // 清除別人的設定
     border: 0px; // 清除別人的設定
     position: relative; // 清除別人的設定
-    z-index: 0; // 清除別人的設定
+    padding-left: 20px;
+    padding-right: 20px;
   }
-  .title {
+  .navbar-title {
+    text-decoration: none;
+    color: $adm-gray-black;
+    font-size: 18px;
+    font-weight: 400;
+  }
+  .navbar-title.active {
     font-size: 28px;
     font-weight: bold;
-    color: $adm-gray-black;
   }
-  .history.disable {
+  .navbar-title.disable {
     display: flex;
     align-items: center;
-    color: $disable-color;
+    font-size: 18px;
+    font-weight: 400;
+    color: $adm-gray-300;
     cursor: default;
     &::after {
       content: "\F47A";
       font-family: "bootstrap-icons";
-      margin-left: 0.125rem;
-      color: $disable-color;
+      margin-left: 2px;
+      color: $adm-gray-300;
     }
-  }
-  .search-bar {
-    height: 45px;
-    border-radius: 100px;
-    padding-left: 40px;
-    padding-right: 12px;
-  }
-  .search-bar__icon {
-    color: $adm-gray-800;
-    position: absolute;
-    left: 16px;
-    top: 10px;
-  }
-  .filter__block {
-    padding: 20px 40px;
-    border-radius: 20px;
-    p {
-      font-size: 14px;
-    }
-    i {
-      font-size: 24px;
-      -webkit-text-stroke: 0.5px;
-    }
-    .num {
-      font-size: 28px;
-      color: $adm-gray-black;
-      font-weight: bold;
-      text-align: left;
-      margin-bottom: 4px;
-    }
-  }
-}
-
-// order-page 的 content
-.adm-theme .order-page {
-  .content {
-    padding: 32px 40px;
-    border-radius: 32px;
-  }
-  .table {
-    vertical-align: middle;
-    --bs-table-bg: ;
-    $table-cell-padding-x: 12px;
-    th {
-      padding: 8px 8px 20px 8px;
-      border-bottom: 1px solid $adm-gray-black;
-    }
-    td {
-      padding: 16px 8px;
-      border-bottom: 1px solid $adm-gray-300;
-    }
-    .table-empty {
-      padding: 48px 20px 0px 20px;
-    }
-  }
-
-  .table i {
-    font-size: 20px;
-  }
-  .table .date {
-    display: inline-block;
-    width: 100px;
-  }
-  .table .time {
-    margin-left: 8px;
   }
 }
 
@@ -138,7 +84,7 @@
   .modal-body {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px;
     padding: 28px 40px;
   }
   .modal-body .member-content,
@@ -252,7 +198,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 60px 40px 20px 40px;
+    padding: 48px 48px 0px 48px;
     border-bottom: 1px solid transparent;
   }
   .modal-header i {
@@ -261,7 +207,7 @@
     margin-bottom: 8px;
   }
   .modal-body {
-    padding: 0px;
+    padding: 8px 48px;
   }
   .modal-body .confirm-content {
     padding: 24px 40px;
@@ -273,7 +219,7 @@
   .modal-footer {
     display: flex;
     justify-content: space-between;
-    padding: 20px 40px 60px 40px;
+    padding: 0px 48px 48px 48px;
     border-top: 1px solid transparent;
   }
 }

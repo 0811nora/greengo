@@ -1,0 +1,71 @@
+// order-today dashboard
+.adm-theme .order-today .dashboard {
+  .filter__block {
+    padding: 20px 40px;
+    border-radius: 20px;
+    p {
+      font-size: 14px;
+    }
+    i {
+      font-size: 24px;
+      -webkit-text-stroke: 0.5px;
+    }
+    .num {
+      font-size: 28px;
+      color: $adm-gray-black;
+      font-weight: bold;
+      text-align: left;
+      margin-bottom: 4px;
+    }
+  }
+}
+
+// order-today content
+.adm-theme .order-today .content {
+  border-radius: 32px;
+  padding: 32px 40px;
+}
+
+// order-today toolbar
+.adm-theme .order-today .toolbar {
+  .search-bar {
+    height: 45px;
+    border-radius: 100px;
+    padding-left: 40px;
+    padding-right: 12px;
+  }
+  .search-bar__icon {
+    color: $adm-gray-800;
+    position: absolute;
+    left: 16px;
+    top: 10px;
+  }
+}
+
+// order-today table
+.adm-theme .order-today .table {
+  vertical-align: middle;
+  --bs-table-bg: ;
+  $table-cell-padding-x: 12px;
+  th {
+    padding: 8px 8px 20px 8px;
+    border-bottom: 1px solid $adm-gray-black;
+  }
+  td {
+    padding: 16px 8px;
+    border-bottom: 1px solid $adm-gray-300;
+  }
+  .table-empty {
+    padding: 48px 20px 0px 20px;
+  }
+  i {
+    font-size: 20px;
+  }
+  .date {
+    display: inline-block;
+    width: 100px;
+  }
+  .time {
+    margin-left: 8px;
+  }
+}

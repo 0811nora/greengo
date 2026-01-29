@@ -16,6 +16,9 @@ export default function AdminPages() {
   const logoutModalRef = useRef(null);
   const navigate = useNavigate();
 
+  // 把管理員模式設定傳到order頁
+  const contextValue = { admMode, handleNavMode };
+
   useEffect(() => {
     const greenCookie = document.cookie.replace(
       /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
@@ -91,7 +94,7 @@ export default function AdminPages() {
   }
 
   return (
-    <main className="adm_bg1 adm-theme">
+    <main className="adm-theme adm__bg-gray ">
       <div className="container">
         <AdminHeader
           admMode={admMode}
@@ -124,7 +127,8 @@ export default function AdminPages() {
           cancelText={ADM_MODE_LOGOUT.cancelText}
         />
 
-        <Outlet />
+        {/* 把管理員模式設定傳到order頁 */}
+        <Outlet context={contextValue} />
       </div>
     </main>
   );
