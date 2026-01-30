@@ -31,14 +31,16 @@ li {
   }
 }
 .home__btn-primary {
+  display: inline-block;
+  text-decoration: none;
   max-width: 306px;
   width: 100%;
   border-radius: 80px;
   padding: 8px 16px;
   cursor: pointer;
   text-align: center;
-  color: $primary-50;
-  background-color: rgba(7, 78, 48, 0.8);
+  color: $primary-100;
+  background-color: rgba(44, 73, 24, 0.8);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
@@ -46,9 +48,9 @@ li {
   transition: all 0.3s ease-in-out;
   &:hover,
   &:focus {
-    background-color: rgba(77, 147, 43, 0.7);
+    background-color: rgba(77, 113, 53, 0.7);
     box-shadow:
-      1px 2px 2px 0px rgba(77, 147, 43, 0.3),
+      1px 2px 2px 0px rgba(77, 113, 53, 0.3),
       0 8px 32px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.45);
     transform: translateY(-2px);
@@ -85,7 +87,7 @@ li {
   left: 0;
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: rgba(77, 147, 43, 0.3);
+  background: rgba(77, 113, 53, 0.3);
   border-radius: 50%;
   filter: blur(60px);
   z-index: -1;
@@ -241,7 +243,7 @@ li {
     rgba(236, 243, 237, 1) 0%,
     rgba(236, 243, 237, 0.5) 100%
   );
-  background: $primary-50;
+  background: $primary-100;
   .visual-area {
     position: relative;
     min-height: 500px;
@@ -434,8 +436,8 @@ li {
 
 .tag-item {
   font-size: 12px;
-  color: $secondary-200;
-  background-color: $secondary-50;
+  color: $orange-200;
+  background-color: $orange-100;
   padding: 4px 10px;
   border-radius: 50px;
   white-space: nowrap; // 避免斷航

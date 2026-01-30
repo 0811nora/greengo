@@ -8,13 +8,13 @@
 // scss-docs-start gray-color-variables
 $white: #fefdfd !default;
 $sage: #f4f4e8;
-$gray-50: #f2f4f3;
-$gray-100: #e0e3e5; // $gray-100: #f8f9fa !default;
-$gray-200: #c2c9cd; // $gray-200: #e9ecef !default;
-$gray-300: #626971; // $gray-300: #dee2e6 !default;
-$gray-400: #363a3f; // $gray-400: #ced4da !default;
-$gray-500: #1b2028; // $gray-500: #adb5bd !default;
-$gray-600: #6c757d !default;
+$gray-50: #f6f7f6;
+$gray-100: #e3e7e0; // $gray-100: #f8f9fa !default;
+$gray-200: #c7cdc2; // $gray-200: #e9ecef !default;
+$gray-300: #7f8b76; // $gray-300: #dee2e6 !default;
+$gray-400: #4d5947; // $gray-400: #ced4da !default;
+$gray-500: #353c33; // $gray-500: #adb5bd !default;
+$gray-600: #172211 !default; // $gray-600: #6c757d !default;
 $gray-700: #495057 !default;
 $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
@@ -303,22 +303,30 @@ $cyans: (
 // fusv-enable
 
 // primary
-$primary-50: #ecf3ed;
-$primary-100: #ceec62;
-$primary-200: #4d932b;
-$primary-300: #074e30;
+$primary-100: #ecf3ed;
+$primary-200: #4d7135;
+$primary-300: #2c4918;
 $primary: $primary-200;
 
-// secondary
-$secondary-50: #fff1e9;
-$secondary-100: #ffad7e;
-$secondary-200: #ed6211;
+// orange
+$orange-100: #ffe4b9;
+$orange-200: #ffa43b;
+$orange-300: #f86709;
 
-// accent
-$accent: #e6fd56;
-$accent-50: #fffbe6;
-$accent-100: #fee866;
-$accent-200: #fab62c;
+// brown
+$brown-100: #f2ebdf;
+$brown-200: #e1d7c5;
+$brown-300: #6d665e;
+
+// yellow
+$yellow-100: #fffbef;
+$yellow-200: #fbf4de;
+$yellow-300: #fcefc4;
+
+// functional
+$accent: #dffb44;
+$error: #ca4f35;
+$warning: #b74244;
 
 // scss-docs-start theme-color-variables
 // $primary:       $blue !default;  // 這是bs5預設，因為nora建環境時要確定bs5有確實載入，所以先註解起來
@@ -326,42 +334,46 @@ $primary: $primary-200 !default; // 這是nora要確定bs5有確實載入，所�
 $secondary: $gray-600 !default;
 $success: $green !default;
 $info: $cyan !default;
-$warning: #db5d23 !default;
 // $warning: $yellow !default;
 $danger: $red !default;
 $light: $gray-100 !default;
 $dark: $gray-900 !default;
-$error: #e94051;
+
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
   // primary
   "primary": $primary,
-  "primary-50": $primary-50,
   "primary-100": $primary-100,
   "primary-200": $primary-200,
   "primary-300": $primary-300,
 
-  // secondary
-  "secondary": $secondary,
-  "secondary-50": $secondary-50,
-  "secondary-100": $secondary-100,
-  "secondary-200": $secondary-200,
+  // orange
+  "orange-100": $orange-100,
+  "orange-200": $orange-200,
+  "orange-300": $orange-300,
 
-  // accent
+  // brown
+  "brown-100": $brown-100,
+  "brown-200": $brown-200,
+  "brown-300": $brown-300,
+
+  // yellow
+  "yellow-100": $yellow-100,
+  "yellow-200": $yellow-200,
+  "yellow-300": $yellow-300,
+
+  // functional
   "accent": $accent,
-  "accent-50": $accent-50,
-  "accent-100": $accent-100,
-  "accent-200": $accent-200,
+  "error": $error,
+  "warning": $warning,
 
   "success": $success,
   "info": $info,
-  "warning": $warning,
   "danger": $danger,
   "light": $light,
   "dark": $dark,
-  "error": $error,
   "sage": $sage,
 
   // gray
@@ -650,9 +662,12 @@ $border-radius-rounded: 5rem !default; // 80px
 
 // scss-docs-start box-shadow-variables
 $box-shadow: 0px 2px 24px 0px rgba(27, 32, 40, 0.12);
-$box-shadow-m: 0px 8px 24px 0px rgba(27, 32, 40, 0.2);
+$box-shadow-black: 0px 8px 24px 0px rgba(27, 32, 40, 0.2);
 $box-shadow-navbar: 0px 4px 32px 0px rgba(7, 78, 48, 0.12);
 $box-shadow-top: 0px 2px 12px 0px rgba(42, 51, 66, 0.2);
+$box-shadow-gray: 0px 2px 24px rgba(77, 89, 71, 0.08);
+$box-shadow-green: 0px 4px 16px rgba(77, 113, 53, 0.12);
+$box-shadow-orange: 0px 2px 24px rgba(255, 164, 59, 0.12);
 // $box-shadow: 0 0.5rem 1rem rgba($black, 0.15) !default;
 // $box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
 // $box-shadow-lg: 0 1rem 3rem rgba($black, 0.175) !default;
