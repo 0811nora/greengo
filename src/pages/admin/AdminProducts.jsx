@@ -1,111 +1,104 @@
-import { useState, useEffect, useRef } from 'react';
-import AdmMainButton from '../../component/AdmMainButton';
-import AdmProductModal from '../../components/admin/products/AdmProductModal';
-import AdmButton from '../../component/AdmButton';
+import { useState, useEffect, useRef } from "react";
+import AdmMainButton from "../../components/admin/common/AdmMainButton";
+import AdmButton from "../../components/admin/common/AdmButton";
+import AdmProductModal from "../../components/admin/products/AdmProductModal";
 
 import {
   getAdmProducts,
   postAdmNewProduct,
   putAdmSingleProduct,
   delAdmSingleProduct,
-} from '../../api/ApiAdmin';
+} from "../../api/ApiAdmin";
 
 export default function AdminProducts() {
   const [productData, setProductData] = useState([]);
   const initialPokeProductState = {
-    title: '',
-    category: '',
-    product_type: ' ',
-    description: '',
-    price: '',
+    title: "",
+    category: "",
+    product_type: " ",
+    description: "",
+    price: "",
     origin_price: 0,
     is_enabled: 1,
     is_stock: 1,
-    unit: '份',
-    grams: '',
+    unit: "份",
+    grams: "",
     ingredients: {
-      base: '',
-      main: '',
-      source: '',
-      side: '',
+      base: "",
+      main: "",
+      source: "",
+      side: "",
     },
     nutrition: {
-      calories: '',
-      protein: '',
-      fat: '',
-      carbs: '',
+      calories: "",
+      protein: "",
+      fat: "",
+      carbs: "",
     },
     content: {
-      plan_type: ' ',
-      base_limit: '',
-      protein_limit: '',
-      side_limit: '',
-      sauce_limit: '',
+      plan_type: " ",
+      base_limit: "",
+      protein_limit: "",
+      side_limit: "",
+      sauce_limit: "",
     },
     tab_collection: [],
     include_tags: [],
-    imageUrl: ' ',
+    imageUrl: " ",
   };
   const [newProductData, setNewProductData] = useState(initialPokeProductState);
-  const [modalMode, setModalMode] = useState('');
-  const [preImageUrl, setPreImageUrl] = useState(' ');
-  const [currentTab, setCurrentTab] = useState('fixed');
-  const [subTab, setSubTab] = useState('all');
+  const [modalMode, setModalMode] = useState("");
+  const [preImageUrl, setPreImageUrl] = useState(" ");
+  const [currentTab, setCurrentTab] = useState("fixed");
+  const [subTab, setSubTab] = useState("all");
   const [pokeModalOpen, setPokeModalOpen] = useState(false);
   const [itemModalOpen, setItemModalOpen] = useState(false);
   const [otherModalOpen, setOtherModalOpen] = useState(false);
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [delProductId, setDelProductId] = useState('');
+  const [delProductId, setDelProductId] = useState("");
 
   const PRODUCT_TYPE_LABELS = {
-    base: '基底',
-    protein: '蛋白質',
-    side: '配菜',
-    sauce: '醬汁',
-    soup: '湯品',
-    drinks: '飲料',
+    base: "基底",
+    protein: "蛋白質",
+    side: "配菜",
+    sauce: "醬汁",
+    soup: "湯品",
+    drinks: "飲料",
   };
   const TYPE_COLORS = {
-    protein: 'bg-danger-subtle text-danger',
-    base: 'bg-success-subtle text-success',
-    side: 'bg-warning-subtle text-dark',
-    sauce: 'bg-info-subtle text-info',
-    soup: 'bg-primary-subtle text-primary',
-    drinks: 'bg-secondary-subtle text-secondary',
+    protein: "bg-danger-subtle text-danger",
+    base: "bg-success-subtle text-success",
+    side: "bg-warning-subtle text-dark",
+    sauce: "bg-info-subtle text-info",
+    soup: "bg-primary-subtle text-primary",
+    drinks: "bg-secondary-subtle text-secondary",
   };
 
   const handleInputChange = (e, stateType) => {
     const { name, value, type, checked, dataset } = e.target;
-    const setter = stateType === 'auth' ? setFormData : setNewProductData;
+    const setter = stateType === "auth" ? setFormData : setNewProductData;
     const group = dataset.group;
 
-    if (name === 'imageUrl') {
+    if (name === "imageUrl") {
       setPreImageUrl(value);
     }
 
     let newValue = value;
-    if (type === 'checkbox') {
-      newValue = name === 'is_enabled' ? (checked ? 1 : 0) : checked;
-    } else if (type === 'number') {
-      newValue = value === '' ? 0 : Number(value);
+
+    if (type === "checkbox" && !Array.isArray(value)) {
+      newValue = name === "is_enabled" ? (checked ? 1 : 0) : checked;
+    } else if (type === "number") {
+      newValue = value === "" ? 0 : Number(value);
     }
 
     setter((prevData) => {
-      // 如果有分組 (例如：nutrition, ingredients)
       if (group) {
         return {
           ...prevData,
-          [group]: {
-            ...prevData[group],
-            [name]: newValue,
-          },
+          [group]: { ...prevData[group], [name]: newValue },
         };
       }
-      // 如果是第一層 (例如：title, price)
-      return {
-        ...prevData,
-        [name]: newValue,
-      };
+      return { ...prevData, [name]: newValue };
     });
   };
 
@@ -113,10 +106,10 @@ export default function AdminProducts() {
   const getProducts = async () => {
     try {
       const res = await getAdmProducts();
-      console.log('取得產品：', res.data.products);
+      console.log("取得產品：", res.data.products);
       setProductData(Object.values(res.data.products));
     } catch (error) {
-      alert('取得失敗: ' + error.response.data.message);
+      alert("取得失敗: " + error.response.data.message);
     }
   };
 
@@ -130,7 +123,7 @@ export default function AdminProducts() {
     if (product.category !== currentTab) return false;
 
     // 2. 如果子分類不是 'all'，則過濾 product_type
-    if (subTab !== 'all') {
+    if (subTab !== "all") {
       return product.product_type === subTab;
     }
 
@@ -140,28 +133,28 @@ export default function AdminProducts() {
   // 切換大 Tab
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
-    setSubTab('all');
+    setSubTab("all");
   };
 
   //依據點選的tab判斷要渲染的內容
   const renderContent = () => {
     // 食材的分項
     const itemSubTabs = [
-      { label: '全部', value: 'all' },
-      { label: '基底 (Base)', value: 'base' },
-      { label: '蛋白質 (Protein)', value: 'protein' },
-      { label: '配菜 (Side)', value: 'side' },
-      { label: '醬汁 (Sauce)', value: 'sauce' },
+      { label: "全部", value: "all" },
+      { label: "基底 (Base)", value: "base" },
+      { label: "蛋白質 (Protein)", value: "protein" },
+      { label: "配菜 (Side)", value: "side" },
+      { label: "醬汁 (Sauce)", value: "sauce" },
     ];
 
     // 其他（飲料湯品）的分項
     const otherSubTabs = [
-      { label: '全部', value: 'all' },
-      { label: '湯品 (Soup)', value: 'soup' },
-      { label: '飲料 (Drinks)', value: 'drinks' },
+      { label: "全部", value: "all" },
+      { label: "湯品 (Soup)", value: "soup" },
+      { label: "飲料 (Drinks)", value: "drinks" },
     ];
     //固定餐
-    if (currentTab === 'fixed') {
+    if (currentTab === "fixed") {
       return (
         <>
           <div className="adm-pro-table-layout mt-4 adm__glassbg">
@@ -198,9 +191,9 @@ export default function AdminProducts() {
                           alt={product.title}
                           className="rounded"
                           style={{
-                            height: '40px',
-                            width: '40px',
-                            objectFit: 'cover',
+                            height: "40px",
+                            width: "40px",
+                            objectFit: "cover",
                           }}
                         />
                       </td>
@@ -224,7 +217,7 @@ export default function AdminProducts() {
                           type="button"
                           className="btn btn-sm rounded-pill"
                           onClick={() =>
-                            openProductModal('edit', currentTab, product)
+                            openProductModal("edit", currentTab, product)
                           }
                         >
                           <i className="bi bi-pencil-fill"></i>
@@ -248,7 +241,7 @@ export default function AdminProducts() {
     }
 
     //食材
-    if (currentTab === 'item') {
+    if (currentTab === "item") {
       return (
         <>
           <div className="adm-pro-table-layout mt-4 adm__glassbg">
@@ -257,7 +250,7 @@ export default function AdminProducts() {
                 {itemSubTabs.map((tab) => (
                   <button
                     key={tab.value}
-                    className={`nav-link rounded-pill mx-2 ${subTab === tab.value ? 'active' : ''}`}
+                    className={`nav-link rounded-pill mx-2 ${subTab === tab.value ? "active" : ""}`}
                     onClick={() => setSubTab(tab.value)}
                   >
                     {tab.label}
@@ -300,7 +293,7 @@ export default function AdminProducts() {
                       </td> */}
                         <td>
                           <span
-                            className={`badge rounded-pill px-3 py-2 ${TYPE_COLORS[product.product_type] || 'bg-light text-dark'}`}
+                            className={`badge rounded-pill px-3 py-2 ${TYPE_COLORS[product.product_type] || "bg-light text-dark"}`}
                           >
                             {PRODUCT_TYPE_LABELS[product.product_type] ||
                               product.product_type}
@@ -312,9 +305,9 @@ export default function AdminProducts() {
                             alt={product.title}
                             className="rounded"
                             style={{
-                              height: '40px',
-                              width: '40px',
-                              objectFit: 'cover',
+                              height: "40px",
+                              width: "40px",
+                              objectFit: "cover",
                             }}
                           />
                         </td>
@@ -331,7 +324,7 @@ export default function AdminProducts() {
                             type="button"
                             className="btn btn-sm rounded-pill"
                             onClick={() =>
-                              openProductModal('edit', currentTab, product)
+                              openProductModal("edit", currentTab, product)
                             }
                           >
                             <i className="bi bi-pencil-fill"></i>
@@ -356,7 +349,7 @@ export default function AdminProducts() {
     }
 
     //飲料、湯品
-    if (currentTab === 'other') {
+    if (currentTab === "other") {
       return (
         <>
           <div className="adm-pro-table-layout mt-4 adm__glassbg">
@@ -365,7 +358,7 @@ export default function AdminProducts() {
                 {otherSubTabs.map((tab) => (
                   <button
                     key={tab.value}
-                    className={`nav-link rounded-pill mx-2 ${subTab === tab.value ? 'active' : ''}`}
+                    className={`nav-link rounded-pill mx-2 ${subTab === tab.value ? "active" : ""}`}
                     onClick={() => setSubTab(tab.value)}
                   >
                     {tab.label}
@@ -405,7 +398,7 @@ export default function AdminProducts() {
                         </td>
                         <td>
                           <span
-                            className={`badge rounded-pill px-3 py-2 ${TYPE_COLORS[product.product_type] || 'bg-light text-dark'}`}
+                            className={`badge rounded-pill px-3 py-2 ${TYPE_COLORS[product.product_type] || "bg-light text-dark"}`}
                           >
                             {PRODUCT_TYPE_LABELS[product.product_type] ||
                               product.product_type}
@@ -417,9 +410,9 @@ export default function AdminProducts() {
                             alt={product.title}
                             className="rounded"
                             style={{
-                              height: '40px',
-                              width: '40px',
-                              objectFit: 'cover',
+                              height: "40px",
+                              width: "40px",
+                              objectFit: "cover",
                             }}
                           />
                         </td>
@@ -436,7 +429,7 @@ export default function AdminProducts() {
                             type="button"
                             className="btn btn-sm rounded-pill"
                             onClick={() =>
-                              openProductModal('edit', currentTab, product)
+                              openProductModal("edit", currentTab, product)
                             }
                           >
                             <i className="bi bi-pencil-fill"></i>
@@ -463,18 +456,18 @@ export default function AdminProducts() {
 
   const openProductModal = (mode, currentTab, product = null) => {
     setModalMode(mode);
-    if (mode === 'add') {
+    if (mode === "add") {
       let initialState = {};
-      if (currentTab === 'fixed') {
+      if (currentTab === "fixed") {
         initialState = {
           ...initialPokeProductState,
-          category: 'fixed',
-          product_type: 'set',
+          category: "fixed",
+          product_type: "set",
         };
-      } else if (currentTab === 'item') {
-        initialState = { ...initialPokeProductState, category: 'item' };
+      } else if (currentTab === "item") {
+        initialState = { ...initialPokeProductState, category: "item" };
       } else {
-        initialState = { ...initialPokeProductState, category: 'other' };
+        initialState = { ...initialPokeProductState, category: "other" };
       }
       setNewProductData(initialState);
     } else {
@@ -484,15 +477,15 @@ export default function AdminProducts() {
   };
 
   const toggleModal = (currentTab) => {
-    if (currentTab === 'fixed') {
+    if (currentTab === "fixed") {
       setPokeModalOpen(!pokeModalOpen);
-      setPreImageUrl('');
-    } else if (currentTab === 'item') {
+      setPreImageUrl("");
+    } else if (currentTab === "item") {
       setItemModalOpen(!itemModalOpen);
-      setPreImageUrl('');
+      setPreImageUrl("");
     } else {
       setOtherModalOpen(!otherModalOpen);
-      setPreImageUrl('');
+      setPreImageUrl("");
     }
   };
 
@@ -500,17 +493,17 @@ export default function AdminProducts() {
     const processedContent = {
       ...newProductData,
       tab_collection:
-        typeof newProductData.tab_collection === 'string'
+        typeof newProductData.tab_collection === "string"
           ? newProductData.tab_collection
-              .split(',')
+              .split(",")
               .map((tag) => tag.trim())
-              .filter((tag) => tag !== '')
+              .filter((tag) => tag !== "")
           : newProductData.tab_collection,
       is_enabled: newProductData.is_enabled ? 1 : 0,
     };
 
     let apiCall;
-    if (modalMode === 'edit') {
+    if (modalMode === "edit") {
       const id = newProductData.id;
       apiCall = putAdmSingleProduct(id, processedContent);
     } else {
@@ -519,25 +512,25 @@ export default function AdminProducts() {
 
     try {
       const res = await apiCall;
-      const message = modalMode === 'add' ? '新增成功' : '修改成功';
+      const message = modalMode === "add" ? "新增成功" : "修改成功";
       alert(message);
 
       toggleModal(currentTab);
       setNewProductData(initialPokeProductState);
       getProducts();
     } catch (error) {
-      alert('新增失敗: ' + error.response.data.message);
+      alert("新增失敗: " + error.response.data.message);
     }
   };
 
   const deleteProduct = async (id) => {
     try {
       await delAdmSingleProduct(id);
-      alert('刪除成功');
+      alert("刪除成功");
       getProducts();
       setConfirmModalOpen(false);
     } catch (error) {
-      alert('新增失敗: ' + error.response.data.message);
+      alert("新增失敗: " + error.response.data.message);
     }
   };
 
@@ -555,32 +548,32 @@ export default function AdminProducts() {
             <ul className="nav nav-pills">
               <li className="nav-item">
                 <button
-                  className={`nav-link mx-2 ${currentTab === 'fixed' ? 'active' : ''}`}
-                  onClick={() => handleTabChange('fixed')}
+                  className={`nav-link mx-2 ${currentTab === "fixed" ? "active" : ""}`}
+                  onClick={() => handleTabChange("fixed")}
                 >
                   主題Poke
                 </button>
               </li>
               <li className="nav-item">
                 <button
-                  className={`nav-link mx-2 ${currentTab === 'item' ? 'active' : ''}`}
-                  onClick={() => handleTabChange('item')}
+                  className={`nav-link mx-2 ${currentTab === "item" ? "active" : ""}`}
+                  onClick={() => handleTabChange("item")}
                 >
                   食材管理
                 </button>
               </li>
               <li className="nav-item">
                 <button
-                  className={`nav-link mx-2 ${currentTab === 'other' ? 'active' : ''}`}
-                  onClick={() => handleTabChange('other')}
+                  className={`nav-link mx-2 ${currentTab === "other" ? "active" : ""}`}
+                  onClick={() => handleTabChange("other")}
                 >
                   飲料湯品管理
                 </button>
               </li>
             </ul>
             <AdmMainButton
-              onClick={() => openProductModal('add', currentTab)}
-              buttonText={'建立新的產品'}
+              onClick={() => openProductModal("add", currentTab)}
+              buttonText={"建立新的產品"}
               icon={<i className="bi bi-plus-lg ms-1"></i>}
             />
           </div>
@@ -607,17 +600,17 @@ export default function AdminProducts() {
               <div className="d-flex pt-4">
                 <AdmButton
                   onClick={() => setConfirmModalOpen(false)}
-                  text={'取消'}
-                  color={'tertiary'}
-                  size={'md'}
-                  className={'me-5 flex-fill'}
+                  text={"取消"}
+                  color={"tertiary"}
+                  size={"md"}
+                  className={"me-5 flex-fill"}
                 />
 
                 <AdmButton
                   onClick={() => deleteProduct(delProductId)}
-                  text={'確認'}
-                  color={'secondary'}
-                  size={'md'}
+                  text={"確認"}
+                  color={"secondary"}
+                  size={"md"}
                   className="flex-fill"
                 />
               </div>

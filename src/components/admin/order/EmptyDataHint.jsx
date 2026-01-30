@@ -1,4 +1,4 @@
-function AdmOrderEmpty() {
+function EmptyDataHint() {
   return (
     <tr>
       <td className="border-0 text-center table-empty" colSpan="8">
@@ -8,4 +8,4 @@ function AdmOrderEmpty() {
   );
 }
 
-export default AdmOrderEmpty;
+export default EmptyDataHint;

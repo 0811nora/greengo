@@ -1,4 +1,4 @@
-function AdmOrderLoading() {
+function Loading() {
   return (
     <tr>
       <td className="border-0 text-center table-empty" colSpan="8">
@@ -10,4 +10,4 @@ function AdmOrderLoading() {
   );
 }
 
-export default AdmOrderLoading;
+export default Loading;

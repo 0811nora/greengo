@@ -42,20 +42,20 @@ const FooterData = {
 const FooterBrand = ({ brand, socialMedia }) => {
   return (
     <div>
-      <NavLink className="nav-link" to="/">
+      <NavLink className="nav-link mb-4" to="/">
         <div className="font-en-logo fs-2 display-md-3 text-primary-50">
           {brand.name}
         </div>
       </NavLink>
       <div>
         {brand.sloganZh.map((line, index) => (
-          <p key={index} className="fs-sm fs-md-md mb-0">
+          <p key={index} className="fs-sm fs-md-md mb-2">
             {line}
           </p>
         ))}
-        <p className="ft-en mt-2 mb-3 mb-md-4">{brand.sloganEn}</p>
+        <p className="ft-en">{brand.sloganEn}</p>
       </div>
-      <ul className="d-flex gap-3 list-unstyled">
+      <ul className="d-flex gap-4 list-unstyled mb-7 mb-md-0">
         {socialMedia.map((item) => (
           <li key={item.name}>
             <a href={item.url} className="text-white">
@@ -72,8 +72,8 @@ export default function Footer() {
   return (
     <footer className="bg-primary-300 text-white">
       {/* 間距待設計稿數值出來再做調整 */}
-      <div className="container p-3">
-        <div className="row">
+      <div className="container py-8 py-md-8 px-3 px-md-auto">
+        <div className="row g-6 mb-7 mb-md-8">
           {/* brand + social media 區 */}
           <div className="col-md-6">
             <FooterBrand
@@ -167,6 +167,10 @@ export default function Footer() {
             </div>
           </div>
         </div>
+        <p className="text-white text-center pb-6 d-flex justify-content-md-center align-items-center">
+          <i class="bi bi-c-circle me-1 fs-md"></i>2025 GreenGo All rights
+          reserved.
+        </p>
       </div>
     </footer>
   );
