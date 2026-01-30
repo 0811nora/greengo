@@ -42,6 +42,7 @@ export default function AdmButton({
   size = 'md',
   className = '',
   type = 'button',
+  disabled = false,
 }) {
   // 根據 color 決定顏色樣式
   const colorClasses = {
@@ -57,6 +58,7 @@ export default function AdmButton({
       type={type}
       className={`btn  ${selectedClass} ${size} ${className}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {text}
     </button>

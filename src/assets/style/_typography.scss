@@ -1,7 +1,8 @@
 // 引入英文字型 Clash Display
 @font-face {
   font-family: "Clash";
-  src: url("../fonts/ClashDisplay-Variable.woff2") format("woff2"),
+  src:
+    url("../fonts/ClashDisplay-Variable.woff2") format("woff2"),
     url("../fonts/ClashDisplay-Variable.woff") format("woff");
   font-weight: 200 700;
   font-style: normal;
@@ -10,7 +11,11 @@
 
 // 設定變數
 // 中文字型 - Noto Sans TC
-$font-zh: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI",
+$font-zh:
+  "Noto Sans TC",
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
   sans-serif;
 // 英文字型 - Clash Display
 $font-en: "Clash", sans-serif;

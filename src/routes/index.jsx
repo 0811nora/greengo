@@ -1,48 +1,59 @@
-import App from "../App.jsx";
-import { createHashRouter, Navigate } from "react-router-dom";
-import Home from "../pages/Home.jsx";
-import Product from "../pages/Product.jsx";
-import Custom from "../pages/Custom.jsx";
-import About from "../pages/About.jsx";
-import Article from "../pages/Article.jsx";
+import App from '../App.jsx';
+import { createHashRouter, Navigate } from 'react-router-dom';
+import Home from '../pages/Home.jsx';
+import Product from '../pages/Product.jsx';
+import Custom from '../pages/Custom.jsx';
+import About from '../pages/About.jsx';
+import Article from '../pages/Article.jsx';
+import Cart from '../pages/Cart.jsx';
 
-import AdminPages from "../pages/admin/AdminPages.jsx";
-import AdminHome from "../pages/admin/AdminHome.jsx";
-import AdminBlog from "../pages/admin/AdminBlog.jsx";
-import AdminOrder from "../pages/admin/AdminOrder.jsx";
-import AdminReport from "../pages/admin/AdminReport.jsx";
-import AdminLogin from "../pages/admin/AdminLogin.jsx";
-import AdminStock from "../pages/admin/AdminStock.jsx";
-import AdminProducts from "../pages/admin/AdminProducts.jsx";
+import AdminPages from '../pages/admin/AdminPages.jsx';
+import AdminHome from '../pages/admin/AdminHome.jsx';
+import AdminBlog from '../pages/admin/AdminBlog.jsx';
+import AdminOrder from '../pages/admin/AdminOrder.jsx';
+import AdminReport from '../pages/admin/AdminReport.jsx';
+import AdminLogin from '../pages/admin/AdminLogin.jsx';
+import AdminProducts from '../pages/admin/AdminProducts.jsx';
+import AdminOrder_today from '../pages/admin/AdminOrder_today.jsx';
+import AdminOrder_history from '../pages/admin/AdminOrder_history.jsx';
 
 const routes = [
   {
-    path: "/",
+    path: '/',
     element: <App />,
     children: [
       { index: true, element: <Home /> },
-      { path: "product", element: <Product /> },
-      { path: "about", element: <About /> },
-      { path: "custom", element: <Custom /> },
-      { path: "article", element: <Article /> },
+      { path: 'product', element: <Product /> },
+      { path: 'about', element: <About /> },
+      { path: 'custom', element: <Custom /> },
+      { path: 'article', element: <Article /> },
+      { path: 'cart', element: <Cart /> },
     ],
   },
   {
-    path: "/admin/login",
+    path: '/admin/login',
     element: <AdminLogin />,
   },
   {
-    path: "/admin",
+    path: '/admin',
     element: <AdminPages />,
-    // element: <AdminOrder /> ,
     children: [
-      // { index: true, element: <AdminHome /> },
-      // { index: true, element: <AdminOrder /> },
-      { index: true, element: <Navigate to="/admin/order" replace /> },
-      { path: "order", element: <AdminOrder /> },
-      { path: "products", element: <AdminProducts /> },
-      { path: "blog", element: <AdminBlog /> },
-      { path: "report", element: <AdminReport /> },
+      { index: true, element: <Navigate to="order" replace /> },
+      {
+        path: 'order',
+        element: <AdminOrder />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="today" replace />,
+          },
+          { path: 'today', element: <AdminOrder_today /> },
+          { path: 'history', element: <AdminOrder_history /> },
+        ],
+      },
+      { path: 'products', element: <AdminProducts /> },
+      { path: 'blog', element: <AdminBlog /> },
+      { path: 'report', element: <AdminReport /> },
     ],
   },
   // {
