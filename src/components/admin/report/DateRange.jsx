@@ -125,12 +125,12 @@ const DateRange = ({ activeRange, onRangeChange, onCustomRangeChange }) => {
       {isModalOpen && (
         <div className="adm__report-modal-overlay" onClick={closeModal}>
           <div
-            className="adm__report-modal-content text-sage"
+            className="adm__report-modal-content text-white"
             // 停止冒泡事件
             onClick={(e) => e.stopPropagation()}
           >
             <div className="adm__report-modal-header">
-              <h5 className="fs-6 text-sage">自訂時間範圍</h5>
+              <h5 className="fs-6 text-white">自訂時間範圍</h5>
               <button className="adm__report-modal-close" onClick={closeModal}>
                 ✕
               </button>
