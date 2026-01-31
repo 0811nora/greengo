@@ -1,0 +1,367 @@
+.cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 40px 20px;
+
+  .page-title {
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // 左側：購物車列表
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .cart-item {
+    background: $white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    .item-main {
+      display: grid;
+      grid-template-columns: 100px 1fr auto auto 40px;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 80px 1fr;
+        gap: 15px;
+      }
+    }
+
+    .item-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      @media (max-width: 600px) {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .item-info {
+      h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+      .unit-price {
+        color: $gray-300;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+
+      .toggle-details-btn {
+        background: none;
+        border: none;
+        color: $primary;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      @media (max-width: 600px) {
+        grid-column: 2 / 3;
+      }
+    }
+
+    .item-quantity {
+      display: flex;
+      align-items: center;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+
+      .qty-btn {
+        background: none;
+        border: none;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        color: $gray-300;
+
+        &:hover {
+          background-color: #f0f0f0;
+        }
+      }
+
+      input {
+        width: 40px;
+        text-align: center;
+        border: none;
+        font-size: 14px;
+        -moz-appearance: textfield;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+        }
+      }
+
+      @media (max-width: 600px) {
+        grid-column: 1 / 3;
+        justify-self: start;
+        margin-top: 10px;
+      }
+    }
+
+    .item-total {
+      font-weight: bold;
+      font-size: 18px;
+      color: $dark;
+
+      @media (max-width: 600px) {
+        grid-column: 1 / 3;
+        justify-self: end;
+        margin-top: -40px;
+      }
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #000000;
+      cursor: pointer;
+      font-size: 18px;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #e74c3c;
+      }
+
+      @media (max-width: 600px) {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+      }
+    }
+
+    //  折疊詳情區塊
+    .item-details-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+      background-color: #fafafa;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    // 當 .details-open 被 JS 加入時的樣式
+    &.details-open {
+      .item-details-panel {
+        max-height: 500px;
+      }
+    }
+
+    .details-grid {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+
+      h4 {
+        font-size: 14px;
+        color: $gray-300;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    // 內容物清單樣式
+    .content-list {
+      ul {
+        list-style: none;
+        li {
+          font-size: 14px;
+          margin-bottom: 8px;
+          color: $dark;
+
+          span {
+            color: $gray-300;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    // 營養素 Badge 樣式
+    .nutrition-info {
+      &.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .nutri-badges {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .badge {
+        background: $white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 10px 5px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+
+        .label {
+          font-size: 12px;
+          color: $gray-300;
+          margin-bottom: 4px;
+        }
+
+        .value {
+          font-size: 18px;
+          //   font-weight: bold;
+          color: $primary;
+        }
+
+        .unit {
+          font-size: 10px;
+          color: #999;
+        }
+      }
+    }
+  }
+
+  // 右側：費用摘要
+  .cart-summary {
+    .summary-card {
+      background: $white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 20px;
+
+      h2 {
+        font-size: 20px;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+    }
+
+    .promo-section {
+      margin-bottom: 25px;
+
+      label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: $gray-300;
+      }
+
+      .input-group {
+        display: flex;
+        gap: 8px;
+
+        input {
+          flex: 1;
+          padding: 10px;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          outline: none;
+          &:focus {
+            border-color: $primary;
+          }
+        }
+
+        button {
+          padding: 0 15px;
+          background: $dark;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover {
+            background: $light;
+          }
+        }
+      }
+    }
+
+    .summary-rows {
+      .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 15px;
+        color: $gray-300;
+
+        &.discount {
+          color: $primary;
+        }
+
+        &.total {
+          font-size: 20px;
+          font-weight: bold;
+          color: $dark;
+          margin-top: 10px;
+        }
+      }
+
+      .divider {
+        height: 1px;
+        background: #e0e0e0;
+        margin: 15px 0;
+      }
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 15px;
+      background: $primary;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: $primary-300;
+      }
+    }
+  }
+}
