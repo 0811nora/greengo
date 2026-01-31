@@ -64,9 +64,12 @@ $utilities: map-merge(
       class: shadow,
       values: (
         null: $box-shadow,
-        m: $box-shadow-m,
+        black: $box-shadow-black,
         navbar: $box-shadow-navbar,
         top: $box-shadow-top,
+        gray: $box-shadow-gray,
+        green: $box-shadow-green,
+        orange: $box-shadow-orange,
         none: none,
       ),
     ),

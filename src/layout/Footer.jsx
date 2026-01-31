@@ -43,7 +43,7 @@ const FooterBrand = ({ brand, socialMedia }) => {
   return (
     <div>
       <NavLink className="nav-link mb-4" to="/">
-        <div className="font-en-logo fs-2 display-md-3 text-primary-50">
+        <div className="font-en-logo fs-2 display-md-3 text-primary-100">
           {brand.name}
         </div>
       </NavLink>

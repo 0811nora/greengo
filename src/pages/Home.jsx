@@ -21,14 +21,14 @@ const PageLinks = {
 const HERO_DECORS = [
   {
     id: "left",
-    src: "../../public/img/bowl-2.png",
+    src: "/img/bowl-2.png",
     alt: "bowl-2",
     posX: "start-0",
     posY: "top-10",
   },
   {
     id: "right",
-    src: "../../public/img/bowl-1.png",
+    src: "/img/bowl-1.png",
     alt: "bowl-1",
     posX: "start-100",
     posY: "top-50",
@@ -106,7 +106,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "26g",
     pos: "pos-btm-left",
-    src: "../../public/img/items/salmon.png",
+    src: "/img/items/salmon.png",
   },
   // 熱量：約 250 kcal/蛋白質：約 26 g/脂肪：約 16 g
   {
@@ -115,7 +115,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "1.1g",
     pos: "pos-top-mid",
-    src: "../../public/img/items/tomato.png",
+    src: "/img/items/tomato.png",
   },
   // 熱量：約 11 kcal/碳水化合物：約 2.5 g/膳食纖維：約 0.8 g
   {
@@ -124,7 +124,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "1.2g",
     pos: "pos-top-mid-left",
-    src: "../../public/img/items/pumpkin.png",
+    src: "/img/items/pumpkin.png",
   },
   // 熱量：約 45 kcal/碳水化合物：約 11 g/膳食纖維：約 2 g
   {
@@ -133,7 +133,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "2.5g",
     pos: "pos-top-right",
-    src: "../../public/img/items/broccoli.png",
+    src: "/img/items/broccoli.png",
   },
   // 熱量：約 28 kcal/碳水化合物：約 5 g/蛋白質：約 2.5 g/膳食纖維：約 2.2 g
   {
@@ -142,7 +142,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "0.7g",
     pos: "pos-btm-right",
-    src: "../../public/img/items/cucumber.png",
+    src: "/img/items/cucumber.png",
   },
   // 熱量：約 9 kcal/碳水化合物：約 2 g
 ];
@@ -155,7 +155,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP1",
   },
@@ -164,7 +164,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP2",
   },
@@ -173,7 +173,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP3",
   },
@@ -182,7 +182,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP4",
   },
@@ -191,7 +191,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "../../public/img/bowl-3.png",
+    img: "/img/bowl-3.png",
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP5",
   },
@@ -238,7 +238,7 @@ export default function Home() {
             </p>
             <NavLink
               to={PageLinks.productLink.url}
-              className="home__btn-primary fw-medium text-decoration-none d-inline-block" // 建議加 d-inline-block 確保寬度正常
+              className="home__btn-primary fw-medium"
             >
               立即點餐
             </NavLink>
@@ -258,7 +258,7 @@ export default function Home() {
           {/* 中央碗 */}
           <div className="hero__decorations position-absolute top-100 start-50 translate-middle pt-10">
             <img
-              src="../../public/img/bowl-3.png"
+              src="/img/bowl-3.png"
               className="position-relative"
               alt="bowl-3"
             />
@@ -267,7 +267,7 @@ export default function Home() {
             {VEGGIE_ITEMS.map((item) => (
               <img
                 key={item.name}
-                src={`../../public/img/items/${item.name}.png`}
+                src={`/img/items/${item.name}.png`}
                 className="veggie"
                 alt={item.name}
                 style={{
@@ -358,7 +358,7 @@ export default function Home() {
                 {/* 碗 */}
                 <div className="main-bowl-container">
                   <img
-                    src="../../public/img/bowl-5.png"
+                    src="/img/bowl-5.png"
                     alt="bowl-5"
                     className="main-bowl-img"
                   />
@@ -390,7 +390,7 @@ export default function Home() {
                   </p>
                   <NavLink
                     to={PageLinks.productLink.url}
-                    className="home__btn-primary text-center fw-medium text-decoration-none"
+                    className="home__btn-primary text-center fw-medium"
                   >
                     查看精選菜單
                   </NavLink>
@@ -476,7 +476,7 @@ export default function Home() {
           style={{ paddingTop: "80px" }}
         >
           <img
-            src="../../public/img/custom-bowl.png"
+            src="/img/custom-bowl.png"
             className="position-absolute top-0 start-50 translate-middle-x"
             style={{
               maxWidth: "600px",
@@ -503,7 +503,7 @@ export default function Home() {
                     健康其實不難，他只需要一點點透明與理解。
                   </p>
                   <NavLink
-                    className="home__btn-primary fw-medium text-decoration-none"
+                    className="home__btn-primary fw-medium"
                     to={PageLinks.customLink.url}
                   >
                     前往客製化點餐
@@ -513,7 +513,7 @@ export default function Home() {
               {/* 右側卡片說明 */}
               <ul className="col-lg-6 d-flex flex-column justify-content-center makeBite-section">
                 <li className="d-flex align-items-center">
-                  <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 ms-1 me-4">
+                  <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 ms-1 me-4">
                     1
                   </span>
                   <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
@@ -524,7 +524,7 @@ export default function Home() {
                   </span>
                 </li>
                 <li className="d-flex align-items-center">
-                  <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 me-3">
+                  <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3">
                     2
                   </span>
                   <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
@@ -535,7 +535,7 @@ export default function Home() {
                   </span>
                 </li>
                 <li className="d-flex align-items-center">
-                  <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 me-3">
+                  <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3">
                     3
                   </span>
                   <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
@@ -546,7 +546,7 @@ export default function Home() {
                   </span>
                 </li>
                 <li className="d-flex align-items-center">
-                  <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 me-3">
+                  <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3">
                     4
                   </span>
                   <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
@@ -559,14 +559,14 @@ export default function Home() {
           </div>
         </section>
         {/* OUR BELIEF YOUR INSPIRATION */}
-        <section className="container-fulid bg-primary-50">
+        <section className="container-fulid bg-primary-100">
           {/* 關於我們 */}
-          <section className="container-fluid bg-primary-50 py-7 overflow-hidden">
+          <section className="container-fluid bg-primary-100 py-7 overflow-hidden">
             <div className="container position-relative">
               <div className="row align-items-center">
                 <div className="col-md-6 position-relative">
                   <img
-                    src="../../public/img/bowl-5.png"
+                    src="/img/bowl-5.png"
                     alt="bowl"
                     className="position-absolute start-0 top-50 translate-middle-y"
                     style={{ width: "80%", left: "-20%" }}
@@ -578,14 +578,14 @@ export default function Home() {
                     OUR BELIEF
                   </h4>
                   <h2 className="fs-1 fw-bold mb-4">綠果的堅持</h2>
-                  <p className="mb-4 text-secondary">
+                  <p className="mb-4 text-gray-500">
                     我們深信，真正的健康不應是道難題。
                     <br />
                     這份信念，驅使著綠果的每一步。
                   </p>
                   <NavLink
                     to={PageLinks.aboutLink.url}
-                    className="home__btn-primary text-decoration-none rounded-pill my-5"
+                    className="home__btn-primary rounded-pill my-5"
                   >
                     聽聽我們的故事
                   </NavLink>
@@ -598,7 +598,7 @@ export default function Home() {
               <div className="col-md-3 d-none d-md-flex"></div>
               <div className="col-md-6">
                 <img
-                  src="../../public/img/bowl-5.png"
+                  src="/img/bowl-5.png"
                   alt="bowl-5"
                   className="position-absolute top-50 start-0 translate-middle"
                 />
@@ -617,7 +617,7 @@ export default function Home() {
                   聽聽我們的故事
                 </NavLink>
                 <img
-                  src="../../public/img/bowl-5.png"
+                  src="/img/bowl-5.png"
                   alt="bowl-5"
                   className="position-absolute top-50 start-100 translate-middle"
                 />
@@ -638,7 +638,7 @@ export default function Home() {
                 </p>
                 <NavLink
                   to="..."
-                  className="home__btn-primary text-decoration-none rounded-pill px-4 py-2"
+                  className="home__btn-primary rounded-pill px-4 py-2"
                 >
                   看看我們的文章
                 </NavLink>
@@ -649,7 +649,7 @@ export default function Home() {
                 <div className="row g-4">
                   {/* 主文章 */}
                   <div className="col-md-7">
-                    <div className="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                    <div className="card border-0 shadow-green rounded-4 overflow-hidden">
                       <div className="card-body p-4">
                         <span className="badge bg-yellow text-dark mb-2">
                           NEW
