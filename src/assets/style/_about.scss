@@ -1,0 +1,24 @@
+.c-about {
+    background-color: #FFFBEF;
+
+    .topHalfImg {
+        width: 100%;
+        height: 700px; // 這裡是你要的「一半高度」
+        overflow: hidden; // 超出的部分切掉
+        position: relative;
+
+
+        img {
+            width: 100%;
+            transform: rotate(270deg);
+
+        }
+    }
+
+    .bottomHalfImg {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        object-position: bottom; // 鎖定底部，從上面開始裁切
+    }
+}
