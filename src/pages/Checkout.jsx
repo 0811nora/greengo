@@ -119,7 +119,7 @@ const Checkout = () => {
       <form onSubmit={handleSubmit}>
         <div className="row g-5">
           {/* 左側：客戶資料與付款 */}
-          <div className="col-md-7 col-lg-8">
+          <div className="col-md-7 col-lg-8 info-card">
             {/* 1. 取餐人資訊 */}
             <div className="card mb-4 shadow-sm border-0">
               <div className="card-body p-4">
@@ -254,7 +254,7 @@ const Checkout = () => {
             <div className="order-summary-card p-4">
               <h4 className="d-flex justify-content-between align-items-center mb-3">
                 <span className="text-primary">購物車清單</span>
-                <span className="badge bg-secondary-200 rounded-pill fw-normal pt-3 px-4">
+                <span className="badge bg-orange-300 rounded-pill fw-normal pt-3 px-4">
                   {cartData.length}
                 </span>
               </h4>
@@ -294,11 +294,7 @@ const Checkout = () => {
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                   />
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={applyCoupon}
-                  >
+                  <button className="btn" type="button" onClick={applyCoupon}>
                     套用
                   </button>
                 </div>
