@@ -6,6 +6,7 @@ import Custom from '../pages/Custom.jsx';
 import About from '../pages/About.jsx';
 import Article from '../pages/Article.jsx';
 import Cart from '../pages/Cart.jsx';
+import Checkout from '../pages/Checkout.jsx';
 
 import AdminPages from '../pages/admin/AdminPages.jsx';
 import AdminHome from '../pages/admin/AdminHome.jsx';
@@ -28,6 +29,7 @@ const routes = [
       { path: 'custom', element: <Custom /> },
       { path: 'article', element: <Article /> },
       { path: 'cart', element: <Cart /> },
+      { path: 'checkout', element: <Checkout /> },
     ],
   },
   {
