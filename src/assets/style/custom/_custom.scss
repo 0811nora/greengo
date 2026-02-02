@@ -1,0 +1,180 @@
+.custom-main{
+    color:$brown-300;
+
+    .text-price{
+        color: #df7b45;
+    }
+    .fs-ssm{
+        font-size: 12px;
+    }
+    .text-orange-200{
+        color:#ffa43b !important;
+    }
+    .text-orange-10{
+        color: #df7b45;
+    }
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .banner-container {
+        height: 100%;
+        overflow: visible; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
+    }
+    
+    @media (min-width: 992px) {
+        .c-fs-lg-80 {
+            font-size: 90px !important;
+            letter-spacing: 1.5px;
+        }
+        .c-mt-lg-60{
+            margin-top: 60px;
+        }
+        .banner-container {
+            height: calc(100vh - 108px); 
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+    }
+    
+    
+    
+    
+
+    .custom-bg{
+        background-image: url('../../image/custom/photo-1543352634-a1c51d9f1fa7.avif');
+        width: 100%;
+        background-position: center;
+
+        @media (max-width: 768px){
+            background-position: 0% 38%;
+        }
+    }
+    
+
+    .bg-overlay{
+        background-color: #d5e1de59;
+        width: 100%;
+        height: 100%;
+        @media (max-width: 992px){
+            background-color: #e4f0f06a;
+        }
+    }
+    .blur-bg{
+        backdrop-filter: blur(10px);
+        background-color: #f0f0f096 ;
+    }
+
+    .com_bor_radius{
+        border-radius: 30px;
+        box-shadow: 2px 2px  8px #0000004b;
+    }
+    .hidden-input {
+        appearance: none;       
+        width: 0;
+        height: 0;
+        margin: 0;
+        position: absolute;
+        opacity: 0;
+    }
+    .form-check{
+        padding-left: 0;
+    }
+    .card-active {
+        outline: 4px solid $primary;
+        // outline: 4px solid #dcc47c;
+        
+        box-shadow: 0px 12px  25px rgba(44, 99, 57, 0.559);
+        // box-shadow: 0px 12px  25px #9c9273a0;
+    }
+    .step1-card-area{
+        width: 100%;
+        max-width: 800px;
+        
+    }
+
+
+
+ // ---- Stepper 樣式 ----
+
+    .stepper-line{
+        width: 50%;
+        height: 5px;
+        background-color: $primary;
+
+    }
+
+
+
+// ----- 動畫設定 ------
+    .tracking-in-contract {
+        animation: tracking-in-contract 1s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.4s both;
+    }   
+            @keyframes tracking-in-contract {
+            0% {
+                letter-spacing: 1em;
+                opacity: 0;
+        }
+            40% {
+                opacity: 0.6;
+        }
+            100% {
+                letter-spacing: normal;
+                opacity: 1;
+        }
+    }
+
+    .wobble-hor-bottom {
+        animation: wobble-hor-bottom 1.3s infinite both;
+    }
+    @keyframes wobble-hor-bottom {
+        0%,100% {
+            transform: translateX(0%);
+            transform-origin: 50% 50%;
+        }
+        15% {transform: translateX(-15px) rotate(-2deg);}
+        30% {transform: translateX(8px) rotate(2deg);}
+        45% {transform: translateX(-6px) rotate(-1deg);}
+        60% {transform: translateX(3px) rotate(1.2deg);}
+        75% {transform: translateX(0px) rotate(0deg);}
+    }
+
+
+    
+
+    .pencil-highlight-loop {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: draw-pencil-loop 3s ease-in-out infinite;
+    }
+    @keyframes draw-pencil-loop {
+        0%, 30% {
+            stroke-dashoffset: 1000;
+            opacity: 0;
+        }
+        35% {
+            opacity: 1;
+        }
+        60% {
+            stroke-dashoffset: 0;
+            opacity: 1;
+        }
+        90% {
+            stroke-dashoffset: 0;
+            opacity: 1;
+        }
+        100% {
+            stroke-dashoffset: 0;
+            opacity: 0;
+        }
+    }
+
+
+
+}

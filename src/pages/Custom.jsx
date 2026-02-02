@@ -1,33 +1,26 @@
 import { useEffect, useState } from "react";
 import { getAllProducts,postAddToCart,getCart } from "../api/ApiClient";
+import AdmButton from "../components/admin/common/AdmButton";
 
 import ItemCard from "../components/Custom-comp/itemCard";
+import HighlightLine from "../components/Custom-comp/HighlightLine";
+import Stepper from "../components/Custom-comp/Stepper";
+import PickTypeCard from "../components/Custom-comp/PickTypeCard";
+
+import lightBG from "../assets/image/custom/lightBG.jpg";
+import balancedBG from "../assets/image/custom/balancedBG.jpg";
+import highProteinBG from "../assets/image/custom/highProteinBG.jpg";
+import TypeListBtn from "../components/Custom-comp/TypeListBtn";
+
+import baseIcon from "../assets/image/custom/icons8-rice-bowl-50.png";
+import meatIcon from "../assets/image/custom/icons8-meat-50.png";
+import sideIcon from "../assets/image/custom/icons8-broccoli-50.png";
+import sauceIcon from "../assets/image/custom/icons8-sauce-53.png";
+import addOnIcon from "../assets/image/custom/icons8-cutlery-32.png";
 
 
-const Stepper = ({stepState}) =>{
-    return(<>
-        <div className="position-absolute top-0 start-50 translate-middle-x " style={{ 
-                maxWidth:"400px",
-                width:"100%"
-            }}>
-            <div className="mx-auto d-flex justify-content-between py-5 ">
-                <div className="text-center ">
-                    <p className={`fs-3 ${ stepState === 1 ? "text-primary" : " "}`}><i className="bi bi-1-circle-fill"></i>
-                    </p>
-                    <p>套餐類型</p>
-                </div>
-                <div className="text-center ">
-                    <p className={`fs-3 ${ stepState === 2 ? "text-primary" : " "}`}><i className="bi bi-2-circle-fill"></i></p>
-                    <p>自由配</p>
-                </div>
-                <div className="text-center ">
-                    <p className={`fs-3 ${ stepState === 3 ? "text-primary" : " "}`}><i className="bi bi-3-circle-fill"></i></p>
-                    <p>確認餐點</p>
-                </div>
-            </div>
-        </div>
-    </>)
-}
+
+
 
 
 const PROTEIN_DISCOUNT = 30;
@@ -59,6 +52,10 @@ export default function Custom() {
 
 
 
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
 
 
@@ -94,21 +91,6 @@ export default function Custom() {
     console.log("renderaddOnItemList",renderaddOnItemList)
     console.log("renderItemList",renderItemList)
     
-
-
-    // 選擇套餐類別時，取得限制的數量
-    const pickType = (e) => {
-        const targetData = getCustom.find(item => item.content.plan_type === e.target.value);
-        const { unit , id , content } = targetData
-        setLimit(content);
-        setSelectedProduct((pre)=>({
-            ...pre,
-            plan_type: e.target.value,
-            productId: id,
-            productTag: unit
-        }))
-
-    }
 
     const maxCount = {
         base: limit.base_limit,
@@ -197,11 +179,6 @@ export default function Custom() {
 
     const totalProteinPrice = findproteinPrice.reduce((acc, item) => acc + item.totalPrice,0)
     const totalAddonPrice = findAddonPrice.reduce((acc, item) => acc + item.totalPrice,0)
-    console.log('蛋白質加價：',totalProteinPrice)
-    console.log('加購價：',totalAddonPrice)
-    console.log("findproteinPrice",findproteinPrice)
-    console.log("findAddonPrice",findAddonPrice)
-
     const finalPrice = CUSTOM_PRICE + totalProteinPrice + totalAddonPrice;
 
     // 選擇單一食材的時候觸發
@@ -399,76 +376,99 @@ export default function Custom() {
             <div className="custom-bg">
                 <div className="bg-overlay">
                     <div style={{height:"100px"}}></div>
-                    <div className="container" style={{ 
-                            height: "calc(99vh - 10px)",     
-                            maxHeight: "calc(100vh - 108px)",   
-                            overflow: "hidden",  
-                        }}>
+                    <div className="container banner-container">
 
 
                         {/*自由配 banner*/}
                         { stepState === 0 && 
-                            <div className="banner-bg d-flex justify-content-center align-items-center h-100">
-                                <section className=" py-5 text-center ">
-                                    <h1 className="mb-5">$149 <span>起</span> 隨心自由配</h1>
-                                    <button className="btn btn-primary" onClick={() => setStepState( stepState + 1 )}>立即自由配</button>
+                            <div className=" d-flex justify-content-center align-items-center" style={{ height: "calc(100vh - 100px)"}}>
+                                <section className=" py-5 text-center tracking-in-contract overflow-hidden" >
+                                    <h1 className="mb-5 fs-1 c-fs-lg-80  mb-8 ">
+                                        <span className="position-relative d-inline-block">
+                                        <span className="text-price fw-bold"style={{ position: 'relative', zIndex: 2 }}>$149 </span>
+                                        <span className="fs-2" style={{ position: 'relative', zIndex: 2 }}>起</span> 
+                                        <HighlightLine color="#edd749d0" strokeWidth={13} />
+                                        </span>
+                                        
+
+                                        <br />
+                                        <span className="fw-bolder">隨心自由配</span>
+                                    </h1>
+                                    <AdmButton
+                                        onClick={() => setStepState( stepState + 1 )}
+                                        text={'立即自由配'}
+                                        size={'lg'}
+                                        className={'btn-primary py-2 px-7 px-lg-8  fs-lg-6 rounded-5 wobble-hor-bottom'}
+                                    />
                                 </section>
                             </div>
                         }
                         
 
-                        {/* step1 選擇套餐 */}
-                        { stepState === 1 && 
-                            <section className="blur-bg py-5 h-100 position-relative py-10 px-3 com_bor_radius">
+                        { stepState > 0 && 
+                        <div className="blur-bg h-100 mb-4 com_bor_radius position-relative">
+                            <Stepper stepState={stepState}/>
 
-                                <Stepper stepState={stepState}/>
-                                
-                                <div className="d-flex mb-5 " style={{marginTop:"130px"}}>
-                                    <div className="">
-                                        <h2>Step1 <br/>選擇套餐</h2>
-                                        <p>選擇今日最適合你的飲食偏好</p>
+                        {/* step1 選擇套餐 */}
+
+                        { stepState === 1 && 
+                            <section className="  h-100 py-10 px-8 overflow-hidden" >
+                                <div className=" h-100 d-flex flex-column flex-lg-row justify-content-center align-items-center justify-content-lg-between mb-8 c-mt-lg-60 mt-6" >
+                                    <div className="text-center text-lg-start " style={{width:"300px"}}>
+                                        <h2 className=" mb-lg-6 fs-lg-1 fs-2 py-4">
+                                            <span className="  mb-3 text-orange-10">Step1 </span><br/>
+                                            <span className=" text-primary">選擇套餐</span></h2>
+                                        <p className="text-brown-300  fw-bold">選擇今日最適合你的飲食偏好</p>
                                     </div>
-                                    <div className="d-flex gap-5 p-5 ms-10" >
-                                        <div className="form-check p-4">
-                                            <input className="form-check-input" type="radio" name="plan_type" id="light" value="light" onClick={pickType}/>
-                                            <label className="form-check-label" htmlFor="light">
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        輕食
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div className="form-check p-4">
-                                            <input className="form-check-input" type="radio" name="plan_type" id="balanced" value="balanced" onClick={pickType}/>
-                                            <label className="form-check-label" htmlFor="balanced">
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        均衡
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div className="form-check p-4">
-                                            <input className="form-check-input" type="radio" name="plan_type" id="highProtein" value="highProtein" onClick={pickType}/>
-                                            <label className="form-check-label" htmlFor="highProtein">
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        高蛋白
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
+                                    <div className=" step1-card-area d-flex p-3 justify-content-lg-center d-flex flex-column flex-lg-row justify-content-center align-items-center ">
+                                        <PickTypeCard 
+                                            selectedValue={selectedProduct.plan_type} 
+                                            onSelect={setSelectedProduct}              
+                                            typeText="light"
+                                            bgImage={lightBG}                      
+                                            sourceData={getCustom}                     
+                                            onLimitChange={setLimit}
+                                            title="輕食"
+                                            describe={<>少負擔高蔬食 <br />適合想吃清爽的你</>}
+                                            num={{base: 1,protein: 1,side: 6,sauce: 1,}}
+                                        />
+
+                                        <PickTypeCard 
+                                            selectedValue={selectedProduct.plan_type} 
+                                            onSelect={setSelectedProduct}              
+                                            typeText="balanced"
+                                            bgImage={balancedBG}                                
+                                            sourceData={getCustom}                     
+                                            onLimitChange={setLimit}
+                                            title="均衡"
+                                            describe={<>一餐搞定 <br />適合想簡單均衡的你</>}
+                                            num={{base: 1,protein: 2,side: 5,sauce: 1,}}
+                                        />
+
+                                        <PickTypeCard 
+                                            selectedValue={selectedProduct.plan_type} 
+                                            onSelect={setSelectedProduct}              
+                                            typeText="highProtein"  
+                                            bgImage={highProteinBG}                              
+                                            sourceData={getCustom}                     
+                                            onLimitChange={setLimit}
+                                            title="高蛋白"
+                                            describe={<>蛋白滿滿 <br />適合愛健身的你</>}
+                                            num={{base: 1,protein: 3,side: 3,sauce: 1,}}
+                                        />
+    
+                                    
                                     </div>
                                 </div>
 
                                 
-                                <div className="mx-auto " style={{width:"200px"}}>
-                                    <div className="text-end bg-white rounded">
-                                        <button className="btn fs-3" onClick={handleNextBtn}>
-                                            <i className="bi bi-arrow-right-circle-fill"></i>
-                                        </button>
-                                    </div>
+                                <div className="text-center position-absolute bottom-0 start-50 translate-middle-x mb-lg-8 mb-6 w-100 px-6" >
+                                    <AdmButton
+                                        onClick={handleNextBtn}
+                                        text={"下一步"}
+                                        size={'lg'}
+                                        className={'btn-primary  px-10  py-2  rounded-5'}
+                                    />
                                 </div>
 
                             </section>
@@ -478,45 +478,65 @@ export default function Custom() {
 
                         {/* step2 開始自由配 */}
                         { stepState === 2 && 
-                            <section className="blur-bg py-5 h-100 position-relative py-10 px-3 " >
-                                <Stepper stepState={stepState}/>
+                            <section className="  h-100 py-8 px-8 overflow-hidden" >
 
-                                <div className="d-flex mb-5 ">
-                                    <div className="">
-                                        <h2>Step2 <br/>開始自由配</h2>
-                                        <p>請打造專屬於您的自由配餐點</p>
-                                    </div>
+                                <div className="text-center text-lg-start mb-lg-5" >
+                                    <h2 className=" mb-lg-3 fs-lg-2 fs-4 ">
+                                        <span className="  mb-2 text-orange-10">Step2 </span><br/>
+                                        <span className=" text-primary">開始自由配</span></h2>
+                                    <p className="text-brown-300  fw-bold">請打造專屬於您的自由配餐點</p>
                                 </div>
 
-                                <div className="row">
-                                    <div className="col-2">
-                                        <div>
-                                            <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('base')}>
-                                                基底 {totalQty("base")}/{limit.base_limit}
-                                            </button>
+                                <div className="row ">
+                                    <div className="col-3">
+                                        <div className="my-3">
+                                            <TypeListBtn 
+                                                text={"基底"} 
+                                                num={<>{totalQty('base')}/{limit.base_limit}</>}
+                                                imageUrl={baseIcon}    
+                                                onClick={()=>setActiveTab('base')}
+                                                classActive={activeTab === "base" ? "c-typeButton-active" : ""}
+                                            />
                                         </div>
-                                        <div>
-                                            <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('protein')}>
-                                                蛋白質 {totalQty("protein")}/{limit.protein_limit}
-                                            </button>
+                                        <div className="my-3">
+                                            <TypeListBtn 
+                                                text={"蛋白質"} 
+                                                num={<>{totalQty('protein')}/{limit.protein_limit}</>}
+                                                imageUrl={meatIcon}    
+                                                onClick={()=>setActiveTab('protein')}
+                                                classActive={activeTab === "protein" ? "c-typeButton-active" : ""}
+                                            />
                                         </div>
-                                        <div>
-                                            <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('side')}>
-                                                配菜 {totalQty("side")}/{limit.side_limit}
-                                            </button>
+                                        <div className="my-3">
+                                            <TypeListBtn 
+                                                text={"配菜"} 
+                                                num={<>{totalQty('side')}/{limit.side_limit}</>}
+                                                imageUrl={sideIcon}    
+                                                onClick={()=>setActiveTab('side')}
+                                                classActive={activeTab === "side" ? "c-typeButton-active" : ""}
+                                            />
                                         </div>
-                                        <div>
-                                            <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('sauce')}>
-                                                醬料 {totalQty("sauce")}/{limit.sauce_limit}
-                                            </button>
+                                        <div className="my-3">
+                                            <TypeListBtn 
+                                                text={"醬料"} 
+                                                num={<>{totalQty('sauce')}/{limit.sauce_limit}</>}
+                                                imageUrl={sauceIcon}    
+                                                onClick={()=>setActiveTab('sauce')}
+                                                classActive={activeTab === "sauce" ? "c-typeButton-active" : ""}
+                                            />
                                         </div>
-                                        <div>
-                                            <button className="btn btn-secondary-100 my-2" onClick={()=>setActiveTab('addOn')}>
-                                                其他加購 
-                                            </button>
+                                        <div className="my-3">
+                                            <TypeListBtn 
+                                                text={"加購"} 
+                                                num={null}
+                                                imageUrl={addOnIcon}    
+                                                onClick={()=>setActiveTab('addOn')}
+                                                classActive={activeTab === "addOn" ? "c-typeButton-active" : ""}
+                                            />
                                         </div>
+                                    
                                     </div>
-                                    <div className="col-8">
+                                    <div className="col-7">
                                         <div className="row row-cols-3">
                                             {activeTab === 'addOn'
                                                 ? <div className="w-100">
@@ -540,6 +560,15 @@ export default function Custom() {
                                                                     onClickMins={() => editQty(item.title , 0 ,item.price,item.product_type,item.id)}
                                                                     qty={itemQty(item.title)}
                                                                     price={item.price}
+                                                                    mode={"plural"}
+                                                                    detail={{
+                                                                        grams:item.grams,
+                                                                        calories: item.nutrition.calories,
+                                                                        carbs: item.nutrition.carbs,
+                                                                        fat: item.nutrition.fat,
+                                                                        protein: item.nutrition.protein,
+                                                                    }}
+
                                                                 />
                                                             </div>
                                                         ))}
@@ -548,42 +577,68 @@ export default function Custom() {
                                                 :  renderItemList.map((item) => (
                                                     <div className="col" key={item.id}>
                                                     {maxCount[activeTab] <= 1 
-                                                    ? <div className="form-check">
-                                                        <input 
-                                                            className="form-check-input hidden-input" 
-                                                            type="checkbox" name={activeTab} 
-                                                            value={item.title} 
-                                                            id={item.id}
-                                                            onChange={(e)=>pickProduct(e,item.price,item.product_type,item.id)}
-                                                            checked={selectedProduct[activeTab].some(i => i.title === item.title) || false}
-                                                        />
-                                                        <label className="form-check-label w-100" htmlFor={item.id}>
-                                                            <div className={`card p-2 ${selectedProduct[activeTab].some(i => i.title === item.title) ? "card-active": ""}`}>
-                                                                <div className="d-flex justify-content-center align-items-center gap-2">
-                                                                    <div style={{width:"40px",height:"40px",}} alt="" >
-                                                                        <img className="w-100 h-100" src={item.imageUrl} 
-                                                                        style={{borderRadius:"50%"}}/>
-                                                                    </div>
-                                                                    <p>{item.title}</p>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                    </div>
-                                                    : 
-                                                    <ItemCard 
+                                                    ?  <ItemCard 
                                                         name={activeTab}
                                                         value={item.title} 
                                                         id={item.id}
                                                         onChange={(e)=>pickProduct(e,item.price,item.product_type,item.id)}
                                                         checked={selectedProduct[activeTab].some(i => i.title === item.title) || false}
                                                         imgUrl={item.imageUrl}
-                                                        onClickPlus={() => editQty(item.title , 1 ,item.price,item.product_type,item.id)}
-                                                        onClickMins={() => editQty(item.title , 0 ,item.price,item.product_type,item.id)}
-                                                        qty={itemQty(item.title)}
+                                                        onClickPlus={null}
+                                                        onClickMins={null}
+                                                        qty={null}
                                                         price={item.price}
-
-                                                        />
-                                                    
+                                                        mode={"single"}
+                                                        detail={{
+                                                            grams:item.grams,
+                                                            calories: item.nutrition.calories,
+                                                            carbs: item.nutrition.carbs,
+                                                            fat: item.nutrition.fat,
+                                                            protein: item.nutrition.protein,
+                                                        }}
+                                                    />
+                                                
+                                                    : activeTab === "side" 
+                                                        ? <ItemCard 
+                                                            name={activeTab}
+                                                            value={item.title} 
+                                                            id={item.id}
+                                                            onChange={(e)=>pickProduct(e,item.price,item.product_type,item.id)}
+                                                            checked={selectedProduct[activeTab].some(i => i.title === item.title) || false}
+                                                            imgUrl={item.imageUrl}
+                                                            onClickPlus={() => editQty(item.title , 1 ,item.price,item.product_type,item.id)}
+                                                            onClickMins={() => editQty(item.title , 0 ,item.price,item.product_type,item.id)}
+                                                            qty={itemQty(item.title)}
+                                                            price={item.price}
+                                                            mode={"pluralNoNum"}
+                                                            detail={{
+                                                                grams:item.grams,
+                                                                calories: item.nutrition.calories,
+                                                                carbs: item.nutrition.carbs,
+                                                                fat: item.nutrition.fat,
+                                                                protein: item.nutrition.protein,
+                                                            }}
+                                                        /> 
+                                                        : <ItemCard 
+                                                            name={activeTab}
+                                                            value={item.title} 
+                                                            id={item.id}
+                                                            onChange={(e)=>pickProduct(e,item.price,item.product_type,item.id)}
+                                                            checked={selectedProduct[activeTab].some(i => i.title === item.title) || false}
+                                                            imgUrl={item.imageUrl}
+                                                            onClickPlus={() => editQty(item.title , 1 ,item.price,item.product_type,item.id)}
+                                                            onClickMins={() => editQty(item.title , 0 ,item.price,item.product_type,item.id)}
+                                                            qty={itemQty(item.title)}
+                                                            price={item.price}
+                                                            mode={"plural"}
+                                                            detail={{
+                                                                grams:item.grams,
+                                                                calories: item.nutrition.calories,
+                                                                carbs: item.nutrition.carbs,
+                                                                fat: item.nutrition.fat,
+                                                                protein: item.nutrition.protein,
+                                                            }}
+                                                        />                                                   
                                                     }
                                                 </div>
                                             ))}
@@ -623,12 +678,20 @@ export default function Custom() {
                                         <p className="text-danger mb-3">套餐含{maxCount[activeTab]}份 $30 蛋白質，依照選擇將自動補差額</p>
                                     }
                                     <div className="d-flex justify-content-between bg-white rounded mx-auto" style={{width:"200px"}}>
-                                        <button className="btn fs-3" onClick={handlePrevBtn}>
-                                            <i className="bi bi-arrow-left-circle-fill"></i>
-                                        </button>
-                                        <button className="btn fs-3" onClick={handleNextBtn}>
-                                            <i className="bi bi-arrow-right-circle-fill"></i>
-                                        </button>
+                                        <div className="text-center position-absolute bottom-0 start-50 translate-middle-x mb-lg-8 mb-6" >
+                                            <AdmButton
+                                                onClick={handlePrevBtn}
+                                                text={"上一步"}
+                                                size={'lg'}
+                                                className={'btn-gray-200  px-lg-10  py-2  rounded-5 mx-6'}
+                                            />
+                                            <AdmButton
+                                                onClick={handleNextBtn}
+                                                text={"下一步"}
+                                                size={'lg'}
+                                                className={'btn-primary  px-lg-10  py-2  rounded-5 mx-6'}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
 
@@ -637,9 +700,9 @@ export default function Custom() {
 
                         {/* step3 確認餐點 */}
                         { stepState === 3 && 
-                            <section className="blur-bg py-5 h-100 position-relative py-10 px-3" >
+                            <section className="py-5 position-relative py-10 px-3" >
 
-                                <Stepper stepState={stepState}/>
+                                
                                 
                                 <div className="d-flex mb-5" >
                                     <div className="">
@@ -757,6 +820,10 @@ export default function Custom() {
 
                             </section>
                         }
+
+                        </div>
+                        }
+                        
                         
 
                     </div>
