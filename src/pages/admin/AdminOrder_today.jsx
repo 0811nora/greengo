@@ -56,6 +56,11 @@ export default function AdminOrder_today() {
       filterType === order.order_status || filterType === order.payment_status
     );
   });
+  const allOrderNum = orders.length;
+  const readyOrderNum = orders.filter(
+    (order) => order.order_status === "ready",
+  ).length;
+  console.log(readyOrderNum);
 
   // 時間戳轉換
   const changeTimeStamp_date = (timeStamp) => {
@@ -78,23 +83,13 @@ export default function AdminOrder_today() {
       case "prepare":
         return <span className="tag status-prepare">製餐中</span>;
       case "ready":
-        return (
-          <span className="tag status-ready">
-            可取餐
-            {/* <i className="bi bi-check-circle-fill"> 可取餐</i> */}
-          </span>
-        );
+        return <span className="tag status-ready">可取餐</span>;
       case "done":
         return <span className="tag status-done">已取貨</span>;
       case "paid":
         return <span className="tag status-done">已付款</span>;
       case "unpaid":
-        return (
-          <span className="tag status-unpaid">
-            未付款
-            {/* <i className="bi bi-credit-card-2-back-fill"> 未付款</i> */}
-          </span>
-        );
+        return <span className="tag status-unpaid">未付款</span>;
       default:
         return <span className="tag status-new">新訂單</span>;
     }
@@ -145,8 +140,8 @@ export default function AdminOrder_today() {
                 >
                   <div className="d-flex align-items-center justify-content-between">
                     <div>
-                      <h5 className="num">10</h5>
-                      <p>目前所有訂單數</p>
+                      <h5 className="num">{allOrderNum}</h5>
+                      <p>今日所有訂單數</p>
                     </div>
                     <i className="bi bi-box2-fill"></i>
                   </div>
@@ -161,8 +156,8 @@ export default function AdminOrder_today() {
                 >
                   <div className="d-flex align-items-center justify-content-between">
                     <div>
-                      <h5 className="num">10</h5>
-                      <p>目前可取餐數</p>
+                      <h5 className="num">{readyOrderNum}</h5>
+                      <p>可取餐數</p>
                     </div>
                     <i className="bi bi-check2-circle"></i>
                   </div>
@@ -178,7 +173,7 @@ export default function AdminOrder_today() {
                   <div className="d-flex align-items-center justify-content-between">
                     <div>
                       <h5 className="num">10</h5>
-                      <p>目前製作中數</p>
+                      <p>製作中數</p>
                     </div>
                     <i className="bi bi-clock"></i>
                   </div>
@@ -194,7 +189,7 @@ export default function AdminOrder_today() {
                   <div className="d-flex align-items-center justify-content-between">
                     <div>
                       <h5 className="num">10</h5>
-                      <p>目前未付款數</p>
+                      <p>未付款數</p>
                     </div>
                     <i className="bi bi-credit-card-2-back"></i>
                   </div>
@@ -204,7 +199,7 @@ export default function AdminOrder_today() {
           </div>
           <div className="content adm__glassbg">
             <div className="d-flex flex-column gap-6">
-              <div className="toolbar">
+              {/* <div className="toolbar">
                 <div className="d-flex justify-content-between align-items-center gap-2 ">
                   <div className="position-relative">
                     <i className="bi bi-search adm__text__icon search-bar__icon"></i>
@@ -222,7 +217,7 @@ export default function AdminOrder_today() {
                     新增訂單
                   </button>
                 </div>
-              </div>
+              </div> */}
               <table className="table">
                 <thead>
                   <tr>

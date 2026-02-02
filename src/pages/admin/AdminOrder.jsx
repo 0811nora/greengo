@@ -35,28 +35,38 @@ export default function AdminOrder() {
 
   return (
     <main className="container-fluid px-0 order-page">
-      <div className="order-navbar">
-        <div className="d-flex align-items-center gap-2">
-          <NavLink
-            className={({ isActive }) =>
-              `navbar-title ${isActive ? "active" : ""}`
-            }
-            to={"today"}
-          >
-            今日訂單
-          </NavLink>
-          <span>/</span>
-          <NavLink
-            className={({ isActive }) =>
-              `navbar-title ${admMode ? "" : "disable"} ${isActive ? "active" : ""}`
-            }
-            to={admMode ? "history" : "#"}
-            onClick={() => {
-              handleNavMode("/admin/order/history");
-            }}
-          >
-            歷史訂單
-          </NavLink>
+      <div className="order-navbar ">
+        <div className="d-flex justify-content-between">
+          <div className="d-flex align-items-center gap-2">
+            <NavLink
+              className={({ isActive }) =>
+                `navbar-title ${isActive ? "active" : ""}`
+              }
+              to={"today"}
+            >
+              今日訂單
+            </NavLink>
+            <span>/</span>
+            <NavLink
+              className={({ isActive }) =>
+                `navbar-title ${admMode ? "" : "disable"} ${isActive ? "active" : ""}`
+              }
+              to={admMode ? "history" : "#"}
+              onClick={() => {
+                handleNavMode("/admin/order/history");
+              }}
+            >
+              歷史訂單
+            </NavLink>
+          </div>
+          <div className="position-relative">
+            <i className="bi bi-search adm__text__icon search-bar__icon"></i>
+            <input
+              type="text"
+              className="form-control adm__input search-bar"
+              placeholder="搜尋所有訂單"
+            />
+          </div>
         </div>
       </div>
       <Outlet />
