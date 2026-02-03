@@ -1,0 +1,148 @@
+
+.custom-main{
+    .step1-card{
+        background-size: cover;
+        width: 140px;
+        transition: width 0.5s ease-in-out;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 4px;
+
+        &:hover{
+            width: 300px;
+            .card-content {
+                display: flex;
+                opacity: 1;
+                transition: opacity 0.1s ease 0.1s, 
+                transform 0.4s ease 0.2s;
+            }
+        }
+
+        @media (max-width: 992px){
+            width: 300px;
+            height: 150px;
+            transition: height 0.5s ease-in-out;
+
+        }
+
+        
+        .card-outside{
+            height: 340px;
+            max-width: 300px;
+            width: 100%;
+            @media (max-width: 992px){
+                width: 100%;
+
+            }
+        }
+
+        
+
+        .card-content{
+            width: 190px !important;
+            opacity: 0;
+            transition: opacity 0.3s ease 0s, 
+            transform 5s ease 0s;
+            padding: 20px;
+            color: white;
+        }
+
+        .dark-overlay{
+            background-color: #16161625;
+            width:100%;
+            height: 100%;
+        }
+        .dark-overlay2{
+            background-color: #e3e3e3b1;
+            color: $brown-300;
+            width:100%;
+            height: 100%;
+        }
+
+        .title-area {
+            width: 140px; 
+            display: flex;
+            justify-content: center; 
+            align-self: flex-end;    
+            padding-bottom: 20px;
+            transition: all 0.5s ease;
+            height: auto;
+
+            @media (max-width: 992px) {
+                padding-top: 30px;
+                padding-left: 10px;
+                align-self: flex-start !important;   
+                width: 100%;          
+                justify-content: center; 
+                padding-bottom: 0;
+                white-space: nowrap;
+
+            }
+        }
+
+        .step-title {
+            margin: 0;
+            width: 1.4em;
+            word-break: break-all;
+            text-align: center;
+            transition: all 0.3s ease;
+
+            @media (max-width: 992px) {
+                width: auto;           
+                word-break: normal;
+                font-size: 2rem;    
+                font-weight: bold;
+                letter-spacing: 4px; 
+                text-align: center;
+            }
+        }
+
+
+        
+    }
+
+    .c-active-card{
+        box-shadow: 13px 15px 20px  rgba(35, 35, 35, 0.502);
+        outline: 7px solid $primary-100;
+        width: 300px;
+
+        @media (max-width: 992px){
+            width: 100%;
+            max-width: 300px;
+            height: 340px;
+            .title-area {
+                @media (max-width: 992px) {
+                    align-self: flex-end !important; 
+                    width: 140px; 
+                    padding-bottom: 20px;
+                    white-space: normal;
+
+                }
+            }.step-title {
+                @media (max-width: 992px) {
+                    width: 1.4em !important;
+                    word-break: break-all !important;
+                    padding-left: 0;
+                }
+            }
+
+        }
+        .card-content {
+            display: flex;
+            opacity: 1;
+            transition: opacity 0.1s ease 0.1s, 
+            transform 0.4s ease 0.2s;
+        }
+        
+    }
+
+    .c-pick-btn{
+        color: $primary-100;
+        font-size: 26px;
+        margin: 5px 8px;
+        opacity: 0;
+    }
+    .c-active-pick-btn{
+        opacity: 1;
+    }
+}
