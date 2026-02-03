@@ -1,11 +1,27 @@
 .custom-main{
     color:$brown-300;
+    color{
+        color: #e7976d;
+        color: #d7d566;
+        color: #eaeaea;
+        color: #f0e7cd;
+        color: #ccdec1;
+        color: #94ba7b;
+    }
+
+    .chart-list{
+        background-color: #ffffff9a;
+        border-radius: 5px;
+        border-left: 6px solid $brown-300;
+    }
+
+    
 
     .text-price{
         color: #df7b45;
     }
     .fs-ssm{
-        font-size: 12px;
+        font-size: 13px;
     }
     .text-orange-200{
         color:#ffa43b !important;
@@ -24,6 +40,7 @@
         justify-content: center;
         
     }
+
     
     @media (min-width: 992px) {
         .c-fs-lg-80 {
@@ -90,7 +107,7 @@
         outline: 4px solid $primary;
         // outline: 4px solid #dcc47c;
         
-        box-shadow: 0px 12px  25px rgba(44, 99, 57, 0.559);
+        // box-shadow: 0px 12px  25px rgba(44, 99, 57, 0.559);
         // box-shadow: 0px 12px  25px #9c9273a0;
     }
     .step1-card-area{
@@ -98,6 +115,27 @@
         max-width: 800px;
         
     }
+    .order-details{
+        background-color: #f7f7f7;
+        // background-color: #ecf3ed;
+        padding: 20px;
+        backdrop-filter: blur(20px) !important;
+        border-radius: 20px;
+        max-height: 550px;
+        width: 330px;
+        box-shadow: 2px 2px 2px 2px #6d665e82;
+        bottom: 50px;
+
+
+        
+    }
+
+    .order-details-list{
+        background-color: #e7e7e7a1;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
 
 
 
@@ -173,6 +211,23 @@
             stroke-dashoffset: 0;
             opacity: 0;
         }
+    }
+
+
+    @keyframes tabContentFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .tab-content-animation {
+        animation: tabContentFadeIn 0.4s ease-out forwards;
+        width: 100%; 
     }
 
 

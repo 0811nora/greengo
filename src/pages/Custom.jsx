@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllProducts,postAddToCart,getCart } from "../api/ApiClient";
+import { PageSwitch} from '../components/Custom-comp/AnimationWrapper';
+
 import AdmButton from "../components/admin/common/AdmButton";
 
 import ItemCard from "../components/Custom-comp/itemCard";
@@ -11,12 +13,14 @@ import lightBG from "../assets/image/custom/lightBG.jpg";
 import balancedBG from "../assets/image/custom/balancedBG.jpg";
 import highProteinBG from "../assets/image/custom/highProteinBG.jpg";
 import TypeListBtn from "../components/Custom-comp/TypeListBtn";
+import DonutPFC from "../components/Custom-comp/PFC_Chart";
 
 import baseIcon from "../assets/image/custom/icons8-rice-bowl-50.png";
 import meatIcon from "../assets/image/custom/icons8-meat-50.png";
 import sideIcon from "../assets/image/custom/icons8-broccoli-50.png";
 import sauceIcon from "../assets/image/custom/icons8-sauce-53.png";
 import addOnIcon from "../assets/image/custom/icons8-cutlery-32.png";
+
 
 
 
@@ -49,6 +53,7 @@ export default function Custom() {
     const [ activeTab , setActiveTab ] = useState('base');
     const [ selectedProduct , setSelectedProduct] = useState(INITIAL_SELECTED_PRODUCT);
     const [ addOnTabs ,setAddonTabs ] =  useState('base');
+    const [ isOpenOrderModal , setIsOpenOrderModal] = useState(false);
 
 
 
@@ -155,7 +160,25 @@ export default function Custom() {
     console.log(finalTotalNutrition)
 
 
+    // 計算三大營養素的百分比
+    const pfcRatio = () => {
+        const { carbs , protein , fat , calories } = finalTotalNutrition;
 
+        const total = carbs + protein + fat;
+        if (total === 0) return { carbs: 0, fat: 0, protein: 0 };
+
+        const result = {
+            calories: Math.round(calories),
+            carbs : Math.round((carbs / total ) * 100),
+            fat : Math.round(( fat / total ) * 100),
+            protein : Math.round((protein / total ) * 100),
+        }
+        return result;
+    }
+
+
+
+    // 找出蛋白質加價的總金額
     const findproteinPrice = selectedProduct.protein.map((item) => {
         const product = getAllitem.find(p => p.title === item.title);
         
@@ -166,7 +189,7 @@ export default function Custom() {
         };
     });
 
-
+    // 找出加購商品加價的總金額
     const findAddonPrice = selectedProduct.addOn.map((item) => {
         const product = getAllitem.find(p => p.title === item.title);
         return {
@@ -296,8 +319,7 @@ export default function Custom() {
         }
     }
 
-
-
+    // 送購物車的資料
     const handleSendCart = async() => {
 
         try{
@@ -364,10 +386,60 @@ export default function Custom() {
 
     }
 
+    // 整合單品卡片的資料再渲染
+    const renderItemCards = (list, tabName) => {
+        return list.map((item) => {
+            const isSingle = maxCount[tabName] <= 1;
+            const isSide = tabName === "side";
 
+            const isLightProtein = selectedProduct.plan_type === 'light' && tabName === 'protein';
 
+            let currentMode = "plural";
+            
+            if (isLightProtein) {
+                currentMode = "priceOnly"; 
+            } else if (tabName === "addOn") {
+                currentMode = "plural"; 
+            } else if (isSingle) {
+                currentMode = "single";
+            } else if (isSide) {
+                currentMode = "pluralNoNum";
+            }
+
+            const isChecked = tabName === "addOn"
+                ? selectedProduct.addOn.some(i => i.title === item.title)
+                : selectedProduct[tabName]?.some(i => i.title === item.title) || false;
+
+            return (
+                <div className="col" key={item.id}>
+                    <ItemCard 
+                        name={tabName === "addOn" ? addOnTabs : tabName} 
+                        value={item.title} 
+                        id={item.id}
+                        imgUrl={item.imageUrl}
+                        price={item.price}
+                        mode={currentMode}
+                        checked={isChecked}
+                        qty={itemQty(item.title)}
+                        onChange={(e) => pickProduct(e, item.price, item.product_type, item.id)}
+                        onClickPlus={() => editQty(item.title, 1, item.price, item.product_type, item.id)}
+                        onClickMins={() => editQty(item.title, 0, item.price, item.product_type, item.id)}
+                        detail={{
+                            grams: item.grams,
+                            calories: item.nutrition.calories,
+                            carbs: item.nutrition.carbs,
+                            fat: item.nutrition.fat,
+                            protein: item.nutrition.protein,
+                        }}
+                    />
+                </div>
+            );
+        });
+    };
 
     
+
+
 
 
 
@@ -378,7 +450,7 @@ export default function Custom() {
                     <div style={{height:"100px"}}></div>
                     <div className="container banner-container">
 
-
+                        <PageSwitch nodeKey={stepState}>
                         {/*自由配 banner*/}
                         { stepState === 0 && 
                             <div className=" d-flex justify-content-center align-items-center" style={{ height: "calc(100vh - 100px)"}}>
@@ -412,7 +484,7 @@ export default function Custom() {
                         {/* step1 選擇套餐 */}
 
                         { stepState === 1 && 
-                            <section className="  h-100 py-10 px-8 overflow-hidden" >
+                            <section className="  h-100 py-10 px-8 overflow-hidden " >
                                 <div className=" h-100 d-flex flex-column flex-lg-row justify-content-center align-items-center justify-content-lg-between mb-8 c-mt-lg-60 mt-6" >
                                     <div className="text-center text-lg-start " style={{width:"300px"}}>
                                         <h2 className=" mb-lg-6 fs-lg-1 fs-2 py-4">
@@ -475,20 +547,47 @@ export default function Custom() {
                         }
                         
 
-
                         {/* step2 開始自由配 */}
                         { stepState === 2 && 
-                            <section className="  h-100 py-8 px-8 overflow-hidden" >
+                            <section className="  h-100 py-8 px-8 overflow-hidden " >
 
-                                <div className="text-center text-lg-start mb-lg-5" >
+                                <div className="text-center text-lg-start mb-lg-3 position-relative" >
                                     <h2 className=" mb-lg-3 fs-lg-2 fs-4 ">
                                         <span className="  mb-2 text-orange-10">Step2 </span><br/>
                                         <span className=" text-primary">開始自由配</span></h2>
                                     <p className="text-brown-300  fw-bold">請打造專屬於您的自由配餐點</p>
+                                    {activeTab === 'protein' && 
+                                        <p className="text-brown-300 position-absolute top-100 start-50 translate-middle pb-5  "
+                                            >
+                                            套餐含 {maxCount[activeTab]} 份 $30 蛋白質，依照選擇將自動補差額
+                                            
+                                        </p>
+
+                                    }
+                                    {activeTab === 'addOn' &&    
+                                        <div className="text-center mb-5 position-absolute top-100 start-50 translate-middle pb-6">
+                                                <ul className="nav nav-tabs justify-content-center border-0 mb-5">
+                                                    {['base', 'protein', 'side', 'sauce'].map((tab) => (
+                                                        <li className="nav-item" key={tab}>
+                                                            <button 
+                                                                className={`nav-link border-0 px-6 position-relative ${ 
+                                                                    addOnTabs === tab ? 'border-bottom border-3 border-primary active fw-bold' : 'text-muted'
+                                                                }`}
+                                                                style={{ background: 'transparent' }}
+                                                                onClick={() => setAddonTabs(tab)}
+                                                            >
+                                                                {tab === 'base' ? '基底' : tab === 'protein' ? '蛋白質' : tab === 'side' ? '配菜' : '醬料'}
+                                                            
+                                                            </button>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                    }
                                 </div>
 
                                 <div className="row ">
-                                    <div className="col-3">
+                                    <div className="col-2">
                                         <div className="my-3">
                                             <TypeListBtn 
                                                 text={"基底"} 
@@ -536,147 +635,167 @@ export default function Custom() {
                                         </div>
                                     
                                     </div>
-                                    <div className="col-7">
-                                        <div className="row row-cols-3">
-                                            {activeTab === 'addOn'
-                                                ? <div className="w-100">
-                                                    <div className="text-center mb-5">
-                                                        <button className="btn btn-accent-100 mx-2" onClick={() => setAddonTabs('base')}>基底</button>
-                                                        <button className="btn btn-accent-100 mx-2" onClick={() => setAddonTabs('protein')}>蛋白質</button>
-                                                        <button className="btn btn-accent-100 mx-2" onClick={() => setAddonTabs('side')}>配菜</button>
-                                                        <button className="btn btn-accent-100 mx-2" onClick={() => setAddonTabs('sauce')}>醬料</button>
+                                    <div className="col-8  h-100 ">
+                                        <div className="row row-cols-3 px-8 pt-3 overflow-y-auto" style={{ height: '52vh' }}>
+                                            {activeTab === 'addOn' ? (
+                                                <div className="w-100 ">
+                                                    <div  className="row row-cols-3">
+                                                        {renderItemCards(renderaddOnItemList, "addOn")}
                                                     </div>
-                                                    <div className="row row-cols-3">
-                                                        {renderaddOnItemList .map(item => (
-                                                            <div className="col " key={item.id}>
-                                                                <ItemCard 
-                                                                    name={addOnTabs}
-                                                                    value={item.title} 
-                                                                    id={item.id}
-                                                                    onChange={(e)=>pickProduct(e,item.price,item.product_type,item.id)}
-                                                                    checked={selectedProduct.addOn.some(i => i.title === item.title) || false}
-                                                                    imgUrl={item.imageUrl}
-                                                                    onClickPlus={() => editQty(item.title , 1 ,item.price,item.product_type,item.id)}
-                                                                    onClickMins={() => editQty(item.title , 0 ,item.price,item.product_type,item.id)}
-                                                                    qty={itemQty(item.title)}
-                                                                    price={item.price}
-                                                                    mode={"plural"}
-                                                                    detail={{
-                                                                        grams:item.grams,
-                                                                        calories: item.nutrition.calories,
-                                                                        carbs: item.nutrition.carbs,
-                                                                        fat: item.nutrition.fat,
-                                                                        protein: item.nutrition.protein,
-                                                                    }}
+                                                </div>
+                                            ) : (
+                                                renderItemCards(renderItemList, activeTab)
+                                            )}
+                                        </div>
 
-                                                                />
-                                                            </div>
-                                                        ))}
+                                        
+                                    </div>
+                                    
+                                    <div className="col-2">
+                                        <div className="d-flex flex-column justify-content-between h-100">
+                                            <div>
+                                                <div className="mb-4">
+                                                    <DonutPFC 
+                                                        calories={pfcRatio().calories} 
+                                                        protein={pfcRatio().protein} 
+                                                        fat={pfcRatio().fat}  
+                                                        carbs={pfcRatio().carbs} 
+                                                    />
+                                                </div>
+                                                
+                                                <div className="">
+                                                    <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
+                                                        <p>蛋白質</p>
+                                                        <p>{finalTotalNutrition.protein}
+                                                            <span className="fs-ssm"> g</span>
+                                                        </p>
+                                                    </div>
+                                                    <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
+                                                        <p>碳水</p>
+                                                        <p>{finalTotalNutrition.carbs}
+                                                            <span className="fs-ssm"> g</span>
+                                                        </p>
+                                                    </div>
+                                                    <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
+                                                        <p>脂肪</p>
+                                                        <p>{finalTotalNutrition.fat}
+                                                            <span className="fs-ssm"> g</span>
+                                                        </p>
                                                     </div>
                                                 </div>
-                                                :  renderItemList.map((item) => (
-                                                    <div className="col" key={item.id}>
-                                                    {maxCount[activeTab] <= 1 
-                                                    ?  <ItemCard 
-                                                        name={activeTab}
-                                                        value={item.title} 
-                                                        id={item.id}
-                                                        onChange={(e)=>pickProduct(e,item.price,item.product_type,item.id)}
-                                                        checked={selectedProduct[activeTab].some(i => i.title === item.title) || false}
-                                                        imgUrl={item.imageUrl}
-                                                        onClickPlus={null}
-                                                        onClickMins={null}
-                                                        qty={null}
-                                                        price={item.price}
-                                                        mode={"single"}
-                                                        detail={{
-                                                            grams:item.grams,
-                                                            calories: item.nutrition.calories,
-                                                            carbs: item.nutrition.carbs,
-                                                            fat: item.nutrition.fat,
-                                                            protein: item.nutrition.protein,
-                                                        }}
-                                                    />
+                                            </div>
+                                            
+
+
+                                            <div className="mb-5 position-relative">
                                                 
-                                                    : activeTab === "side" 
-                                                        ? <ItemCard 
-                                                            name={activeTab}
-                                                            value={item.title} 
-                                                            id={item.id}
-                                                            onChange={(e)=>pickProduct(e,item.price,item.product_type,item.id)}
-                                                            checked={selectedProduct[activeTab].some(i => i.title === item.title) || false}
-                                                            imgUrl={item.imageUrl}
-                                                            onClickPlus={() => editQty(item.title , 1 ,item.price,item.product_type,item.id)}
-                                                            onClickMins={() => editQty(item.title , 0 ,item.price,item.product_type,item.id)}
-                                                            qty={itemQty(item.title)}
-                                                            price={item.price}
-                                                            mode={"pluralNoNum"}
-                                                            detail={{
-                                                                grams:item.grams,
-                                                                calories: item.nutrition.calories,
-                                                                carbs: item.nutrition.carbs,
-                                                                fat: item.nutrition.fat,
-                                                                protein: item.nutrition.protein,
-                                                            }}
-                                                        /> 
-                                                        : <ItemCard 
-                                                            name={activeTab}
-                                                            value={item.title} 
-                                                            id={item.id}
-                                                            onChange={(e)=>pickProduct(e,item.price,item.product_type,item.id)}
-                                                            checked={selectedProduct[activeTab].some(i => i.title === item.title) || false}
-                                                            imgUrl={item.imageUrl}
-                                                            onClickPlus={() => editQty(item.title , 1 ,item.price,item.product_type,item.id)}
-                                                            onClickMins={() => editQty(item.title , 0 ,item.price,item.product_type,item.id)}
-                                                            qty={itemQty(item.title)}
-                                                            price={item.price}
-                                                            mode={"plural"}
-                                                            detail={{
-                                                                grams:item.grams,
-                                                                calories: item.nutrition.calories,
-                                                                carbs: item.nutrition.carbs,
-                                                                fat: item.nutrition.fat,
-                                                                protein: item.nutrition.protein,
-                                                            }}
-                                                        />                                                   
-                                                    }
+                                                <AdmButton
+                                                    onClick={()=>setIsOpenOrderModal(true)}
+                                                    text={"檢視餐點內容"}
+                                                    size={'lg'}
+                                                    className={'btn-outline-brown-300 py-2 border-2 fw-bold rounded-5  w-100'}
+                                                />
+
+                                                {isOpenOrderModal &&
+                                                <div className="order-details  p-5 position-absolute  end-0  overflow-y-auto">
+                                                    <i className="bi bi-x-circle-fill fs-5 position-absolute top-0 end-0 m-3" onClick={()=>setIsOpenOrderModal(false)}></i>
+                                                        <div className="mb-4">
+                                                            <h6 className="mb-4 text-center text-gray-500">{PLAN_NAME[selectedProduct.plan_type]} x 自由配</h6>
+                                                            <div className="d-flex  gap-3 px-2  mb-1 fw-bold">
+                                                                <p style={{width:"70px"}}>類別</p> 
+                                                                <p style={{width:"80px"}}>內容</p>
+                                                                <p className="text-center" style={{width:"40px"}}>數量</p>
+                                                                <p className="text-center" style={{width:"50px"}}>加價</p>
+                                                            </div>
+                                                            <div className=" order-details-list ">
+                                                            {CATEGORY_TABS.filter(tab => tab !== "addOn" && selectedProduct[tab].length > 0).map(tab => {
+                                                                const titleName = {
+                                                                    base:"基底",
+                                                                    protein: "蛋白質",
+                                                                    side: "配菜",
+                                                                    sauce: "醬料"
+                                                                }
+                                                                return(
+                                                                    <div className="d-flex gap-3 py-2">
+                                                                    <div className="text-primary" style={{width:"70px"}}>{titleName[tab]}</div>
+                                                                    <div className="d-flex flex-column ">
+                                                                        {selectedProduct[tab].map(p => {
+                                                                            
+                                                                            const basePrice = p.price || 0;
+                                                                            const isPayable = tab === "protein" || tab === "addOn"
+                                                                            let displayPrice = "-"
+                                                                            if(isPayable){
+                                                                                const finalPrice = tab === "protein"
+                                                                                    ? (basePrice - PROTEIN_DISCOUNT) * p.qty
+                                                                                    : basePrice * p.qty
+                                                                                displayPrice = finalPrice > 0 ? `$${finalPrice}` : "-"
+                                                                            }
+                                                                            
+                                                                            return(
+                                                                                <div className="d-flex  gap-3 ">
+                                                                                    <p style={{width:"70px"}}>{p.title}</p> 
+                                                                                    <p className="text-center" style={{width:"40px"}}>{p.qty}</p>
+                                                                                    <p className="text-center" style={{width:"50px"}}>{displayPrice}</p>
+                                                                                </div>
+                                                                            )
+                                                                            
+                                                                        })}
+                                                                    </div>
+                                                                </div>
+                                                                )
+                                                            })}
+                                                            
+                                                            </div>
+                                                            <div className="py-2 me-5">
+                                                                <div className="d-flex justify-content-between px-2 mb-2">
+                                                                    <p>自由配</p>
+                                                                    <p>$ {CUSTOM_PRICE}</p>
+                                                                </div>
+                                                                <div className="d-flex justify-content-between px-2 mb-2">
+                                                                    <p>自由配加價</p>
+                                                                    <p>$ {totalProteinPrice}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <h6 className="mb-4 text-center text-gray-500">加購</h6>
+                                                            <div className="d-flex  gap-3 px-2  mb-1 fw-bold">
+                                                                <p style={{width:"145px"}}>內容</p>
+                                                                <p className="text-center" style={{width:"40px"}}>數量</p>
+                                                                <p className="text-center" style={{width:"80px"}}>價格</p>
+                                                            </div>
+                                                            <div className="order-details-list">
+                                                                {selectedProduct["addOn"].map( p => (
+                                                                    <div className="d-flex gap-4   py-2">
+                                                                        <p className="text-primary" style={{width:"145px"}}>{p.title}</p> 
+                                                                        <p className="text-center" style={{width:"40px"}}>{p.qty}</p>
+                                                                        <p className="text-center" style={{width:"80px"}}>${p.price * p.qty}</p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                        <div className="py-2 border-bottom">
+                                                            <div className="d-flex justify-content-between px-3 mb-2 me-5">
+                                                                <p>加購品項</p>
+                                                                <p>$ {totalAddonPrice}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="py-2 ">
+                                                            <div className="d-flex justify-content-between align-items-center px-3 mb-2 me-3">
+                                                                <p className="fs-4 fw-bold ">總計</p>
+                                                                <p className="fs-5 fw-bold text-orange-300">$ {finalPrice}</p>
+                                                            </div>
+                                                        </div>
+
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="col-2">
-                                        <div className="card mb-3">
-                                            <div className="card-body">
-                                                <p>熱量：{finalTotalNutrition.calories}</p>
-                                                <p>蛋白質：{finalTotalNutrition.protein}</p>
-                                                <p>碳水：{finalTotalNutrition.carbs}</p>
-                                                <p>脂肪：{finalTotalNutrition.fat}</p>
-                                            </div>
-                                        </div>
-                                        <div className="card mb-3">
-                                            <div className="card-body">
-                                                <h6>已選品項</h6>
-                                                <p>基底：{selectedProduct.base.map(i => i.title).join('、')}</p>
-                                                <p>蛋白質：{selectedProduct.protein.map(i => i.title).join('、')}</p>
-                                                <p>配菜：{selectedProduct.side.map(i => i.title).join('、')}</p>
-                                                <p>醬料：{selectedProduct.sauce.map(i => i.title).join('、')}</p>
-                                                <p>加購：{selectedProduct.addOn.map(i => i.title).join('、')}</p>
-                                            </div>
-                                        </div>
-                                        <div className="card mb-3">
-                                            <div className="card-body">
-                                                <p>總金額：${finalPrice}</p>
+                                                }
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-
-
                                 <div className="text-center" >
-                                    {activeTab === 'protein' && 
-                                        <p className="text-danger mb-3">套餐含{maxCount[activeTab]}份 $30 蛋白質，依照選擇將自動補差額</p>
-                                    }
                                     <div className="d-flex justify-content-between bg-white rounded mx-auto" style={{width:"200px"}}>
                                         <div className="text-center position-absolute bottom-0 start-50 translate-middle-x mb-lg-8 mb-6" >
                                             <AdmButton
@@ -825,7 +944,7 @@ export default function Custom() {
                         }
                         
                         
-
+                        </PageSwitch>
                     </div>
 
                 </div>

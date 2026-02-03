@@ -1,144 +1,86 @@
+function ItemCard({ 
+        name, 
+        value, 
+        id, 
+        onChange, 
+        checked, 
+        imgUrl, 
+        onClickPlus, 
+        onClickMins, 
+        qty, 
+        price, 
+        detail, 
+        mode 
+    }) {
+    
+    const showPrice = mode === "plural" || mode === "priceOnly";
+    const showCounter = mode === "plural" || mode === "pluralNoNum";
+    const isClickableCard = mode === "single" || mode === "priceOnly";
+    const Wrapper = isClickableCard ? "label" : "div";
 
+    return (
+        <div className="form-check p-0"> 
+            <input
+                className="form-check-input hidden-input"
+                type="checkbox"
+                name={name}
+                value={value}
+                id={id}
+                onChange={onChange}
+                checked={checked}
+            />
+            
 
-function ItemCard ({name, value,id,onChange,checked,imgUrl,onClickPlus,onClickMins,qty,price,detail,mode}) {
-    return <div className="form-check">
-        <input 
-            className="form-check-input hidden-input" 
-            type="checkbox" 
-            name={name} 
-            value={value} 
-            id={id}
-            onChange={onChange}
-            checked={checked}
-        />
-        
+            <Wrapper 
+                className="form-check-label w-100" 
+                {...(isClickableCard ? { htmlFor: id } : {})} 
+                style={isClickableCard ? { cursor: 'pointer' } : {}}
+            >
+                <div className={`itemCard ${checked ? "card-active" : ""} mb-5`}>
+                    
 
-        {mode === "plural" &&
-            <div className={`itemCard ${checked ? "card-active": ""} mb-5`}>
-                <div class="position-relative" style={{height:"100px"}}>
-                    <img className="itemCard__img" src={imgUrl}/>
-                    <p className="position-absolute bottom-0 end-0 itemCard__descr fw-medium  ">$ {price}</p>
+                    <div className="position-relative" style={{ height: "100px" }}>
+                        <img className="itemCard__img" src={imgUrl} alt={value} />
+                        {showPrice && (
+                            <p className="position-absolute bottom-0 end-0 itemCard__descr fw-medium">$ {price}</p>
+                        )}
+                    </div>
 
-                </div>
-                    <div class="itemCard__descr-wrapper">
-                        <div className="d-flex justify-content-between align-items-center gap-2 mb-4">
-                            <p class="itemCard__title">{value}</p>
-                            <div className="itemCard__counter">
-                                <button className="itemCard__btn"onClick={onClickMins}>
-                                    -
-                                </button>
-                                <span className="itemCard__counter-score">{qty}</span>
-                                <button className="itemCard__btn itemCard__btn-plus"
-                                onClick={onClickPlus}>
-                                    +
-                                </button>
-                            </div>
+                    <div className="itemCard__descr-wrapper">
+                        <div className="d-flex justify-content-between align-items-center gap-2 mb-1">
+                            <p className="itemCard__title mb-0">{value}</p>
                             
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div>
-                                <div>
-                                    <p className="fs-ssm">
-                                        <span >{detail.grams}g</span> / 
-                                        <span > {detail.calories} cal</span>
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="fs-ssm">
-                                        <span >P {detail.protein}</span> / 
-                                        <span > F {detail.fat}</span> / 
-                                        <span > C {detail.carbs}</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        }
 
-        {mode === "pluralNoNum" &&
-            <div className={`itemCard ${checked ? "card-active": ""} mb-5`}>
-                <div class="position-relative" style={{height:"100px"}}>
-                    <img className="itemCard__img" src={imgUrl}/>
-                </div>
-                    <div class="itemCard__descr-wrapper">
-                        <div className="d-flex justify-content-between align-items-center gap-2 mb-4">
-                            <p class="itemCard__title">{value}</p>
-                            <div className="itemCard__counter">
-                                <button className="itemCard__btn"onClick={onClickMins}>
-                                    -
-                                </button>
-                                <span className="itemCard__counter-score">{qty}</span>
-                                <button className="itemCard__btn itemCard__btn-plus"
-                                onClick={onClickPlus}>
-                                    +
-                                </button>
-                            </div>
-                            
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div>
-                                <div>
-                                    <p className="fs-ssm">
-                                        <span >{detail.grams}g</span> / 
-                                        <span > {detail.calories} cal</span>
-                                    </p>
+                            {showCounter && (
+                                <div className="itemCard__counter">
+                                    <button 
+                                        className="itemCard__btn" 
+                                        onClick={(e) => { e.preventDefault(); onClickMins(); }}
+                                    > - </button>
+                                    <span className="itemCard__counter-score">{qty}</span>
+                                    <button 
+                                        className="itemCard__btn itemCard__btn-plus" 
+                                        onClick={(e) => { e.preventDefault(); onClickPlus(); }}
+                                    > + </button>
                                 </div>
-                                <div>
-                                    <p className="fs-ssm">
-                                        <span >P {detail.protein}</span> / 
-                                        <span > F {detail.fat}</span> / 
-                                        <span > C {detail.carbs}</span>
-                                    </p>
-                                </div>
-                            </div>
+                            )}
                         </div>
-                </div>
-            </div>
-        }
 
-        {mode === "single" &&
-            <div className="form-check">
-                <input 
-                    className="form-check-input hidden-input" 
-                    type="checkbox" 
-                    name={name}
-                    value={value} 
-                    id={id}
-                    onChange={onChange}
-                    checked={checked}
-                />
-                <label className="form-check-label w-100" htmlFor={id}>
-                    <div className={`itemCard  ${checked ? "card-active": ""}`}>
-                        <div  style={{height:"100px"}}>
-                            <img className="itemCard__img" src={imgUrl}/>
-                        </div>
-                        <div class="itemCard__descr-wrapper">
-                            <div className="d-flex justify-content-between align-items-center gap-2 ">
-                                <p class="itemCard__title">{value}</p>
-                            </div>
-                            <div className="text-end">
-                                <div>
-                                    <p className="fs-ssm">
-                                        <span >{detail.grams}g</span> / 
-                                        <span > {detail.calories} cal</span>
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="fs-ssm">
-                                        <span >P {detail.protein}</span> / 
-                                        <span > F {detail.fat}</span> / 
-                                        <span > C {detail.carbs}</span>
-                                    </p>
-                                </div>
+                        <div className="d-flex justify-content-between align-items-center">
+                            <div className={isClickableCard ? "text-end w-100" : ""}>
+                                <p className="fs-ssm mb-1">
+                                    <span>{detail.grams}g</span> / <span>{detail.calories} cal</span>
+                                </p>
+                                <p className="fs-ssm mb-0">
+                                    <span>P {detail.protein}</span> / <span>F {detail.fat}</span> / <span>C {detail.carbs}</span>
+                                </p>
                             </div>
                         </div>
                     </div>
-                    
-                </label>
-            </div>
-        }
-    </div>
+                </div>
+            </Wrapper>
+        </div>
+    );
 }
 
 export default ItemCard;

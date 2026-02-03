@@ -12,12 +12,12 @@
     cursor: pointer;
     color: $brown-300;
     border: 3px solid transparent;
-    width: 70%;
+    width: 80%;
     padding: 6px 3px;
     transition: all 0.3s ease;
     &.c-typeButton-active {
         border: 3px solid #dcc47c;
-        width: 85%;
+        width: 98%;
         .c-typeButton-decor {
             transform: translateX(0);
         }
