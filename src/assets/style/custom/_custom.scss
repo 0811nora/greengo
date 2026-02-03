@@ -68,6 +68,8 @@
         background-image: url('../../image/custom/photo-1543352634-a1c51d9f1fa7.avif');
         width: 100%;
         background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
 
         @media (max-width: 768px){
             background-position: 0% 38%;
