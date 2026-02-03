@@ -1,5 +1,5 @@
 .c-about {
-    background-color: #FFFBEF;
+
 
     .mainLogo {
         text-align: center;
@@ -10,7 +10,7 @@
         aspect-ratio: 1208 / 860;
         overflow: hidden;
         position: relative;
-
+        background-color: #FFFBEF;
 
         img {
             width: 100%;
@@ -43,5 +43,42 @@
         height: 250px;
         object-fit: cover;
         object-position: bottom; // 鎖定底部，從上面開始裁切
+    }
+
+    .second_section {
+        background-color: #FEFDFD;
+        min-height: 968px;
+
+        .mid-sec {
+            background-color: #F9E8DB;
+
+
+        }
+
+
+        .third-sec {
+            background-color: #A63E28;
+            max-width: 500px;
+            border-top-left-radius: 24px;
+            border-bottom-left-radius: 24px;
+            color: #FFF3EA;
+
+        }
+
+        .img-border {
+            border: solid 1px #F2A82D;
+            max-width: 504px;
+            aspect-ratio: 1/1;
+
+
+
+        }
+
+
+        img {
+            object-fit: cover;
+            aspect-ratio: 1/1;
+            margin-bottom: -80px;
+        }
     }
 }
