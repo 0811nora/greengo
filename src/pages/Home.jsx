@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 // swiper
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
@@ -9,8 +9,12 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
+// API
+import { getArticles } from "../api/ApiClient";
+
 // component
 import ContentCard from "../components/home/ContentCard";
+import CommentCard from "../components/home/CommentCard";
 
 // 頁面 router
 const PageLinks = {
@@ -225,24 +229,47 @@ export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
+  // 文章 API
+  // 用時間排序 sort 去取最新 4 片文章
+  // main article
+  const [mainArticle, setMainArticle] = useState(null);
+  // sub article
+  const [subArticles, setSubArticles] = useState([]);
+
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.2 }, // 元素出現20%才觸發
-    );
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-    // cleanup
-    return () => {
-      observer.disconnect();
+    const handleScroll = () => {
+      if (window.scrollY > 500) {
+        setIsVisible(true);
+      }
     };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // 文章
+  useEffect(() => {
+    const getAllArticles = async (page = 1) => {
+      try {
+        const res = await getArticles(page);
+        console.log("文章 API 資料：", res.data.articles);
+        const allArticles = res.data.articles;
+        const sortedArticles = [...allArticles].sort(
+          (a, b) => b.create_at - a.create_at,
+        );
+        if (sortedArticles.length > 0) {
+          setMainArticle(sortedArticles[0]);
+          setSubArticles(sortedArticles.slice(1, 4));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAllArticles();
+  }, []);
+  // 文章時間戳轉換
+  const formatDate = (timestamp) => {
+    return new Date(timestamp * 1000).toLocaleDateString();
+  };
 
   return (
     <>
@@ -262,7 +289,7 @@ export default function Home() {
             </p>
             <NavLink
               to={PageLinks.productLink.url}
-              className="home__btn-primary fw-medium text-decoration-none d-inline-block" // 建議加 d-inline-block 確保寬度正常
+              className="home__btn-primary fw-medium"
             >
               立即點餐
             </NavLink>
@@ -377,7 +404,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        {/* SIGNATURE BOWLS */}
+        {/* 精選區 */}
         <section className="home__signature-section container-fluid">
           {/* 示意區 */}
           <div className="container">
@@ -428,7 +455,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        {/* Best seller + swiper 套件*/}
+        {/* 熱門商品 + swiper 套件*/}
         <section className="bg-white">
           <div className="container py-8 py-md-10">
             <div className="row">
@@ -499,7 +526,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        {/* MAKE YOUR BITE */}
+        {/* 自由配 */}
         <section
           className="position-relative my-5"
           style={{ paddingTop: "80px" }}
@@ -542,7 +569,7 @@ export default function Home() {
               {/* 右側卡片說明 */}
               {/* <ul className="col-lg-6 d-flex flex-column justify-content-center makeBite-section">
                 <li className="d-flex align-items-center">
-                  <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 ms-1 me-4">
+                  <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 ms-1 me-4">
                     1
                   </span>
                   <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
@@ -553,7 +580,7 @@ export default function Home() {
                   </span>
                 </li>
                 <li className="d-flex align-items-center">
-                  <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 me-3">
+                  <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3">
                     2
                   </span>
                   <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
@@ -564,7 +591,7 @@ export default function Home() {
                   </span>
                 </li>
                 <li className="d-flex align-items-center">
-                  <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 me-3">
+                  <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3">
                     3
                   </span>
                   <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
@@ -575,7 +602,7 @@ export default function Home() {
                   </span>
                 </li>
                 <li className="d-flex align-items-center">
-                  <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 me-3">
+                  <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3">
                     4
                   </span>
                   <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
@@ -610,10 +637,10 @@ export default function Home() {
             </div>
           </div>
         </section>
-        {/* OUR BELIEF YOUR INSPIRATION */}
-        <section className="container-fulid bg-primary-50">
+        {/* 關於我們 + 專欄 */}
+        <section className="container-fulid bg-primary-100">
           {/* 關於我們 */}
-          <section className="container-fluid bg-primary-50 py-7 overflow-hidden">
+          <section className="container-fluid bg-primary-100 py-7 overflow-hidden">
             <div className="container position-relative">
               <div className="row align-items-center">
                 <div className="col-md-6 position-relative">
@@ -625,7 +652,7 @@ export default function Home() {
                   />
                 </div>
                 {/* 文字區 */}
-                <div className="col-md-5 offset-md-1">
+                <div className="col-md-6 col-lg-4">
                   <ContentCard
                     subTitle="OUR BELIEF"
                     title="綠果的堅持"
@@ -643,14 +670,13 @@ export default function Home() {
               </div>
             </div>
           </section>
-
           {/* 專欄 */}
           <section className="container py-7">
             <div className="row">
               <div className="col-lg-4 mb-5 mb-lg-0">
                 <ContentCard
                   subTitle="YOUR INSPIRATION"
-                  title="綠果的專欄"
+                  title="綠果專欄"
                   description={
                     <>
                       讓我們的信念透過文字，
@@ -662,49 +688,114 @@ export default function Home() {
                   to={PageLinks.articleLink.url}
                 />
               </div>
-
               {/* 文章區 */}
               <div className="col-lg-8">
                 <div className="row g-4">
                   {/* 主文章 */}
                   <div className="col-md-7">
-                    <div className="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
-                      <div className="card-body p-4">
-                        <span className="badge bg-yellow text-dark mb-2">
-                          NEW
-                        </span>
-                        <h5 className="card-title fw-bold">
-                          桌上的好食材：為什麼你要吃酪梨？
-                        </h5>
-                        <p className="card-text text-muted small">
-                          5 分鐘閱讀 ‧ 健身教練指定
-                        </p>
-                        <a
-                          href="#"
-                          className="home__btn-link fw-bold text-decoration-none"
-                        >
-                          閱讀全文 <i className="bi bi-chevron-right"></i>
-                        </a>
+                    {mainArticle && (
+                      <div className="card border-0 shadow-green rounded-4 overflow-hidden h-100">
+                        {mainArticle.image && (
+                          <img
+                            src={mainArticle.image}
+                            className="card-img-top"
+                            alt={mainArticle.title}
+                            style={{ height: "200px", objectFit: "cover" }}
+                          />
+                        )}
+                        <div className="card-body px-6 py-4 d-flex flex-column align-items-start">
+                          <span className="badge bg-brown-300 text-brown-100 mb-2">
+                            NEW
+                          </span>
+                          <Link
+                            to={`/article/${mainArticle.id}`}
+                            className="text-decoration-none"
+                          >
+                            <h5 className="card-title fw-bold mb-3 text-brown-300">
+                              {mainArticle.title}
+                            </h5>
+                          </Link>
+
+                          <p className="card-text text-brown-300">
+                            {/* 限制文章顯示字數 */}
+                            {mainArticle.description
+                              ? mainArticle.description.length > 50
+                                ? mainArticle.description.substring(0, 50) +
+                                  "..."
+                                : mainArticle.description
+                              : "暫無內容"}
+                          </p>
+                          <div className="mt-auto">
+                            <p className="text-brown-300 d-block mb-2">
+                              {formatDate(mainArticle.create_at)} ‧
+                              {mainArticle.author} ‧
+                              {mainArticle.tag?.map((tag, index) => (
+                                <span
+                                  key={index}
+                                  className="ms-2 badge bg-brown-300 text-brown-100"
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
+                            </p>
+                            <Link
+                              to={`/article/${mainArticle.id}`}
+                              className="home__btn-link fw-bold text-decoration-none"
+                            >
+                              閱讀全文 <i className="bi bi-chevron-right"></i>
+                            </Link>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
 
-                  {/* 文章卡片 */}
+                  {/* 文章卡片*/}
                   <div className="col-md-5">
-                    <div className="card border-0 shadow rounded-4 p-3">
-                      <div className="py-3 border-bottom">
-                        <h6 className="fw-bold">如何吃的剛剛好</h6>
-                        <p className=" mb-2">3 分鐘閱讀 ‧ 營養師專欄</p>
-                        <a
-                          href="#"
-                          className="home__btn-link text-decoration-none"
+                    <div className="card border-0 shadow rounded-4 p-5 h-100">
+                      {subArticles.map((article) => (
+                        <div key={article.id} className="py-3 border-bottom">
+                          <Link
+                            to={`/article/${article.id}`}
+                            className="text-decoration-none"
+                          >
+                            <h6 className="fw-bold text-brown-300">
+                              {article.title}
+                            </h6>
+                          </Link>
+                          <p className="mb-2 text-brown-300">
+                            {formatDate(article.create_at)} ‧{" "}
+                            {article.tag?.map((tag, index) => (
+                              <span
+                                key={index}
+                                className="ms-2 badge bg-brown-300 text-brown-100"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </p>
+                          <Link
+                            to={`/article/${article.id}`}
+                            className="home__btn-link text-decoration-none"
+                          >
+                            閱讀全文<i className="bi bi-chevron-right"></i>
+                          </Link>
+                        </div>
+                      ))}
+
+                      {/* 如果沒有文章 */}
+                      {subArticles.length === 0 && (
+                        <div className="py-3">目前沒有更多文章</div>
+                      )}
+
+                      <div className="mt-auto pt-3 text-center">
+                        <Link
+                          to="/articles"
+                          className="home__btn-primary text-decoration-none rounded-pill d-inline-block px-4 py-2"
                         >
-                          閱讀全文
-                        </a>
+                          探索更多
+                        </Link>
                       </div>
-                      <button className="home__btn-primary text-decoration-none rounded-pill my-5">
-                        探索更多
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -713,6 +804,29 @@ export default function Home() {
           </section>
 
           <div className="container"></div>
+        </section>
+        {/* 顧客意見 */}
+        <section>
+          <div className="container-fluid my-8 my-md-10">
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              <h4 className="text-gray-200 fs-6 fs-md-4 fw-semibold mb-2">
+                TESTIMONIALS
+              </h4>
+              <h2 className="fs-3 fs-md-1 fw-bold mb-2 mb-md-5">
+                大家的真實分享
+              </h2>
+              <h4 className="text-orange-300 fs-6 fs-md-4 fw-semibold mb-2">
+                LOVE FROM OUR CUSTOMERS
+              </h4>
+            </div>
+            <CommentCard
+              commentContent={
+                "真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～"
+              }
+              customer={"@ashley_dailyhealthy"}
+              star={"💖💖💖"}
+            />
+          </div>
         </section>
       </main>
     </>
