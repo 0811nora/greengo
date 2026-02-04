@@ -5,7 +5,7 @@
     border-radius: 1.5rem;
     overflow: hidden;
     position: relative;
-    box-shadow: 10px 10px 20px rgba(0,0,0,.05);
+    box-shadow: 8px 8px 15px rgba(0,0,0,.05);
     background-color: #fff;
     color: #121212;
     border: none;
@@ -22,7 +22,17 @@
             transform: translateX(0);
         }
         
-        box-shadow: 2px 10px 20px rgba(0,0,0,.1);
+        box-shadow: 2px 4px 8px rgba(0,0,0,.1);
+    }
+    @media (max-width: 992px){
+        width: 110px;
+        padding: 2px 3px;
+        border: 3px solid #e5d29885;
+        box-shadow: 2px 2px 2px rgba(0,0,0,.05);
+
+        &.c-typeButton-active {
+            width: 110px;
+        }
     }
     
 }
@@ -42,6 +52,10 @@
     font-weight: 600;
     position: relative;
     overflow: hidden;
+    @media (max-width: 992px){
+        font-weight: 500;
+        
+    }
 }
 
 .c-typeButton__icon { 
@@ -69,3 +83,5 @@
 .c-typeButton:hover .c-typeButton-decor {
     transform: translate(0);
 }
+
+
