@@ -27,18 +27,20 @@ export default function About() {
                             <div className='container-fluid'>
                                 <div className='row'>
                                     <div className='col-md-6'>
-                                        <div className='img-border mt-2 ms-2 mt-md-10 ms-md-10 '>
+                                        <div className='img-border d-none d-md-block mt-10 ms-10 '>
                                             <img className='img-fluid mt-md-8 ms-md-9 ' src="../public/img/about_action.png" alt="bowl" />
                                         </div>
 
                                     </div>
-                                    {/* 0204從這邊開始寫 */}
-                                    <div className='col-md-6'>
-                                        <div className=''>
-                                            <h2>行動，<span>然後成果。</span> </h2>
+
+                                    <div className='col-md-6 mt-10'>
+                                        <div className='d-none d-md-block sub-title fw-semibold fs-2 lh-sm mt-6'>
+                                            <h2>行動，<span className='d-block'>然後成果。</span> </h2>
                                             <h3>The Story of GreenGo</h3>
                                         </div>
-                                        <p >GreenGo 的名字，結合了 Green 與 Go／果。Green，代表自然、清新與健康；Go／果，則是你為自己採取行動後，在你身上慢慢開出的成果。</p>
+                                        {/* 0205進度 */}
+                                        <div><p >GreenGo 的名字，結合了 Green 與 Go／果。Green，代表自然、清新與健康；Go／果，則是你為自己採取行動後，在你身上慢慢開出的成果。</p></div>
+
                                     </div>
                                 </div>
                             </div>
