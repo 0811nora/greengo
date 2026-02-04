@@ -1,6 +1,4 @@
 .cart-container {
-  max-width: 1200px;
-  margin: 0 auto;
   margin-top: 100px;
   padding: 40px 20px;
 
@@ -10,27 +8,10 @@
     font-weight: 700;
   }
 
-  .cart-layout {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 30px;
-
-    @media (max-width: 900px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  // 左側：購物車列表
-  .cart-items {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
   .cart-item {
     background: $white;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: all 0.3s ease;
 
@@ -66,10 +47,6 @@
     }
 
     .item-info {
-      h3 {
-        font-size: 18px;
-        margin-bottom: 5px;
-      }
       .unit-price {
         color: $gray-300;
         font-size: 14px;
@@ -191,15 +168,6 @@
       @media (max-width: 768px) {
         grid-template-columns: 1fr;
       }
-
-      h4 {
-        font-size: 14px;
-        color: $gray-300;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
     }
 
     // 內容物清單樣式
@@ -266,16 +234,122 @@
       background: $white;
       padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 20px;
+    }
+  }
+  .checkout-btn {
+    width: 100%;
+    padding: 15px;
+    background: $primary;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.2s;
 
-      h2 {
-        font-size: 20px;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #e0e0e0;
+    &:hover {
+      background: $primary-300;
+    }
+  }
+}
+
+// CheckoutPage
+
+.checkout-page {
+  margin-top: 100px;
+  padding: 40px 20px;
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .info-card {
+    background: $white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  // 自訂付款方式選單
+  .payment-option {
+    position: relative;
+
+    input[type='radio'] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      z-index: 2;
+
+      // 當選中時，改變 label 的樣式
+      &:checked + .payment-card {
+        border-color: $orange-200;
+        background-color: rgba(253, 177, 13, 0.05);
+
+        .check-icon {
+          display: block;
+        }
       }
+    }
+
+    .payment-card {
+      border: 1px solid #dee2e6;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.2s ease;
+      position: relative;
+
+      i {
+        font-size: 1.5rem;
+        color: #6c757d;
+      }
+
+      .check-icon {
+        display: none;
+        position: absolute;
+        top: 25px;
+        right: 30px;
+        color: $orange-300;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  // 右側訂單摘要
+  .order-summary-card {
+    background: $white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    @media (min-width: 768px) {
+      position: sticky;
+      top: 20px;
+    }
+
+    .item-thumbnail {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 0.25rem;
+      border: 1px solid #dee2e6;
+    }
+
+    .list-group-item {
+      border-bottom: 1px solid #dee2e6;
     }
 
     .promo-section {
@@ -313,54 +387,9 @@
           transition: background 0.2s;
 
           &:hover {
-            background: $light;
+            background: $orange-200;
           }
         }
-      }
-    }
-
-    .summary-rows {
-      .row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-        font-size: 15px;
-        color: $gray-300;
-
-        &.discount {
-          color: $primary;
-        }
-
-        &.total {
-          font-size: 20px;
-          font-weight: bold;
-          color: $dark;
-          margin-top: 10px;
-        }
-      }
-
-      .divider {
-        height: 1px;
-        background: #e0e0e0;
-        margin: 15px 0;
-      }
-    }
-
-    .checkout-btn {
-      width: 100%;
-      padding: 15px;
-      background: $primary;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: background 0.2s;
-
-      &:hover {
-        background: $primary-300;
       }
     }
   }

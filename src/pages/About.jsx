@@ -34,7 +34,10 @@ export default function About() {
                                     </div>
                                     {/* 0204從這邊開始寫 */}
                                     <div className='col-md-6'>
-                                        <h2>行動，然後成果。 The Story of GreenGo</h2>
+                                        <div className=''>
+                                            <h2>行動，<span>然後成果。</span> </h2>
+                                            <h3>The Story of GreenGo</h3>
+                                        </div>
                                         <p >GreenGo 的名字，結合了 Green 與 Go／果。Green，代表自然、清新與健康；Go／果，則是你為自己採取行動後，在你身上慢慢開出的成果。</p>
                                     </div>
                                 </div>
