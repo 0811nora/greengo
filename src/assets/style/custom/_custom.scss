@@ -1,21 +1,16 @@
 .custom-main{
     color:$brown-300;
-    color{
-        color: #e7976d;
-        color: #d7d566;
-        color: #eaeaea;
-        color: #f0e7cd;
-        color: #ccdec1;
-        color: #94ba7b;
+    @media (max-width: 768px){
+        .pt-sm-120{
+            padding-top: 120px;
+        }
     }
 
     .chart-list{
-        background-color: #ffffff9a;
+        background-color: #ffffffc1;
         border-radius: 5px;
         border-left: 6px solid $brown-300;
     }
-
-    
 
     .text-price{
         color: #df7b45;
@@ -59,6 +54,8 @@
         }
         
     }
+
+
     
     
     
@@ -72,7 +69,9 @@
         background-size: cover;
 
         @media (max-width: 768px){
-            background-position: 0% 38%;
+            background-position: 30% 10%;
+            background-size: auto;
+
         }
     }
     
@@ -82,7 +81,7 @@
         width: 100%;
         height: 100%;
         @media (max-width: 992px){
-            background-color: #e4f0f06a;
+            background-color: #e4f0f085;
         }
     }
     .blur-bg{
@@ -106,36 +105,84 @@
         padding-left: 0;
     }
     .card-active {
-        outline: 4px solid $primary;
-        // outline: 4px solid #dcc47c;
+        // outline: 4px solid $primary;
+        outline: 5px solid #dcc47c;
+        background: linear-gradient(120deg, 
+            #ffffffee 0%, 
+            #fffefaee 40%,  /* 到 60% 的位置都還保持著白色 */
+            #f9f4e0ee 70%,  /* 到 60% 的位置都還保持著白色 */
+            #f7da84bf 100%,  /* 到 60% 的位置都還保持著白色 */
+        );
         
         // box-shadow: 0px 12px  25px rgba(44, 99, 57, 0.559);
-        // box-shadow: 0px 12px  25px #9c9273a0;
+        box-shadow: 0px 12px  15px #bcad81a0;
     }
     .step1-card-area{
         width: 100%;
         max-width: 800px;
         
     }
-    .order-details{
+
+
+    .order-details {
         background-color: #f7f7f7;
-        // background-color: #ecf3ed;
         padding: 20px;
-        backdrop-filter: blur(20px) !important;
         border-radius: 20px;
-        max-height: 550px;
-        width: 330px;
-        box-shadow: 2px 2px 2px 2px #6d665e82;
-        bottom: 50px;
-
-
-        
+        position: absolute; 
+        bottom: 165px; 
+        right: 40px;   
+        max-height: 63vh; 
+        width: 340px;
+        overflow-y: auto; 
+        z-index: 1050; 
+        box-shadow: -5px 5px 20px rgba(0,0,0,0.1);
     }
 
     .order-details-list{
         background-color: #e7e7e7a1;
         padding: 10px;
         border-radius: 10px;
+    }
+
+    .c-nutrition-fab-wrapper {
+        position: fixed;
+        bottom: 20px;       /* 距離螢幕底部 */
+        right: 20px;        /* 距離螢幕右側 */
+        z-index: 9999;      /* 確保在所有層級最上方 */
+        pointer-events: auto;
+    }
+
+    /* 按鈕本體 */
+    .c-nutrition-fab-btn {
+        width: 60px;
+        height: 60px;
+        padding: 0;
+        font-size: 14px;
+        line-height: 1.2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        
+        /* 確保是正圓形 */
+        border-radius: 50% !important; 
+        
+        /* 增加陰影讓它更有浮動感 */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        
+        /* 點擊時的縮放回饋感 */
+        transition: transform 0.1s ease-active;
+    }
+
+    .c-nutrition-fab-btn:active {
+        transform: scale(0.92);
+    }
+
+    /* 針對電腦版若想隱藏，可以加這段 */
+    @media (min-width: 992px) {
+        .c-nutrition-fab-wrapper {
+            display: none;
+        }
     }
 
 
