@@ -6,6 +6,8 @@ import {
   deleteAllCart,
 } from '../api/ApiClient';
 
+import { NavLink, useNavigate } from 'react-router-dom';
+
 //單個購物車項目 (CartItem)
 const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +57,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
         </div>
 
         <div className="item-info">
-          <h3>{item.product.title}</h3>
+          <h3 className="fs-6 mb-2">{item.product.title}</h3>
 
           <p className="unit-price">單價： $ {unitPrice}</p>
 
@@ -109,8 +111,8 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
         <div className="details-grid">
           {isPoke && (
             <div className="detail-column content-list">
-              <h4>
-                <i class="bi bi-postcard-heart"></i>內容物明細
+              <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center">
+                <i class="bi bi-postcard-heart me-2"></i>內容物明細
               </h4>
               <ul>
                 {isCustom ? (
@@ -139,8 +141,8 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
                     {hasAddonsContent && (
                       <>
                         <hr />
-                        <h4 className="mt-4">
-                          <i className="bi bi-postcard-heart"></i> 加購選項
+                        <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center mt-4">
+                          <i className="bi bi-postcard-heart me-2"></i> 加購選項
                         </h4>
                         <ul>
                           {/* 這裡放剛剛寫好的加購渲染邏輯 */}
@@ -216,8 +218,8 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
           <div
             className={`detail-column nutrition-info ${!isPoke ? 'full-width' : ''}`}
           >
-            <h4>
-              <i class="bi bi-pie-chart-fill"></i> 營養素資訊
+            <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center">
+              <i class="bi bi-pie-chart-fill me-2"></i> 營養素資訊
             </h4>
 
             {nutritionInfo && (
@@ -254,47 +256,37 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
 // 子組件：右側費用總覽 (CartSummary)
 
 const CartSummary = ({ baseSubtotal, totalAddons, discount, finalTotal }) => {
+  const navigate = useNavigate();
   return (
-    <aside className="cart-summary">
+    <aside className="cart-summary col-lg-4">
       <div className="summary-card">
-        <h2>費用總覽</h2>
+        <h4 className="text-primary pt-3 border-bottom border-gray-100 pb-3 mb-4">
+          費用總覽
+        </h4>
 
-        {/* <div className="promo-section">
-          <label>優惠碼</label>
-          <div className="input-group">
-            <input type="text" placeholder="輸入優惠碼" />
-            <button type="button">套用</button>
-          </div>
-        </div> */}
-
-        <div className="summary-rows">
-          <div className="row">
-            <span>小計</span>
-            <span>$ {baseSubtotal}</span>
-          </div>
-
-          {totalAddons > 0 && (
-            <div className="row">
-              <span>加購</span>
-              <span>$ {totalAddons}</span>
-            </div>
-          )}
-
-          <div className="row discount">
-            <span>折扣</span>
-            <span>-$ {discount}</span>
-          </div>
-
-          <div className="divider"></div>
-
-          <div className="row total">
-            <span>總計</span>
-            <span>$ {finalTotal}</span>
-          </div>
+        <div className="d-flex justify-content-between mb-2">
+          <span>小計</span>
+          <span>$ {baseSubtotal.toLocaleString()}</span>
+        </div>
+        <div className="d-flex justify-content-between mb-2">
+          <span>加購</span>
+          <span>$ {totalAddons.toLocaleString()}</span>
         </div>
 
-        <button type="button" className="checkout-btn">
-          前往結帳
+        <div className="d-flex justify-content-between mt-3 pt-3 border-top border-gray-100">
+          <span className="fs-5 fw-medium">總計</span>
+          <span className="fs-5 fw-medium text-primary">
+            $ {finalTotal.toLocaleString()}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          className="btn checkout-btn"
+          disabled={baseSubtotal <= 0}
+          onClick={() => navigate('/checkout')}
+        >
+          下一步
         </button>
       </div>
     </aside>
@@ -367,11 +359,11 @@ const Cart = () => {
   const finalTotal = baseSubtotal + totalAddons - discount;
 
   return (
-    <div className="cart-container">
+    <div className="cart-container container-xl">
       <h1 className="page-title">您的購物車</h1>
-      <div className="cart-layout">
+      <div className="row g-5">
         {/* 左側：商品列表 */}
-        <section className="cart-items">
+        <section className="col-lg-8">
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <CartItem
@@ -385,7 +377,7 @@ const Cart = () => {
             <div
               style={{ textAlign: 'center', padding: '40px', color: '#666' }}
             >
-              <h3>購物車目前是空的</h3>
+              <h3 className="fs-6 mb-2">購物車目前是空的</h3>
             </div>
           )}
         </section>
