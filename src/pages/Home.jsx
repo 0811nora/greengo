@@ -15,6 +15,7 @@ import { getArticles } from "../api/ApiClient";
 // component
 import ContentCard from "../components/home/ContentCard";
 import CommentCard from "../components/home/CommentCard";
+import IngredientCard from "../components/home/IngredientCard";
 
 // 頁面 router
 const PageLinks = {

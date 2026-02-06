@@ -178,6 +178,11 @@
   }
 }
 
+// cart
+.cart-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 // mobile liquid glass
 .mobile-container {
   position: relative;
