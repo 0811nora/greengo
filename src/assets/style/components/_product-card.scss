@@ -1,89 +1,107 @@
 .product-page .card {
-  border-radius: $border-radius-l;
-  overflow: hidden;
-  box-shadow: 0px 2px 4px rgba(77, 113, 53, 0.25);
+	border-radius: $border-radius-l;
+	overflow: hidden;
+	box-shadow: 0px 2px 4px rgba(77, 113, 53, 0.25);
 }
-.product-page .img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-  background-image: url("https://images.unsplash.com/photo-1512386233331-f023884a92e8?q=80&w=2095&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+.product-page .card .img {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-  background-image: url("https://images.unsplash.com/photo-1530176928500-2372a88e00b5?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+	//   background-image: url("https://images.unsplash.com/photo-1512386233331-f023884a92e8?q=80&w=2095&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 
-  background-color: #f6f7f6;
-  background-size: auto;
-  background-position: right top;
+	background-image: url('https://images.unsplash.com/photo-1530176928500-2372a88e00b5?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+	background-size: auto;
+	background-position: right top;
+
+	img {
+		width: 85%;
+		aspect-ratio: 3/2;
+		object-fit: cover;
+		object-position: 10% 10%;
+	}
+	.popular {
+		top: 10px;
+		left: 10px;
+		font-size: 14px;
+		font-weight: $font-weight-medium;
+		background-color: $accent;
+		color: $gray-600;
+		border: 1px solid $white;
+		border-radius: $border-radius-pill;
+		padding: 2px map-get($spacers, 4);
+	}
 }
-.product-page .card img {
-  width: 85%;
-  aspect-ratio: 3/2;
-  object-fit: cover;
-  object-position: 10% 10%;
-}
-.product-page .nutrition {
-  //   background-color: rgba($color: $gray-600, $alpha: 0.9);
-  //   background-color: $primary-100;
-  //   color: $gray-600;
 
-  background-color: $gray-600;
-  color: $white;
-
-  font-weight: $font-weight-medium;
-  font-size: 14px;
-
-  span {
-    display: inline-block;
-  }
-}
-.product-page .card h6 {
-  font-size: 20px;
-}
 .product-page .card-footer {
-  background-color: $white;
-  border-top: none;
-  padding: 0;
+	background-color: $white;
+	border-top: none;
+	padding: 0;
 }
-.product-page .minus,
-.add {
-  width: 44px;
-  height: 44px;
-  border: 1px solid $gray-200;
-  border-radius: $border-radius-pill;
-  background-color: $white;
-  i {
-    font-size: 20px;
-  }
+.product-page .card .num-control {
+	span {
+		font-size: map-get($font-sizes, 5);
+	}
+
+	.minus,
+	.add {
+		width: 48px;
+		height: 48px;
+		border: 1px solid $gray-200;
+		border-radius: $border-radius-pill;
+		background-color: $white;
+		i {
+			font-size: 24px;
+		}
+	}
 }
-.product-page .button-section {
-  padding-top: map-get($spacers, 5);
-  border-top: 1px solid $gray-200;
+.product-page .card .button-section {
+	padding-top: map-get($spacers, 5);
+	border-top: 1px solid $gray-200;
+	.primary-btn {
+		padding: map-get($spacers, 3) map-get($spacers, 6);
+		border: none;
+		border-radius: $border-radius-pill;
+		background-color: $primary-200;
+		color: $white;
+		i {
+			font-size: 24px;
+		}
+	}
 }
-.product-page .primary-btn {
-  padding: map-get($spacers, 3) map-get($spacers, 6);
-  border: none;
-  border-radius: $border-radius-pill;
-  background-color: $primary-200;
-  color: $white;
-  i {
-    font-size: 24px;
-  }
-}
+
 .product-page .card .tag-list {
-  top: 8px;
-  right: 8px;
-  gap: -2px;
+	top: 8px;
+	right: 8px;
+	gap: -2px;
+	.tag {
+		width: 22px;
+		height: 22px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+	}
 }
-.product-page .card .tag {
-  width: 22px;
-  height: 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
+
+// 未用到
+.product-page .nutrition {
+	//   background-color: rgba($color: $gray-600, $alpha: 0.9);
+	//   background-color: $primary-100;
+	//   color: $gray-600;
+
+	background-color: $gray-600;
+	color: $white;
+
+	font-weight: $font-weight-medium;
+	font-size: 14px;
+
+	span {
+		display: inline-block;
+	}
 }
