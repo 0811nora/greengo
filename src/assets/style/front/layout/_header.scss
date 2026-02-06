@@ -156,9 +156,9 @@
 }
 
 .header__link:hover {
-  background: rgba(77, 147, 43, 0.4);
+  background: rgba(77, 113, 53, 0.4);
   box-shadow:
-    inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
+    inset 2px 1px 1px 0 rgba(255, 255, 255, 0.5),
     inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
   .header__link-text {
     color: $white;
@@ -169,7 +169,7 @@
 .header__link.header__link--active {
   background: $primary-300;
   box-shadow:
-    inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
+    inset 2px 1px 1px 0 rgba(255, 255, 255, 0.5),
     inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
   pointer-events: none;
 

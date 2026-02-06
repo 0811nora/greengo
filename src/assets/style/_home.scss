@@ -238,7 +238,7 @@ li {
     width: 50%;
     height: 300px;
     color: $white;
-    text-shadow: 0 2px 4px #000000;
+    text-shadow: 1px 2px 5px #000000;
     background-size: cover;
     background-position: center;
     border-radius: 32px;
@@ -252,20 +252,24 @@ li {
         height: 40px;
         opacity: 1;
         overflow: hidden;
-        &::after {
-          content: "";
-          position: absolute;
-          bottom: 7px;
-          left: 50%;
-          width: 0;
-          height: 1px;
-          background-color: $primary-300;
-          transition: 0.3s ease;
-          transform: translateX(-50%);
+        text-decoration: none;
+        &:hover {
+          box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.3);
         }
-        &:hover::after {
-          width: 90%;
-        }
+        // &::after {
+        //   content: "";
+        //   position: absolute;
+        //   bottom: 7px;
+        //   left: 50%;
+        //   width: 0;
+        //   height: 0px;
+        //   background-color: $primary-200;
+        //   transition: 0.3s ease;
+        //   transform: translateX(-50%);
+        // }
+        // &:hover::after {
+        //   width: 90%;
+        // }
       }
     }
     &:nth-child(1) {
