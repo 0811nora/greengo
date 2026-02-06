@@ -208,7 +208,7 @@ li {
     width: 0;
     height: 1px;
     background-color: $primary-200;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
     transform: translateX(-50%);
   }
 
@@ -228,6 +228,74 @@ li {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.home__nur-card {
+  padding: 16px;
+  .home__nur-card-content {
+    position: relative;
+    z-index: 1;
+    max-width: 416px;
+    width: 50%;
+    height: 300px;
+    color: $white;
+    text-shadow: 0 2px 4px #000000;
+    background-size: cover;
+    background-position: center;
+    border-radius: 32px;
+    transition: all 0.5s;
+    padding: 32px;
+    overflow: hidden;
+    &:hover {
+      a {
+        position: relative;
+        padding: 8px 16px;
+        height: 40px;
+        opacity: 1;
+        overflow: hidden;
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 7px;
+          left: 50%;
+          width: 0;
+          height: 1px;
+          background-color: $primary-300;
+          transition: 0.3s ease;
+          transform: translateX(-50%);
+        }
+        &:hover::after {
+          width: 90%;
+        }
+      }
+    }
+    &:nth-child(1) {
+      opacity: 0.8;
+      background-image: url(https://images.unsplash.com/photo-1543362906-acfc16c67564?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8aGVhbHRoeSUyMGxpZmVzdHlsZXxlbnwwfHwwfHx8Mg%3D%3D);
+    }
+    &:nth-child(2) {
+      opacity: 0.8;
+      background-image: url(https://images.unsplash.com/photo-1543353071-c953d88f7033?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(#221f1e00 60%, #221f1e60);
+    }
+    a {
+      text-shadow: none;
+      background-color: #fff;
+      border-radius: 100px;
+      transition: all 0.5s;
+      height: 0;
+      opacity: 0;
+      overflow: hidden;
+    }
+  }
+}
+
 // SIGNATURE BOWLS
 // 配菜位置(待調整)
 @mixin ingredient-pos(

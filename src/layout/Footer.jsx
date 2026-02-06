@@ -168,7 +168,7 @@ export default function Footer() {
           </div>
         </div>
         <p className="text-white text-center pb-6 d-flex justify-content-md-center align-items-center">
-          <i class="bi bi-c-circle me-1 fs-md"></i>2025 GreenGo All rights
+          <i className="bi bi-c-circle me-1 fs-md"></i>2025 GreenGo All rights
           reserved.
         </p>
       </div>

@@ -331,8 +331,8 @@ export default function Home() {
           </div>
         </section>
         {/* Smart Nutrition */}
-        <section className="container-fluid home__nur-section py-8 py-md-10 ">
-          <div className="container py-5 ">
+        <section className="container-fluid home__nur-section py-8 py-md-10">
+          <div className="container py-6">
             <div className="row">
               {/* 說明 */}
               <div className="col-md-7 mb-5">
@@ -345,12 +345,7 @@ export default function Home() {
                   營養成分，
                   <span className="">即時看得見</span>。
                 </h2>
-                <p className="mb-3 mb-md-6">
-                  <span className="ft-en">GreenGo</span> 就像你的
-                  <span className="text-primary-300 fw-medium">專屬營養師</span>
-                  。
-                </p>
-                <p className="mb-3 mb-md-6">
+                {/* <p className="mb-3 mb-md-6">
                   選擇
                   <NavLink
                     className="home__btn-link fw-medium mx-1"
@@ -372,18 +367,55 @@ export default function Home() {
                   </NavLink>
                   ，
                   <br />
-                  綠果自動計算總熱量與三大營養素比例， 營養隨選隨見！
+                  綠果自動計算總熱量與三大營養素比例，營養隨選隨見！
+                </p> */}
+                <p className="fs-6 mb-3 px-4">
+                  <span className="ft-en">GreenGo</span> 就像你的
+                  <span className="text-primary-300 fw-medium">專屬營養師</span>
+                  。
                 </p>
+                <ul className="home__nur-card d-flex gap-4">
+                  <li className="home__nur-card-content d-flex flex-column justify-content-end">
+                    <h3 className="fw-bold fs-3 mb-2">綠果精選</h3>
+                    <p className="mb-4">
+                      綠果提供主廚的精心搭配
+                      <br />
+                      為你的營養把關！
+                    </p>
+                    <NavLink
+                      className="home__btn-link fw-medium mx-1 d-flex justify-content-between"
+                      to={PageLinks.productLink.url}
+                    >
+                      {PageLinks.productLink.title}
+                      <i class="bi bi-chevron-right"></i>
+                    </NavLink>
+                  </li>
+                  <li className="home__nur-card-content d-flex flex-column justify-content-end">
+                    <h3 className="fw-bold fs-3 mb-2">客製自由配</h3>
+                    <p className="mb-4">
+                      綠果自動計算總熱量與三大營養素比例
+                      <br />
+                      營養隨選隨見！
+                    </p>
+                    <NavLink
+                      className="home__btn-link fw-medium mx-1 d-flex justify-content-between"
+                      to={PageLinks.customLink.url}
+                    >
+                      {PageLinks.customLink.title}
+                      <i class="bi bi-chevron-right"></i>
+                    </NavLink>
+                  </li>
+                </ul>
               </div>
               {/* 過去的困擾 */}
               <div
                 ref={sectionRef}
-                className="col-md-5 d-flex flex-column gap-4"
+                className="col-md-5 d-flex flex-column gap-5"
               >
                 {TROUBLE_CARDS.map((card) => (
                   <div
                     key={card.id}
-                    className={`sub-card bg-gray-50 rounded-4 position-relative py-3 px-4 py-md-5 px-md-6 ${card.align} ${isVisible ? "is-visible" : ""}`}
+                    className={`sub-card bg-gray-100 rounded-4 position-relative py-3 px-4 py-md-5 px-md-6 ${card.align} ${isVisible ? "is-visible" : ""}`}
                   >
                     <p className="text-warning fw-medium mb-1">過去的困擾</p>
                     <p className="mb-0">{card.text}</p>
@@ -396,7 +428,7 @@ export default function Home() {
                         [card.tailSide]: "20px",
                       }}
                     >
-                      <path d="M0,0 L20,0 L10,20 Z" fill="#F2F4F3" />
+                      <path d="M0,0 L20,0 L10,20 Z" fill="#e3e7e0" />
                     </svg>
                   </div>
                 ))}
@@ -567,7 +599,7 @@ export default function Home() {
                 />
               </div>
               {/* 右側卡片說明 */}
-              {/* <ul className="col-lg-6 d-flex flex-column justify-content-center makeBite-section">
+              <ul className="col-lg-6 d-flex flex-column justify-content-center makeBite-section">
                 <li className="d-flex align-items-center">
                   <span className="ft-en fs-4 fs-md-2 fw-medium text-brown-200 ms-1 me-4">
                     1
@@ -610,30 +642,7 @@ export default function Home() {
                   </span>
                   <span className="text-gray-400">為你的餐盒來點靈魂</span>
                 </li>
-              </ul> */}
-              <Swiper
-                className="col-lg-6 step-card"
-                modules={[Pagination, A11y]}
-                spaceBetween={24}
-                slidesPerView={1.2}
-                centeredSlides={true}
-                pagination={{ clickable: true }}
-              >
-                {/* 待調整 */}
-                {STEP_CARDS.map((item) => (
-                  <SwiperSlide key={item.id}>
-                    <div className="d-flex align-items-center justify-content-center">
-                      <span className="ft-en fs-4 fs-md-2 fw-medium text-accent-200 ms-1 me-4">
-                        {item.id}
-                      </span>
-                      <span className="fs-6 fs-md-4 fw-bold text-gray-500 me-3">
-                        {item.step_title}
-                      </span>
-                      <span className="text-gray-400">{item.step_content}</span>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+              </ul>
             </div>
           </div>
         </section>
