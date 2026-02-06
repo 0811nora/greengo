@@ -15,7 +15,7 @@ import { getArticles } from "../api/ApiClient";
 // component
 import ContentCard from "../components/home/ContentCard";
 import CommentCard from "../components/home/CommentCard";
-import IngredientCard from "../components/home/IngredientCard";
+// import IngredientCard from "../components/home/IngredientCard";
 
 // 頁面 router
 const PageLinks = {
@@ -29,14 +29,14 @@ const PageLinks = {
 const HERO_DECORS = [
   {
     id: "left",
-    src: "/img/items/bowl-2.png",
+    src: `${import.meta.env.BASE_URL}img/items/bowl-2.png`,
     alt: "bowl-2",
     posX: "start-0",
     posY: "top-10",
   },
   {
     id: "right",
-    src: "/img/items/bowl-1.png",
+    src: `${import.meta.env.BASE_URL}img/items/bowl-1.png`,
     alt: "bowl-1",
     posX: "start-100",
     posY: "top-50",
@@ -114,7 +114,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "26g",
     pos: "pos-btm-left",
-    src: "/img/items/salmon.png",
+    src: `${import.meta.env.BASE_URL}img/items/salmon.png`,
   },
   // 熱量：約 250 kcal/蛋白質：約 26 g/脂肪：約 16 g
   {
@@ -123,7 +123,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "1.1g",
     pos: "pos-top-mid",
-    src: "/img/items/tomato.png",
+    src: `${import.meta.env.BASE_URL}img/items/tomato.png`,
   },
   // 熱量：約 11 kcal/碳水化合物：約 2.5 g/膳食纖維：約 0.8 g
   {
@@ -132,7 +132,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "1.2g",
     pos: "pos-top-mid-left",
-    src: "/img/items/pumpkin.png",
+    src: `${import.meta.env.BASE_URL}img/items/pumpkin.png`,
   },
   // 熱量：約 45 kcal/碳水化合物：約 11 g/膳食纖維：約 2 g
   {
@@ -141,7 +141,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "2.5g",
     pos: "pos-top-right",
-    src: "/img/items/broccoli.png",
+    src: `${import.meta.env.BASE_URL}img/items/broccoli.png`,
   },
   // 熱量：約 28 kcal/碳水化合物：約 5 g/蛋白質：約 2.5 g/膳食纖維：約 2.2 g
   {
@@ -150,7 +150,7 @@ const INGREDIENTS = [
     nur: "蛋白質",
     protein: "0.7g",
     pos: "pos-btm-right",
-    src: "/img/items/cucumber.png",
+    src: `${import.meta.env.BASE_URL}img/items/cucumber.png`,
   },
   // 熱量：約 9 kcal/碳水化合物：約 2 g
 ];
@@ -163,7 +163,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/items/bowl-3.png",
+    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP1",
   },
@@ -172,7 +172,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/items/bowl-3.png",
+    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP2",
   },
@@ -181,7 +181,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/items/bowl-3.png",
+    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP3",
   },
@@ -190,7 +190,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/items/bowl-3.png",
+    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP4",
   },
@@ -199,7 +199,7 @@ const FIXED_PRODUCTS = [
     name: "經典雙雞蛋白碗",
     price: 230,
     kcal: 550,
-    img: "/img/items/bowl-3.png",
+    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
     tags: ["豐富蛋白質", "輕盈低卡", "優質油脂"],
     rank: "TOP5",
   },
@@ -310,7 +310,7 @@ export default function Home() {
           {/* 中央碗 */}
           <div className="hero__decorations position-absolute top-100 start-50 translate-middle pt-10">
             <img
-              src="/img/items/bowl-3.png"
+              src={`${import.meta.env.BASE_URL}img/items/bowl-3.png`}
               className="position-relative"
               alt="bowl-3"
             />
@@ -319,7 +319,7 @@ export default function Home() {
             {VEGGIE_ITEMS.map((item) => (
               <img
                 key={item.name}
-                src={`/img/items/${item.name}.png`}
+                src={`${import.meta.env.BASE_URL}img/items/${item.name}.png`}
                 className="veggie"
                 alt={item.name}
                 style={{
@@ -439,7 +439,7 @@ export default function Home() {
                 {/* 碗 */}
                 <div className="main-bowl-container">
                   <img
-                    src="/img/items/bowl-5.png"
+                    src={`${import.meta.env.BASE_URL}img/items/bowl-5.png`}
                     alt="bowl-5"
                     className="main-bowl-img"
                   />
@@ -557,7 +557,7 @@ export default function Home() {
           style={{ paddingTop: "80px" }}
         >
           <img
-            src="/img/items/custom-bowl.png"
+            src={`${import.meta.env.BASE_URL}img/items/custom-bowl.png`}
             className="position-absolute top-0 start-50 translate-middle-x"
             style={{
               maxWidth: "600px",
@@ -647,7 +647,7 @@ export default function Home() {
               <div className="row align-items-center">
                 <div className="col-md-6 position-relative">
                   <img
-                    src="/img/items/bowl-5.png"
+                    src={`${import.meta.env.BASE_URL}img/items/bowl-5.png`}
                     alt="bowl"
                     className="position-absolute start-0 top-50 translate-middle-y"
                     style={{ width: "80%", left: "-20%" }}
