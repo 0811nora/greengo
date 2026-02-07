@@ -142,14 +142,14 @@ const DateRange = ({ activeRange, onRangeChange, onCustomRangeChange }) => {
                 <div className="d-flex gap-2">
                   <button
                     type="button"
-                    className="btn btn-accent-200 text-gray-500 flex-fill"
+                    className="btn text-gray-500 flex-fill"
                     onClick={quickSelect7Days}
                   >
                     最近 7 天
                   </button>
                   <button
                     type="button"
-                    className="btn btn-accent-200 text-gray-500 flex-fill"
+                    className="btn text-gray-500 flex-fill"
                     onClick={quickSelect30Days}
                   >
                     最近 30 天
