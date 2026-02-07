@@ -1,4 +1,5 @@
 import axios from "axios";
+import { notify } from "../../components/Notify";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { admSignin, admUserCheck } from "../../api/ApiAdmin";
@@ -22,11 +23,13 @@ export default function AdminLogin() {
 
       document.cookie = `greenToken=${token}; expires=${new Date(expired)}; path=/`;
       axios.defaults.headers.common["Authorization"] = token;
-
+      notify('success', '登入成功');
       navigate("/admin/order");
     } catch (error) {
       console.error(error);
-      alert(`登入失敗：${error.message}`);
+      notify('error', '登入失敗');
+
+      //alert(`登入失敗：${error.message}`);
     }
   };
 

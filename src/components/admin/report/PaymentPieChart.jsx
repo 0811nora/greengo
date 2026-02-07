@@ -9,7 +9,7 @@ import {
 } from "recharts";
 
 const PaymentPieChart = ({ data }) => {
-  const colors = ["#6FA9BB", "#94B38A"];
+  const colors = ["#6FA9BB", "#94B38A", "#c7916d"];
 
   return (
     <div className="card adm__report-card h-100">
