@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { getAllProducts,postAddToCart,getCart } from "../api/ApiClient";
-import { PageSwitch} from '../components/custom-comp/AnimationWrapper';
+import { Link } from "react-router-dom";
+
+import { PageSwitch} from '../components/common/AnimationWrapper';
 
 import AdmButton from "../components/admin/common/AdmButton";
+
 import ClickOutsideHandler from "../components/common/ClickOutsideHandler";
 
 import ItemCard from "../components/custom-comp/itemCard";
@@ -16,15 +19,13 @@ import balancedBG from "../assets/image/custom/balancedBG.jpg";
 import highProteinBG from "../assets/image/custom/highProteinBG.jpg";
 import TypeListBtn from "../components/custom-comp/TypeListBtn";
 import DonutPFC from "../components/custom-comp/PFC_Chart";
+import CompleteNutrition from "../components/custom-comp/CompleteNutrition";
 
 import baseIcon from "../assets/image/custom/icons8-rice-bowl-50.png";
 import meatIcon from "../assets/image/custom/icons8-meat-50.png";
 import sideIcon from "../assets/image/custom/icons8-broccoli-50.png";
 import sauceIcon from "../assets/image/custom/icons8-sauce-53.png";
 import addOnIcon from "../assets/image/custom/icons8-cutlery-32.png";
-import { div } from "framer-motion/client";
-
-
 
 
 
@@ -93,6 +94,7 @@ export default function Custom() {
     const [ selectedProduct , setSelectedProduct] = useState(INITIAL_SELECTED_PRODUCT);
     const [ addOnTabs ,setAddonTabs ] =  useState('base');
     const [ isOpenOrderModal , setIsOpenOrderModal] = useState(false);
+    const [ isOpenPFCBtn , setIsOpenPFCBtn] = useState(false);
 
 
 
@@ -142,6 +144,13 @@ export default function Custom() {
         side: limit.side_limit,
         sauce: limit.sauce_limit
     }
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
 
     
 
@@ -195,8 +204,6 @@ export default function Custom() {
         fat : Number(totalNutrition['fat'].toFixed(1)),
         protein : Number(totalNutrition['protein'].toFixed(1)),
     }
-
-    console.log(finalTotalNutrition)
 
 
     // 計算三大營養素的百分比
@@ -310,12 +317,7 @@ export default function Custom() {
 
     }
 
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
+    
 
 
 
@@ -331,20 +333,7 @@ export default function Custom() {
                 setStepState(1);
                 scrollToTop();
             }
-            
-             // (原本有判斷要使用上一步切頁籤，到好像不符合實際使用，但程式碼先保留)
-            // const currentIndex = CATEGORY_TABS.indexOf(activeTab);
-            // if( currentIndex  > 0 ){
-            //     setActiveTab(CATEGORY_TABS[currentIndex - 1]);
-            // }else{
-            //     const isLeave = window.confirm("回首頁將會清空所有選擇，確定要離開嗎？");
-            //     if(isLeave){
-            //         setSelectedProduct(INITIAL_SELECTED_PRODUCT);
-            //         setStepState(1);
-            //         setAddonTabs('base');
-            //         scrollToTop();
-            //     }
-            // }
+
         }
     }
 
@@ -379,35 +368,7 @@ export default function Custom() {
         }
     };
 
-    // 下一步按鈕的判斷 (原本有判斷要使用下一步切頁籤，到好像不符合實際使用，但程式碼先保留)
-    // const handleNextBtn = () => {
-    //     if(stepState === 1){
-    //         if(!selectedProduct.plan_type){
-    //             alert("請選擇套餐");
-    //             return;
-    //         }
-    //         setAddonTabs('base');
-    //         setStepState(2);
-    //         scrollToTop();
-    //     }else if(stepState === 2){
 
-    //         const currentIndex = CATEGORY_TABS.indexOf(activeTab);
-    //         if( currentIndex < CATEGORY_TABS.length -1 ){
-    //             setActiveTab(CATEGORY_TABS[currentIndex + 1])
-    //         }else{
-    //             const exceptAddOn = CATEGORY_TABS.filter(tab => tab !== 'addOn')
-    //             const underTarget = exceptAddOn.find(item => totalQty(item) !== maxCount[item])
-    //             if(underTarget){
-    //                 setActiveTab(underTarget);
-    //                 alert('您選擇的數量未達標');
-    //                 scrollToTop();
-    //             }else{
-    //                 setStepState(3)
-    //                 scrollToTop();
-    //             }
-    //         }
-    //     }
-    // }
 
     // 送購物車的資料
     const handleSendCart = async() => {
@@ -538,6 +499,7 @@ export default function Custom() {
             <div className="custom-bg">
                 <div className="bg-overlay">
                     <div style={{height:"100px"}}></div>
+                
                     <div className="container banner-container">
 
                         <PageSwitch nodeKey={stepState}>
@@ -640,7 +602,8 @@ export default function Custom() {
                         {/* step2 開始自由配 */}
                         { stepState === 2 && 
                         
-                            <section className=" h-100  py-10 py-lg-4   px-lg-8 px-3  d-flex flex-column" >
+                            <section className=" h-100  pt-10 pb-6 py-lg-4   px-lg-8 px-3  d-flex flex-column" >
+                            
 
                                 <div className="flex-shrink-0 text-center text-lg-start mb-lg-3 position-relative  " >
                                     <h2 className=" mb-lg-3 fs-2 pt-6 pb-3 ">
@@ -716,6 +679,7 @@ export default function Custom() {
                                                 <AddonTypeBtnGroup mode={"mobile"} addOnTabs={addOnTabs} onAddonTab={(tab) => setAddonTabs(tab)} />
                                             }
 
+                                        
                                             <div className="row row-cols-2 row-cols-lg-3 px-lg-8 px-3 pt-3 g-0" >
                                                 
                                                 {activeTab === 'addOn' ? (
@@ -732,67 +696,35 @@ export default function Custom() {
                                                     </div>
                                                     
                                                 )}
-                                            </div>
-
-                                            
+                                            </div>                                            
                                         </div>
                                         
-                                        <div className="col-lg-2 h-100 overflow-y-auto m-0">
+                                        <div className="col-lg-2 position-relative h-100 overflow-y-auto m-0">
                                             <div className="d-flex flex-column justify-content-between h-100">
-                                                <div style={{  overflowX: 'hidden' }}>
-                                                    <div className="mb-4">
-                                                        <DonutPFC 
-                                                            calories={pfcRatio().calories} 
-                                                            protein={pfcRatio().protein} 
-                                                            fat={pfcRatio().fat}  
-                                                            carbs={pfcRatio().carbs} 
-                                                        />
-                                                    </div>
-                                                    
-                                                    <div className="">
-                                                        <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
-                                                            <p>蛋白質</p>
-                                                            <p>{finalTotalNutrition.protein}
-                                                                <span className="fs-ssm"> g</span>
-                                                            </p>
-                                                        </div>
-                                                        <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
-                                                            <p>碳水</p>
-                                                            <p>{finalTotalNutrition.carbs}
-                                                                <span className="fs-ssm"> g</span>
-                                                            </p>
-                                                        </div>
-                                                        <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
-                                                            <p>脂肪</p>
-                                                            <p>{finalTotalNutrition.fat}
-                                                                <span className="fs-ssm"> g</span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                                <div className="d-none d-lg-block" style={{  overflowX: 'hidden' }}>
+                                                    <CompleteNutrition 
+                                                        calcPFC={pfcRatio()} 
+                                                        finalTotalNutrition={finalTotalNutrition}
+                                                        modeClass={null}
+                                                    />
                                                 </div>
-                                                
-
 
                                                 <div className=" position-relative">
-                                                    
                                                     <AdmButton
-                                                        onClick={()=>setIsOpenOrderModal(true)}
+                                                        onClick={()=>setIsOpenOrderModal(!isOpenOrderModal)}
                                                         text={"檢視餐點內容"}
                                                         size={'lg'}
-                                                        className={`${isOpenOrderModal ? "btn-brown-300" : "btn-outline-brown-300"} py-2 border-2 fw-bold rounded-5  w-100`}
+                                                        className={`${isOpenOrderModal ? "btn-brown-300" : "btn-outline-brown-300"} d-none d-lg-block py-2 border-2 fw-bold rounded-5  w-100`}
                                                     />
-
-                                                    
                                                 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                
+                                    <div className="d-none d-lg-block">
                                     {isOpenOrderModal && (
                                         <OrderList 
-                                            onClose={()=>setIsOpenOrderModal(false)}
+                                            onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
                                             orderTitle={PLAN_NAME[selectedProduct.plan_type]}
                                             categoryTab={CATEGORY_TABS}
                                             selectedProduct={selectedProduct}
@@ -801,32 +733,38 @@ export default function Custom() {
                                             totalProteinPrice={totalProteinPrice}
                                             finalPrice={finalPrice}
                                             totalAddonPrice={totalAddonPrice}
+                                            isModel={true}
+                                            isEdit={false}
+                                            styleType={"order-details"}
+                                            onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
+                                            onDeleteAddOn={(title) => {
+                                                setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
+                                            }}
                                         />
                                     )}
-                                    
-
+                                    </div>
                                 </div>
 
                                 <div className="flex-shrink-0 py-3  "> 
-                                    <div className="d-flex justify-content-center">
-                                        <div className="d-flex gap-3"> 
+                                    <div className="d-flex  justify-content-center  gap-3 mx-auto"> 
+                                        <div className="w-100 text-end">
                                             <AdmButton
                                                 onClick={handlePrevBtn}
                                                 text={"上一步"}
                                                 size={'lg'}
-                                                className={'btn-gray-200 px-lg-10 py-2 rounded-5'}
+                                                className={'btn-gray-200 px-lg-10 py-2 w-100-mob rounded-5 '}
                                             />
+                                        </div>
+                                        <div className="w-100">
                                             <AdmButton
                                                 onClick={handleNextBtn}
                                                 text={"下一步"}
                                                 size={'lg'}
-                                                className={'btn-primary px-lg-10 py-2 rounded-5'}
+                                                className={'btn-primary px-lg-10 py-2 w-100-mob rounded-5 '}
                                             />
                                         </div>
                                     </div>
                                 </div>
-                                
-
                             </section>
                         }
 
@@ -834,122 +772,95 @@ export default function Custom() {
 
                         {/* step3 確認餐點 */}
                         { stepState === 3 && 
-                            <section className="py-5 position-relative py-10 px-3" >
+                            <section className=" h-100  pt-10 pb-6 py-lg-4 px-lg-8 px-3  d-flex flex-column overflow-hidden" >
 
                                 
                                 
-                                <div className="d-flex mb-5" >
-                                    <div className="">
-                                        <h2>Step3 <br/>確認您的餐點</h2>
-                                        <p>查看您的餐點明細，確認後按下加入購物車</p>
-                                    </div>
-                                    <div className="d-flex gap-5 p-5">
-                                        
-                                    </div>
-                                </div>
+                                <div className="d-flex mb-5 flex-column flex-shrink-0" >
+                                    <div className="text-center text-lg-start">
+                                        <h2 className=" mb-lg-3 fs-2 pt-6  ">
+                                            <span className="  mb-2 text-orange-10">Step3 </span><br/>
+                                            <span className=" text-primary">確認您的餐點</span></h2>
+                                        <p className="text-brown-300 fw-bold mb-4 mb-lg-0">查看您的餐點明細，確認後按下加入購物車</p>
 
-                                <div className="row">
-                                    <div className="col-1">
-                                        <button className="btn fs-3" onClick={()=> setStepState(stepState - 1)}>
-                                            <i className="bi bi-arrow-left-circle-fill"></i>
-                                        </button>
                                     </div>
-                                    <div className="col-8">
-                                        {/* ！！！！！拉出來做元件！！！！！ */}
-                                        <div class="card p-6">
-                                            <div className="d-flex justify-content-between">
-                                                <div>
-                                                    <h4>{PLAN_NAME[selectedProduct.plan_type]} x 自由配</h4>
-                                                    {CATEGORY_TABS.filter(tab => tab !== "addOn" && selectedProduct[tab].length > 0).map(tab => {
-                                                        const titleName = {
-                                                            base:"基底",
-                                                            protein: "蛋白質",
-                                                            side: "配菜",
-                                                            sauce: "醬料"
-                                                        }
-                                                        return(
-                                                            <div className="d-flex gap-3 mb-4">
-                                                            <div>{titleName[tab]}</div>
-                                                            <div className="d-flex flex-column">
-                                                                {selectedProduct[tab].map(p => {
-                                                                    
-                                                                    const basePrice = p.price || 0;
-                                                                    const isPayable = tab === "protein" || tab === "addOn"
-                                                                    let displayPrice = "-"
-                                                                    if(isPayable){
-                                                                        const finalPrice = tab === "protein"
-                                                                            ? (basePrice - PROTEIN_DISCOUNT) * p.qty
-                                                                            : basePrice * p.qty
-                                                                        displayPrice = finalPrice > 0 ? `$${finalPrice}` : "-"
-                                                                    }
-                                                                    
-                                                                    return(
-                                                                        <div className="d-flex gap-3">
-                                                                            <p>{p.title}</p> 
-                                                                            <p>{p.qty}</p>
-                                                                            <p>{displayPrice}</p>
-                                                                            <button className="btn" onClick={()=>{
-                                                                                setActiveTab(tab);
-                                                                                setStepState(2);
-                                                                            }}><i class="bi bi-pencil"></i></button>
-                                                                        </div>
-                                                                    )
-                                                                    
-                                                                })}
-                                                            </div>
-                                                        </div>
-                                                        )
-                                                    })}
-                                                </div>
-                                                <div>
-                                                    <div className="d-flex">
-                                                        <h4>加購</h4>
-                                                        <div><button className="btn btn-primary-100" onClick={()=>{
-                                                            setActiveTab('addOn');
-                                                            setStepState(2);
-                                                        }}>編輯加購選項</button></div>
-                                                    </div>
-                                                    {selectedProduct["addOn"].map( p => (
-                                                        <div className="d-flex gap-3">
-                                                            <p>{p.title}</p> 
-                                                            <p>{p.qty}</p>
-                                                            <p>${p.price * p.qty}</p>
-                                                            <button className="btn" onClick={ () =>
-                                                                setSelectedProduct( (pre) => ({
-                                                                    ...pre,
-                                                                    addOn: pre.addOn.filter( i => i.title !== p.title)
-                                                                }))
-                                                            }><i class="bi bi-trash-fill"></i></button>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    <div className="col-3">
-                                        <div className="card mb-3">
-                                            <div className="card-body">
-                                                <p>熱量：{finalTotalNutrition.calories}</p>
-                                                <p>蛋白質：{finalTotalNutrition.protein}</p>
-                                                <p>碳水：{finalTotalNutrition.carbs}</p>
-                                                <p>脂肪：{finalTotalNutrition.fat}</p>
-                                            </div>
-                                        </div>
-                                        <div className="card mb-3">
-                                            <div className="card-body">
-                                                <p>自由配：${CUSTOM_PRICE}</p>
-                                                <p>自由配加價：${totalProteinPrice}</p>
-                                                <p>加購品項：${totalAddonPrice}</p>
-                                                <p>總金額：${finalPrice}</p>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <button className="btn btn-primary w-100" onClick={handleSendCart}>加入購物車</button>
-                                        </div>
-                                    </div>
-
                                     
+                                </div>
+                                <div className="flex-grow-1 overflow-hidden">
+                                    <div class="row flex-column flex-lg-row pb-2 h-100" style={{ minHeight: 0 }}>
+                                        <div className="col-1 d-none d-lg-block">
+                                            <button className="btn btn-link text-brown-300 fs-3" onClick={()=> setStepState(stepState - 1)}>
+                                                <i className="bi bi-arrow-left-circle-fill"></i>
+                                            </button>
+                                        </div>
+                                        <div className="col-lg-8 h-100 pe-lg-5">
+                                            <OrderList 
+                                                onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
+                                                orderTitle={PLAN_NAME[selectedProduct.plan_type]}
+                                                categoryTab={CATEGORY_TABS}
+                                                selectedProduct={selectedProduct}
+                                                discount={PROTEIN_DISCOUNT}
+                                                basePrice={CUSTOM_PRICE}
+                                                totalProteinPrice={totalProteinPrice}
+                                                finalPrice={finalPrice}
+                                                totalAddonPrice={totalAddonPrice}
+                                                isModel={false}
+                                                isEdit={true}
+                                                styleType={"order-details-card"}
+                                                onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
+                                                onDeleteAddOn={(title) => {
+                                                    setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
+                                                }}
+                                            />
+
+                                        </div>
+
+                                        <div className="col-lg-3 h-100">
+                                            <div className="d-flex flex-column justify-content-between h-100">
+                                                <div className="d-none d-lg-block" >
+                                                    <CompleteNutrition 
+                                                        calcPFC={pfcRatio()} 
+                                                        finalTotalNutrition={finalTotalNutrition}
+                                                        modeClass={null}
+                                                    />
+                                                </div>
+
+                                                <div className="  mb-3 mt-lg-0 mt-4 px-2 px-lg-0">
+                                                    <div className="d-flex justify-content-between px-1 my-1">
+                                                        <span>自由配基本價</span>
+                                                        <span className="fw-bold">$ {CUSTOM_PRICE}</span>
+                                                    </div>
+                                                    <div className="d-flex justify-content-between px-1  my-1">
+                                                        <span >自由配加價小計</span>
+                                                        <span className="fw-bold">${totalProteinPrice}</span>
+                                                    </div>
+                                                    <div className="d-flex justify-content-between px-1  my-1">
+                                                        <span>加購小計</span>
+                                                        <span className="fw-bold">$ {totalAddonPrice}</span>
+                                                    </div>
+                                                    <div className="d-flex justify-content-between align-items-center py-3">
+                                                        <span className="fs-5 fw-bold">總計金額</span>
+                                                        <span className="fs-4 fw-bold text-primary ">$ {finalPrice}</span>
+                                                    </div>
+                                                    <div>
+                                                        <AdmButton
+                                                            onClick={handlePrevBtn}
+                                                            text={"上一步"}
+                                                            size={'lg'}
+                                                            className={'btn-gray-200 d-lg-none px-lg-10 py-2 mb-3 w-100-mob rounded-5 '}
+                                                        />
+                                                        <AdmButton
+                                                            onClick={handleSendCart}
+                                                            text={"加入購物車"}
+                                                            size={'lg'}
+                                                            className={'btn-primary  w-100 py-3  rounded-5'}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
 
                             </section>
@@ -963,43 +874,48 @@ export default function Custom() {
                         
                         </PageSwitch>
                         { stepState >= 2 && (<>
-                            {/* <div className="c-nutrition-fab-wrapper">
-                                <button className="btn btn-primary c-nutrition-fab-btn">
+                            <div className="c-nutrition-fab-wrapper">
+                                <button className={`btn ${isOpenPFCBtn ? "btn-primary" : "btn-brown-300"} c-nutrition-fab-btn`} onClick={()=>setIsOpenPFCBtn(!isOpenPFCBtn)}>
                                     營養<br/>分析
                                 </button>
+
+                            {isOpenPFCBtn && 
+                                <CompleteNutrition 
+                                    calcPFC={pfcRatio()} 
+                                    finalTotalNutrition={finalTotalNutrition} 
+                                    modeClass={"pfc-mobile-modal"}
+                                />}
                             </div>
 
-                            <div style={{  overflowX: 'hidden' }}>
-                                <div className="mb-4">
-                                    <DonutPFC 
-                                        calories={pfcRatio().calories} 
-                                        protein={pfcRatio().protein} 
-                                        fat={pfcRatio().fat}  
-                                        carbs={pfcRatio().carbs} 
-                                    />
-                                </div>
+                            <div className="c-order-fab-wrapper d-lg-none">
+                                <button 
+                                    className={`btn c-order-fab-btn ${isOpenOrderModal ? "btn-primary" : "btn-brown-300"}`}
+                                    onClick={() => setIsOpenOrderModal(!isOpenOrderModal)}
+                                > 檢視<br/>餐點
+                                </button>
                                 
-                                <div className="">
-                                    <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
-                                        <p>蛋白質</p>
-                                        <p>{finalTotalNutrition.protein}
-                                            <span className="fs-ssm"> g</span>
-                                        </p>
-                                    </div>
-                                    <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
-                                        <p>碳水</p>
-                                        <p>{finalTotalNutrition.carbs}
-                                            <span className="fs-ssm"> g</span>
-                                        </p>
-                                    </div>
-                                    <div className="chart-list p-1 d-flex justify-content-between px-4 my-2">
-                                        <p>脂肪</p>
-                                        <p>{finalTotalNutrition.fat}
-                                            <span className="fs-ssm"> g</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div> */}
+                            {isOpenOrderModal && (
+                                <OrderList 
+                                    onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
+                                    orderTitle={PLAN_NAME[selectedProduct.plan_type]}
+                                    categoryTab={CATEGORY_TABS}
+                                    selectedProduct={selectedProduct}
+                                    discount={PROTEIN_DISCOUNT}
+                                    basePrice={CUSTOM_PRICE}
+                                    totalProteinPrice={totalProteinPrice}
+                                    finalPrice={finalPrice}
+                                    totalAddonPrice={totalAddonPrice}
+                                    isModel={true}
+                                    isEdit={false}
+                                    styleType={"order-details"}
+                                    onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
+                                    onDeleteAddOn={(title) => {
+                                        setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
+                                    }}
+                                />
+                            )}
+                            </div>
+
                             </>)
                         }
                     </div>

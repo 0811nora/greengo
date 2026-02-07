@@ -2,13 +2,8 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 
 const DonutPFC = ({ protein = 0, fat = 0, carbs = 0, calories = 0 }) => {
-    // 判斷是否為初始無數據狀態
     const isNoData = protein === 0 && fat === 0 && carbs === 0;
-    
-    // 沒數據時顯示微量數值，確保圓餅圖渲染邏輯一致且維持圓圈形狀
     const series = isNoData ? [0.0001, 0, 0] : [Number(protein), Number(fat), Number(carbs)];
-    
-    // 優先使用傳入的熱量值
     const displayCalories = calories || (protein * 4) + (fat * 9) + (carbs * 4);
 
     const options = {
@@ -20,13 +15,11 @@ const DonutPFC = ({ protein = 0, fat = 0, carbs = 0, calories = 0 }) => {
             toolbar: { show: false },
         },
         tooltip: {
-            // 沒數據時關閉提示浮窗，避免顯示奇怪的小數點
             enabled: !isNoData,
             shared: false,
             intersect: true
         },
         dataLabels: {
-            // 永遠開啟以維持圓餅大小一致，但沒數據時把文字變透明
             enabled: true,
             distance: -15, 
             style: { 
