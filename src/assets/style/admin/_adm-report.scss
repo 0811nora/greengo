@@ -9,7 +9,7 @@
   stroke-dashoffset: 5;
   stroke-dasharray: 0 0 11.5 40 10.5 40;
   transition: 0.5s;
-  stroke: $sage;
+  stroke: $primary-100;
 }
 
 .date-nav {
@@ -50,7 +50,7 @@
   &.active,
   &:focus,
   &:active {
-    background: $sage;
+    background: $primary-100;
     color: $primary-300;
     box-shadow: 0 0 0 2px $primary-300;
   }
@@ -58,9 +58,8 @@
 
 .date-btn:hover {
   color: $primary-300;
-  border: 1px solid $sage;
-  background: $sage;
-  opacity: 0.8;
+  border: 1px solid rgba(236, 243, 237, 0.7);
+  background: rgba(236, 243, 237, 0.7);
 }
 // 今日
 .date-btn:nth-child(1):hover ~ svg .date-rect {
@@ -249,6 +248,7 @@
 
 // card 樣式
 .adm__report-card {
+  padding: 4px 12px;
   border-radius: 24px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(20px);
