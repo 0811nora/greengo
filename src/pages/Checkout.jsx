@@ -91,6 +91,10 @@ const Checkout = () => {
 
     const pickupNumber = generatePickupNumber();
 
+    const isCash = formData.payment_method === 'cash';
+    const paymentStatus = isCash ? 'unpaid' : 'paid';
+    const orderStatus = isCash ? 'new' : 'ready';
+
     const data = {
       user: {
         ...formData,
@@ -98,6 +102,8 @@ const Checkout = () => {
         final_total: finalTotal,
         discount: discount,
         order_number: pickupNumber,
+        payment_status: paymentStatus,
+        order_status: orderStatus,
       },
     };
     try {

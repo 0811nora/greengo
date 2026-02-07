@@ -7,7 +7,7 @@ const TopRankingCard = ({ title, data }) => {
         <div className="card adm__report-card h-100">
           <div className="card-body">
             <h5 className="card-title mb-3">{title}</h5>
-            <p className="text-muted text-center py-4">暫無資料</p>
+            <p className="text-gray-900 text-center py-4">暫無資料</p>
           </div>
         </div>
       </div>
@@ -18,8 +18,8 @@ const TopRankingCard = ({ title, data }) => {
     <div className="col-md-4 mb-3">
       <div className="card adm__report-card h-100">
         <div className="card-body">
-          <h5 className="card-title mb-3">{title}</h5>
-          {/* 排行卡片內容(樣式待修) */}
+          <h5 className="card-title text-gray-900 mb-3">{title}</h5>
+          {/* 排行卡片內容 */}
           <div className="list-group list-group-flush">
             {data.map((item, index) => (
               <div
@@ -31,10 +31,10 @@ const TopRankingCard = ({ title, data }) => {
                   <span
                     className={`badge me-3 ${
                       index === 0
-                        ? "bg-danger text-white"
+                        ? "bg-error text-white"
                         : index === 1
-                          ? "bg-secondary-100"
-                          : "bg-light text-dark"
+                          ? "bg-orange-300 text-white"
+                          : "bg-orange-200 text-white"
                     }`}
                   >
                     {index + 1}
@@ -43,13 +43,15 @@ const TopRankingCard = ({ title, data }) => {
                   {/* 商品名稱 */}
                   <div>
                     <div className="fw-medium">{item.name}</div>
-                    <small className="text-muted">售出 {item.count} 份</small>
+                    <small className="text-brown-300">
+                      售出 {item.count} 份
+                    </small>
                   </div>
                 </div>
 
                 {/* 銷售額 */}
                 <div className="text-end">
-                  <div className="fw-bold text-primary">
+                  <div className="fw-bold text-gray-900">
                     NT$ {item.revenue.toLocaleString()}
                   </div>
                 </div>

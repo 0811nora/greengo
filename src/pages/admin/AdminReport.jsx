@@ -118,7 +118,7 @@ const AdminReport = () => {
         <StatCard
           title="營業額"
           value={`NT$ ${statistics.revenue.total.toLocaleString()}`}
-          subtitle={`信用卡: ${statistics.revenue.creditCard.toLocaleString()} / 現金: ${statistics.revenue.cash.toLocaleString()}`}
+          subtitle={`信用卡: ${statistics.revenue.creditCard.toLocaleString()} / 現金: ${statistics.revenue.cash.toLocaleString()} / 電子支付: ${statistics.revenue.ePayment.toLocaleString()}`}
           icon="bi bi-cash-stack"
         />
         <StatCard

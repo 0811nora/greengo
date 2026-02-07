@@ -1,17 +1,18 @@
-import { NavLink } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { NavLink, Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useCart } from "../context/CartContext";
 
 const NavbarData = {
   brand: {
-    title: 'GreenGo',
-    url: '/',
+    title: "GreenGo",
+    url: "/",
   },
   mainLinks: [
-    { title: '首頁', url: '/' },
-    { title: '精選菜單', url: '/product' },
-    { title: '自由搭配', url: '/custom' },
-    { title: '關於綠果', url: '/about' },
-    { title: '綠果專欄', url: '/article' },
+    { title: "首頁", url: "/" },
+    { title: "精選菜單", url: "/product" },
+    { title: "自由搭配", url: "/custom" },
+    { title: "關於綠果", url: "/about" },
+    { title: "綠果專欄", url: "/article" },
   ],
 };
 
@@ -34,16 +35,19 @@ export default function Header() {
       }
     };
     if (isMobileMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMobileMenuOpen]);
 
+  // cart
+  const { cartData, getAllCart } = useCart();
+
   return (
     <>
-      <header className="header" ref={headerRef}>
+      <header className="front__header" ref={headerRef}>
         <nav className="navbar">
           <div className="container">
             {/* desktop */}
@@ -60,7 +64,7 @@ export default function Header() {
                     <NavLink
                       to={link.url}
                       className={({ isActive }) =>
-                        `header__link ${isActive ? 'header__link--active' : ''}`
+                        `header__link ${isActive ? "header__link--active" : ""}`
                       }
                     >
                       <span className="header__link-text">{link.title}</span>
@@ -70,15 +74,59 @@ export default function Header() {
               </ul>
 
               {/* cart + login */}
-              <div className="d-flex align-items-center gap-2">
-                <NavLink
-                  type="button"
-                  className="btn btn-outline-gray-400 rounded-pill border-none"
-                  to="/cart"
-                >
-                  <i className="bi bi-bag"></i>
-                </NavLink>
-                <button className="btn btn-outline-primary-300 rounded-3">
+              {/* 整體待修 */}
+              <div className="d-flex align-items-center">
+                <div className="nav-item dropdown cart-dropdown">
+                  <Link to="/cart" className="nav-link position-relative">
+                    <i className="bi bi-cart"></i>
+                    {cartData.carts?.length > 0 && (
+                      <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+                        {cartData.carts.length}
+                      </span>
+                    )}
+                  </Link>
+                  <div
+                    className="dropdown-menu dropdown-menu-end p-3 shadow"
+                    style={{ width: "300px" }}
+                  >
+                    {cartData.carts?.length === 0 ? (
+                      <p className="text-center mb-0">購物車空空如也喔！</p>
+                    ) : (
+                      <>
+                        <ul className="list-unstyled">
+                          {cartData.carts.map((item) => (
+                            <li
+                              key={item.id}
+                              className="mb-2 border-bottom pb-2"
+                            >
+                              <div className="d-flex align-items-center g-2">
+                                <img
+                                  src={item.product.imageUrl}
+                                  alt={item.product.title}
+                                  style={{
+                                    width: "80px",
+                                    height: "80px",
+                                    marginRight: "8px",
+                                    borderRadius: "8px",
+                                  }}
+                                />
+                                {item.product.title} x {item.qty}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                        <Link
+                          to="/cart"
+                          className="home__btn-primary w-100 mt-2"
+                        >
+                          前往結帳
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <button className="btn btn-outline-primary-300 rounded-3 ms-6">
                   登入 / 註冊
                 </button>
               </div>
@@ -88,7 +136,7 @@ export default function Header() {
             <div className="d-lg-none w-100">
               <div
                 className={`mobile-container ${
-                  isMobileMenuOpen ? 'mobile-container--open' : ''
+                  isMobileMenuOpen ? "mobile-container--open" : ""
                 }`}
               >
                 <div className="mobile-container__header">
@@ -114,7 +162,7 @@ export default function Header() {
                     >
                       <i
                         className={`bi ${
-                          isMobileMenuOpen ? 'bi-x-lg' : 'bi-list'
+                          isMobileMenuOpen ? "bi-x-lg" : "bi-list"
                         }`}
                       ></i>
                     </button>
@@ -124,7 +172,7 @@ export default function Header() {
                 {/* dropdown*/}
                 <div
                   className={`mobile-container__dropdown ${
-                    isMobileMenuOpen ? 'mobile-container__dropdown--open' : ''
+                    isMobileMenuOpen ? "mobile-container__dropdown--open" : ""
                   }`}
                 >
                   <nav className="mobile-container__nav ">
@@ -134,7 +182,7 @@ export default function Header() {
                         to={link.url}
                         className={({ isActive }) =>
                           `mobile-container__link ${
-                            isActive ? 'mobile-container__link--active ' : ''
+                            isActive ? "mobile-container__link--active " : ""
                           }`
                         }
                         onClick={closeMenu}
@@ -160,7 +208,7 @@ export default function Header() {
       {/* 點背景就關閉選單 */}
       <div
         className={`mobile-overlay ${
-          isMobileMenuOpen ? 'mobile-overlay--active' : ''
+          isMobileMenuOpen ? "mobile-overlay--active" : ""
         }`}
         onClick={closeMenu}
       ></div>

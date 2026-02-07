@@ -9,6 +9,7 @@ export const calculateStatistics = (orders) => {
       total: 0,
       creditCard: 0,
       cash: 0,
+      ePayment: 0,
     },
     // 訂單數（包含未付款）
     orderCount: {
@@ -39,6 +40,8 @@ export const calculateStatistics = (orders) => {
         stats.revenue.creditCard += total;
       } else if (paymentMethod === "cash") {
         stats.revenue.cash += total;
+      } else if (paymentMethod === "e_payment") {
+        stats.revenue.ePayment += total;
       }
     }
 
@@ -82,6 +85,7 @@ export const calculateStatistics = (orders) => {
 export const calculatePaymentMethod = (orders) => {
   let creditCardTotal = 0;
   let cashTotal = 0;
+  let ePaymentTotal = 0;
 
   orders.forEach((order) => {
     // 統計已付款訂單
@@ -94,6 +98,8 @@ export const calculatePaymentMethod = (orders) => {
         creditCardTotal += total;
       } else if (paymentMethod === "cash") {
         cashTotal += total;
+      } else if (paymentMethod === "e_payment") {
+        ePaymentTotal += total;
       }
     }
   });
@@ -101,6 +107,7 @@ export const calculatePaymentMethod = (orders) => {
   return [
     { name: "信用卡", value: creditCardTotal },
     { name: "現金", value: cashTotal },
+    { name: "電子支付", value: ePaymentTotal },
   ];
 };
 
@@ -112,6 +119,7 @@ export const calculateSalesTrend = (orders, timeLabels, getTimeLabelFn) => {
     revenue: 0,
     cash: 0,
     creditCard: 0,
+    ePayment: 0,
   }));
 
   // 統計每筆訂單到對應的時間點
@@ -132,6 +140,8 @@ export const calculateSalesTrend = (orders, timeLabels, getTimeLabelFn) => {
           trendData[index].creditCard += total;
         } else if (paymentMethod === "cash") {
           trendData[index].cash += total;
+        } else if (paymentMethod === "e_payment") {
+          trendData[index].ePayment += total;
         }
       }
     }

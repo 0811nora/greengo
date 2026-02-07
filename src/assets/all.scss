@@ -1,7 +1,7 @@
 @import 'bootstrap/scss/functions';
 
-@import './style/variables';
-@import './style/variables-dark';
+@import './style/front/base/variables';
+@import './style/front/base/variables-dark';
 
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/variables-dark';
@@ -9,20 +9,27 @@
 @import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/utilities';
 
-@import './style/utilities';
+@import './style/front/base/utilities';
 @import 'bootstrap/scss/utilities/api';
 @import 'bootstrap/scss/bootstrap.scss';
 
-@import './style/typography';
+@import './style/front/base/typography';
 
 // 前台
-@import './style/header';
+@import './style/front/layout/header';
 @import './style/home';
 @import './style/custom/custom';
 @import './style/custom/pickTypeCard';
 @import './style/custom/typeListBtn';
 @import './style/custom/itemCard';
 @import './style/cart';
+@import './style/articleDetail';
+@import './style/product';
+@import './style/product2';
+
+// 前台 - components
+@import './style/components/product-select';
+@import './style/components/product-card';
 
 // 後台 - base
 @import './style/admin/base/adm-variables';
