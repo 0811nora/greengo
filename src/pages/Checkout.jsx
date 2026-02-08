@@ -284,7 +284,8 @@ const Checkout = () => {
                       </div>
                     </div>
                     <span className="text-muted">
-                      $ {(item.product.price * item.qty).toLocaleString()}
+                      <i class="bi bi-currency-dollar" />
+                      {(item.product.price * item.qty).toLocaleString()}
                     </span>
                   </li>
                 ))}
@@ -331,20 +332,29 @@ const Checkout = () => {
               {/* 金額計算 */}
               <div className="d-flex justify-content-between mb-2">
                 <span>小計</span>
-                <span>$ {baseSubtotal.toLocaleString()}</span>
+                <span>
+                  <i class="bi bi-currency-dollar" />{' '}
+                  {baseSubtotal.toLocaleString()}
+                </span>
               </div>
               <div className="d-flex justify-content-between mb-2">
                 <span>加購</span>
-                <span>$ {totalAddons.toLocaleString()}</span>
+                <span>
+                  <i class="bi bi-currency-dollar" />{' '}
+                  {totalAddons.toLocaleString()}
+                </span>
               </div>
               <div className="d-flex justify-content-between mb-2 text-success">
                 <span>折扣</span>
-                <span>-$ {discount}</span>
+                <span>
+                  -<i class="bi bi-currency-dollar" /> {discount}
+                </span>
               </div>
               <div className="d-flex justify-content-between mt-3 pt-3 border-top border-gray-100">
                 <span className="fs-5 fw-medium">總計</span>
                 <span className="fs-5 fw-medium text-primary">
-                  $ {finalTotal.toLocaleString()}
+                  <i class="bi bi-currency-dollar" />{' '}
+                  {finalTotal.toLocaleString()}
                 </span>
               </div>
 
