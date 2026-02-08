@@ -9,10 +9,12 @@ const ClickOutsideHandler = ({ children, onOutsideClick }) => {
     });
 
     return (
-        <div ref={ref} className=" click-outside-wrapper" style={{ display: 'contents' }}>
+        <div ref={ref} className=" click-outside-wrapper" >
             {children}
         </div>
     );
 };
 
+
 export default ClickOutsideHandler;
+
