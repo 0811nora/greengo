@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllProducts,postAddToCart,getCart } from "../api/ApiClient";
-import { Link } from "react-router-dom";
-
 import { PageSwitch} from '../components/common/AnimationWrapper';
+import { notify } from '../components/Notify';
 
 import AdmButton from "../components/admin/common/AdmButton";
 
@@ -18,7 +18,6 @@ import lightBG from "../assets/image/custom/lightBG.jpg";
 import balancedBG from "../assets/image/custom/balancedBG.jpg";
 import highProteinBG from "../assets/image/custom/highProteinBG.jpg";
 import TypeListBtn from "../components/custom-comp/TypeListBtn";
-import DonutPFC from "../components/custom-comp/PFC_Chart";
 import CompleteNutrition from "../components/custom-comp/CompleteNutrition";
 
 import baseIcon from "../assets/image/custom/icons8-rice-bowl-50.png";
@@ -96,20 +95,13 @@ export default function Custom() {
     const [ isOpenOrderModal , setIsOpenOrderModal] = useState(false);
     const [ isOpenPFCBtn , setIsOpenPFCBtn] = useState(false);
 
-
+    const navigate = useNavigate(null);
 
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-
-
-    // 看log區
-    useEffect(() => {
-        console.log('selectedProduct:', selectedProduct)
-        console.log('allProducts:', allProducts)
-    },[selectedProduct,allProducts])
 
 
       // 取得所有產品
@@ -126,16 +118,21 @@ export default function Custom() {
         
     },[])
 
+    const handleClose = (mode) => {
+        if(mode === "order"){
+            setIsOpenOrderModal(false);
+        }else{
+            setIsOpenPFCBtn(false)
+        }
+    };
+    
+
     
 
     const getCustom = allProducts.filter(item => item.category === "custom");
     const getAllitem = allProducts.filter(item => item.category === "item");
     const renderItemList = getAllitem.filter(item => item.product_type === activeTab);
     const renderaddOnItemList = getAllitem.filter(item => item.product_type === addOnTabs);
-    console.log("getAllitem",getAllitem)
-    console.log("getCustom",getCustom)
-    console.log("renderaddOnItemList",renderaddOnItemList)
-    console.log("renderItemList",renderItemList)
     
 
     const maxCount = {
@@ -245,7 +242,6 @@ export default function Custom() {
         };
     });
 
-
     const totalProteinPrice = findproteinPrice.reduce((acc, item) => acc + item.totalPrice,0)
     const totalAddonPrice = findAddonPrice.reduce((acc, item) => acc + item.totalPrice,0)
     const finalPrice = CUSTOM_PRICE + totalProteinPrice + totalAddonPrice;
@@ -281,7 +277,7 @@ export default function Custom() {
         const maxQty = list.reduce((sum, item) => sum + item.qty, 0)
 
         if( type === 1 && maxQty >= maxCount[activeTab]){
-            alert('請先取消一個，再加購')
+            notify('info','已達上限，請先移除其他選項','top-center')
             return;
         }
 
@@ -317,8 +313,6 @@ export default function Custom() {
 
     }
 
-    
-
 
 
     // 上一步按鈕的判斷
@@ -337,15 +331,12 @@ export default function Custom() {
         }
     }
 
-
-
-
     
     // 下一步按鈕的判斷
     const handleNextBtn = () => {
         if (stepState === 1) {
             if (!selectedProduct.plan_type) {
-                alert("請選擇套餐");
+                notify('info','請選擇套餐','top-center')
                 return;
             }
             setActiveTab('base');
@@ -359,7 +350,7 @@ export default function Custom() {
             if (underTarget) {
                 setActiveTab(underTarget);
                 const titleName = { base: "基底", protein: "蛋白質", side: "配菜", sauce: "醬料" };
-                alert(`您的「${titleName[underTarget]}」選擇數量未達標，請檢查。`);
+                notify('info',`${titleName[underTarget]}數量不足，請先選購。`,'top-center')
                 scrollToTop();
             } else {
                 setStepState(3);
@@ -430,6 +421,8 @@ export default function Custom() {
 
             const addCartRes = await postAddToCart(finalData);
             console.log(addCartRes.data.message)
+            notify('success','加入成功','top-center')
+            setStepState(4);
         }catch(err){
             console.log(err)
         }
@@ -531,7 +524,7 @@ export default function Custom() {
 
                         { stepState > 0 && 
                         <div className="blur-bg h-100 mb-4 com_bor_radius position-relative">
-                            <Stepper stepState={stepState}/>
+                            { stepState < 4 && <Stepper stepState={stepState}/>}
 
                         {/* step1 選擇套餐 */}
 
@@ -722,26 +715,28 @@ export default function Custom() {
                                         </div>
                                     </div>
                                     <div className="d-none d-lg-block">
-                                    {isOpenOrderModal && (
-                                        <OrderList 
-                                            onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
-                                            orderTitle={PLAN_NAME[selectedProduct.plan_type]}
-                                            categoryTab={CATEGORY_TABS}
-                                            selectedProduct={selectedProduct}
-                                            discount={PROTEIN_DISCOUNT}
-                                            basePrice={CUSTOM_PRICE}
-                                            totalProteinPrice={totalProteinPrice}
-                                            finalPrice={finalPrice}
-                                            totalAddonPrice={totalAddonPrice}
-                                            isModel={true}
-                                            isEdit={false}
-                                            styleType={"order-details"}
-                                            onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
-                                            onDeleteAddOn={(title) => {
-                                                setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
-                                            }}
-                                        />
-                                    )}
+                                        <ClickOutsideHandler onOutsideClick={()=> handleClose("order")}>
+                                        {isOpenOrderModal && (
+                                            <OrderList 
+                                                onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
+                                                orderTitle={PLAN_NAME[selectedProduct.plan_type]}
+                                                categoryTab={CATEGORY_TABS}
+                                                selectedProduct={selectedProduct}
+                                                discount={PROTEIN_DISCOUNT}
+                                                basePrice={CUSTOM_PRICE}
+                                                totalProteinPrice={totalProteinPrice}
+                                                finalPrice={finalPrice}
+                                                totalAddonPrice={totalAddonPrice}
+                                                isModel={true}
+                                                isEdit={false}
+                                                styleType={"order-details"}
+                                                onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
+                                                onDeleteAddOn={(title) => {
+                                                    setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
+                                                }}
+                                            />
+                                        )}
+                                        </ClickOutsideHandler>
                                     </div>
                                 </div>
 
@@ -787,31 +782,33 @@ export default function Custom() {
                                     
                                 </div>
                                 <div className="flex-grow-1 overflow-hidden">
-                                    <div class="row flex-column flex-lg-row pb-2 h-100" style={{ minHeight: 0 }}>
+                                    <div className="row flex-column flex-lg-row pb-2 h-100" style={{ minHeight: 0 }}>
                                         <div className="col-1 d-none d-lg-block">
                                             <button className="btn btn-link text-brown-300 fs-3" onClick={()=> setStepState(stepState - 1)}>
                                                 <i className="bi bi-arrow-left-circle-fill"></i>
                                             </button>
                                         </div>
                                         <div className="col-lg-8 h-100 pe-lg-5">
-                                            <OrderList 
-                                                onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
-                                                orderTitle={PLAN_NAME[selectedProduct.plan_type]}
-                                                categoryTab={CATEGORY_TABS}
-                                                selectedProduct={selectedProduct}
-                                                discount={PROTEIN_DISCOUNT}
-                                                basePrice={CUSTOM_PRICE}
-                                                totalProteinPrice={totalProteinPrice}
-                                                finalPrice={finalPrice}
-                                                totalAddonPrice={totalAddonPrice}
-                                                isModel={false}
-                                                isEdit={true}
-                                                styleType={"order-details-card"}
-                                                onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
-                                                onDeleteAddOn={(title) => {
-                                                    setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
-                                                }}
-                                            />
+                                            <ClickOutsideHandler onOutsideClick={()=> handleClose("order")}>
+                                                <OrderList 
+                                                    onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
+                                                    orderTitle={PLAN_NAME[selectedProduct.plan_type]}
+                                                    categoryTab={CATEGORY_TABS}
+                                                    selectedProduct={selectedProduct}
+                                                    discount={PROTEIN_DISCOUNT}
+                                                    basePrice={CUSTOM_PRICE}
+                                                    totalProteinPrice={totalProteinPrice}
+                                                    finalPrice={finalPrice}
+                                                    totalAddonPrice={totalAddonPrice}
+                                                    isModel={false}
+                                                    isEdit={true}
+                                                    styleType={"order-details-card"}
+                                                    onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
+                                                    onDeleteAddOn={(title) => {
+                                                        setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
+                                                    }}
+                                                />
+                                                </ClickOutsideHandler>
 
                                         </div>
 
@@ -840,7 +837,7 @@ export default function Custom() {
                                                     </div>
                                                     <div className="d-flex justify-content-between align-items-center py-3">
                                                         <span className="fs-5 fw-bold">總計金額</span>
-                                                        <span className="fs-4 fw-bold text-primary ">$ {finalPrice}</span>
+                                                        <span className="fs-4 fw-bold text-primary ">$ {finalPrice.toLocaleString()}</span>
                                                     </div>
                                                     <div>
                                                         <AdmButton
@@ -866,37 +863,85 @@ export default function Custom() {
                             </section>
                         }
 
-                        </div>
+                        { stepState === 4 && 
+
+                            <section className="d-flex justify-content-center align-items-center p-4" style={{ height: "calc(100vh - 120px)" }}>
+                                <div className="w-100" style={{ maxWidth: '450px' }}>
+                                    
+                                    {/* 1. 成功視覺焦點 */}
+                                    <div className="text-center mb-8">
+                                        <div className="" >
+                                            <i className="bi bi-check-circle-fill text-primary" style={{ fontSize: '4rem' }}></i>
+                                        </div>
+                                        <h2 className="fw-bold text-dark mt-4 mb-4">加入成功</h2>
+                                        <p className="text-gray-500">您的餐點已成功加入購物車，準備好要享用了嗎？</p>
+                                    </div>
+
+
+                                    <div className="d-flex flex-column gap-3 px-3 ">
+                                        
+                                        <div className="d-flex justify-content-center gap-4">
+                                            <button className="btn btn-primary  rounded-pill py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center px-5"
+                                                onClick={() => {navigate("/cart")}}>
+                                                <i className="bi bi-cart-fill me-2"></i>
+                                                查看購物車
+                                            </button>
+
+                                            <button className="btn btn-brown-300  rounded-pill py-3 fw-bold px-5 "
+                                                    onClick={() => {setStepState(0), setSelectedProduct(INITIAL_SELECTED_PRODUCT)}}>
+                                                <i className="bi bi-plus-lg me-2"></i>
+                                                自由配選購
+                                            </button>
+                                        </div>
+                                        
+
+                                        <button className="btn btn-link text-brown-300 mt-2 text-decoration-none fw-medium d-flex align-items-center justify-content-center"
+                                                onClick={() => {navigate("/product")}}>
+                                            <i className="bi bi-grid-fill me-2"></i>
+                                            逛逛其他單點商品
+                                        </button>
+                                    </div>
+
+                                    
+                                </div>
+
+                            </section>
                         }
 
 
-                        
-                        
-                        </PageSwitch>
-                        { stepState >= 2 && (<>
-                            <div className="c-nutrition-fab-wrapper">
-                                <button className={`btn ${isOpenPFCBtn ? "btn-primary" : "btn-brown-300"} c-nutrition-fab-btn`} onClick={()=>setIsOpenPFCBtn(!isOpenPFCBtn)}>
-                                    營養<br/>分析
-                                </button>
-
-                            {isOpenPFCBtn && 
-                                <CompleteNutrition 
-                                    calcPFC={pfcRatio()} 
-                                    finalTotalNutrition={finalTotalNutrition} 
-                                    modeClass={"pfc-mobile-modal"}
-                                />}
+                        </div>
+                        }
+                    
+                        { stepState >= 2 &&  stepState < 4 && (<>
+                            <div className="c-nutrition-fab-wrapper d-lg-none">
+                                    <button className={`btn ${isOpenPFCBtn ? "btn-primary" : "btn-brown-300"} c-nutrition-fab-btn`} 
+                                        onClick={()=> {setIsOpenPFCBtn(prev => !prev)}}>
+                                        營養<br/>分析
+                                    </button>
+                                {isOpenPFCBtn && 
+                                <ClickOutsideHandler onOutsideClick={()=> handleClose("pfc")} >
+                                    <CompleteNutrition 
+                                        calcPFC={pfcRatio()} 
+                                        finalTotalNutrition={finalTotalNutrition} 
+                                        modeClass={"pfc-mobile-modal"}
+                                    />
+                                    </ClickOutsideHandler>
+                                }
+                                
                             </div>
 
                             <div className="c-order-fab-wrapper d-lg-none">
+                                
                                 <button 
                                     className={`btn c-order-fab-btn ${isOpenOrderModal ? "btn-primary" : "btn-brown-300"}`}
-                                    onClick={() => setIsOpenOrderModal(!isOpenOrderModal)}
+                                    onClick={() => {setIsOpenOrderModal(prev => !prev)}}
                                 > 檢視<br/>餐點
                                 </button>
                                 
                             {isOpenOrderModal && (
+                                <ClickOutsideHandler onOutsideClick={()=> handleClose("order")}>
                                 <OrderList 
-                                    onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
+                                    onClose={()=>setIsOpenOrderModal(false)}
                                     orderTitle={PLAN_NAME[selectedProduct.plan_type]}
                                     categoryTab={CATEGORY_TABS}
                                     selectedProduct={selectedProduct}
@@ -908,16 +953,18 @@ export default function Custom() {
                                     isModel={true}
                                     isEdit={false}
                                     styleType={"order-details"}
-                                    onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
+                                    onEdit={(tab) => {setActiveTab(tab);setStepState(2)}}
                                     onDeleteAddOn={(title) => {
                                         setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
                                     }}
                                 />
+                                </ClickOutsideHandler>
                             )}
+                                
                             </div>
-
                             </>)
                         }
+                        </PageSwitch>
                     </div>
 
                 </div>

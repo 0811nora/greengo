@@ -55,9 +55,15 @@ const OrderList = ({
                         </table>
                         
                         {/* 自由配小計 */}
-                        <div className="d-flex justify-content-end mt-2 mb-4 px-2">
-                            <span className="text-muted small">自由配：<span className="fw-bold text-dark">${basePrice}</span></span>
-                            <span className="text-muted small">自由配加價：<span className="fw-bold text-dark">${totalProteinPrice}</span></span>
+                        <div className=" mt-2 mb-4 px-2 bg-primary-100 py-2">
+                            <div className="d-flex justify-content-between">
+                                <p className="text-muted small">自由配：</p>
+                                <p className="fw-bold text-dark">${basePrice}</p>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <p className="text-muted small">自由配加價：</p>
+                                <p className="fw-bold text-dark">${totalProteinPrice.toLocaleString()}</p>
+                            </div>
                         </div>
                         
                         {selectedProduct["addOn"].length > 0 && (
@@ -76,14 +82,18 @@ const OrderList = ({
                                             <tr key={`addon-${index}`}>
                                                 <td className="text-primary fw-bold">{p.title}</td>
                                                 <td className="text-center">x{p.qty}</td>
-                                                <td className="text-end">${p.price * p.qty}</td>
+                                                <td className="text-end">${p.price * p.qty.toLocaleString()}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                                 {/* 加購小計 */}
-                                <div className="d-flex justify-content-end mt-2 px-2">
-                                    <span className="text-muted small">加購小計：<span className="fw-bold text-dark">${totalAddonPrice}</span></span>
+                                
+                                <div className=" mt-2 mb-4 px-2 bg-primary-100 py-2">
+                                    <div className="d-flex justify-content-between">
+                                        <p className="text-muted small">加購小計：</p>
+                                        <p className="fw-bold text-dark">${totalAddonPrice.toLocaleString()}</p>
+                                    </div>
                                 </div>
                             </div>
                         )}
@@ -93,9 +103,10 @@ const OrderList = ({
                     <div className="flex-shrink-0 pt-3 border-top mt-3">
                         <div className="d-flex justify-content-between align-items-center">
                             <span className="fs-5 fw-bold">總計金額</span>
-                            <span className="fs-4 fw-bold text-orange-300">$ {finalPrice}</span>
+                            <span className="fs-4 fw-bold text-price">$ {finalPrice.toLocaleString()}</span>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         );
@@ -181,7 +192,7 @@ const OrderList = ({
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-center py-5 bg-light rounded-3 border border-dashed mx-2">
+                            <div className="text-center py-5  rounded-3 mx-2">
                                 <p className="text-gray-400 small mb-0">無加購商品</p>
                             </div>
                         )}
