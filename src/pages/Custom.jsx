@@ -277,7 +277,7 @@ export default function Custom() {
         const maxQty = list.reduce((sum, item) => sum + item.qty, 0)
 
         if( type === 1 && maxQty >= maxCount[activeTab]){
-            notify('info','已達上限，請先移除其他選項','top-center')
+            notify('info','已達上限，請先移除其他選項','bottom-center')
             return;
         }
 
@@ -336,7 +336,7 @@ export default function Custom() {
     const handleNextBtn = () => {
         if (stepState === 1) {
             if (!selectedProduct.plan_type) {
-                notify('info','請選擇套餐','top-center')
+                notify('info','請選擇套餐','bottom-center')
                 return;
             }
             setActiveTab('base');
@@ -350,7 +350,7 @@ export default function Custom() {
             if (underTarget) {
                 setActiveTab(underTarget);
                 const titleName = { base: "基底", protein: "蛋白質", side: "配菜", sauce: "醬料" };
-                notify('info',`${titleName[underTarget]}數量不足，請先選購。`,'top-center')
+                notify('info',`${titleName[underTarget]}數量不足，請先選購。`,'bottom-center')
                 scrollToTop();
             } else {
                 setStepState(3);
@@ -421,7 +421,7 @@ export default function Custom() {
 
             const addCartRes = await postAddToCart(finalData);
             console.log(addCartRes.data.message)
-            notify('success','加入成功','top-center')
+            notify('success','加入成功','bottom-center')
             setStepState(4);
         }catch(err){
             console.log(err)
