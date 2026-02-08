@@ -57,6 +57,8 @@
         .mid-sec {
             background-color: #F9E8DB;
             max-width: 90%;
+            border-top-right-radius: 24px;
+            border-bottom-right-radius: 24px;
         }
 
 
@@ -82,5 +84,31 @@
             aspect-ratio: 1/1;
             margin-bottom: -80px;
         }
+    }
+
+    .third-section {
+        background-color: #FBF1CA;
+
+        img {
+            width: 100%;
+            max-width: 250px;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            object-position: center;
+
+        }
+
+
+    }
+
+    .fourth-section {
+        background-color: #F4F4E8;
+
+        .icon {
+            width: 100%;
+            max-width: 250px;
+
+        }
+
     }
 }
