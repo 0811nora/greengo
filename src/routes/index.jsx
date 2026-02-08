@@ -19,6 +19,7 @@ import AdminProducts from '../pages/admin/AdminProducts.jsx';
 import AdminOrder_today from '../pages/admin/AdminOrder_today.jsx';
 import AdminOrder_history from '../pages/admin/AdminOrder_history.jsx';
 import { Product2 } from '../pages/Product2.jsx';
+import AdminUpload from '../pages/admin/AdminUpload.jsx';
 
 const routes = [
 	{
@@ -60,6 +61,7 @@ const routes = [
 			{ path: 'products', element: <AdminProducts /> },
 			{ path: 'blog', element: <AdminBlog /> },
 			{ path: 'report', element: <AdminReport /> },
+			{ path: 'upload', element: <AdminUpload /> },
 		],
 	},
 	// {
