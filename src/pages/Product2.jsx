@@ -3,13 +3,15 @@ import seafoodTag from '../assets/img/product/Seafood.svg';
 import beefTag from '../assets/img/product/Beef.svg';
 import spicyTag from '../assets/img/product/Spicy.svg';
 import { getAllProducts } from '../api/ApiClient';
-import { Accordion, Button, Form } from 'react-bootstrap';
+import { Accordion, Form } from 'react-bootstrap';
 import Select from 'react-select';
 import classNames from 'classnames';
+import { useNavigate, useParams } from 'react-router-dom';
+import ProductDetail from './ProductDetail';
 
 const FILTER_OPTIONS = {
 	set: {
-		category: { key: 'set', label: '經典 poke 碗' },
+		category: { key: 'set', label: '經典綠果碗' },
 		tab: [
 			{ key: 'all', label: '全部', icon: 'border_all' },
 			{ key: 'popular', label: '人氣推薦', icon: 'thumb_up' },
@@ -53,11 +55,12 @@ const FILTER_OPTIONS = {
 	},
 };
 const INITIAL_FILTER_STATE = {
+	all: { tab: 'all', tag: [] },
 	set: { tab: 'all', tag: [] },
 	drinks: { tab: 'all', tag: [] },
 	soup: { tab: 'all', tag: [] },
 };
-const sortOptions = [
+const SORT_SELECT = [
 	{ value: 'proteinToLow', label: '蛋白：高 → 低' },
 	{ value: 'kcalToHigh', label: '熱量：低 → 高' },
 	{ value: 'likeToLow', label: '人氣：高 → 低' },
@@ -68,10 +71,13 @@ const sortOptions = [
 export const Product2 = () => {
 	const [allProducts, setAllProducts] = useState([]);
 	const [displayProducts, setDisplayProducts] = useState([]);
-	const [currentCategoryState, setCurrentCategoryState] = useState('set');
+	const [currentCategoryState, setCurrentCategoryState] = useState('all');
 	const [filterState, setFilterState] = useState(INITIAL_FILTER_STATE);
 	const [tagSectionStyle, setSetSectionStyle] = useState([]);
 	const [sortSelect, setSortSelect] = useState(null);
+	const [isOpenDetailModal, setIsOpenDetailModal] = useState(false);
+	const navigate = useNavigate();
+	const { id } = useParams();
 
 	// 左側 filter 按鈕操作邏輯
 	const toggleFStateByCategory = prodcutCategory => setCurrentCategoryState(prodcutCategory);
@@ -102,6 +108,22 @@ export const Product2 = () => {
 	};
 
 	// 渲染卡片上的 Tab, Tag
+	const renderUITabpill = (prodcutCategory, productTab) => {
+		if (!Array.isArray(productTab)) return null;
+
+		// 符合 category 的 tab data 列表
+		const tabDataList = FILTER_OPTIONS[prodcutCategory]?.tab;
+		const result = [];
+		for (const dataTab of tabDataList) {
+			for (const UITab of productTab) {
+				if (dataTab.key === UITab) {
+					result.push(dataTab.label);
+				}
+			}
+		}
+		// 將 result 陣列用｜隔開組成字串
+		return result;
+	};
 	const renderUITab = (prodcutCategory, productTab) => {
 		if (!Array.isArray(productTab)) return null;
 
@@ -151,7 +173,7 @@ export const Product2 = () => {
 
 	// 由 currentCategoryState 決定忌口選擇區塊的內容
 	useEffect(() => {
-		setSetSectionStyle(FILTER_OPTIONS[currentCategoryState].tag);
+		setSetSectionStyle(FILTER_OPTIONS[currentCategoryState]?.tag);
 	}, [currentCategoryState]);
 
 	// 由 filterState 決定產品渲染內容，
@@ -160,8 +182,20 @@ export const Product2 = () => {
 		setDisplayProducts(() => filterDisplayProducts(allProducts, filterState));
 	}, [currentCategoryState, filterState, allProducts]);
 
+	// 判斷現在網址有沒有產品id，決定要不要打開modal
+	useEffect(() => {
+		console.log('當前網址 ID:', id);
+		if (id) {
+			setIsOpenDetailModal(true);
+		} else {
+			setIsOpenDetailModal(false);
+		}
+	}, [id]);
+
 	// 渲染產品列表(剔除邏輯)
 	const filterDisplayProducts = (allProducts, filterState) => {
+		if (currentCategoryState === 'all')
+			return allProducts.filter(product => product.category !== 'item' && product.category !== 'custom');
 		const { tab, tag } = filterState[currentCategoryState];
 
 		return allProducts.filter(product => {
@@ -184,187 +218,197 @@ export const Product2 = () => {
 		});
 	};
 
+	// 產品詳細頁開關
+	const handleOpenDetailModal = id => {
+		setIsOpenDetailModal(true);
+		navigate(`/product2/${id}`);
+	};
+	const handleCloseDetailModal = () => {
+		setIsOpenDetailModal(false);
+		navigate(`/product2`);
+	};
+
 	return (
-		<div className="test product-page">
-			{/* 菜單hero */}
-			<header>
-				<div className="container d-flex flex-column justify-content-between align-items-center">
-					<div className="d-flex flex-column align-items-center">
+		<div className="test product-page position-relative">
+			<div className="header3 position-fixed"></div>
+			<div className="header2">
+				<div className="container d-flex justify-content-center align-items-center">
+					<div className="d-flex flex-column align-items-center justify-content-center">
 						<h1 className="mb-5">Green Go 精選菜單</h1>
-						<div className="d-flex flex-column flex-md-row">
-							<h5 className="text-center m-1">當季最新鮮、營養最到位，</h5>
-							<h5 className="text-center m-1">每一口都是 GreenGo 的健康提案</h5>
+						<h6>主廚的精心搭配，讓專業為你把關</h6>
+					</div>
+				</div>
+			</div>
+			{/* 菜單hero */}
+			{/* <header>
+				<div className="container d-flex flex-column justify-content-between align-items-center">
+					<div className="d-flex flex-column align-items-center justify-content-center">
+						<h1 className="mb-5">Green Go 精選菜單</h1>
+						<h5 className="text-center m-1">主廚的精心搭配，讓你選購簡單又健康</h5>
+					</div>
+				</div>
+			</header> */}
+			{/* <section className="position-relative">
+				<div className="block-filter container position-absolute top-0 start-50 translate-middle">
+					<div className="d-flex flex-column flex-md-row justify-content-center gap-6 gap-xxl-8 ">
+						<div className="block-item d-flex ">
+							<span className="material-symbols-rounded d-block">chef_hat</span>
+							<div className="d-flex flex-column align-items-center">
+								<p className="h5 fw-semibold">Green Go 幫你配</p>
+								<p>由主廚精心搭配的營養組合</p>
+							</div>
+						</div>
+						<div className="block-item">
+							<span className="material-symbols-rounded">allergies</span>
+							<p className="h5 fw-semibold">$149 隨心自由配</p>
+							<p>自由選擇喜歡的食材組合</p>
 						</div>
 					</div>
 				</div>
-			</header>
-
+			</section> */}
 			{/* 菜單content */}
-			<section>
-				<div className="container">
-					{/* <div className="title">
-						<h2>Green Go 幫你配</h2>
-						<h6>主廚的精心搭配，讓專業為你把關！</h6>
-					</div> */}
-					<div className="d-flex">
-						<aside className="pt-8 d-flex flex-column gap-8">
-							{/* 排序選擇區塊 */}
-							{/* <div>
-								<p className="mb-3">排序選擇</p>
-								<Select
-									options={sortOptions}
-									placeholder="排序"
-									value={sortSelect}
-									onChange={setSortSelect}
-									unstyled
-									classNamePrefix="rs"
-									classNames={{
-										control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
-										menu: () => classNames('rs__menu'),
-										option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
-									}}
-								/>
-							</div> */}
+			<section className="menu position-relative">
+				{/* <div className="menu-title container">
+					<div>
+						<h2 className="mb-4">精選菜單</h2>
+						<p>當季最新鮮、營養最到位， 每一口都是 GreenGo 的健康提案</p>
+					</div>
+				</div> */}
 
-							{/* 商品類別區塊 */}
-							<div>
-								<p className="mb-3">商品類別</p>
-								<Accordion defaultActiveKey="1">
-									<Accordion.Item eventKey="1">
-										<Accordion.Header
-											onClick={() => toggleFStateByCategory('set')}
-											className="accordion-header"
-										>
-											經典綠果碗
-										</Accordion.Header>
-										<Accordion.Body>
-											{FILTER_OPTIONS[currentCategoryState]?.tab?.map((item, index) => (
-												<Form.Check
-													key={index}
-													type="radio"
-													id={item.key}
-													label={
-														<>
-															<p>{item.label}</p>
-															{}
-															<span
-																className={`material-symbols-rounded ${filterState[currentCategoryState].tab === item.key ? 'd-block' : 'd-none'}`}
-															>
-																check_circle
-															</span>
-														</>
-													}
-													name={currentCategoryState}
-													value={item.key}
-													checked={filterState[currentCategoryState].tab === item.key}
-													onChange={e => toggleFStateByTab(e)}
-													className={`tabInput ${filterState[currentCategoryState].tab === item.key ? 'tabActive' : ''}`}
-												/>
-											))}
-										</Accordion.Body>
-									</Accordion.Item>
-									<Accordion.Item eventKey="2">
-										<Accordion.Header onClick={() => toggleFStateByCategory('drinks')}>
-											健康飲品
-										</Accordion.Header>
-										<Accordion.Body>
-											{FILTER_OPTIONS[currentCategoryState]?.tab?.map((item, index) => (
-												<Form.Check
-													key={index}
-													type="radio"
-													id={item.key}
-													label={
-														<>
-															<p>{item.label}</p>
-															{}
-															<span
-																className={`material-symbols-rounded ${filterState[currentCategoryState].tab === item.key ? 'd-block' : 'd-none'}`}
-															>
-																check_circle
-															</span>
-														</>
-													}
-													name={currentCategoryState}
-													value={item.key}
-													checked={filterState[currentCategoryState].tab === item.key}
-													onChange={e => toggleFStateByTab(e)}
-													className={`tabInput ${filterState[currentCategoryState].tab === item.key ? 'tabActive' : ''}`}
-												/>
-											))}
-										</Accordion.Body>
-									</Accordion.Item>
-									<Accordion.Item eventKey="3">
-										<Accordion.Header onClick={() => toggleFStateByCategory('soup')}>
-											溫暖湯品
-										</Accordion.Header>
-										<Accordion.Body>
-											{FILTER_OPTIONS[currentCategoryState]?.tab?.map((item, index) => (
-												<Form.Check
-													key={index}
-													type="radio"
-													id={item.key}
-													label={
-														<>
-															<p>{item.label}</p>
-															{}
-															<span
-																className={`material-symbols-rounded ${filterState[currentCategoryState].tab === item.key ? 'd-block' : 'd-none'}`}
-															>
-																check_circle
-															</span>
-														</>
-													}
-													name={currentCategoryState}
-													value={item.key}
-													checked={filterState[currentCategoryState].tab === item.key}
-													onChange={e => toggleFStateByTab(e)}
-													className={`tabInput ${filterState[currentCategoryState].tab === item.key ? 'tabActive' : ''}`}
-												/>
-											))}
-										</Accordion.Body>
-									</Accordion.Item>
-								</Accordion>
-							</div>
+				<div className="menu-sorted container d-flex justify-content-end align-items-center position-sticky">
+					{/* <p>全部 30 筆，已顯示 10 筆 </p> */}
+					<Select
+						options={SORT_SELECT}
+						placeholder="排序"
+						value={sortSelect}
+						onChange={setSortSelect}
+						unstyled
+						classNamePrefix="rs"
+						classNames={{
+							control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
+							menu: () => classNames('rs__menu'),
+							option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
+						}}
+					/>
+				</div>
 
-							{/* 忌口選擇區塊 */}
-							<div>
-								<p className="mb-3">商品類別</p>
+				<div className="menu-content container ">
+					<div className="row">
+						<div className="col-3">
+							<aside className="d-flex flex-column gap-8 position-sticky">
+								{/* 排序選擇區塊 */}
+								{/* <div>
+							<p className="mb-3 fw-medium">- 排序選擇 -</p>
+							<Select
+								options={SORT_SELECT}
+								placeholder="排序"
+								value={sortSelect}
+								onChange={setSortSelect}
+								unstyled
+								classNamePrefix="rs"
+								classNames={{
+									control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
+									menu: () => classNames('rs__menu'),
+									option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
+								}}
+							/>
+						</div> */}
+
+								{/* 商品類別區塊 */}
 								<div>
-									{tagSectionStyle?.map((item, index) => (
-										<Form.Check
-											key={index}
-											type="checkbox"
-											id={item.key}
-											label={item.label}
-											value={item.key}
-											checked={filterState[currentCategoryState]?.tag.includes(item.key)}
-											onChange={e => toggleFStateByTag(e)}
-										/>
-									))}
+									<p className="mb-3 fw-medium">- 商品類別 -</p>
+									<Accordion defaultActiveKey="1" className="categoryAccordion" flush>
+										{Object.values(FILTER_OPTIONS).map((item, index) => (
+											<Accordion.Item eventKey={index + 1} key={index}>
+												<Accordion.Header
+													onClick={() => toggleFStateByCategory(item.category.key)}
+													className="accordion-header"
+												>
+													{item.category.label}
+												</Accordion.Header>
+												<Accordion.Body>
+													{FILTER_OPTIONS[currentCategoryState]?.tab?.map((item, index) => (
+														<Form.Check
+															key={index}
+															type="radio"
+															id={item.key}
+															label={
+																<>
+																	<p>{item.label}</p>
+																	<span
+																		className={`material-symbols-rounded ${filterState[currentCategoryState].tab === item.key ? 'd-block' : 'd-none'}`}
+																	>
+																		check_circle
+																	</span>
+																</>
+															}
+															name={currentCategoryState}
+															value={item.key}
+															checked={filterState[currentCategoryState].tab === item.key}
+															onChange={e => toggleFStateByTab(e)}
+															className={`tabInput ${filterState[currentCategoryState].tab === item.key ? 'tabActive' : ''}`}
+														/>
+													))}
+												</Accordion.Body>
+											</Accordion.Item>
+										))}
+									</Accordion>
 								</div>
-							</div>
-						</aside>
 
-						<div className="container mt-8">
+								{/* 忌口選擇區塊 */}
+								<div>
+									<p className="mb-5 fw-medium">- 忌口選擇 -</p>
+									<div className="px-2">
+										{tagSectionStyle?.map((item, index) => (
+											<Form.Check
+												key={index}
+												type="checkbox"
+												id={item.key}
+												label={
+													<>
+														<p>{item.label}</p>
+														<span
+															className={`material-symbols-rounded ${filterState[currentCategoryState].tag.includes(item.key) ? 'd-block' : 'd-none'}`}
+														>
+															close
+														</span>
+													</>
+												}
+												value={item.key}
+												checked={filterState[currentCategoryState]?.tag.includes(item.key)}
+												onChange={e => toggleFStateByTag(e)}
+												className={`d-flex tagInput ${filterState[currentCategoryState].tag.includes(item.key) ? 'tagActive' : ''}`}
+											/>
+										))}
+									</div>
+								</div>
+							</aside>
+						</div>
+
+						<div className="col-9 ">
 							<div className="row">
 								{displayProducts.map(product => (
 									<div className="col-4" key={product.id}>
-										<div className="card">
+										<div className="card mb-6" onClick={() => handleOpenDetailModal(product.id)}>
 											{/* 圖片 */}
-											<div className="img position-raletive">
+											<div className="img position-relative">
 												<img
 													src={product.imageUrl}
 													className="card-img-top"
 													alt={product.title}
 												/>
-												{product.tab_collection?.includes('popular') && (
-													<div className="popular position-absolute">Top</div>
-												)}
+												<div className="position-absolute d-flex flex-column gap-1 popular-position-absolute">
+													{renderUITabpill(product.product_type, product.tab_collection)?.map(
+														item => (
+															<div className="popular">{item}</div>
+														),
+													)}
+												</div>
 											</div>
-											<div className="card-body d-flex flex-column gap-5 px-6 pt-7 pb-5">
+											<div className="card-body d-flex flex-column gap-5 px-6 pt-7 pb-7">
 												{/* 標題和忌口標籤 */}
 												<div className="d-flex gap-3">
-													<h5 className="fw-semibold mb-2 text-gray-600">{product.title}</h5>
+													<h6 className="fw-semibold mb-2 text-gray-600">{product.title}</h6>
 													<div className=" tag d-flex gap-1">
 														{renderUITag(product.product_type, product?.include_tags)?.map(
 															(tagSrc, index) => (
@@ -375,36 +419,27 @@ export const Product2 = () => {
 														)}
 													</div>
 												</div>
-												{/* 類別標籤和營養素 */}
+												{/* 營養素和內容物 */}
 												<div className="d-flex flex-column gap-1">
+													<div className="fw-normal text-brown-300 d-flex gap-1">
+														<div>{`${product.nutrition.calories} cal｜`}</div>
+														<div>{`P ${product.nutrition.protein}｜F ${product.nutrition.fat}｜C ${product.nutrition.carbs}`}</div>
+													</div>
+
 													<p className="fw-normal text-brown-300">
-														{renderUITab(product.product_type, product.tab_collection)}
+														{product.product_type === 'set'
+															? `${product.ingredients.main}、新鮮蔬菜...`
+															: `${product.ingredients.base}`}
 													</p>
-
-													<div className="fw-normal text-brown-300">
-														<span>{`${product.nutrition.calories} Kcal`}</span>
-														<span>
-															{`｜P ${product.nutrition.protein}｜F ${product.nutrition.fat}｜C  ${product.nutrition.carbs}`}
-														</span>
-													</div>
 												</div>
-												<div className="card-footer">
-													<div className="h6 fw-semibold text-primary-200 mb-5">
-														{`NT$ ${product.price}`}
-													</div>
-													<div className="button-section d-flex align-items-center gap-3">
-														<div className="num-control d-flex align-items-center justify-content-between flex-fill">
-															<button className="minus">
-																<i class="bi bi-dash"></i>
-															</button>
-															<span className="fw-medium text-center">1</span>
-															<button className="add">
-																<i class="bi bi-plus"></i>
-															</button>
-														</div>
 
-														<button className="addCart primary-btn">加入購物車</button>
-													</div>
+												<div className="h6 fw-semibold text-gray-600 mt-5">
+													{`NT$ ${product.price}`}
+												</div>
+												<div className="num-control position-absolute">
+													<button className="add">
+														<i class="bi bi-plus"></i>
+													</button>
 												</div>
 											</div>
 										</div>
@@ -414,7 +449,18 @@ export const Product2 = () => {
 						</div>
 					</div>
 				</div>
+
+				<div className="CTA-custom">
+					<h2>沒遇到理想的那「碗」嗎？</h2>
+					<h5>到自選菜單，自由搭配出你的理想滋味吧！</h5>
+					<button type="button" onClick={() => navigate('/custom')}>
+						自選菜單 GO
+					</button>
+				</div>
 			</section>
+			{isOpenDetailModal && (
+				<ProductDetail isOpenDetailModal={isOpenDetailModal} handleCloseDetailModal={handleCloseDetailModal} />
+			)}
 		</div>
 	);
 };

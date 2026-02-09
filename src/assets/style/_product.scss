@@ -101,8 +101,9 @@
 // }
 .product-page .block-item {
 	display: flex;
-	flex-direction: column;
+	// flex-direction: column;
 	align-items: center;
+
 	flex: 1;
 	padding: map-get($spacers, 8);
 	border-radius: 24px;

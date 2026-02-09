@@ -19,6 +19,7 @@ import AdminProducts from '../pages/admin/AdminProducts.jsx';
 import AdminOrder_today from '../pages/admin/AdminOrder_today.jsx';
 import AdminOrder_history from '../pages/admin/AdminOrder_history.jsx';
 import { Product2 } from '../pages/Product2.jsx';
+import ProductDetail from '../pages/ProductDetail.jsx';
 
 const routes = [
 	{
@@ -27,6 +28,7 @@ const routes = [
 		children: [
 			{ index: true, element: <Home /> },
 			{ path: 'product', element: <Product /> },
+			{ path: 'product2/:id', element: <Product2 /> },
 			{ path: 'product2', element: <Product2 /> },
 			{ path: 'about', element: <About /> },
 			{ path: 'custom', element: <Custom /> },
