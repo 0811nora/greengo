@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { upload } from '../../api/ApiAdmin';
+import Loader from '../../components/common/Loading';
+
 
 
 const AdminUpload = () => {
@@ -47,11 +49,14 @@ const AdminUpload = () => {
 
     return (
         <>
+
+
         <main className="adm-upload" style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
             <div style={{ height: "80px" }}></div>
             <div className="container py-5">
                 <div className="mx-auto" style={{ maxWidth: '600px' }}>
                     <h2 className="text-center mb-5 fw-bold text-dark">隱藏功能之上傳圖片</h2>
+
 
 
                 <div className="card border-0 shadow-sm p-4 mb-4">

@@ -56,7 +56,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
 
   const hasAddonsContent =
     addon &&
-    (addon.protein?.base > 0 ||
+    (addon.base?.length > 0 ||
       addon.protein?.length > 0 ||
       addon.sauce?.length > 0 ||
       addon.side?.length > 0 ||
@@ -73,7 +73,9 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
         <div className="item-info">
           <h3 className="fs-6 mb-2">{item.product.title}</h3>
 
-          <p className="unit-price">單價： $ {unitPrice}</p>
+          <p className="unit-price">
+            單價： <i class="bi bi-currency-dollar"></i> {unitPrice}
+          </p>
 
           <button
             type="button"
@@ -106,7 +108,9 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
           </button>
         </div>
 
-        <div className="item-total">$ {itemTotalPrice}</div>
+        <div className="item-total">
+          <i class="bi bi-currency-dollar"></i> {itemTotalPrice}
+        </div>
 
         <button
           type="button"
@@ -397,17 +401,22 @@ const CartSummary = ({ baseSubtotal, totalAddons, discount, finalTotal }) => {
 
         <div className="d-flex justify-content-between mb-2">
           <span>小計</span>
-          <span>$ {baseSubtotal.toLocaleString()}</span>
+          <span>
+            <i class="bi bi-currency-dollar"></i>{' '}
+            {baseSubtotal.toLocaleString()}
+          </span>
         </div>
         <div className="d-flex justify-content-between mb-2">
           <span>加購</span>
-          <span>$ {totalAddons.toLocaleString()}</span>
+          <span>
+            <i class="bi bi-currency-dollar"></i> {totalAddons.toLocaleString()}
+          </span>
         </div>
 
         <div className="d-flex justify-content-between mt-3 pt-3 border-top border-gray-100">
           <span className="fs-5 fw-medium">總計</span>
           <span className="fs-5 fw-medium text-primary">
-            $ {finalTotal.toLocaleString()}
+            <i class="bi bi-currency-dollar"></i> {finalTotal.toLocaleString()}
           </span>
         </div>
 
