@@ -16,7 +16,7 @@ export default function About() {
     return (
         <>
             <main className="c-about">
-                <div className="topHalfImg">
+                <div className="topHalfImg bgc-first">
 
                     <h1 className="fw-bold text-center main-title" >GreenGo綠果</h1>
                     <p className="sub-content fs-4" >當你願意從「綠」開始，健康就會在你身上慢慢結「果」。</p>
@@ -163,7 +163,56 @@ export default function About() {
 
                     </div>
 
-                    {/* 0208進度：做完第四個區塊，之後做問答區 */}
+                    <div className="fifth-section">
+                        <div className="topHalfImg d-flex align-items-end bgc-fifth">
+                            <img src={`${import.meta.env.BASE_URL}img/about_bowl.png`} alt="bowl" />
+                        </div>
+                        {/* 
+                        0209差樣式跟補完QA */}
+
+                        <div className='bgc-fifth'>
+                            <h2>一、訂餐相關</h2>
+                            <div>
+                                <div className='QA d-flex justify-content-between align-items-center ' data-bs-toggle="collapse"
+                                    data-bs-target="#howToOder"
+                                    aria-expanded="false"
+                                    aria-controls="howToOder">
+                                    <p>我該如何訂購客製化餐點？</p>
+                                    <div className='pe-2'  >
+                                        <i class="bi bi-chevron-down "></i>
+                                    </div>
+                                </div>
+
+                                <div className="collapse" id="howToOder">
+                                    <div className="card card-body border-0">
+                                        <p>前往菜單頁，依序挑選主食、蛋白質、配料與醬汁，系統會即時顯示熱量與營養素。</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className='QA d-flex justify-content-between align-items-center ' data-bs-toggle="collapse"
+                                    data-bs-target="#anyRestrict"
+                                    aria-expanded="false"
+                                    aria-controls="howToOder">
+                                    <p>是否有最低訂購量或金額限制？</p>
+                                    <div className='pe-2'  >
+                                        <i class="bi bi-chevron-down "></i>
+                                    </div>
+                                </div>
+
+                                <div className="collapse" id="anyRestrict">
+                                    <div className="card card-body border-0">
+                                        <p>無，歡迎盡情選購！</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
 
                 </div>
 

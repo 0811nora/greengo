@@ -5,12 +5,16 @@
         text-align: center;
     }
 
+    .bgc-first {
+        background-color: #FFFBEF;
+    }
+
     .topHalfImg {
         width: 100%;
         aspect-ratio: 1208 / 860;
         overflow: hidden;
         position: relative;
-        background-color: #FFFBEF;
+
 
         img {
             width: 100%;
@@ -111,4 +115,16 @@
         }
 
     }
+
+    .bgc-fifth {
+        background-color: #FEFDFD;
+    }
+
+    .fifth-section {
+        .QA {
+            cursor: pointer;
+        }
+    }
+
+
 }
