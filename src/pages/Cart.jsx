@@ -21,19 +21,30 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
     ? item.customizations.total_nutrition
     : item.product.nutrition;
 
-  const renderCustomItems = (items) => {
+  const renderCustomItems = (items, mode = 'addon') => {
     if (!items || items.length === 0) return null;
 
     return items.map((subItem, index) => {
-      const price = subItem.price_offset || subItem.price || 0;
+      const unitPrice = subItem.price || 0;
+
+      let displayPrice = 0;
+
+      if (mode === 'included_protein') {
+        const priceDiff = Math.max(0, unitPrice - 30);
+        displayPrice = priceDiff * subItem.qty;
+      } else if (mode === 'included_general') {
+        displayPrice = 0;
+      } else {
+        displayPrice = unitPrice * subItem.qty;
+      }
 
       return (
         <span key={index} style={{ marginRight: '8px' }}>
           {subItem.title}
 
-          {subItem.qty > 1 && ` x${subItem.qty}`}
+          {subItem.qty > 1 && ` X${subItem.qty}`}
 
-          {price > 0 && ` (+${price})`}
+          {displayPrice > 0 && ` (+${displayPrice})`}
 
           {index < items.length - 1 && '、'}
         </span>
@@ -45,7 +56,10 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
 
   const hasAddonsContent =
     addon &&
-    (addon.protein?.length > 0 ||
+    (addon.base?.length > 0 ||
+      addon.protein?.length > 0 ||
+      addon.sauce?.length > 0 ||
+      addon.side?.length > 0 ||
       addon.drinks?.length > 0 ||
       addon.soup?.length > 0);
 
@@ -59,7 +73,9 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
         <div className="item-info">
           <h3 className="fs-6 mb-2">{item.product.title}</h3>
 
-          <p className="unit-price">單價： $ {unitPrice}</p>
+          <p className="unit-price">
+            單價： <i class="bi bi-currency-dollar"></i> {unitPrice}
+          </p>
 
           <button
             type="button"
@@ -92,7 +108,9 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
           </button>
         </div>
 
-        <div className="item-total">$ {itemTotalPrice}</div>
+        <div className="item-total">
+          <i class="bi bi-currency-dollar"></i> {itemTotalPrice}
+        </div>
 
         <button
           type="button"
@@ -121,19 +139,37 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
                     <li>
                       <span>基底：</span>
 
-                      {renderCustomItems(item.customizations.included.base)}
+                      {renderCustomItems(
+                        item.customizations.included.base,
+                        'included_general',
+                      )}
                     </li>
+
                     <li>
                       <span>主食：</span>
-                      {renderCustomItems(item.customizations.included.protein)}
+
+                      {renderCustomItems(
+                        item.customizations.included.protein,
+                        'included_protein',
+                      )}
                     </li>
+
                     <li>
                       <span>醬料：</span>
-                      {renderCustomItems(item.customizations.included.sauce)}
+
+                      {renderCustomItems(
+                        item.customizations.included.sauce,
+                        'included_general',
+                      )}
                     </li>
+
                     <li>
                       <span>配菜：</span>
-                      {renderCustomItems(item.customizations.included.side)}
+
+                      {renderCustomItems(
+                        item.customizations.included.side,
+                        'included_general',
+                      )}
                     </li>
 
                     {/* 加購區 (Addons) */}
@@ -145,44 +181,66 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
                           <i className="bi bi-postcard-heart me-2"></i> 加購選項
                         </h4>
                         <ul>
-                          {/* 這裡放剛剛寫好的加購渲染邏輯 */}
                           {addon.base?.length > 0 && (
                             <li>
                               <span>基底：</span>
-                              {renderCustomItems(addon.base)}
+
+                              {renderCustomItems(
+                                item.customizations.addon.base,
+                                'addon',
+                              )}
                             </li>
                           )}
 
                           {addon.protein?.length > 0 && (
                             <li>
                               <span>主食：</span>
-                              {renderCustomItems(addon.protein)}
+                              {renderCustomItems(
+                                item.customizations.addon.protein,
+                                'addon',
+                              )}
                             </li>
                           )}
 
                           {addon.sauce?.length > 0 && (
                             <li>
                               <span>醬料：</span>
-                              {renderCustomItems(addon.sauce)}
+
+                              {renderCustomItems(
+                                item.customizations.addon.sauce,
+                                'addon',
+                              )}
                             </li>
                           )}
                           {addon?.side?.length > 0 && (
                             <li>
                               <span>配菜：</span>
-                              {renderCustomItems(addon.side)}
+
+                              {renderCustomItems(
+                                item.customizations.addon.side,
+                                'addon',
+                              )}
                             </li>
                           )}
 
                           {addon.drinks?.length > 0 && (
                             <li>
                               <span>飲品：</span>
-                              {renderCustomItems(addon.drinks)}
+
+                              {renderCustomItems(
+                                item.customizations.addon.drinks,
+                                'addon',
+                              )}
                             </li>
                           )}
                           {addon.soup?.length > 0 && (
                             <li>
                               <span>湯品：</span>
-                              {renderCustomItems(addon.soup)}
+
+                              {renderCustomItems(
+                                item.customizations.addon.soup,
+                                'addon',
+                              )}
                             </li>
                           )}
                         </ul>
@@ -190,26 +248,103 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
                     )}
                   </>
                 ) : (
-                  item.product.ingredients && (
-                    <>
-                      <li>
-                        <span>基底：</span>
-                        <span>{item.product.ingredients.base}</span>
-                      </li>
-                      <li>
-                        <span>主食：</span>
-                        <span>{item.product.ingredients.main}</span>
-                      </li>
-                      <li>
-                        <span>醬料：</span>
-                        <span>{item.product.ingredients.source}</span>
-                      </li>
-                      <li>
-                        <span>配菜：</span>
-                        <span>{item.product.ingredients.side}</span>
-                      </li>
-                    </>
-                  )
+                  <>
+                    {item.product.ingredients && (
+                      <>
+                        <li>
+                          <span>基底：</span>
+                          <span>{item.product.ingredients.base}</span>
+                        </li>
+                        <li>
+                          <span>主食：</span>
+                          <span>{item.product.ingredients.main}</span>
+                        </li>
+                        <li>
+                          <span>醬料：</span>
+                          <span>{item.product.ingredients.source}</span>
+                        </li>
+                        <li>
+                          <span>配菜：</span>
+                          <span>{item.product.ingredients.side}</span>
+                        </li>
+                      </>
+                    )}
+
+                    {/* 加購區 (Addons) */}
+
+                    {hasAddonsContent && (
+                      <>
+                        <hr />
+                        <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center mt-4">
+                          <i className="bi bi-postcard-heart me-2"></i> 加購選項
+                        </h4>
+                        <ul>
+                          {addon.base?.length > 0 && (
+                            <li>
+                              <span>基底：</span>
+
+                              {renderCustomItems(
+                                item.customizations.addon.base,
+                                'addon',
+                              )}
+                            </li>
+                          )}
+
+                          {addon.protein?.length > 0 && (
+                            <li>
+                              <span>主食：</span>
+                              {renderCustomItems(
+                                item.customizations.addon.protein,
+                                'addon',
+                              )}
+                            </li>
+                          )}
+
+                          {addon.sauce?.length > 0 && (
+                            <li>
+                              <span>醬料：</span>
+
+                              {renderCustomItems(
+                                item.customizations.addon.sauce,
+                                'addon',
+                              )}
+                            </li>
+                          )}
+                          {addon?.side?.length > 0 && (
+                            <li>
+                              <span>配菜：</span>
+
+                              {renderCustomItems(
+                                item.customizations.addon.side,
+                                'addon',
+                              )}
+                            </li>
+                          )}
+
+                          {addon.drinks?.length > 0 && (
+                            <li>
+                              <span>飲品：</span>
+
+                              {renderCustomItems(
+                                item.customizations.addon.drinks,
+                                'addon',
+                              )}
+                            </li>
+                          )}
+                          {addon.soup?.length > 0 && (
+                            <li>
+                              <span>湯品：</span>
+
+                              {renderCustomItems(
+                                item.customizations.addon.soup,
+                                'addon',
+                              )}
+                            </li>
+                          )}
+                        </ul>
+                      </>
+                    )}
+                  </>
                 )}
               </ul>
             </div>
@@ -266,17 +401,22 @@ const CartSummary = ({ baseSubtotal, totalAddons, discount, finalTotal }) => {
 
         <div className="d-flex justify-content-between mb-2">
           <span>小計</span>
-          <span>$ {baseSubtotal.toLocaleString()}</span>
+          <span>
+            <i class="bi bi-currency-dollar"></i>{' '}
+            {baseSubtotal.toLocaleString()}
+          </span>
         </div>
         <div className="d-flex justify-content-between mb-2">
           <span>加購</span>
-          <span>$ {totalAddons.toLocaleString()}</span>
+          <span>
+            <i class="bi bi-currency-dollar"></i> {totalAddons.toLocaleString()}
+          </span>
         </div>
 
         <div className="d-flex justify-content-between mt-3 pt-3 border-top border-gray-100">
           <span className="fs-5 fw-medium">總計</span>
           <span className="fs-5 fw-medium text-primary">
-            $ {finalTotal.toLocaleString()}
+            <i class="bi bi-currency-dollar"></i> {finalTotal.toLocaleString()}
           </span>
         </div>
 
