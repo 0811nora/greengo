@@ -5,6 +5,7 @@ import { PageSwitch} from '../components/common/AnimationWrapper';
 import { notify } from '../components/Notify';
 
 import AdmButton from "../components/admin/common/AdmButton";
+import Loader from "../components/common/Loading";
 
 import ClickOutsideHandler from "../components/common/ClickOutsideHandler";
 
@@ -487,7 +488,8 @@ export default function Custom() {
 
 
 
-    return (
+    return ( <>
+        
         <main className="custom-main">
             <div className="custom-bg">
                 <div className="bg-overlay">
@@ -970,5 +972,8 @@ export default function Custom() {
                 </div>
             </div>
         </main>
-    )
+        {/* <Loader mode={"page"}/> */}
+        {/* <Loader mode={"mask"}/> */}
+
+    </>)
 }
