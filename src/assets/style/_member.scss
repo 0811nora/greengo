@@ -1,36 +1,40 @@
 .member-center-container {
   min-height: 100vh;
   padding-top: 120px;
-
-  .title {
-    color: $primary;
-    font-weight: bold;
-    margin-bottom: 2rem;
-  }
+  padding-bottom: 40px;
 
   .nav-tabs {
     border-bottom: none;
+
     .nav-link {
-      color: #999;
-      font-size: 1.1rem;
+      color: $gray-400;
+      font-size: 28px;
       border: none;
+      transition: all 500ms;
+      padding-left: 0px;
+      padding-right: 0px;
+      border-bottom: 4px solid $yellow-200;
       &.active {
         background: transparent;
         color: $primary;
         font-weight: bold;
-        border-bottom: 3px solid $primary;
+        border-bottom: 4px solid $primary;
       }
     }
   }
 
   .order-card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(68, 68, 68, 0.1);
     margin-bottom: 1.5rem;
+    background: $white;
+    border: none;
+    transition: all 200ms;
+
+    &:hover {
+      box-shadow: 0 1px 5px rgb(255 228 78);
+    }
 
     .card-header-info {
-      font-size: 0.9rem;
       .status-tag {
         background: $primary;
         color: white;
@@ -41,14 +45,23 @@
     }
 
     .order-detail-box {
-      background-color: #f8f9fa;
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-top: 1rem;
+      max-height: 0;
+      overflow: hidden;
+      background-color: $gray-50;
+    }
+
+    // 當 .details-open 被 JS 加入時的樣式
+    &.details-open {
+      .order-detail-box {
+        max-height: 500px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        border-radius: 10px;
+      }
     }
 
     .status-text-unpicked {
-      color: red;
+      color: $warning;
     }
     .status-text-picked {
       color: $primary;
@@ -56,14 +69,17 @@
   }
 
   .profile-form {
-    background: white;
-    padding: 2.5rem;
-    border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
     .form-label {
       color: $primary;
       font-weight: 500;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .border-md-end {
+      border-right: 1px solid;
     }
   }
 }
