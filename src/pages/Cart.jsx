@@ -56,7 +56,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
 
   const hasAddonsContent =
     addon &&
-    (addon.protein?.base > 0 ||
+    (addon.base?.length > 0 ||
       addon.protein?.length > 0 ||
       addon.sauce?.length > 0 ||
       addon.side?.length > 0 ||
