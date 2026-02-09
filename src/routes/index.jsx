@@ -36,6 +36,7 @@ const routes = [
       { path: 'cart', element: <Cart /> },
       { path: 'checkout', element: <Checkout /> },
       { path: 'article/:id', element: <ArticleDetail /> },
+      { path: 'member', element: <Member /> },
     ],
   },
   {
