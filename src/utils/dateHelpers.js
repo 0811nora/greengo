@@ -2,13 +2,11 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import weekday from "dayjs/plugin/weekday";
 
-// 啟用 dayjs 插件
+// dayjs 插件
 dayjs.extend(isBetween);
 dayjs.extend(weekday);
 
-/**
- * 時間範圍類型
- */
+// 時間範圍類型
 export const DATE_RANGE_TYPES = {
   TODAY: "today",
   YESTERDAY: "yesterday",
@@ -19,7 +17,6 @@ export const DATE_RANGE_TYPES = {
 };
 
 // 根據範圍類型取得起始和結束時間
-
 export const getDateRange = (rangeType, customRange = null) => {
   const now = dayjs();
 
@@ -132,7 +129,6 @@ export const generateTimeLabels = (rangeType, startTime, endTime) => {
     case DATE_RANGE_TYPES.CUSTOM:
       // 自訂範圍 - 根據天數決定顯示方式
       const daysSet = end.diff(start, "day") + 1;
-
       if (daysSet <= 1) {
         // 1 天以內 - 按小時顯示
         for (let i = 0; i < 24; i++) {
@@ -157,7 +153,6 @@ export const generateTimeLabels = (rangeType, startTime, endTime) => {
         }
       }
       break;
-
     default:
       break;
   }
@@ -194,7 +189,6 @@ export const getTimeLabelIndex = (
     case DATE_RANGE_TYPES.CUSTOM:
       // 自訂範圍：根據天數決定
       const daysSet = end.diff(start, "day") + 1;
-
       if (daysSet <= 1) {
         // 按小時
         return orderTime.hour();

@@ -1,0 +1,42 @@
+// 引入英文字型 Clash Display
+@font-face {
+  font-family: "Clash";
+  src:
+    url("../../../fonts/ClashDisplay-Variable.woff2") format("woff2"),
+    url("../../../fonts/ClashDisplay-Variable.woff") format("woff");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+  // 只包含大小寫的 A-Z
+  unicode-range:
+    U+0021-002F, U+003A-0040, U+0041-005A, U+005B-0060, U+0061-007A;
+}
+
+// 設定變數
+// 中文字型 - Noto Sans TC
+$font-zh:
+  "Noto Sans TC",
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  sans-serif;
+// 英文字型 - Clash Display
+$font-en: "Clash", sans-serif;
+
+// 設定 base
+// 英文字型
+.ft-en {
+  font-family: $font-en;
+}
+
+@mixin en-base($size, $weight: $fw-bold, $lh: 1.2) {
+  font-family: $font-en;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $lh;
+}
+
+// footer logo font
+.font-en-logo {
+  @include en-base($size: 60px, $weight: 600);
+}

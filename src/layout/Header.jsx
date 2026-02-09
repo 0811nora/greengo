@@ -1,5 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import { useCart } from '../context/CartContext';
 
 const NavbarData = {
   brand: {
@@ -41,9 +42,12 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
+  // cart
+  const { cartData, getAllCart } = useCart();
+
   return (
     <>
-      <header className="header" ref={headerRef}>
+      <header className="front__header" ref={headerRef}>
         <nav className="navbar">
           <div className="container">
             {/* desktop */}
@@ -70,15 +74,59 @@ export default function Header() {
               </ul>
 
               {/* cart + login */}
-              <div className="d-flex align-items-center gap-2">
-                <NavLink
-                  type="button"
-                  className="btn btn-outline-gray-400 rounded-pill border-none"
-                  to="/cart"
-                >
-                  <i className="bi bi-bag"></i>
-                </NavLink>
-                <button className="btn btn-outline-primary-300 rounded-3">
+              {/* 整體待修 */}
+              <div className="d-flex align-items-center">
+                <div className="nav-item dropdown cart-dropdown">
+                  <Link to="/cart" className="nav-link position-relative">
+                    <i className="bi bi-cart"></i>
+                    {cartData.carts?.length > 0 && (
+                      <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+                        {cartData.carts.length}
+                      </span>
+                    )}
+                  </Link>
+                  <div
+                    className="dropdown-menu dropdown-menu-end p-3 shadow"
+                    style={{ width: '300px' }}
+                  >
+                    {cartData.carts?.length === 0 ? (
+                      <p className="text-center mb-0">購物車空空如也喔！</p>
+                    ) : (
+                      <>
+                        <ul className="list-unstyled">
+                          {cartData.carts.map((item) => (
+                            <li
+                              key={item.id}
+                              className="mb-2 border-bottom pb-2"
+                            >
+                              <div className="d-flex align-items-center g-2">
+                                <img
+                                  src={item.product.imageUrl}
+                                  alt={item.product.title}
+                                  style={{
+                                    width: '80px',
+                                    height: '80px',
+                                    marginRight: '8px',
+                                    borderRadius: '8px',
+                                  }}
+                                />
+                                {item.product.title} x {item.qty}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                        <Link
+                          to="/cart"
+                          className="home__btn-primary w-100 mt-2"
+                        >
+                          前往結帳
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <button className="btn btn-outline-primary-300 rounded-3 ms-6">
                   登入 / 註冊
                 </button>
               </div>
@@ -101,12 +149,13 @@ export default function Header() {
                   </NavLink>
 
                   <div className="d-flex align-items-center gap-2">
-                    <button
+                    <NavLink
                       type="button"
                       className="btn btn-outline-gray-400 rounded-pill border-none"
+                      to="/cart"
                     >
                       <i className="bi bi-bag"></i>
-                    </button>
+                    </NavLink>
                     <button
                       type="button"
                       className="btn btn-outline-gray-400 rounded-pill border-none"

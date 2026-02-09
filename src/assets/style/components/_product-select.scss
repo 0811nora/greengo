@@ -1,0 +1,46 @@
+// 下拉選單
+.product-page .rs__control {
+  width: 170px;
+  height: 50px;
+  border-radius: 12px;
+  border: 1px solid $gray-200;
+  padding: 10px map-get($spacers, 4);
+
+  .rs__placeholder,
+  .rs__indicator {
+    color: $gray-400;
+  }
+
+  &:hover {
+    border: 1px solid $primary-200;
+    box-shadow: 0px 2px 10px rgba(77, 113, 53, 0.25);
+    .rs__indicator {
+      color: $primary-200;
+    }
+  }
+}
+.product-page .rs__control.rs__focus {
+  border: 1px solid $primary-200;
+  box-shadow: 0px 2px 10px rgba(77, 113, 53, 0.25);
+}
+
+.product-page .rs__menu {
+  border: 1px solid $primary-200;
+  border-radius: 12px;
+  padding: map-get($spacers, 3) map-get($spacers, 2);
+  background-color: $white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  margin-top: map-get($spacers, 2);
+}
+.rs__option {
+  padding: map-get($spacers, 2) map-get($spacers, 0);
+  text-align: center;
+  &:hover {
+    background-color: $primary-100;
+    border-radius: $border-radius-s;
+  }
+}
+.rs__option.rs__focus {
+  background-color: $primary-100;
+  border-radius: $border-radius-s;
+}
