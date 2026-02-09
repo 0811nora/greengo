@@ -4,7 +4,11 @@
         .pt-sm-120{
             padding-top: 120px;
         }
+        .w-100-mob{
+            width: 100% !important;
+        }
     }
+
 
     .chart-list{
         background-color: #ffffffc1;
@@ -68,7 +72,7 @@
         background-repeat: no-repeat;
         background-size: cover;
 
-        @media (max-width: 768px){
+        @media (max-width: 992px){
             background-position: 30% 10%;
             background-size: auto;
 
@@ -81,7 +85,7 @@
         width: 100%;
         height: 100%;
         @media (max-width: 992px){
-            background-color: #e4f0f085;
+            background-color: #eef5f585;
         }
     }
     .blur-bg{
@@ -105,16 +109,14 @@
         padding-left: 0;
     }
     .card-active {
-        // outline: 4px solid $primary;
+
         outline: 5px solid #dcc47c;
         background: linear-gradient(120deg, 
             #ffffffee 0%, 
-            #fffefaee 40%,  /* 到 60% 的位置都還保持著白色 */
-            #f9f4e0ee 70%,  /* 到 60% 的位置都還保持著白色 */
-            #f7da84bf 100%,  /* 到 60% 的位置都還保持著白色 */
+            #fffefaee 40%,  
+            #f9f4e0ee 70%,  
+            #f7da84bf 100%,  
         );
-        
-        // box-shadow: 0px 12px  25px rgba(44, 99, 57, 0.559);
         box-shadow: 0px 12px  15px #bcad81a0;
     }
     .step1-card-area{
@@ -129,14 +131,49 @@
         padding: 20px;
         border-radius: 20px;
         position: absolute; 
-        bottom: 165px; 
-        right: 40px;   
         max-height: 63vh; 
         width: 340px;
         overflow-y: auto; 
         z-index: 1050; 
         box-shadow: -5px 5px 20px rgba(0,0,0,0.1);
+        bottom: 140px; 
+        right: 40px;  
+
+        table {
+            background-color: transparent !important;
+            --bs-table-bg: transparent !important;
+            --bs-table-accent-bg: transparent !important;
+            --bs-table-striped-bg: transparent !important;
+            --bs-table-hover-bg: transparent !important;
+            
+            thead, tbody, tr, th, td {
+                background-color: transparent !important;
+                background: transparent !important;
+                box-shadow: none !important; 
+            }
+        }
+    
+        @media (max-width: 992px) {
+            position: absolute;
+            bottom: 62px;     
+            left: 0;   
+            z-index: 9999;
+            max-width: 90vw;
+            max-height: 70vh; 
+            box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.452);
+
+            
+        }
     }
+
+    .order-details-card{
+        background: #fefefe67;
+        border-radius: 20px;
+        border: 4px solid $white;
+        height: 100%;
+
+    }
+
 
     .order-details-list{
         background-color: #e7e7e7a1;
@@ -146,13 +183,13 @@
 
     .c-nutrition-fab-wrapper {
         position: fixed;
-        bottom: 20px;       /* 距離螢幕底部 */
-        right: 20px;        /* 距離螢幕右側 */
-        z-index: 9999;      /* 確保在所有層級最上方 */
-        pointer-events: auto;
+        bottom: 20px;      
+        right: 20px;       
+        z-index: 9999;     
+        
     }
 
-    /* 按鈕本體 */
+
     .c-nutrition-fab-btn {
         width: 60px;
         height: 60px;
@@ -163,27 +200,49 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        
-        /* 確保是正圓形 */
         border-radius: 50% !important; 
-        
-        /* 增加陰影讓它更有浮動感 */
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-        
-        /* 點擊時的縮放回饋感 */
         transition: transform 0.1s ease-active;
-    }
-
-    .c-nutrition-fab-btn:active {
-        transform: scale(0.92);
-    }
-
-    /* 針對電腦版若想隱藏，可以加這段 */
-    @media (min-width: 992px) {
-        .c-nutrition-fab-wrapper {
-            display: none;
+        &:active {
+            transform: scale(0.92);
         }
     }
+
+    .pfc-mobile-modal{
+        position: absolute;
+        bottom: 60px;     
+        right: 5%;         
+        width: 260px;     
+        z-index: 10000;
+        padding: 20px;
+        background: #e6e6e6ce;   
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+    }
+
+    .c-order-fab-wrapper {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 9999;
+        
+    }
+
+    .c-order-fab-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50% !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+        font-size: 14px;
+        line-height: 1.2;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    
 
 
 
