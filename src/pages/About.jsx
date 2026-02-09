@@ -21,7 +21,7 @@ export default function About() {
                     <h1 className="fw-bold text-center main-title" >GreenGo綠果</h1>
                     <p className="sub-content fs-4" >當你願意從「綠」開始，健康就會在你身上慢慢結「果」。</p>
                     {/* 這邊還沒改完，AOS動畫與transfer衝突 */}
-                    <img src={`${import.meta.env.BASE_URL}/img/about_bowl.png`} alt="bowl" /></div>
+                    <img src={`${import.meta.env.BASE_URL}img/about_bowl.png`} alt="bowl" /></div>
                 <div>
 
 
@@ -31,7 +31,7 @@ export default function About() {
                                 <div className='row g-3'>
                                     <div className='col-md-6'>
                                         <div className='img-border d-none d-md-block mx-10 ms-10 '>
-                                            <img className='img-fluid mt-8 ms-9 ' src={`${import.meta.env.BASE_URL}/img/about_action.png`} alt="bowl" />
+                                            <img className='img-fluid mt-8 ms-9 ' src={`${import.meta.env.BASE_URL}img/about_action.png`} alt="bowl" />
                                         </div>
 
                                     </div>
@@ -85,11 +85,11 @@ export default function About() {
                                     <p className="card-text"><small className="text-body-secondary "><p>每一份主食、配料與醬汁，</p><p>我們都清楚標示熱量與營養素</p>
                                         <p>你不需要猜，也不必盲選。</p></small></p>
                                 </div>
-                                <img src={`${import.meta.env.BASE_URL}/img/about_tuna.jpg`} className="rounded-circle mx-auto" alt="..." />
+                                <img src={`${import.meta.env.BASE_URL}img/about_tuna.jpg`} className="rounded-circle mx-auto" alt="..." />
                             </div>
                             <div className="card border-0 bg-transparent text-center mb-9">
 
-                                <img src={`${import.meta.env.BASE_URL}/img/about_tomato.jpg`} className="rounded-circle mx-auto" alt="..." />
+                                <img src={`${import.meta.env.BASE_URL}img/about_tomato.jpg`} className="rounded-circle mx-auto" alt="..." />
                                 <div className="card-body">
                                     <h5 className="card-title">簡單</h5>
                                     <p className="card-text">食物的資訊應該被看見</p>
@@ -108,7 +108,7 @@ export default function About() {
                                         <p>想吃什麼、想如何搭配，永遠由你決定。 </p>
                                         <p>跳脫制式套裝，你能自由組織屬於自己的餐點。</p></small></p>
                                 </div>
-                                <img src={`${import.meta.env.BASE_URL}/img/about_lettuce.jpg`} className="rounded-circle mx-auto" alt="..." />
+                                <img src={`${import.meta.env.BASE_URL}img/about_lettuce.jpg`} className="rounded-circle mx-auto" alt="..." />
 
                             </div>
 
