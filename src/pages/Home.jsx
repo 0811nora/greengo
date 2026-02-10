@@ -13,6 +13,7 @@ import 'swiper/css/scrollbar';
 import { getArticles } from '../api/ApiClient';
 
 // component
+import Loader from '../components/common/Loading';
 import ContentCard from '../components/home/ContentCard';
 import CommentCard from '../components/home/CommentCard';
 // import IngredientCard from "../components/home/IngredientCard";
@@ -230,6 +231,7 @@ export default function Home() {
   // 監聽區
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 文章 API
   // 用時間排序 sort 去取最新 4 片文章
@@ -251,6 +253,7 @@ export default function Home() {
   // 文章
   useEffect(() => {
     const getAllArticles = async (page = 1) => {
+      setIsLoading(true);
       try {
         const res = await getArticles(page);
         console.log('文章 API 資料：', res.data.articles);
@@ -262,8 +265,12 @@ export default function Home() {
           setMainArticle(sortedArticles[0]);
           setSubArticles(sortedArticles.slice(1, 4));
         }
+        setIsLoading(false);
       } catch (err) {
         console.log(err);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
     getAllArticles();
@@ -275,6 +282,7 @@ export default function Home() {
 
   return (
     <>
+      <Loader mode={'page'} show={isLoading} />
       <main className='container-fluid p-0'>
         {/* Hero Section */}
         <section className='container-fluid position-relative overflow-hidden'>
