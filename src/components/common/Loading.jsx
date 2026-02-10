@@ -1,15 +1,21 @@
 
 
-const PageLoader = ({text = ""}) => {
-
+const PageLoader = ({ text = "", show = false }) => {
     const PageLoaderStyles = {
-        overlay: {
+            overlay: {
             position: 'fixed',
             top: 0, left: 0, width: '100vw', height: '100vh',
-            backgroundColor: 'rgba(145, 187, 153, 0.6)',
+            backgroundColor: 'rgba(110, 150, 118, 0.6)', 
+            transition: show 
+                ? 'none' 
+                : 'opacity 0.6s ease, visibility 0.6s, background-color 0.6s',
             backdropFilter: 'blur(15px)',
+            WebkitBackdropFilter: 'blur(15px)', 
             display: 'flex', justifyContent: 'center', alignItems: 'center',
             zIndex: 100000,
+            opacity: show ? 1 : 0,
+            visibility: show ? 'visible' : 'hidden',
+            pointerEvents: show ? 'auto' : 'none',
         },
         spinner: {
             height: '50px',
@@ -18,7 +24,7 @@ const PageLoader = ({text = ""}) => {
             fontWeight: '600',
             letterSpacing: '.6em',
             color: '#F5F5F5',
-            filter: 'drop-shadow(0 0 16px #fff',
+            filter: 'drop-shadow(0 0 16px #fff)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -27,43 +33,34 @@ const PageLoader = ({text = ""}) => {
     };
 
     return (
-        <>
+        <div style={PageLoaderStyles.overlay}>
             <style>{`
                 @keyframes loading6454 {
                     0%, 100% { transform: translateY(0); }
                     50% { transform: translateY(-24px); }
                 }
             `}</style>
-
-            <div style={PageLoaderStyles.overlay}>
-                <div>
-                    <div style={PageLoaderStyles.spinner}>
-                        {['G', 'R', 'E', 'E', 'N', 'G', 'O'].map((char, index) => (
-                            <span  
-                                key={index} 
-                                style={{ 
-                                    animation: `loading6454 1.75s ease infinite`,
-                                    animationDelay: `${index * 0.25}s` 
-                                }}
-                            >
-                                {char}
-                            </span>
-                        ))}
-                    </div>
-                    <p className="text-center text-brown-300 mt-3 " >{text}</p>
+            <div>
+                <div style={PageLoaderStyles.spinner}>
+                    {['G', 'R', 'E', 'E', 'N', 'G', 'O'].map((char, index) => (
+                        <span  
+                            key={index} 
+                            style={{ 
+                                animation: `loading6454 1.75s ease infinite`,
+                                animationDelay: `${index * 0.25}s` 
+                            }}
+                        >
+                            {char}
+                        </span>
+                    ))}
                 </div>
-                
-                
-                
+                <p className="text-center text-brown-300 mt-3">{text}</p>
             </div>
-
-        </>
+        </div>
     );
-
 }
 
-const MaskLoader = ({text = ""}) => {
-
+const MaskLoader = ({ text = "", show = false }) => {
     const maskLoaderStyles = {
         overlay: {
             position: 'fixed',
@@ -74,6 +71,13 @@ const MaskLoader = ({text = ""}) => {
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 100000,
+            // --- 加入淡出動畫關鍵 ---
+            transition: show 
+                ? 'none' 
+                : 'opacity 0.6s ease, visibility 0.6s, background-color 0.6s',
+            opacity: show ? 1 : 0,
+            visibility: show ? 'visible' : 'hidden',
+            pointerEvents: show ? 'auto' : 'none',
         },
         spinner: {
             width: '100px',
@@ -93,16 +97,14 @@ const MaskLoader = ({text = ""}) => {
     };
 
     return (
-        <>
+        <div style={maskLoaderStyles.overlay}>
             <style>{`
                 @keyframes fade {
                     0%, 100% { opacity: 1; }
                     60% { opacity: 0; }
                 }
             `}</style>
-
-            <div style={maskLoaderStyles.overlay}>
-                <div>
+            <div>
                 <div style={maskLoaderStyles.spinner}>
                     {[0, 1, 2].map((i) => (
                         <span 
@@ -115,38 +117,34 @@ const MaskLoader = ({text = ""}) => {
                         />
                     ))}
                 </div>
-                <p className="text-center text-brown-300 mt-1 " >{text}</p>
-                </div>
+                <p className="text-center text-brown-300 mt-1">{text}</p>
             </div>
-        </>
+        </div>
     );
 };
 
-const ButtonLoader = ({className}) => {
-
-    return (<>
-        <span class={`spinner-border spinner-border-sm ${className}` }  
+const ButtonLoader = ({ className, show }) => {
+    return show ? (
+        <span className={`spinner-border spinner-border-sm ${className}`}  
             role="status" aria-hidden="true">
         </span>
-    </>);
+    ) : null;
 };
 
 const Loader = ({
-        mode="page",
-        text="",
-        className,
-
-    }) => {
+    mode = "page",
+    text = "",
+    className,
+    show = false 
+}) => {
 
     const loadingMode = {
-        page: <PageLoader text={text}/>,
-        mask: <MaskLoader text={text}/>,
-        button: <ButtonLoader className={className} />,
+        page: <PageLoader text={text} show={show} />,
+        mask: <MaskLoader text={text} show={show} />,
+        button: <ButtonLoader className={className} show={show} />,
     }
 
-    return loadingMode[mode] || null ;
+    return loadingMode[mode] || null;
 }
 
-export default Loader ;
-
-
+export default Loader;
