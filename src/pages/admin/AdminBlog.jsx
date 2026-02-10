@@ -23,7 +23,9 @@ export default function AdminBlog() {
     const [ modalText , setModalText ] = useState("");
     
 
-    const availableTags = ["減脂", "增肌", "飲食", "高蛋白", "新手教學"];
+    // const availableTags = ["減脂", "增肌", "飲食", "高蛋白", "新手教學"];
+    const availableTags = ["新手入門", "飲食營養", "增肌減脂", "訓練健身 ", "健康生活"];
+
 
 
     // 內文編輯器的功能設定
