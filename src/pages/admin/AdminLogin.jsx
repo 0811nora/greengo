@@ -48,6 +48,9 @@ export default function AdminLogin() {
       /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
       "$1",
     );
+
+
+
     axios.defaults.headers.common["Authorization"] = greenCookie;
     const checkLogin = async () => {
       try {
@@ -60,6 +63,9 @@ export default function AdminLogin() {
     };
     if (greenCookie) {
       checkLogin();
+      // axios.defaults.headers.common["Authorization"] = greenCookie;
+      // navigate("/admin/order/today");
+
     }
   }, [navigate]);
 

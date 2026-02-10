@@ -6,6 +6,7 @@ import {
   NavLink,
   useOutletContext,
 } from "react-router-dom";
+import { admUserCheck } from "../../api/ApiAdmin";
 
 export default function AdminOrder() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function AdminOrder() {
       /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
       "$1",
     );
+
     axios.defaults.headers.common["Authorization"] = greenCookie;
     const checkLogin = async () => {
       try {
