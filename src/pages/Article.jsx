@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { getArticles, } from "../api/ApiClient"
 import { Link } from "react-router-dom";
+import Loader from "../components/common/Loading";
+import { PageSwitch } from '../components/common/AnimationWrapper';
 
 export default function Article() {
 
   const [ articleList , setArticleList ] = useState([])
+  const [ isLoading , setIsLoading ] = useState(true);
 
   const formatDate = (timestamp) => {
     return new Date(timestamp * 1000).toLocaleDateString('zh-TW', {
@@ -16,13 +19,16 @@ export default function Article() {
 
   useEffect(()=>{
     const articleData = async() => {
+      setIsLoading(true); 
       try{
         const res = await getArticles();
         console.log(res.data.articles)
         console.log(res.data)
         setArticleList(res.data.articles)
+        setIsLoading(false);
       }catch(err){
         console.log(err)
+        setIsLoading(false);
       }
     }
     articleData();
@@ -31,6 +37,7 @@ export default function Article() {
 
 
   return(<>
+  <PageSwitch>
     <main className="article_main">
 
       {/* banner區 */}
@@ -75,28 +82,33 @@ export default function Article() {
         <div className="container py-10">
           <div className="row row-cols-3">
             {articleList.map((data) => (
-              <div className="col px-4">
-                <div class="article-card mb-8">
-                  <Link to={`/article/${data.id}`} className="stretched-link"/>
-                  <div className="position-relative">
-                    <img src={data.image} class="card-img-top" alt={data.title} style={{height:"200px",borderRadius: "16px 16px 0 0"}}/>
-                    <div className="position-absolute bottom-0 start-0 m-2 ">
-                      {data['tag'].map((i)=>(
-                        <span className=" px-2 py-1 mx-2 rounded-1 bg-primary text-white shadow fs-sm"># {i}</span>
-                      ))}
+              <div className="col  px-4 mb-8">
+                <div class="article-card h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <Link to={`/article/${data.id}`} className="stretched-link"/>
+                    <div className="position-relative">
+                      <img src={data.image} class="card-img-top" alt={data.title} style={{height:"200px",borderRadius: "16px 16px 0 0"}}/>
+                      <div className="position-absolute bottom-0 start-0 m-2 ">
+                        {data['tag'].map((i)=>(
+                          <span className=" px-2 py-1 mx-2 rounded-1 bg-primary text-white shadow fs-sm"># {i}</span>
+                        ))}
+                      </div>
+                      
+                      
                     </div>
-                    
-                    
+                    <div class="card-body pb-4 pt-6 px-3">
+                      <h5 class="card-title mb-4 line-clamp-2">{data.title}</h5>
+                      <p class="card-text line-clamp-2 text-brown-300">{data.description}</p>
+                    </div>
                   </div>
-                  <div class="card-body pb-4 pt-6 px-3">
-                    <h5 class="card-title mb-4 line-clamp-2">{data.title}</h5>
-                    <p class="card-text line-clamp-2 text-brown-300">{data.description}</p>
+                  
+                  <div>
+                    <hr className="my-3" />
+                    <p className="text-gray-300 px-3">{data.author} 
+                      <span className="px-2">|</span>
+                      <span className="">{formatDate(data.create_at)}</span>
+                    </p>
                   </div>
-                  <hr className="my-3" />
-                  <p className="text-gray-300 px-3">{data.author} 
-                    <span className="px-2">|</span>
-                    <span className="">{formatDate(data.create_at)}</span>
-                  </p>
                 </div>
               </div>
             ))}
@@ -125,7 +137,9 @@ export default function Article() {
         </nav>
       </div>
 
-  </main>
+    </main>
+      <Loader mode={"page"} show={isLoading }/> 
+  </PageSwitch>
   </>
   )
 }
