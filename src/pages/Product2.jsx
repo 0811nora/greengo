@@ -176,8 +176,7 @@ export const Product2 = () => {
 		setSetSectionStyle(FILTER_OPTIONS[currentCategoryState]?.tag);
 	}, [currentCategoryState]);
 
-	// 由 filterState 決定產品渲染內容，
-	// 由 allProducts 改變(抓資料後由空陣列變成以內容陣列)，導致再跑一次可以渲染畫面
+	// 由 filterState 決定產品渲染內容，由 allProducts 改變(抓資料後由空陣列變成以內容陣列)，導致再跑一次可以渲染畫面
 	useEffect(() => {
 		setDisplayProducts(() => filterDisplayProducts(allProducts, filterState));
 	}, [currentCategoryState, filterState, allProducts]);
@@ -230,24 +229,16 @@ export const Product2 = () => {
 
 	return (
 		<div className="test product-page position-relative">
-			<div className="header3 position-fixed"></div>
-			<div className="header2">
+			<div className="header-fixed position-fixed"></div>
+			<div className="header">
 				<div className="container d-flex justify-content-center align-items-center">
 					<div className="d-flex flex-column align-items-center justify-content-center">
 						<h1 className="mb-5">Green Go 精選菜單</h1>
-						<h6>主廚的精心搭配，讓專業為你把關</h6>
+						<h5>當季最新鮮、營養最到位， 每一口都是 GreenGo 的健康提案</h5>
 					</div>
 				</div>
 			</div>
 			{/* 菜單hero */}
-			{/* <header>
-				<div className="container d-flex flex-column justify-content-between align-items-center">
-					<div className="d-flex flex-column align-items-center justify-content-center">
-						<h1 className="mb-5">Green Go 精選菜單</h1>
-						<h5 className="text-center m-1">主廚的精心搭配，讓你選購簡單又健康</h5>
-					</div>
-				</div>
-			</header> */}
 			{/* <section className="position-relative">
 				<div className="block-filter container position-absolute top-0 start-50 translate-middle">
 					<div className="d-flex flex-column flex-md-row justify-content-center gap-6 gap-xxl-8 ">
@@ -268,15 +259,7 @@ export const Product2 = () => {
 			</section> */}
 			{/* 菜單content */}
 			<section className="menu position-relative">
-				{/* <div className="menu-title container">
-					<div>
-						<h2 className="mb-4">精選菜單</h2>
-						<p>當季最新鮮、營養最到位， 每一口都是 GreenGo 的健康提案</p>
-					</div>
-				</div> */}
-
 				<div className="menu-sorted container d-flex justify-content-end align-items-center position-sticky">
-					{/* <p>全部 30 筆，已顯示 10 筆 </p> */}
 					<Select
 						options={SORT_SELECT}
 						placeholder="排序"
@@ -292,27 +275,27 @@ export const Product2 = () => {
 					/>
 				</div>
 
-				<div className="menu-content container ">
+				<div className="menu-content container mt-10">
 					<div className="row">
 						<div className="col-3">
 							<aside className="d-flex flex-column gap-8 position-sticky">
 								{/* 排序選擇區塊 */}
 								{/* <div>
-							<p className="mb-3 fw-medium">- 排序選擇 -</p>
-							<Select
-								options={SORT_SELECT}
-								placeholder="排序"
-								value={sortSelect}
-								onChange={setSortSelect}
-								unstyled
-								classNamePrefix="rs"
-								classNames={{
-									control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
-									menu: () => classNames('rs__menu'),
-									option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
-								}}
-							/>
-						</div> */}
+									<p className="mb-3 fw-medium">- 排序選擇 -</p>
+									<Select
+										options={SORT_SELECT}
+										placeholder="排序"
+										value={sortSelect}
+										onChange={setSortSelect}
+										unstyled
+										classNamePrefix="rs"
+										classNames={{
+											control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
+											menu: () => classNames('rs__menu'),
+											option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
+										}}
+									/>
+								</div> */}
 
 								{/* 商品類別區塊 */}
 								<div>
@@ -392,17 +375,11 @@ export const Product2 = () => {
 										<div className="card mb-6" onClick={() => handleOpenDetailModal(product.id)}>
 											{/* 圖片 */}
 											<div className="img position-relative">
-												<img
-													src={product.imageUrl}
-													className="card-img-top"
-													alt={product.title}
-												/>
+												<img src={product.imageUrl} className="card-img-top" alt={product.title} />
 												<div className="position-absolute d-flex flex-column gap-1 popular-position-absolute">
-													{renderUITabpill(product.product_type, product.tab_collection)?.map(
-														item => (
-															<div className="popular">{item}</div>
-														),
-													)}
+													{renderUITabpill(product.product_type, product.tab_collection)?.map(item => (
+														<div className="popular">{item}</div>
+													))}
 												</div>
 											</div>
 											<div className="card-body d-flex flex-column gap-5 px-6 pt-7 pb-7">
@@ -433,9 +410,7 @@ export const Product2 = () => {
 													</p>
 												</div>
 
-												<div className="h6 fw-semibold text-gray-600 mt-5">
-													{`NT$ ${product.price}`}
-												</div>
+												<div className="h6 fw-semibold text-gray-600 mt-5">{`NT$ ${product.price}`}</div>
 												<div className="num-control position-absolute">
 													<button className="add">
 														<i class="bi bi-plus"></i>
@@ -449,15 +424,33 @@ export const Product2 = () => {
 						</div>
 					</div>
 				</div>
+			</section>
 
-				<div className="CTA-custom">
-					<h2>沒遇到理想的那「碗」嗎？</h2>
-					<h5>到自選菜單，自由搭配出你的理想滋味吧！</h5>
-					<button type="button" onClick={() => navigate('/custom')}>
-						自選菜單 GO
-					</button>
+			{/* 菜單CTA-custom */}
+			<section className="CTA-custom mt-10 mb-10">
+				<div className="container-fluid p-0">
+					<div className="row">
+						<div className="col-5">
+							<div className="img">
+								<img
+									src="https://images.unsplash.com/photo-1551218372-a8789b81b253?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+									alt="CTA-custom"
+								/>
+							</div>
+						</div>
+						<div className="col-7 ">
+							<div className="content d-flex flex-column justify-content-center">
+								<h2>沒遇到理想的那「碗」嗎？</h2>
+								<h5>到自選菜單，自由搭配出你的理想滋味吧！</h5>
+								<button type="button" className="cta-btn" onClick={() => navigate('/custom')}>
+									自選菜單 GO
+								</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</section>
+
 			{isOpenDetailModal && (
 				<ProductDetail isOpenDetailModal={isOpenDetailModal} handleCloseDetailModal={handleCloseDetailModal} />
 			)}

@@ -21,7 +21,68 @@ const flavorOptions = [
 	{ value: 'spicy', label: '辣' },
 ];
 
-const filterBlockCts = [{}];
+const BLOCK_CONTENT_OPTIONS = [
+	{
+		icon: 'allergies',
+		title: '經典綠果碗',
+		subtitle: '由主廚精心搭配的營養組合',
+	},
+	{
+		icon: 'coffee',
+		title: '健康飲品',
+		subtitle: '讓營養更完整的健康飲品',
+	},
+	{
+		icon: 'water_medium',
+		title: '溫暖湯品',
+		subtitle: '讓營養更均衡的溫暖湯品',
+	},
+];
+const FILTER_CONTENT_OPTIONS = {
+	set: {
+		category: { key: 'set', label: '經典綠果碗' },
+		tab: [
+			{ key: 'all', label: '全部', icon: 'border_all' },
+			{ key: 'popular', label: '人氣推薦', icon: 'thumb_up' },
+			{ key: 'highProtein', label: '多多蛋白', icon: 'egg' },
+			{ key: 'lowFat', label: '低卡低脂', icon: 'favorite' },
+			{ key: 'veg', label: '新鮮蔬食', icon: 'nest_eco_leaf' },
+		],
+		tag: [
+			{ key: 'beef', label: '不含牛肉', imgSrc: beefTag },
+			{ key: 'pork', label: '不含豬肉', imgSrc: null },
+			{ key: 'seafood', label: '不含海鮮', imgSrc: seafoodTag },
+			{ key: 'spicy', label: '不辣', imgSrc: spicyTag },
+		],
+	},
+	drinks: {
+		category: { key: 'drinks', label: '健康飲品' },
+		tab: [
+			{ key: 'all', label: '全部' },
+			{ key: 'tea', label: '茶' },
+			{ key: 'coffee', label: '咖啡' },
+			{ key: 'juice', label: '果汁' },
+		],
+		tag: [
+			{ key: 'alcohol', label: '無酒精' },
+			{ key: 'caffeine', label: '無咖啡因' },
+			{ key: 'sugar', label: '無糖' },
+		],
+	},
+	soup: {
+		category: { key: 'soup', label: '溫暖湯品' },
+		tab: [
+			{ key: 'all', label: '全部' },
+			{ key: 'freshSoup', label: '清爽湯' },
+			{ key: 'proteinSoup', label: '高蛋白湯' },
+			{ key: 'vegSoup', label: '素食湯' },
+		],
+		tag: [
+			{ key: 'beef', label: '不含牛肉' },
+			{ key: 'daily', label: '不含奶' },
+		],
+	},
+};
 
 export default function Product() {
 	const [sortSelect, setSortSelect] = useState(null);
@@ -62,21 +123,13 @@ export default function Product() {
 			<section className="position-relative">
 				<div className="block-filter container position-absolute top-0 start-50 translate-middle">
 					<div className="d-flex flex-column flex-md-row justify-content-between gap-6 gap-xxl-8 ">
-						<div className="block-item d-flex flex-column align-items-center">
-							<span className="material-symbols-rounded">chef_hat</span>
-							<p className="h5 fw-semibold">Green Go 幫你配</p>
-							<p>由主廚精心搭配的營養組合</p>
-						</div>
-						<div className="block-item">
-							<span className="material-symbols-rounded">allergies</span>
-							<p className="h5 fw-semibold">$149 隨心自由配</p>
-							<p>自由選擇喜歡的食材組合</p>
-						</div>
-						<div className="block-item">
-							<span className="material-symbols-rounded">coffee</span>
-							<p className="h5 fw-semibold">口渴加價配</p>
-							<p>加價選擇飲品和湯品</p>
-						</div>
+						{BLOCK_CONTENT_OPTIONS.map(option => (
+							<div className="block-item d-flex flex-column align-items-center">
+								<span className="material-symbols-rounded">{option.icon}</span>
+								<p className="h5 fw-semibold">{option.title}</p>
+								<p>{option.subtitle}</p>
+							</div>
+						))}
 					</div>
 				</div>
 			</section>
@@ -86,61 +139,32 @@ export default function Product() {
         <i className="bi bi-arrow-down mt-4 text-primary"></i>
       </section> */}
 
-			{/* 菜單錨點 */}
-			{/* <section className="block-filter container mt-7">
-        <div className="d-flex flex-column flex-md-row justify-content-between gap-6 gap-xxl-8 ">
-          <div className="block-item d-flex flex-column align-items-center">
-            <span className="material-symbols-rounded">chef_hat</span>
-            <p className="h5 fw-semibold">Green Go 幫你配</p>
-            <p>由主廚精心搭配的營養組合</p>
-          </div>
-          <div className="block-item">
-            <span className="material-symbols-rounded">allergies</span>
-            <p className="h5 fw-semibold">$149 隨心自由配</p>
-            <p>自由選擇喜歡的食材組合</p>
-          </div>
-          <div className="block-item">
-            <span className="material-symbols-rounded">coffee</span>
-            <p className="h5 fw-semibold">口渴加價配</p>
-            <p>加價選擇飲品和湯品</p>
-          </div>
-        </div>
-      </section> */}
-
 			{/* 固定餐*/}
-			<section className="container set-section ">
-				<div className="title">
-					<h2>Green Go 幫你配</h2>
+			<section className="container set-section">
+				<div className="title mb-10 position-relative">
+					<span class="material-symbols-rounded position-absolute top-0 start-50 translate-middle">allergies</span>
+					<h2>經典綠果碗</h2>
 					<h6>主廚的精心搭配，讓專業為你把關！</h6>
 				</div>
-				<div className="meal-filter d-flex justify-content-between gap-6 mt-10">
-					<ul className="nav nav-underline flex-fill">
-						<li className="nav-item">
-							<NavLink className="nav-link active" aria-selected="true" to="#">
-								全部
-							</NavLink>
+				<div className="tab-filter d-flex justify-content-between gap-6">
+					<ul class="nav nav-underline d-flex gap-6 flex-fill">
+						<li class="nav-item">
+							<button class="nav-link tab-navLink ">全部</button>
 						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">
-								人氣推薦
-							</a>
+						<li class="nav-item">
+							<button class="nav-link tab-navLink">人氣推薦</button>
 						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">
-								多多蛋白
-							</a>
+						<li class="nav-item">
+							<button class="nav-link tab-navLink ">多多蛋白</button>
 						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">
-								低脂低卡
-							</a>
+						<li class="nav-item">
+							<button class="nav-link tab-navLink">低脂低卡</button>
 						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">
-								健康蔬食
-							</a>
+						<li class="nav-item">
+							<button class="nav-link tab-navLink">健康蔬食</button>
 						</li>
 					</ul>
+
 					<Select
 						options={flavorOptions}
 						placeholder="忌口篩選"
@@ -223,9 +247,7 @@ export default function Product() {
                   </div> */}
 
 									<div className="card-footer">
-										<div className="h6 fw-semibold text-primary-200 mb-5">
-											{`NT$${product.price}`}
-										</div>
+										<div className="h6 fw-semibold text-primary-200 mb-5">{`NT$${product.price}`}</div>
 										<div className="button-section d-flex align-items-center gap-3">
 											<div className="num-control d-flex align-items-center justify-content-between flex-fill">
 												<button className="minus">
