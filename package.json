@@ -4,13 +4,14 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite --open",
 		"build": "vite build",
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"deploy": "npm run build && gh-pages -d dist"
 	},
 	"dependencies": {
+		"aos": "^2.3.4",
 		"apexcharts": "^5.3.6",
 		"axios": "^1.13.2",
 		"bootstrap": "^5.3.8",
@@ -18,6 +19,7 @@
 		"dayjs": "^1.11.19",
 		"framer-motion": "^12.30.0",
 		"gh-pages": "^6.3.0",
+		"matter-js": "^0.20.0",
 		"react": "^19.2.0",
 		"react-apexcharts": "^1.9.0",
 		"react-bootstrap": "^2.10.10",
