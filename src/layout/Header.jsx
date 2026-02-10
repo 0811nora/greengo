@@ -2,6 +2,9 @@ import { NavLink, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useCart } from '../context/CartContext';
 
+// header cart
+import CartDropdown from '../components/home/CartDropdown';
+
 const NavbarData = {
   brand: {
     title: 'GreenGo',
@@ -47,18 +50,18 @@ export default function Header() {
 
   return (
     <>
-      <header className="front__header" ref={headerRef}>
-        <nav className="navbar">
-          <div className="container">
+      <header className='front__header' ref={headerRef}>
+        <nav className='navbar'>
+          <div className='container'>
             {/* desktop */}
-            <div className="header__container d-none d-lg-flex">
+            <div className='header__container d-none d-lg-flex'>
               <NavLink
-                className="header__brand ft-en fw-semibold text-decoration-none"
+                className='header__brand ft-en fw-semibold text-decoration-none'
                 to={NavbarData.brand.url}
               >
                 {NavbarData.brand.title}
               </NavLink>
-              <ul className="navbar-nav mb-0">
+              <ul className='navbar-nav mb-0'>
                 {NavbarData.mainLinks.map((link) => (
                   <li key={link.url}>
                     <NavLink
@@ -67,7 +70,7 @@ export default function Header() {
                         `header__link ${isActive ? 'header__link--active' : ''}`
                       }
                     >
-                      <span className="header__link-text">{link.title}</span>
+                      <span className='header__link-text'>{link.title}</span>
                     </NavLink>
                   </li>
                 ))}
@@ -75,90 +78,40 @@ export default function Header() {
 
               {/* cart + login */}
               {/* 整體待修 */}
-              <div className="d-flex align-items-center">
-                <div className="nav-item dropdown cart-dropdown">
-                  <Link to="/cart" className="nav-link position-relative">
-                    <i className="bi bi-cart"></i>
-                    {cartData.carts?.length > 0 && (
-                      <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
-                        {cartData.carts.length}
-                      </span>
-                    )}
-                  </Link>
-                  <div
-                    className="dropdown-menu dropdown-menu-end p-3 shadow"
-                    style={{ width: '300px' }}
-                  >
-                    {cartData.carts?.length === 0 ? (
-                      <p className="text-center mb-0">購物車空空如也喔！</p>
-                    ) : (
-                      <>
-                        <ul className="list-unstyled">
-                          {cartData.carts.map((item) => (
-                            <li
-                              key={item.id}
-                              className="mb-2 border-bottom pb-2"
-                            >
-                              <div className="d-flex align-items-center g-2">
-                                <img
-                                  src={item.product.imageUrl}
-                                  alt={item.product.title}
-                                  style={{
-                                    width: '80px',
-                                    height: '80px',
-                                    marginRight: '8px',
-                                    borderRadius: '8px',
-                                  }}
-                                />
-                                {item.product.title} x {item.qty}
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                        <Link
-                          to="/cart"
-                          className="home__btn-primary w-100 mt-2"
-                        >
-                          前往結帳
-                        </Link>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                <button className="btn btn-outline-primary-300 rounded-3 ms-6">
+              <div className='d-flex align-items-center gap-3'>
+                <CartDropdown />
+                <button className='btn btn-outline-primary-300 rounded-pill'>
                   登入 / 註冊
                 </button>
               </div>
             </div>
 
             {/* mobile */}
-            <div className="d-lg-none w-100">
+            <div className='d-lg-none w-100'>
               <div
                 className={`mobile-container ${
                   isMobileMenuOpen ? 'mobile-container--open' : ''
                 }`}
               >
-                <div className="mobile-container__header">
+                <div className='mobile-container__header'>
                   <NavLink
-                    className="header__brand ft-en fw-semibold text-decoration-none"
+                    className='header__brand ft-en fw-semibold text-decoration-none'
                     to={NavbarData.brand.url}
                     onClick={closeMenu}
                   >
                     {NavbarData.brand.title}
                   </NavLink>
 
-                  <div className="d-flex align-items-center gap-2">
-                    <NavLink
-                      type="button"
-                      className="btn btn-outline-gray-400 rounded-pill border-none"
-                      to="/cart"
-                    >
-                      <i className="bi bi-bag"></i>
-                    </NavLink>
+                  <div className='d-flex align-items-center gap-2'>
                     <button
-                      type="button"
-                      className="btn btn-outline-gray-400 rounded-pill border-none"
+                      type='button'
+                      className='btn btn-outline-gray-400 rounded-pill border-none'
+                    >
+                      <i className='bi bi-bag'></i>
+                    </button>
+                    <button
+                      type='button'
+                      className='btn btn-outline-gray-400 rounded-pill border-none'
                       onClick={toggleMenu}
                     >
                       <i
@@ -176,7 +129,7 @@ export default function Header() {
                     isMobileMenuOpen ? 'mobile-container__dropdown--open' : ''
                   }`}
                 >
-                  <nav className="mobile-container__nav ">
+                  <nav className='mobile-container__nav '>
                     {NavbarData.mainLinks.map((link) => (
                       <NavLink
                         key={link.url}
@@ -193,8 +146,8 @@ export default function Header() {
                     ))}
                   </nav>
 
-                  <div className="mobile-container__footer">
-                    <button className="btn btn-outline-primary-300 w-100 rounded-pill">
+                  <div className='mobile-container__footer'>
+                    <button className='btn btn-outline-primary-300 w-100 rounded-pill'>
                       登入 / 註冊
                     </button>
                   </div>

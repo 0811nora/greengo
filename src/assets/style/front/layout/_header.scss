@@ -40,7 +40,7 @@
   background: transparent;
   @media (min-width: 992px) {
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
       z-index: -1;
@@ -178,11 +178,6 @@
   }
 }
 
-// cart
-.cart-dropdown:hover .dropdown-menu {
-  display: block;
-}
-
 // mobile liquid glass
 .mobile-container {
   position: relative;
@@ -235,7 +230,7 @@
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 0;
     left: 20px;
@@ -312,7 +307,7 @@
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 20px;

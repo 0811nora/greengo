@@ -1,0 +1,155 @@
+// step card 區
+.step-card {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  gap: 12px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    gap: 8px;
+  }
+  .step {
+    position: relative;
+    overflow: hidden;
+    min-width: 60px;
+    cursor: pointer;
+    border-radius: 30px;
+    background-size: cover;
+    background-position: center;
+    flex-grow: 1;
+    transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+
+    .shadow {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+      background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      opacity: 0;
+    }
+    &.active {
+      flex-grow: 10000; // 推擠其他區塊
+      cursor: default;
+      border-radius: 40px;
+      .shadow {
+        opacity: 1;
+      }
+      .label {
+        bottom: 15px;
+        left: 15px;
+        .info {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    }
+    .label {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+      .icon {
+        min-width: 40px;
+        height: 40px;
+        background-color: $white;
+        color: $primary-200;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+      }
+      .info {
+        margin-left: 12px;
+        color: $white;
+        white-space: nowrap;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: 0.5s cubic-bezier(0.05, 0.61, 0.41, 0.95);
+        .sub {
+          transition-delay: 0.3s;
+        }
+      }
+    }
+    @media (max-width: 768px) {
+      min-height: 120px;
+      &.active {
+        min-height: 250px;
+      }
+    }
+  }
+}
+
+// content card
+.content-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  padding: 60px 48px;
+  position: relative;
+  z-index: 50;
+  @media (max-width: 992px) {
+    margin: 16px 8px;
+    padding: 24px 32px;
+    gap: 12px;
+  }
+}
+
+// comment card 區
+.comment-card {
+  width: 300px;
+  height: 180px;
+  border: 1.5px solid $primary-200;
+  border-bottom: 4px solid $primary-200;
+  background-color: $white;
+  padding: 32px 24px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-right: 12px;
+}
+// comment card 動畫
+.scroll-container {
+  display: flex;
+  // white-space: nowrap;
+}
+.scroll-track-left,
+.scroll-track-right {
+  display: flex;
+  flex-shrink: 0;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+.scroll-track-left {
+  animation-name: marquee;
+  animation-duration: 20s;
+}
+.scroll-track-right {
+  animation-name: marquee;
+  animation-duration: 25s;
+  animation-direction: alternate-reverse;
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-30%);
+  }
+}
+.scroll-container:hover .scroll-track-left,
+.scroll-container:hover .scroll-track-right {
+  animation-play-state: paused;
+}
