@@ -1,0 +1,77 @@
+// navbar 導覽列
+.adm-theme {
+  .delete__navbar_nav__glassbg {
+    background: none;
+    backdrop-filter: none;
+    border-radius: none;
+    border: 0;
+    box-shadow: none;
+    overflow: visible;
+    transition: none;
+  }
+  .adm__navbar {
+    border-radius: 100px;
+    padding: 6px 16px;
+  }
+  .nav-item {
+    padding: 0;
+  }
+  .adm__navLink {
+    color: $adm-gray-black;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-weight: 400;
+    line-height: 1.5;
+    &::after {
+      content: "";
+    }
+    &:hover {
+      color: #ff6d20;
+    }
+  }
+  .adm__navLink.active {
+    color: $adm-gray-white;
+    background-color: $adm-gray-black;
+  }
+  .adm__navLink.disable {
+    display: flex;
+    align-items: center;
+    color: $disable-color;
+    cursor: default;
+    &::after {
+      content: "\F47A";
+      font-family: "bootstrap-icons";
+      margin-left: 0.125rem;
+      color: $disable-color;
+    }
+  }
+}
+
+// adm__mode 管理員模式
+.adm-theme {
+  .adm__mode__circle {
+    border-radius: 100px;
+    width: 14px;
+    height: 14px;
+  }
+  .adm__mode__circle.show {
+    background-color: $adm-gray-white;
+  }
+  .adm__mode__bg {
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    padding: 0.25rem;
+    gap: 0.15rem;
+    background-color: $disable-color;
+    border: none;
+    margin-right: 0.5rem;
+  }
+  .adm__mode__bg.show {
+    background-color: $success;
+  }
+}

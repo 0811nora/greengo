@@ -1,0 +1,109 @@
+// adm__Button 按鈕
+.adm-theme {
+  .adm__button__primary {
+    background-color: $adm-primary;
+    color: $adm-gray-white;
+  }
+  .adm__button__secondary {
+    background-color: $adm-gray-black;
+    color: $adm-gray-white;
+    &:hover {
+      box-shadow: 0 0 8px $btn-secondary-shadow;
+      transform: scale(1.05);
+      transition: all 0.1s ease;
+    }
+  }
+  .adm__button__tertiary {
+    border: 1px solid $adm-gray-500;
+    color: $adm-gray-black;
+    background-color: $adm-gray-white;
+    &:hover {
+      box-shadow: 0 0 8px $btn-tertiary-shadow;
+      transform: scale(1.05);
+      transition: all 0.1s ease;
+    }
+  }
+  .lg {
+    border-radius: 100px;
+    padding: 16px 32px;
+  }
+  .md {
+    border-radius: 100px;
+    padding: 10px 20px;
+  }
+  .sm {
+    border-radius: 100px;
+    padding: 4px 16px;
+  }
+}
+
+/* From Uiverse.io by Wendell47 */
+.adm-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 30px;
+  border: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10rem;
+  transition: all 0.02s;
+  font-weight: bold;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+  z-index: 0;
+  box-shadow: 0 0px 7px -5px rgba(0, 0, 0, 0.5);
+}
+
+.adm-button:hover {
+  background: rgb(245, 248, 193);
+  color: rgb(36, 88, 49);
+}
+
+.adm-button:active {
+  transform: scale(0.97);
+}
+
+.hoverEffect {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.hoverEffect div {
+  background: rgb(222, 0, 75);
+  background: linear-gradient(
+    90deg,
+    rgb(255, 255, 255) 0%,
+    rgb(255, 154, 3) 49%,
+    rgb(233, 255, 155) 100%
+  );
+  border-radius: 40rem;
+  width: 10rem;
+  height: 10rem;
+  transition: 0.4s;
+  filter: blur(20px);
+  animation: effect infinite 3s linear;
+  opacity: 0.5;
+}
+
+.adm-button:hover .hoverEffect div {
+  width: 8rem;
+  height: 8rem;
+}
+
+@keyframes effect {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
