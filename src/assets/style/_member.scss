@@ -2,6 +2,12 @@
   min-height: 100vh;
   padding-top: 120px;
   padding-bottom: 40px;
+  background-attachment: fixed; //這裡
+  background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/greengo/1770711425908.png');
+  background-color: rgba(255, 255, 255, 0.3);
+  background-blend-mode: color;
+  background-size: cover;
+  background-position: center;
 
   .nav-tabs {
     border-bottom: none;
@@ -13,7 +19,7 @@
       transition: all 500ms;
       padding-left: 0px;
       padding-right: 0px;
-      border-bottom: 4px solid $yellow-200;
+      // border-bottom: 4px solid $yellow-200;
       &.active {
         background: transparent;
         color: $primary;
@@ -30,8 +36,10 @@
     border: none;
     transition: all 200ms;
 
-    &:hover {
-      box-shadow: 0 1px 5px rgb(255 228 78);
+    &:hover,
+    &:focus {
+      box-shadow: 0 1px 4px rgb(255 249 216);
+      transform: scale(1.005);
     }
 
     .card-header-info {
@@ -48,14 +56,15 @@
       max-height: 0;
       overflow: hidden;
       background-color: $gray-50;
+      transition: all 500ms;
     }
 
     // 當 .details-open 被 JS 加入時的樣式
     &.details-open {
       .order-detail-box {
-        max-height: 500px;
-        padding: 1.5rem;
-        margin-top: 1rem;
+        max-height: 620px;
+        padding: 24px;
+        margin-top: 16px;
         border-radius: 10px;
       }
     }
@@ -70,6 +79,14 @@
 
   .profile-form {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    // .banner {
+    //   height: 280px;
+    //   background-image: url('https://storage.googleapis.com/vue-course-api.appspot.com/greengo/1770708520902.png');
+    //   background-color: rgba(253, 255, 145, 0.3);
+    //   background-blend-mode: color;
+    //   background-size: cover;
+    //   overflow: hidden;
+    // }
 
     .form-label {
       color: $primary;
@@ -80,6 +97,143 @@
   @media (min-width: 768px) {
     .border-md-end {
       border-right: 1px solid;
+    }
+  }
+
+  //profile
+
+  .user-profile-container {
+    .profile-card {
+      border-radius: 12px;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+      overflow: hidden;
+
+      // 頭像區域樣式
+      .avatar-placeholder {
+        font-size: 5rem; // 控制 icon 大小
+        color: lighten($primary, 20%);
+        line-height: 1;
+
+        i {
+          background: #f8f9fa;
+          border-radius: 50%;
+          padding: 10px;
+          border: 2px solid #e9ecef;
+        }
+      }
+
+      // Input Group 優化
+      .input-group-text {
+        border: 1px solid #ced4da;
+        border-right: none;
+        color: #6c757d;
+      }
+
+      .form-control {
+        border-left: none;
+
+        &:focus {
+          border-color: #ced4da; // 移除預設藍色邊框，改用陰影
+          box-shadow: none;
+          border-left: 1px solid #ced4da; // focus 時補回左邊框
+        }
+
+        // 當 input 被 disabled 時的樣式優化
+        &:disabled {
+          background-color: rgb(255, 255, 255);
+          border-color: #e9ecef;
+        }
+      }
+
+      // 如果 input disabled，前面的 icon 也要變色
+      .form-control:disabled ~ .input-group-text,
+      .input-group:has(.form-control:disabled) .input-group-text {
+        background-color: #f8f9fa;
+        border-color: #e9ecef;
+      }
+    }
+  }
+
+  //圖片動畫
+  .marquee-container {
+    /* 這裡會自動適應你的 800px 父容器 */
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .marquee-content {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    /* 動畫邏輯更新：確保永遠有圖 */
+    animation: scroll-left-to-right 20s linear infinite;
+    padding-left: 20px;
+  }
+
+  .marquee-content img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+
+    /* 🔥 關鍵修正：加上這一行！ 🔥 */
+    /* 0 代表「不壓縮」，保持原圖大小 */
+    flex-shrink: 0;
+
+    animation: float-up-down 3s ease-in-out infinite;
+  }
+
+  /* --- 浮動延遲設定 (維持原本的波浪感) --- */
+  .marquee-content img:nth-child(5n + 1) {
+    animation-delay: 0s;
+  }
+  .marquee-content img:nth-child(5n + 2) {
+    animation-delay: -0.5s;
+  }
+  .marquee-content img:nth-child(5n + 3) {
+    animation-delay: -1s;
+  }
+  .marquee-content img:nth-child(5n + 4) {
+    animation-delay: -1.5s;
+  }
+  .marquee-content img:nth-child(5n) {
+    animation-delay: -2s;
+  }
+
+  /* --- 修正後的動畫邏輯 (更保險) --- */
+  @keyframes scroll-left-to-right {
+    /* 原理說明：
+               總共有 4 組圖：[1][2][3][4]
+               
+               0% (開始)：我們把位置定在 -50% (剛好顯示第 3 組)
+               100% (結束)：我們移動到 -25% (剛好顯示第 2 組)
+               
+               因為是由 -50% 變到 -25% (數字變大)，所以圖片是往「右邊」跑。
+               當跑到 -25% (第2組) 的瞬間，畫面會跳回 -50% (第3組)。
+               因為第 2 組跟第 3 組長得一樣，所以肉眼看不出跳接。
+               這樣做的好處是：不管你的 800px 框框在哪，
+               左右兩邊都還有第 1 組和第 4 組撐著，絕對不會露出空白！
+            */
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(-25%);
+    }
+  }
+
+  @keyframes float-up-down {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
     }
   }
 }

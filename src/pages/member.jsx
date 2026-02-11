@@ -33,7 +33,7 @@ const Member = () => {
   }, [page, activeTab]);
 
   return (
-    <div className="member-center-container bg-yellow-200">
+    <div className="member-center-container">
       {isLoading ? <Loader mode={'mask'} /> : ''}
       <div className="container">
         <h1 className="fs-1 text-center fw-bold mb-8">會員中心</h1>
@@ -45,6 +45,7 @@ const Member = () => {
               className={`nav-link me-7 ${activeTab === 'orders' ? 'active' : ''}`}
               onClick={() => setActiveTab('orders')}
             >
+              <i class="bi bi-clipboard-fill me-2"></i>
               訂單紀錄
             </button>
           </li>
@@ -53,7 +54,7 @@ const Member = () => {
               className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`}
               onClick={() => setActiveTab('profile')}
             >
-              個人資料
+              <i className="bi bi-person-lines-fill me-2"></i>個人資料
             </button>
           </li>
         </ul>
@@ -131,7 +132,6 @@ const formatTimestamp = (timestamp) => {
 // 訂單卡片子組件
 const OrderCard = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [showRecipeModal, setShowRecipeModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -221,7 +221,12 @@ const OrderCard = ({ data }) => {
             </div>
           </div>
 
-          <div>
+          <div className="overflow-y-auto" style={{ maxHeight: 280 }}>
+            {Object.keys(data.products).length > 3 && (
+              <div className="text-center text-secondary small py-2 mb-6 bg-yellow-200 rounded-3">
+                <i className="bi bi-mouse me-1"></i> 請滑動檢視更多餐點
+              </div>
+            )}
             {Object.values(data.products).map((product, index) => (
               <div
                 key={index}
@@ -257,12 +262,17 @@ const OrderCard = ({ data }) => {
               {data.user.final_total - data.user.discount}
             </div>
             <div className="mb-4">
+              加購 <i className="bi bi-currency-dollar"></i>
+              未完成
+            </div>
+            <div className="mb-4">
               折扣 -<i className="bi bi-currency-dollar"></i>
               {data.user.discount}
             </div>
             <div className="fw-medium fs-6 text-primary">
               總金額 <i className="bi bi-currency-dollar"></i>
-              {data.user.final_total}
+              {/* {data.user.final_total} */}
+              未完成
             </div>
           </div>
         </div>
@@ -279,46 +289,194 @@ const OrderCard = ({ data }) => {
 
 // 個人資料子組件
 const ProfileSection = () => {
+  const [formData, setFormData] = useState({
+    name: '王小明',
+    phone: '0912-345-678',
+    email: 'ming@example.com',
+    address: '台北市信義區信義路五段7號',
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log('更新資料:', formData);
+    setIsEditing(false);
+    alert('資料已更新！');
+  };
   return (
-    <div className="profile-form bg-white p-7 rounded-3">
-      <form>
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">姓名</label>
-            <input type="text" className="form-control" defaultValue="王小明" />
+    <div className="user-profile-container container">
+      <div className="row justify-content-center">
+        <div className="col-lg-8">
+          <div className="card shadow-sm border-0 profile-card p-7 rounded-3">
+            <div className="card-body px-4 py-4">
+              {/* <div className="text-center mb-4">
+                <div className="avatar-placeholder mb-8">
+                  <i className="bi bi-person-circle px-6"></i>
+                </div>
+                <h5 className="fw-bold">{formData.name || '使用者'}</h5>
+              </div> */}
+              <div>
+                <div class="marquee-container">
+                  <div class="marquee-content">
+                    <img src="/img/member/food-1.png" alt="Poke碗" />
+                    <img src="/img/member/food-2.png" alt="鮭魚" />
+                    <img src="/img/member/food-3.png" alt="酪梨" />
+                    <img src="/img/member/food-4.png" alt="毛豆" />
+                    <img src="/img/member/food-5.png" alt="海藻" />
+
+                    <img src="/img/member/food-6.png" alt="Poke碗" />
+                    <img src="/img/member/food-7.png" alt="鮭魚" />
+                    <img src="/img/member/food-8.png" alt="酪梨" />
+                    <img src="/img/member/food-9.png" alt="毛豆" />
+                    <img src="/img/member/food-10.png" alt="海藻" />
+
+                    <img src="/img/member/food-1.png" alt="Poke碗" />
+                    <img src="/img/member/food-2.png" alt="鮭魚" />
+                    <img src="/img/member/food-3.png" alt="酪梨" />
+                    <img src="/img/member/food-4.png" alt="毛豆" />
+                    <img src="/img/member/food-5.png" alt="海藻" />
+
+                    <img src="/img/member/food-6.png" alt="Poke碗" />
+                    <img src="/img/member/food-7.png" alt="鮭魚" />
+                    <img src="/img/member/food-8.png" alt="酪梨" />
+                    <img src="/img/member/food-9.png" alt="毛豆" />
+                    <img src="/img/member/food-10.png" alt="海藻" />
+                  </div>
+                </div>
+              </div>
+
+              {/* 表單區塊 */}
+              <form onSubmit={handleSubmit}>
+                <div className="row g-3">
+                  {/* 姓名 */}
+                  <div className="col-md-6">
+                    <label className="form-label text-primary fw-medium">
+                      姓名
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-light">
+                        <i className="bi bi-person"></i>
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* 電話 */}
+                  <div className="col-md-6">
+                    <label className="form-label text-primary fw-medium">
+                      電話
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-light">
+                        <i className="bi bi-telephone"></i>
+                      </span>
+                      <input
+                        type="tel"
+                        className="form-control"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* 電子郵件 (通常不給改，所以設為 disabled) */}
+                  <div className="col-12">
+                    <label className="form-label text-primary fw-medium">
+                      電子郵件
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-light">
+                        <i className="bi bi-envelope"></i>
+                      </span>
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        value={formData.email}
+                        disabled // Email 通常作為帳號，建議鎖定
+                      />
+                    </div>
+                    {isEditing && (
+                      <div className="form-text">
+                        電子郵件無法修改，請聯繫客服。
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 聯絡地址 */}
+                  <div className="col-12">
+                    <label className="form-label text-primary fw-medium">
+                      聯絡地址
+                    </label>
+                    <div className="input-group">
+                      <span className="input-group-text bg-light">
+                        <i className="bi bi-geo-alt"></i>
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 按鈕區塊 */}
+                <div className="d-flex justify-content-end mt-7 pt-7 border-top border-gray-50">
+                  {!isEditing ? (
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary px-4"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <i className="bi bi-pencil-square me-2"></i>
+                      編輯資料
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-light me-5"
+                        onClick={() => setIsEditing(false)}
+                      >
+                        取消
+                      </button>
+                      <button type="submit" className="btn btn-primary px-4">
+                        <i className="bi bi-check-lg me-2"></i>
+                        儲存變更
+                      </button>
+                    </>
+                  )}
+                </div>
+              </form>
+            </div>
           </div>
-          <div className="col-md-6">
-            <label className="form-label">電話</label>
-            <input
-              type="text"
-              className="form-control"
-              defaultValue="0912-345-678"
-            />
-          </div>
         </div>
-        <div className="mb-3">
-          <label className="form-label">電子郵件</label>
-          <input
-            type="email"
-            className="form-control"
-            defaultValue="test@example.com"
-          />
-        </div>
-        <div className="mb-8">
-          <label className="form-label">聯絡地址</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="輸入地址"
-            defaultValue="台北市大安區幸福路77號3樓"
-          />
-        </div>
-        <div className="text-center">
-          <button type="button" className="btn btn-primary px-5">
-            儲存修改
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 };
@@ -376,7 +534,7 @@ const RecipeModal = ({ product, onClose }) => {
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
-          <div className="modal-header bg-light">
+          <div className="modal-header bg-orange-100 border-bottom-0 p-5">
             <h5 className="modal-title">{product.name} 配料明細</h5>
             <button
               type="button"
@@ -384,8 +542,8 @@ const RecipeModal = ({ product, onClose }) => {
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body">
-            <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center">
+          <div className="modal-body p-6">
+            <h4 className="fs-6 text-brown-300 mb-2 d-flex align-items-center">
               <i class="bi bi-postcard-heart me-2"></i>內容物明細
             </h4>
             {isCustom ? (
@@ -430,8 +588,8 @@ const RecipeModal = ({ product, onClose }) => {
 
                 {hasAddonsContent && (
                   <>
-                    <hr />
-                    <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center mt-4">
+                    <hr className="border-orange-200" />
+                    <h4 className="fs-6 text-brown-300 mb-2 d-flex align-items-center mt-4">
                       <i className="bi bi-postcard-heart me-2"></i> 加購選項
                     </h4>
                     <ul>
@@ -529,7 +687,7 @@ const RecipeModal = ({ product, onClose }) => {
                 {hasAddonsContent && (
                   <>
                     <hr />
-                    <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center mt-4">
+                    <h4 className="fs-6 text-brown-300 mb-2 d-flex align-items-center mt-4">
                       <i className="bi bi-postcard-heart me-2"></i> 加購選項
                     </h4>
                     <ul>
@@ -601,7 +759,7 @@ const RecipeModal = ({ product, onClose }) => {
               </>
             )}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer border-gray-50">
             <button
               type="button"
               className="btn btn-secondary"
