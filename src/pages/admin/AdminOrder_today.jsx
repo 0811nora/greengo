@@ -3,7 +3,6 @@ import { getAdmOrders } from '../../api/ApiAdmin';
 import EmptyDataHint from '../../components/admin/order/EmptyDataHint';
 import Loading from '../../components/admin/order/Loading';
 import Modal from '../../components/admin/order/Modal';
-import AdmModal_confirm2 from '../../components/admin/common/AdmComfirmModal2';
 
 export default function AdminOrder_today() {
 	const [orders, setOrders] = useState([]);
@@ -285,7 +284,6 @@ export default function AdminOrder_today() {
 					onCheckoutBtn={handleCheckoutOrder}
 				/>
 			)}
-			<AdmModal_confirm2 show={isModalShow} onHide={() => setIsModalShow(false)} />
 		</>
 	);
 }
