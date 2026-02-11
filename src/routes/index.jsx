@@ -8,6 +8,7 @@ import Article from '../pages/Article.jsx';
 import Cart from '../pages/Cart.jsx';
 import Checkout from '../pages/Checkout.jsx';
 import ArticleDetail from '../pages/ArticleDetail.jsx';
+import Member from '../pages/member.jsx';
 
 import AdminPages from '../pages/admin/AdminPages.jsx';
 import AdminHome from '../pages/admin/AdminHome.jsx';
@@ -37,6 +38,7 @@ const routes = [
 			{ path: 'cart', element: <Cart /> },
 			{ path: 'checkout', element: <Checkout /> },
 			{ path: 'article/:id', element: <ArticleDetail /> },
+			{ path: 'member', element: <Member /> },
 		],
 	},
 	{
