@@ -35,7 +35,7 @@
 	}
 }
 
-// 向下箭頭
+// down arrow
 .product-page .bi-arrow-down {
 	display: block;
 	font-size: 36px;
@@ -54,9 +54,9 @@
 	}
 }
 
+// block
 .product-page .block-item {
 	display: flex;
-	// flex-direction: column;
 	align-items: center;
 
 	flex: 1;
@@ -101,7 +101,7 @@
 	}
 }
 
-// 每個區域的標題title
+// section title
 .product-page .title {
 	text-align: center;
 	span {
@@ -124,83 +124,49 @@
 	}
 }
 
-// 餐點tab
-// .product-page .tab-filter {
-// 	ul {
-// 		border-bottom: 1px solid $gray-200;
-// 	}
-// 	li .nav-link:hover {
-// 		border-bottom: none;
-// 	}
-// 	li .tab-navLink {
-// 		position: relative;
-// 		display: inline-block;
-// 		font-size: 18px;
-// 		color: $gray-500;
-// 		padding-left: $spacer;
-// 		padding-right: $spacer;
-// 		::after {
-// 			content: '';
-// 			position: absolute;
-// 			left: 0;
-// 			bottom: -2px;
-// 			width: 100%;
-// 			height: 3px;
-// 			background: $primary-200;
-// 			transform: scaleX(0);
-// 			transform-origin: center;
-// 			transition: transform 0.3s ease;
-// 		}
-// 	}
-// 	li .tab-navLink {
-// 		&::after {
-// 			transform: scaleX(1);
-// 		}
-// 	}
-// }
-.product-page {
-	.tab-filter {
+// tab filter
+.product-page .tab-filter {
+	ul {
 		border-bottom: 1px solid $gray-200;
+	}
+	.nav-link {
+		border-bottom: none !important;
+		background: none;
+	}
 
-		.nav-link {
-			border-bottom: none !important;
-			background: none;
+	.tab-navLink {
+		position: relative;
+		display: inline-block;
+		font-size: 18px;
+		color: $gray-400;
+		padding: 0px 16px 16px 16px;
+		cursor: pointer;
+		&:hover {
+			color: $primary-200;
 		}
 
-		.tab-navLink {
-			position: relative;
-			display: inline-block;
-			font-size: 18px;
-			color: $gray-500;
-			padding: 0 $spacer;
-			cursor: pointer;
-			&:hover {
-				color: $primary-200;
-			}
+		&::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: -2px;
+			width: 100%;
+			height: 4px;
+			border-radius: $border-radius-pill;
+			background: $primary-200;
+			transform: scaleX(0);
+			transform-origin: center;
+			transition: transform 0.25s ease;
+		}
 
-			&::after {
-				content: '';
-				position: absolute;
-				left: 0;
-				bottom: -12px; // 視覺距離自己調
-				width: 100%;
-				height: 4px;
-				border-radius: $border-radius-pill;
-				background: $primary-200;
-				transform: scaleX(0);
-				transform-origin: center;
-				transition: transform 0.25s ease;
-			}
+		&:hover::after {
+			transform: scaleX(1);
+		}
 
-			&:hover::after {
-				transform: scaleX(1);
-			}
-
-			&.active::after {
-				color: $primary-200;
-				font-weight: $font-weight-medium;
-				transform: scaleX(1);
-			}
+		&.active::after {
+			color: $primary-200;
+			font-weight: $font-weight-medium;
+			transform: scaleX(1);
 		}
 	}
 }
