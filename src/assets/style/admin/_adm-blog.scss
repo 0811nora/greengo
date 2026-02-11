@@ -9,4 +9,32 @@
     .modal-body{
         padding: 30px;
     }
+    .modal-content{
+        background-color: $white;
+    }
+    .page-item.active{
+        .page-link{
+            background: $dark;
+            color: $white;
+        }
+    }
+    .page-item.disabled{
+        .page-link{
+            background: #e7e7e7;
+            color: #9f9f9f;
+        }
+    }
+    .page-link{
+        border: 1px solid $dark;
+        color: $dark;
+    }
+
+    .table{
+        tr{border-bottom: 1px solid #d7d7d7;}
+        th{padding: 20px 10px;}
+    }
+    .form-select:disabled{
+        background: #d8d8d8;
+        color: #9f9f9f;
+    }
 }
