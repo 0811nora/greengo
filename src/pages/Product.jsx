@@ -127,12 +127,6 @@ export default function Product() {
 	const [displayProdutsData, setDisplayProdutsData] = useState([]);
 	const [filterState, setFilterState] = useState(INITIAL_STATE_STATE);
 	const [isLoading, setIsLoading] = useState(true);
-	const [isShowModal, setIsShowModal] = useState(false);
-
-	const handleClose = () => {
-		alert('關閉modal');
-		setIsShowModal(false);
-	};
 
 	useEffect(() => {
 		const getProducts = async () => {
@@ -317,9 +311,9 @@ export default function Product() {
 				</div>
 
 				<div className="row mt-9">
-					{JSON.stringify(filterState)}
+					{/* {JSON.stringify(filterState)} */}
 
-					{/* {displayProdutsData.map(product => (
+					{renderSetDisplayData(apiProdutsData, filterState).map(product => (
 						<div className="col-3" key={product.id}>
 							<div className="card">
 								<div className="img position-raletive">
@@ -368,24 +362,9 @@ export default function Product() {
 								</div>
 							</div>
 						</div>
-					))} */}
+					))}
 				</div>
 			</section>
-			<button type="button" onClick={() => setIsShowModal(true)}>
-				打開modal
-			</button>
-			<ComfirmModal
-				style={'front'}
-				show={isShowModal}
-				closeModal={handleClose}
-				text_icon={`bi bi-bag-check-fill`}
-				text_title={'確定要送購物車'}
-				text_content={'請確認購物內容及金額'}
-				text_cancel={'取消'}
-				cancelModal={handleClose}
-				text_confirm={'確認'}
-				confirmModal={handleClose}
-			/>
 		</div>
 	);
 }
