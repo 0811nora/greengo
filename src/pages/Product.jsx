@@ -3,7 +3,13 @@ import { NavLink } from 'react-router-dom';
 import Select from 'react-select';
 import classNames from 'classnames';
 import { getAllProducts } from '../api/ApiClient';
-import seafoodTag from '../assets/img/product/Seafood.svg';
+import seafoodTag from '../assets/image/product/seafood.svg';
+import beefTag from '../assets/image/product/beef.svg';
+import coffeeTag from '../assets/image/product/coffee.svg';
+import alcoholTag from '../assets/image/product/alcohol.svg';
+import milkTag from '../assets/image/product/milk.svg';
+import spicyTag from '../assets/image/product/spicy.svg';
+import sugarTag from '../assets/image/product/sugar.svg';
 import { ConfirmModal } from '../components/common/Modal';
 
 const BLOCK_CONTENT_OPTIONS = [
@@ -18,7 +24,7 @@ const BLOCK_CONTENT_OPTIONS = [
 		subtitle: '讓營養更完整的健康飲品',
 	},
 	{
-		icon: 'water_medium',
+		icon: 'onsen',
 		title: '溫暖湯品',
 		subtitle: '讓營養更均衡的溫暖湯品',
 	},
@@ -46,10 +52,10 @@ const DATA = {
 			{ value: 'veg', label: '新鮮蔬食', icon: 'nest_eco_leaf' },
 		],
 		flavor: [
-			{ value: 'beef', label: '不含牛肉' },
+			{ value: 'beef', label: '不含牛肉', img: beefTag },
 			{ value: 'pork', label: '不含豬肉' },
-			{ value: 'seafood', label: '不含海鮮' },
-			{ value: 'spicy', label: '不辣' },
+			{ value: 'seafood', label: '不含海鮮', img: seafoodTag },
+			{ value: 'spicy', label: '不辣', img: spicyTag },
 		],
 	},
 	drinks: {
@@ -72,9 +78,9 @@ const DATA = {
 			{ key: 'juice', label: '果汁' },
 		],
 		flavor: [
-			{ key: 'alcohol', label: '無酒精' },
-			{ key: 'caffeine', label: '無咖啡因' },
-			{ key: 'sugar', label: '無糖' },
+			{ key: 'alcohol', label: '無酒精', img: alcoholTag },
+			{ key: 'caffeine', label: '無咖啡因', img: coffeeTag },
+			{ key: 'sugar', label: '無糖', img: sugarTag },
 		],
 	},
 	soup: {
@@ -91,14 +97,14 @@ const DATA = {
 			{ value: 'priceToLow', label: '價格：高 → 低' },
 		],
 		tab: [
-			{ key: 'all', label: '全部' },
-			{ key: 'freshSoup', label: '清爽湯' },
-			{ key: 'proteinSoup', label: '高蛋白湯' },
-			{ key: 'vegSoup', label: '素食湯' },
+			{ value: 'all', label: '全部' },
+			{ value: 'freshSoup', label: '清爽湯' },
+			{ value: 'proteinSoup', label: '高蛋白湯' },
+			{ value: 'vegSoup', label: '素食湯' },
 		],
 		flavor: [
-			{ key: 'beef', label: '不含牛肉' },
-			{ key: 'daily', label: '不含奶' },
+			{ value: 'beef', label: '不含牛肉', img: beefTag },
+			{ value: 'daily', label: '不含奶', img: milkTag },
 		],
 	},
 };
@@ -213,6 +219,39 @@ export default function Product() {
 				return sortData;
 		}
 	};
+	const renderUITag = (prodcutCategory, productTag) => {
+		if (!Array.isArray(productTag)) return null;
+
+		// 符合 category 的 tag data 列表
+		const tagDataList = DATA[prodcutCategory]?.flavor;
+		const result = [];
+		for (const dataTag of tagDataList) {
+			for (const UITag of productTag) {
+				if (dataTag.value === UITag) {
+					result.push(dataTag.img);
+				}
+			}
+		}
+		// 將 result 陣列用｜隔開組成字串
+		return result;
+	};
+
+	const renderUITabpill = (prodcutCategory, productTab) => {
+		if (!Array.isArray(productTab)) return null;
+
+		// 符合 category 的 tab data 列表
+		const tabDataList = DATA[prodcutCategory]?.tab;
+		const result = [];
+		for (const dataTab of tabDataList) {
+			for (const UITab of productTab) {
+				if (dataTab.value === UITab) {
+					result.push(dataTab.label);
+				}
+			}
+		}
+		// 將 result 陣列用｜隔開組成字串
+		return result;
+	};
 
 	return (
 		<div className="product-page">
@@ -237,7 +276,7 @@ export default function Product() {
 							<div className="block-item d-flex flex-column align-items-center" key={index}>
 								<span className="material-symbols-rounded">{option.icon}</span>
 								<p className="h5 fw-semibold">{option.title}</p>
-								<p>{option.subtitle}</p>
+								<p className="text-center">{option.subtitle}</p>
 							</div>
 						))}
 					</div>
@@ -260,13 +299,13 @@ export default function Product() {
 					<h6>{DATA.set.title.subtitle}</h6>
 				</div>
 
-				<div className="tab-filter d-flex justify-content-between align-items-center gap-4">
+				<div className="tab-filter d-flex flex-lg-row flex-column justify-content-between align-items-center gap-4">
 					{/* 固定餐類別篩選 */}
-					<ul class="nav nav-underline d-flex gap-6 flex-fill">
+					<ul className="nav nav-underline d-flex gap-md-6 gap-2 flex-fill">
 						{DATA.set.tab.map((tabItem, index) => (
 							<li className="nav-item" key={index}>
 								<button
-									className="nav-link tab-navLink"
+									className={`nav-link tab-navLink ${filterState.set.tab === tabItem.value ? 'active' : ''}`}
 									value={tabItem.value}
 									onClick={e => toggleTabFilter('set', e.target.value)}
 								>
@@ -275,89 +314,101 @@ export default function Product() {
 							</li>
 						))}
 					</ul>
+					<div className="d-flex gap-4">
+						{/* 固定餐忌口篩選 */}
+						<Select
+							options={DATA.set.flavor}
+							placeholder="忌口篩選"
+							isMulti={true}
+							value={flavorSelect}
+							onChange={value => toggleFlavorFilter('set', value)}
+							components={{ MultiValueRemove: CustomMultiValueRemove }}
+							unstyled
+							classNamePrefix="rs"
+							classNames={{
+								control: ({ isFocused, hasValue }) =>
+									classNames('rs__control', isFocused && 'rs__focus', hasValue && 'rs__hasValue'),
+								menu: () => classNames('rs__menu'),
+								option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
+							}}
+						/>
 
-					{/* 固定餐忌口篩選 */}
-					<Select
-						options={DATA.set.flavor}
-						placeholder="忌口篩選"
-						isMulti={true}
-						value={flavorSelect}
-						onChange={value => toggleFlavorFilter('set', value)}
-						components={{ MultiValueRemove: CustomMultiValueRemove }}
-						unstyled
-						classNamePrefix="rs"
-						classNames={{
-							control: ({ isFocused, hasValue }) =>
-								classNames('rs__control', isFocused && 'rs__focus', hasValue && 'rs__hasValue'),
-							menu: () => classNames('rs__menu'),
-							option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
-						}}
-					/>
-
-					{/* 固定餐排序篩選 */}
-					<Select
-						options={DATA.set.sort}
-						placeholder="排序"
-						value={sortSelect}
-						onChange={value => toggleSortFilter('set', value)}
-						unstyled
-						classNamePrefix="rs"
-						classNames={{
-							control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
-							menu: () => classNames('rs__menu'),
-							option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
-						}}
-					/>
+						{/* 固定餐排序篩選 */}
+						<Select
+							options={DATA.set.sort}
+							placeholder="排序"
+							value={sortSelect}
+							onChange={value => toggleSortFilter('set', value)}
+							unstyled
+							classNamePrefix="rs"
+							classNames={{
+								control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
+								menu: () => classNames('rs__menu'),
+								option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
+							}}
+						/>
+					</div>
 				</div>
 
 				<div className="row mt-9">
 					{/* {JSON.stringify(filterState)} */}
 
 					{renderSetDisplayData(apiProdutsData, filterState).map(product => (
-						<div className="col-3" key={product.id}>
-							<div className="card">
-								<div className="img position-raletive">
-									<img
-										src="https://storage.googleapis.com/vue-course-api.appspot.com/miniburger/1770205696564.png"
-										className="card-img-top"
-										alt={product.title}
-									/>
+						<div className="col-xxl-3 col-lg-4" key={product.id}>
+							<div className="d-flex flex-md-column flex-sm-row card mb-6">
+								{/* 圖片 */}
+								<div className="img position-relative">
+									<img src={product.imageUrl} className="card-img-top" alt={product.title} />
+									<div className="position-absolute d-flex flex-column gap-1 tabPill-position-absolute">
+										{renderUITabpill(product.product_type, product.tab_collection)?.map(item => (
+											<div className="tabPill">{item}</div>
+										))}
+									</div>
 								</div>
-								<div className="card-body d-flex flex-column gap-5 px-6 py-7">
-									<div className="d-flex gap-1">
-										<h6 className="fw-semibold mb-2 text-gray-600">{product.title}</h6>
-										<div className="d-flex gap-1">
-											<div className="tag">
-												<img src={seafoodTag} alt="" />
-											</div>
-											<div className="tag">
-												<img src={seafoodTag} alt="" />
-											</div>
-											<div className="tag">
-												<img src={seafoodTag} alt="" />
-											</div>
+								<div className="card-body d-flex flex-column gap-4 px-6 pt-7 pb-7">
+									{/* 標題和忌口標籤 */}
+									<div className="d-flex gap-3 mb-2">
+										<h6 className="d-flex fw-semibold  text-gray-600">{product.title}</h6>
+										<div className=" flavorTag d-flex gap-1">
+											{renderUITag(product.product_type, product?.include_tags)?.map((img, index) => (
+												<div className="tag" key={index}>
+													<img src={img} alt="忌口選擇標籤" />
+												</div>
+											))}
 										</div>
 									</div>
+									{/* 營養素和內容物 */}
 									<div className="d-flex flex-column gap-1">
-										<p className="fw-normal text-brown-300">多多蛋白｜人氣推薦</p>
-										<p className="fw-normal text-brown-300">416 Kcal｜P 60｜F 13｜C 9</p>
+										<div className="nutrition d-flex gap-1">
+											<div>
+												<span>{product.nutrition.calories}</span> Kcal
+											</div>
+											<div>｜</div>
+											<div>
+												P <span>{product.nutrition.protein}</span>
+											</div>
+											<div>｜</div>
+											<div>
+												F <span>{product.nutrition.fat}</span>
+											</div>
+											<div>｜</div>
+											<div>
+												C <span>{product.nutrition.carbs}</span>
+											</div>
+										</div>
+
+										<p className="fw-normal text-brown-300 text-truncate">
+											{product.product_type === 'set'
+												? `${product.ingredients.main}、新鮮蔬菜`
+												: `${product.ingredients.base}`}
+										</p>
 									</div>
 
-									<div className="card-footer">
-										<div className="h6 fw-semibold text-primary-200 mb-5">{`NT$${product.price}`}</div>
-										<div className="button-section d-flex align-items-center gap-3">
-											<div className="num-control d-flex align-items-center justify-content-between flex-fill">
-												<button className="minus">
-													<i class="bi bi-dash"></i>
-												</button>
-												<span className="fw-semibold text-center">1</span>
-												<button className="add">
-													<i class="bi bi-plus"></i>
-												</button>
-											</div>
-
-											<button className="addCart primary-btn">加入購物車</button>
-										</div>
+									<div className="h6 fw-semibold text-gray-600 mt-5">{`NT$ ${product.price}`}</div>
+									<div className="num-control position-absolute">
+										<button className="add">
+											<i class="bi bi-plus"></i>
+										</button>
 									</div>
 								</div>
 							</div>
@@ -366,7 +417,7 @@ export default function Product() {
 				</div>
 			</section>
 
-			<button type="button" onClick={() => setIsShowModal(true)}>
+			{/* <button type="button" onClick={() => setIsShowModal(true)}>
 				打開modal
 			</button>
 			<ConfirmModal
@@ -380,7 +431,7 @@ export default function Product() {
 				cancelModal={handleClose}
 				text_confirm={'確認'}
 				confirmModal={handleClose}
-			/>
+			/> */}
 		</div>
 	);
 }

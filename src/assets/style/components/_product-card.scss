@@ -24,18 +24,19 @@
 		object-fit: cover;
 		object-position: 10% 10%;
 	}
-	.popular-position-absolute {
+	.tabPill-position-absolute {
 		top: 10%;
 		left: 10px;
 	}
-	.popular {
+	.tabPill {
 		font-size: 14px;
 		font-weight: $font-weight-medium;
 		background-color: $accent;
 		color: $gray-600;
 		border: 1px solid $white;
 		border-radius: $border-radius-pill;
-		padding: 2px map-get($spacers, 4);
+		padding: 2px map-get($spacers, 3);
+		margin-bottom: 2px;
 	}
 }
 
@@ -79,16 +80,13 @@
 	}
 }
 
-.product-page .card .tag-list {
-	top: 8px;
-	right: 8px;
-	gap: -2px;
+.product-page .card .flavorTag {
 	.tag {
-		width: 20px;
-		height: 20px;
+		width: 24px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		flex-shrink: 0;
 		img {
 			display: block;
 			width: 100%;
@@ -97,21 +95,10 @@
 	}
 }
 
-// 未用到
 .product-page .nutrition {
-	//   background-color: rgba($color: $gray-600, $alpha: 0.9);
-	//   background-color: $primary-100;
-	//   color: $gray-600;
-
-	background-color: $gray-600;
-	color: $white;
-
-	font-weight: $font-weight-medium;
-	font-size: 14px;
-
-	span {
-		display: inline-block;
-	}
+	color: $brown-300;
+	border-bottom: none;
+	// font-weight: $font-weight-medium;
 }
 
 // 原始footer

@@ -141,8 +141,10 @@
 		color: $gray-400;
 		padding: 0px 16px 16px 16px;
 		cursor: pointer;
-		&:hover {
+		&:hover,
+		&:focus {
 			color: $primary-200;
+			font-weight: $font-weight-medium;
 		}
 
 		&::after {
@@ -162,15 +164,26 @@
 		&:hover::after {
 			transform: scaleX(1);
 		}
-
-		&.active::after {
-			color: $primary-200;
-			font-weight: $font-weight-medium;
+		&:focus::after {
 			transform: scaleX(1);
+		}
+	}
+	.tab-navLink.active {
+		color: $primary-200;
+		font-weight: $font-weight-medium;
+		&::after {
+			transform: scaleX(1);
+		}
+	}
+	@media (max-width: 540px) {
+		ul {
+			flex-wrap: nowrap;
 		}
 	}
 }
 
 section.set-section {
+	gap: 0px;
 	margin-top: 300px;
+	display: block;
 }
