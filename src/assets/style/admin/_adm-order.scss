@@ -29,11 +29,12 @@
   }
   .navbar-title {
     text-decoration: none;
-    color: $adm-gray-black;
+    color: $adm-gray-800;
     font-size: 18px;
     font-weight: 400;
   }
   .navbar-title.active {
+    color: $adm-gray-black;
     font-size: 28px;
     font-weight: bold;
   }
@@ -50,6 +51,22 @@
       margin-left: 2px;
       color: $adm-gray-300;
     }
+  }
+}
+
+// order-page search-bar
+.adm-theme .order-page {
+  .search-bar {
+    height: 45px;
+    border-radius: 100px;
+    padding-left: 40px;
+    padding-right: 12px;
+  }
+  .search-bar__icon {
+    color: $adm-gray-800;
+    position: absolute;
+    left: 16px;
+    top: 10px;
   }
 }
 
