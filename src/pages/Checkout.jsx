@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-
 import { getCart, postOrder } from '../api/ApiClient';
-
 import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
@@ -90,7 +88,6 @@ const Checkout = () => {
     e.preventDefault();
 
     const pickupNumber = generatePickupNumber();
-
     const isCash = formData.payment_method === 'cash';
     const paymentStatus = isCash ? 'unpaid' : 'paid';
     const orderStatus = isCash ? 'new' : 'ready';
@@ -107,12 +104,13 @@ const Checkout = () => {
       },
     };
     try {
-      await postOrder(data);
+      const response = await postOrder(data);
+      const newOrderId = response.data.orderId;
       getCarts();
-      alert(
-        `訂單已送出！\n您的取餐號碼為: 【 ${pickupNumber} 】\n付款方式: ${formData.payment_method}\n總金額: $${finalTotal}`,
-      );
-      navigate('/');
+      // alert(
+      //   `訂單已送出！\n您的取餐號碼為: 【 ${pickupNumber} 】\n付款方式: ${formData.payment_method}\n總金額: $${finalTotal}`,
+      // );
+      navigate(`/payment/${newOrderId}`);
     } catch (error) {
       alert('取得失敗: ' + error.response.data.message);
     }
