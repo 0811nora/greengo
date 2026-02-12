@@ -16,12 +16,15 @@ export default function About() {
     return (
         <>
             <main className="c-about">
-                <div className="topHalfImg bgc-first">
-
-                    <h1 className="fw-bold text-center main-title" >GreenGo綠果</h1>
-                    <p className="sub-content fs-4" >當你願意從「綠」開始，健康就會在你身上慢慢結「果」。</p>
+                <div className="bgc-first">
+                    <h1 className="fw-bold text-center main-title " >GreenGo綠果</h1>
+                    <p className=" main-content text-center pt-5 px-5" >當你願意從「綠」開始，健康就會在你身上慢慢結「果」。</p>
                     {/* 這邊還沒改完，AOS動畫與transfer衝突 */}
-                    <img src={`${import.meta.env.BASE_URL}img/about_bowl.png`} alt="bowl" /></div>
+                    <div className='topHalfImg mt-img'>
+                        <img src={`${import.meta.env.BASE_URL}img/about_bowl.png`} alt="bowl" />
+                    </div>
+                </div>
+
                 <div>
 
 
@@ -38,9 +41,9 @@ export default function About() {
 
                                     <div className='col-md-6 my-10'>
 
-                                        <div className='d-none d-md-block sub-title fw-semibold fs-2 lh-sm mb-8'>
-                                            <h2>行動，<span className='d-block'>然後成果。</span> </h2>
-                                            <h3>The Story of GreenGo</h3>
+                                        <div className='d-none d-md-block fs-2 lh-sm mb-8'>
+                                            <h2 className='sub-title'>行動，<span className='d-block sub-title'>然後成果。</span> </h2>
+                                            <h3 className='sub-title'>The Story of GreenGo</h3>
 
                                         </div>
                                         <div className='pb-6'>
@@ -56,7 +59,7 @@ export default function About() {
 
                                         <div className='pb-6'>
                                             <p>GreenGo 的誕生，源自一個簡單卻真實的疑問：</p></div>
-                                        <div>
+                                        <div className='text-border'>
                                             <p>「我到底吃了什麼？」</p>
                                             <p>「我吃的這份餐點，真的適合我嗎？」</p></div>
 
@@ -114,7 +117,7 @@ export default function About() {
 
                         </div>
 
-                        <div className='pb-10' ><h2 className='text-center fw-bold'>只要讓 GreenGo 陪伴，健康就會自然到位。</h2></div>
+                        <div className='pb-10 ' ><h2 className='text-center fw-semibold mb-5'>只要讓 GreenGo 陪伴，健康就會自然到位。</h2></div>
 
                     </div>
 
@@ -125,7 +128,7 @@ export default function About() {
                         <div className="container">
                             <div className="row  px-5">
                                 <div className="col-md-4"><div className="card border-0 bg-transparent text-center mb-9">
-                                    <img src={BookIcon} className='icon mx-auto' alt="" />
+                                    <img src={BookIcon} className='icon mx-auto' alt="book icon" />
                                     <div className="card-body">
                                         <h5 className="card-title">讓你更容易看懂食物</h5>
 
@@ -135,7 +138,7 @@ export default function About() {
 
                                 <div className="col-md-4"><div className="card border-0 bg-transparent text-center mb-9">
 
-                                    <img src={ListIcon} className='icon mx-auto' alt="" />
+                                    <img src={ListIcon} className='icon mx-auto' alt="list icon" />
                                     <div className="card-body">
                                         <h5 className="card-title">讓你更自在地做選擇</h5>
 
@@ -144,7 +147,7 @@ export default function About() {
 
 
                                 <div className="col-md-4"><div className="card border-0 bg-transparent text-center mb-9">
-                                    <img src={StrongIcon} className='icon mx-auto' alt="" />
+                                    <img src={StrongIcon} className='icon mx-auto' alt="strong icon" />
                                     <div className="card-body">
                                         <h5 className="card-title">讓你感受真實的健康</h5>
 
@@ -164,46 +167,47 @@ export default function About() {
                     </div>
 
                     <div className="fifth-section">
-                        <div className="topHalfImg d-flex align-items-end bgc-fifth">
+                        <div className="bottomHalfImg d-flex align-items-end">
                             <img src={`${import.meta.env.BASE_URL}img/about_bowl.png`} alt="bowl" />
-                        </div>
-                        {/* 
-                        0209差樣式跟補完QA */}
 
-                        <div className='bgc-fifth'>
-                            <h2>一、訂餐相關</h2>
-                            <div>
+                        </div>
+                        <h1 className='text-center fifth-title fw-bold mb-9'>常見問題</h1>
+
+
+                        <div className='mx-auto w-75'>
+                            <h2 className='fifth-Q-subject'>一、訂餐相關</h2>
+                            <div className='QA-border'>
                                 <div className='QA d-flex justify-content-between align-items-center ' data-bs-toggle="collapse"
                                     data-bs-target="#howToOder"
                                     aria-expanded="false"
                                     aria-controls="howToOder">
-                                    <p>我該如何訂購客製化餐點？</p>
+                                    <p className='fifth-Q-title '>我該如何訂購客製化餐點？</p>
                                     <div className='pe-2'  >
                                         <i class="bi bi-chevron-down "></i>
                                     </div>
                                 </div>
 
                                 <div className="collapse" id="howToOder">
-                                    <div className="card card-body border-0">
-                                        <p>前往菜單頁，依序挑選主食、蛋白質、配料與醬汁，系統會即時顯示熱量與營養素。</p>
+                                    <div className="border-0 bg-transparent pt-4">
+                                        <p className='fifth-A'>前往菜單頁，依序挑選主食、蛋白質、配料與醬汁，系統會即時顯示熱量與營養素。</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div>
+                            <div className='QA-border'>
                                 <div className='QA d-flex justify-content-between align-items-center ' data-bs-toggle="collapse"
                                     data-bs-target="#anyRestrict"
                                     aria-expanded="false"
                                     aria-controls="howToOder">
-                                    <p>是否有最低訂購量或金額限制？</p>
-                                    <div className='pe-2'  >
+                                    <p className='fifth-Q-title'>是否有最低訂購量或金額限制？</p>
+                                    <div className='pe-2' >
                                         <i class="bi bi-chevron-down "></i>
                                     </div>
                                 </div>
 
                                 <div className="collapse" id="anyRestrict">
-                                    <div className="card card-body border-0">
-                                        <p>無，歡迎盡情選購！</p>
+                                    <div className="border-0 bg-transparent pt-4">
+                                        <p className='fifth-A'>無，歡迎盡情選購！</p>
                                     </div>
                                 </div>
                             </div>

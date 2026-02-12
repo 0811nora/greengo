@@ -6,60 +6,75 @@
     }
 
     .bgc-first {
-        background-color: #FFFBEF;
+        // background: linear-gradient(180deg, $gray-100 0%, $gray-100 10%, $gray-50 40%, $white 100%);
+        background: linear-gradient(to left top, $white 0%, $white 10%, $gray-50 40%, $gray-100 100%);
     }
 
-    .topHalfImg {
+    .mt-img {
+        margin-top: 5vh;
+    }
+
+    .bottomHalfImg {
         width: 100%;
-        aspect-ratio: 1208 / 860;
+        aspect-ratio: 1208 / 525;
         overflow: hidden;
         position: relative;
-
 
         img {
             width: 100%;
             transform: rotate(270deg);
         }
 
-        .main-title {
-            position: absolute;
-            top: 20%; // 依照你的需求調整
-            left: 50%;
-            transform: translateX(-50%); // 確保水平絕對置中
-            z-index: 10;
-            margin: 0;
-            white-space: nowrap; // 避免文字換行
+        // width: 100%;
+        // // height: 250px;
+        // object-fit: cover;
+        // overflow: hidden;
+        // object-position: bottom; // 鎖定底部，從上面開始裁切
+    }
+
+
+    .topHalfImg {
+        width: 100%;
+        aspect-ratio: 1208 / 500;
+        overflow: hidden;
+        position: relative;
+
+        img {
+            width: 100%;
+            transform: rotate(270deg);
         }
     }
 
-    .sub-content {
-        position: absolute;
-        top: 30%; // 依照你的需求調整
-        left: 50%;
-        transform: translateX(-50%); // 確保水平絕對置中
-        z-index: 10;
-        margin: 0;
-        white-space: nowrap; // 避免文字換行
+    .main-title {
+        padding-top: 150px;
     }
 
-    .bottomHalfImg {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        object-position: bottom; // 鎖定底部，從上面開始裁切
+    .main-content {
+        font-size: 28px;
+
+        @media (max-width: 768px) {
+            font-size: 20px;
+        }
+
     }
 
     .sub-title {
+        font-weight: 600;
         color: $white;
-        text-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+        text-shadow: 3px 3px 8px $brown-300;
     }
 
     .second_section {
         background-color: $white;
         min-height: 968px;
 
+        .text-border {
+            border-left: solid 3px $primary-300;
+        }
+
         .mid-sec {
-            background-color: #F9E8DB;
+            // background-color: $gray-50;
+            background: linear-gradient(180deg, $gray-100 0%, $gray-100 10%, $gray-100 40%, $gray-50 100%);
             max-width: 90%;
             border-top-right-radius: 24px;
             border-bottom-right-radius: 24px;
@@ -67,7 +82,7 @@
 
 
         .third-sec {
-            background-color: #A63E28;
+            background-color: $gray-400;
             max-width: 500px;
             border-top-left-radius: 24px;
             border-bottom-left-radius: 24px;
@@ -76,7 +91,7 @@
         }
 
         .img-border {
-            border: solid 1px #F2A82D;
+            border: solid 2px $gray-400;
             max-width: 504px;
             aspect-ratio: 1/1;
         }
@@ -91,7 +106,12 @@
     }
 
     .third-section {
-        background-color: #FBF1CA;
+        // background-color: #FBF1CA;
+        background: #ECF3ED;
+        border-top-left-radius: 50% 20%;
+        border-top-right-radius: 50% 20%;
+        border-bottom-left-radius: 50% 20%;
+        border-bottom-right-radius: 50% 20%;
 
         img {
             width: 100%;
@@ -106,7 +126,8 @@
     }
 
     .fourth-section {
-        background-color: #F4F4E8;
+        background-color: $white;
+
 
         .icon {
             width: 100%;
@@ -116,13 +137,40 @@
 
     }
 
-    .bgc-fifth {
-        background-color: #FEFDFD;
-    }
+
 
     .fifth-section {
+        background: linear-gradient(180deg, $white 0%, $gray-50 10%, $gray-50 40%, $gray-100 100%);
+
+
+
+        .fifth-Q-subject {
+            font-weight: 700;
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+
+        .fifth-Q-title {
+            font-weight: 500;
+            font-size: 20px;
+
+        }
+
+        .fifth-A {
+            color: $brown-300;
+
+        }
+
         .QA {
             cursor: pointer;
+
+
+        }
+
+        .QA-border {
+            padding-bottom: 24px;
+            padding-top: 24px;
+            border-bottom: solid $gray-200 1.5px;
         }
     }
 
