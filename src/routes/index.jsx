@@ -8,6 +8,7 @@ import Article from '../pages/Article.jsx';
 import Cart from '../pages/Cart.jsx';
 import Checkout from '../pages/Checkout.jsx';
 import ArticleDetail from '../pages/ArticleDetail.jsx';
+import Member from '../pages/member.jsx';
 
 import AdminPages from '../pages/admin/AdminPages.jsx';
 import AdminHome from '../pages/admin/AdminHome.jsx';
@@ -19,6 +20,7 @@ import AdminProducts from '../pages/admin/AdminProducts.jsx';
 import AdminOrder_today from '../pages/admin/AdminOrder_today.jsx';
 import AdminOrder_history from '../pages/admin/AdminOrder_history.jsx';
 import { Product2 } from '../pages/Product2.jsx';
+import ProductDetail from '../pages/ProductDetail.jsx';
 import AdminUpload from '../pages/admin/AdminUpload.jsx';
 
 const routes = [
@@ -28,6 +30,7 @@ const routes = [
 		children: [
 			{ index: true, element: <Home /> },
 			{ path: 'product', element: <Product /> },
+			{ path: 'product2/:id', element: <Product2 /> },
 			{ path: 'product2', element: <Product2 /> },
 			{ path: 'about', element: <About /> },
 			{ path: 'custom', element: <Custom /> },
@@ -35,6 +38,7 @@ const routes = [
 			{ path: 'cart', element: <Cart /> },
 			{ path: 'checkout', element: <Checkout /> },
 			{ path: 'article/:id', element: <ArticleDetail /> },
+			{ path: 'member', element: <Member /> },
 		],
 	},
 	{
