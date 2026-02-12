@@ -55,6 +55,7 @@ export default function AdminOrder_today() {
 		if (filterType === 'all') return true;
 		return filterType === order.order_status || filterType === order.payment_status;
 	});
+
 	const allOrderNum = orders.length;
 	const readyOrderNum = orders.filter(order => order.order_status === 'ready').length;
 	console.log(readyOrderNum);
@@ -81,6 +82,7 @@ export default function AdminOrder_today() {
 				return <span className="tag status-prepare">製餐中</span>;
 			case 'ready':
 				return <span className="tag status-ready">可取餐</span>;
+
 			case 'done':
 				return <span className="tag status-done">已取貨</span>;
 			case 'paid':
@@ -215,6 +217,7 @@ export default function AdminOrder_today() {
                   </button>
                 </div>
               </div> */}
+
 							<table className="table">
 								<thead>
 									<tr>
