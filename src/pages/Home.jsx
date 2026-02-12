@@ -346,6 +346,7 @@ export default function Home() {
             <div className='row'>
               {/* 說明 */}
               <div className='col-md-7 mb-5'>
+                {/* 標題文字區 */}
                 <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2'>
                   YOUR NUTRITION, DECODED
                 </h4>
@@ -355,30 +356,71 @@ export default function Home() {
                   營養成分，
                   <span className=''>即時看得見</span>。
                 </h2>
-                {/* <p className="mb-3 mb-md-6">
-                  選擇
-                  <NavLink
-                    className="home__btn-link fw-medium mx-1"
-                    to={PageLinks.productLink.url}
+                {/* 桌機連結區 */}
+                <div className='d-none d-md-block'>
+                  <p className='fs-6 mb-3 px-4'>
+                    你不是不想吃得健康， <br />
+                    只是營養真的不好算。 <br />
+                    所以我們準備了兩種更輕鬆的選擇。
+                  </p>
+                  <ul className='home__nur-card d-flex gap-4'>
+                    <li className='home__nur-card-content d-flex flex-column justify-content-end'>
+                      <h3 className='fw-bold fs-6 mb-2'>
+                        綠果精選｜為你搭配好
+                      </h3>
+                      <p className='mb-4'>把營養交給我們，安心吃就好</p>
+                      <NavLink
+                        className='fw-medium mx-1 d-flex justify-content-between'
+                        to={PageLinks.productLink.url}
+                      >
+                        <span>{PageLinks.productLink.title}</span>
+                        <i className='bi bi-chevron-right'></i>
+                      </NavLink>
+                    </li>
+                    <li className='home__nur-card-content d-flex flex-column justify-content-end'>
+                      <h3 className='fw-bold fs-6 mb-2'>
+                        客製自由配｜你來決定
+                      </h3>
+                      <p className='mb-4'>依照你的需求，自由調整每一份營養</p>
+                      <NavLink
+                        className='fw-medium mx-1 d-flex justify-content-between'
+                        to={PageLinks.customLink.url}
+                      >
+                        <span>{PageLinks.customLink.title}</span>
+                        <i className='bi bi-chevron-right'></i>
+                      </NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              {/* 過去的困擾 */}
+              <div
+                ref={sectionRef}
+                className='col-md-5 d-flex flex-column gap-5'
+              >
+                {TROUBLE_CARDS.map((card) => (
+                  <div
+                    key={card.id}
+                    className={`sub-card bg-gray-100 rounded-4 position-relative py-3 px-4 py-md-5 px-md-6 ${card.align} ${isVisible ? 'is-visible' : ''}`}
                   >
-                    {PageLinks.productLink.title}
-                  </NavLink>
-                  ，
-                  <br />
-                  綠果提供主廚的精心搭配，為你的營養把關！
-                </p>
-                <p className="mb-3 mb-md-6">
-                  選擇
-                  <NavLink
-                    className="home__btn-link fw-medium mx-1"
-                    to={PageLinks.customLink.url}
-                  >
-                    {PageLinks.customLink.title}
-                  </NavLink>
-                  ，
-                  <br />
-                  綠果自動計算總熱量與三大營養素比例，營養隨選隨見！
-                </p> */}
+                    <p className='text-warning fw-medium mb-1'>過去的困擾</p>
+                    <p className='mb-0'>{card.text}</p>
+                    <svg
+                      className='position-absolute'
+                      width='20'
+                      height='20'
+                      style={{
+                        bottom: '-15px',
+                        [card.tailSide]: '20px',
+                      }}
+                    >
+                      <path d='M0,0 L20,0 L10,20 Z' fill='#e3e7e0' />
+                    </svg>
+                  </div>
+                ))}
+              </div>
+              {/* 手機板連結區 */}
+              <div className='d-block d-md-none mt-5'>
                 <p className='fs-6 mb-3 px-4'>
                   你不是不想吃得健康， <br />
                   只是營養真的不好算。 <br />
@@ -408,32 +450,6 @@ export default function Home() {
                     </NavLink>
                   </li>
                 </ul>
-              </div>
-              {/* 過去的困擾 */}
-              <div
-                ref={sectionRef}
-                className='col-md-5 d-flex flex-column gap-5'
-              >
-                {TROUBLE_CARDS.map((card) => (
-                  <div
-                    key={card.id}
-                    className={`sub-card bg-gray-100 rounded-4 position-relative py-3 px-4 py-md-5 px-md-6 ${card.align} ${isVisible ? 'is-visible' : ''}`}
-                  >
-                    <p className='text-warning fw-medium mb-1'>過去的困擾</p>
-                    <p className='mb-0'>{card.text}</p>
-                    <svg
-                      className='position-absolute'
-                      width='20'
-                      height='20'
-                      style={{
-                        bottom: '-15px',
-                        [card.tailSide]: '20px',
-                      }}
-                    >
-                      <path d='M0,0 L20,0 L10,20 Z' fill='#e3e7e0' />
-                    </svg>
-                  </div>
-                ))}
               </div>
             </div>
           </div>

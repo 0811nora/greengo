@@ -17,6 +17,7 @@ const NavbarData = {
     { title: '關於綠果', url: '/about' },
     { title: '綠果專欄', url: '/article' },
   ],
+  mobileLinks: { title: '購物車', url: '/cart' },
 };
 
 export default function Header() {
@@ -103,12 +104,12 @@ export default function Header() {
                   </NavLink>
 
                   <div className='d-flex align-items-center gap-2'>
-                    <button
-                      type='button'
+                    <Link
                       className='btn btn-outline-gray-400 rounded-pill border-none'
+                      to={NavbarData.mobileLinks.url}
                     >
-                      <i className='bi bi-bag'></i>
-                    </button>
+                      <i className='bi bi-cart'></i>
+                    </Link>
                     <button
                       type='button'
                       className='btn btn-outline-gray-400 rounded-pill border-none'

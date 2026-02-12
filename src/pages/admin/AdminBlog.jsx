@@ -1,19 +1,17 @@
 import { useEffect, useState ,useRef, } from "react"
-import { getAdmArticles , getAdmSingleArticle, putAdmEditArticle, postAdminAddArticle , delAdmSingleArticle } from "../../api/ApiAdmin";
+import { getAdmArticles , getAdmSingleArticle , putAdmEditArticle , postAdminAddArticle , delAdmSingleArticle } from "../../api/ApiAdmin";
 import { Modal } from 'bootstrap'; 
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import NoraModal from "../../components/NoraModal";
+import SmallModal from "../../components/admin/SmallModal";
 import Pagination from 'react-bootstrap/Pagination';
 import Loader from "../../components/common/Loading";
 
 
 
 
-
 export default function AdminBlog() {
     
-
     const detailModal = useRef(null);
     const detailModalRef = useRef(null);
     const [ articleList , setArticleList ] = useState();
@@ -26,6 +24,8 @@ export default function AdminBlog() {
     const [ modalText , setModalText ] = useState("");
     const [ page , setPage ] = useState({});
     const [ isLoading , setIsLoading ] = useState(false);
+
+    const [ isShowModal , setIsShowModal ] = useState(false);
 
     const [ filterTargetType , setFilterTargetType ] =  useState("全部");
     const [ filterContent, setFilterContent ] = useState("全部");
@@ -84,8 +84,10 @@ export default function AdminBlog() {
         "發布狀態": "isPublic"
         };
 
+
     // 篩選類別
     const filterType = ["發布狀態","文章作者","文章分類"]
+
 
     // 篩選內容
     const filterValue = () => {
@@ -108,7 +110,7 @@ export default function AdminBlog() {
     // 依照篩選類別，資料變動
     const selectArticle = (articleList || []).filter((item) => {
         if (filterTargetType === "全部" || filterContent === "全部") {
-            return true; 
+            return true;
         }
 
         if (typeMap[filterTargetType] === "tag") {
@@ -123,6 +125,8 @@ export default function AdminBlog() {
         return item[typeMap[filterTargetType]] === filterContent;
     });
 
+
+
     // 切換頁數
     const renderPagination = () => {
 
@@ -134,6 +138,7 @@ export default function AdminBlog() {
                 getArticle(current_page + 1)
             }
         }
+
 
         let active = current_page;
         let items = [];
@@ -299,7 +304,9 @@ export default function AdminBlog() {
     }
 
     
-
+    const handleClose = () => {
+        setIsOpenModal(false);
+    };
     
 
 
@@ -389,7 +396,7 @@ export default function AdminBlog() {
                 </div>
                 
 
-                <div className="modal fade" ref={detailModalRef} tabIndex="-1" >
+                <div className="modal modal-blog fade" ref={detailModalRef} tabIndex="-1" >
                     <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable" style={{ maxWidth: '900px', width: '95%' }}>
                         <div className="modal-content border-0 shadow-lg">
                             
@@ -611,14 +618,13 @@ export default function AdminBlog() {
 
         <Loader mode={"mask"} show={isLoading}/>
 
-        <NoraModal 
+        <SmallModal 
             isOpenModal={isOpenModal} 
             setIsOpenModal={setIsOpenModal}
             mode={mode}
             modalText={modalText}
             handleComfirmBtn={handleComfirmBtn}
-            />
-
+        />
     </main>
     </>
         

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 
 const CartDropdown = () => {
@@ -27,6 +27,11 @@ const CartDropdown = () => {
     };
   }, [isOpen]);
 
+  // 計算總和
+  const totalPrice = cartData.carts.reduce((acc, item) => {
+    return acc + item.customizations.custom_total * item.qty;
+  }, 0);
+
   return (
     <div className='position-relative' ref={dropdownRef}>
       {/* 購物車按鈕 */}
@@ -38,7 +43,7 @@ const CartDropdown = () => {
       >
         <i className='bi bi-cart fs-5'></i>
         {cartData.carts?.length > 0 && (
-          <span className='badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle'>
+          <span className='badge bg-error rounded-pill position-absolute top-0 start-100 translate-middle'>
             {cartData.carts.length}
           </span>
         )}
@@ -47,7 +52,7 @@ const CartDropdown = () => {
       {/* Dropdown 內容 */}
       {isOpen && (
         <div
-          className='position-absolute end-0 mt-2 bg-white border rounded shadow-lg'
+          className='position-absolute end-0 mt-2 bg-white border rounded-3 shadow'
           style={{
             width: '320px',
             maxHeight: '450px',
@@ -60,49 +65,58 @@ const CartDropdown = () => {
 
             {cartData.carts?.length === 0 ? (
               <div className='text-center py-4'>
-                <i className='bi bi-cart-x fs-1 text-muted mb-2'></i>
-                <p className='text-muted mb-0'>購物車空空如也喔！</p>
+                <i className='bi bi-cart-x fs-1 text-gray-500 mb-2'></i>
+                <p className='text-gray-500 mb-0'>購物車空空如也喔！</p>
               </div>
             ) : (
               <>
                 {/* 購物車商品列表 */}
                 <div
                   style={{
-                    maxHeight: '300px',
                     overflowY: 'auto',
                   }}
                 >
-                  <ul className='list-unstyled mb-0'>
-                    {cartData.carts.map((item) => (
-                      <li
-                        key={item.id}
-                        className='d-flex gap-2 mb-3 pb-3 border-bottom'
-                      >
-                        <img
-                          src={item.product.imageUrl}
-                          alt={item.product.title}
-                          className='rounded'
-                          style={{
-                            width: '60px',
-                            height: '60px',
-                            objectFit: 'cover',
-                            flexShrink: 0,
-                          }}
-                        />
-                        <div className='flex-grow-1 overflow-hidden'>
-                          <div className='fw-semibold text-truncate'>
-                            {item.product.title}
+                  {cartData.carts.map((item) => (
+                    <div key={item.id}>
+                      <ul className='list-unstyled mb-0'>
+                        <li className='d-flex gap-2 mb-3 pb-3 border-bottom'>
+                          <img
+                            src={item.product.imageUrl}
+                            alt={item.product.title}
+                            className='rounded-1'
+                            style={{
+                              width: '60px',
+                              height: '60px',
+                              objectFit: 'cover',
+                              flexShrink: 0,
+                            }}
+                          />
+                          <div className='flex-grow-1 overflow-hidden'>
+                            <div className='fw-semibold text-gray-500'>
+                              {item.product.title}
+                            </div>
+                            <div className='text-gray-300 d-flex justify-content-between'>
+                              <span>
+                                ${item.customizations.custom_total} x {item.qty}
+                              </span>
+                              <span className='pe-2'>
+                                ${item.customizations.custom_total * item.qty}
+                              </span>
+                            </div>
                           </div>
-                          <div className='text-muted'>
-                            ${item.product.price} x {item.qty}
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  ))}
+
+                  {/* 總計 */}
+                  <div className='d-flex justify-content-between align-items-center'>
+                    <span>總計：</span>
+                    <h4 className='text-primary'>${totalPrice}</h4>
+                  </div>
                 </div>
 
-                {/* 前往結帳按鈕 */}
+                {/* 前往結帳 */}
                 <div className='pt-3 mt-2'>
                   <Link
                     to='/cart'

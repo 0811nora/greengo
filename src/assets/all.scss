@@ -18,6 +18,7 @@
 // 前台
 @import './style/front/layout/header';
 @import './style/home';
+@import './style/components/home-components';
 @import './style/custom/custom';
 @import './style/custom/pickTypeCard';
 @import './style/custom/typeListBtn';
@@ -33,7 +34,8 @@
 // 前台 - components
 @import './style/components/product-select';
 @import './style/components/product-card';
-@import './style/components/home-components';
+@import './style/components/product-detail';
+@import './style/components/confirmModal';
 
 // 後台 - base
 @import './style/admin/base/adm-variables';
@@ -41,6 +43,7 @@
 
 // 後台 - components
 @import './style/admin/components/button';
+@import './style/admin/smallModal';
 
 // 後台 - layout
 @import './style/admin/layout/adm-header';
@@ -53,6 +56,3 @@
 @import './style/admin/adm-product';
 @import './style/admin/adm-blog';
 @import './style/admin/adm-report';
-
-// 暫時使用
-@import './style/canDelet/noraModal';
