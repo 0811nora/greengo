@@ -70,7 +70,7 @@ export default function AdminHeader({ admMode, handleToggleMode, handleNavMode }
 							<label htmlFor="admModeToggle">管理員模式</label>
 						</div>
 
-						{/* 登入按鈕 */}
+						{/* 登出按鈕 */}
 						<button type="button" className="btn adm__button__secondary  sm">
 							登出
 						</button>

@@ -375,7 +375,7 @@ export default function Product() {
 				打開modal
 			</button>
 			<ComfirmModal
-				style={'front'}
+				style={'admin'}
 				show={isShowModal}
 				closeModal={handleClose}
 				text_icon={`bi bi-bag-check-fill`}
