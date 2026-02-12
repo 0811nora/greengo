@@ -1,0 +1,172 @@
+// modal-header
+.product-detail .modal-content {
+	border-radius: 20px;
+}
+.product-detail .modal-header {
+	padding: 20px 40px;
+	display: flex;
+	border-bottom: 1px solid $gray-100;
+	box-shadow: 0px 4px 20px 0px rgba(227, 231, 224, 0.5);
+	.modal-title {
+		font-size: 20px;
+	}
+}
+
+// modal-body
+.product-detail .modal-body {
+	.img {
+		display: flex;
+		justify-content: end;
+		align-items: center;
+		border-radius: 16px;
+		margin-right: 16px;
+
+		background-image: url('https://images.unsplash.com/photo-1530176928500-2372a88e00b5?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+		background-size: auto;
+		background-position: right top;
+	}
+	img {
+		width: 100%;
+		aspect-ratio: 1/1;
+		object-fit: cover;
+		object-position: 10% 10%;
+	}
+}
+
+// tabTag
+.product-detail .tabTag {
+	span {
+		font-size: 14px;
+		font-weight: $font-weight-medium;
+		background-color: $accent;
+		color: $gray-600;
+		border-radius: $border-radius-pill;
+		padding: 4px 12px;
+	}
+}
+.product-detail .info,
+.ingredient,
+.nutrition {
+	border-bottom: 1px solid $gray-200;
+}
+.product-detail .description {
+	line-height: 1.8;
+}
+.product-detail .ingredient,
+.nutrition {
+	.key {
+		display: block;
+		// color: $white;
+		background-color: $gray-100;
+		font-size: 14px;
+		font-weight: $font-weight-normal;
+		align-items: center;
+		border: 1px solid $gray-100;
+		border-radius: $border-radius-pill;
+		padding: 4px 10px;
+		margin-right: 8px;
+	}
+	p {
+		display: flex;
+		align-items: center;
+	}
+}
+
+// addon
+.product-detail .addon .accordion-item {
+	background-color: #f6f7f6;
+	border: none;
+	border-radius: 12px;
+	overflow: hidden;
+	margin-bottom: 8px;
+}
+.product-detail .addon .accordion-button {
+	box-shadow: none;
+	border-bottom: 1px solid $gray-200;
+	padding: 16px 20px;
+	// background-color: #f6f7f6;
+}
+.product-detail .addon .accordion-button:not(.collapsed) {
+	background-color: #f6f7f6;
+	color: $primary-200;
+	font-weight: $font-weight-semibold;
+	border-bottom: none;
+}
+
+.product-detail .addon .form-label,
+input {
+	margin: 0;
+}
+.product-detail .addon .form-label {
+	font-weight: $font-weight-medium;
+	img {
+		display: inline-block;
+		width: 50px;
+		height: 50px;
+		border-radius: 8px;
+	}
+	span {
+		display: block;
+		font-size: 14px;
+		font-weight: normal;
+		color: $gray-400;
+	}
+}
+.product-detail .addon input {
+	margin-left: 16px;
+}
+
+// modal-footer
+.modal-footer {
+	padding: 20px 40px;
+	display: flex;
+	border-top: 1px solid $gray-100;
+	box-shadow: 0px -4px 20px 0px rgba(227, 231, 224, 0.5);
+}
+.product-detail .num-control {
+	border: 0px;
+	.minus,
+	.add {
+		width: 48px;
+		height: 48px;
+		border: 1px solid $gray-200;
+		border-radius: $border-radius-pill;
+		background-color: $white;
+		i {
+			font-size: 24px;
+		}
+	}
+}
+.product-detail .addCart {
+	background: $primary-200;
+	color: $white;
+	border-radius: $border-radius-pill;
+	padding: 0.75rem 1.5rem;
+	border: none;
+}
+// .product-detail .nutrition {
+// 	.block {
+// 		p {
+// 			color: $gray-300;
+// 			font-weight: $font-weight-medium;
+// 			display: flex;
+// 			align-items: center;
+// 			font-size: 16px;
+// 		}
+// 		.value {
+// 			display: inline-flexbox;
+// 			font-size: 16px;
+// 			font-weight: $font-weight-bold;
+// 			color: $primary-200;
+// 			margin-left: 4px;
+// 			margin-right: 4px;
+// 		}
+// 		display: flex;
+// 		justify-content: center;
+// 		align-items: center;
+// 		padding: 12px 12px;
+// 		border: 1px solid $gray-200;
+// 		border-radius: 8px;
+// 		flex: 1 1 auto;
+// 	}
+// }
