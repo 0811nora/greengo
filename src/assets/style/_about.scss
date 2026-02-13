@@ -61,7 +61,7 @@
     .sub-title {
         font-weight: 600;
         color: $white;
-        text-shadow: 3px 3px 8px $brown-300;
+        text-shadow: 0px 4px 4px $brown-300;
     }
 
     .third-title {
@@ -112,6 +112,7 @@
             object-fit: cover;
             aspect-ratio: 1/1;
             margin-bottom: -80px;
+            transform: scaleX(-1);
         }
     }
 
@@ -190,6 +191,78 @@
 
 
     }
+
+    .second_sm_section {
+        img {
+            width: 100%;
+            object-fit: cover;
+            aspect-ratio: 25/18;
+            transform: scaleX(-1);
+            object-position: center 38%;
+        }
+
+        .mid-sec {
+            // background-color: $gray-50;
+            background: linear-gradient(180deg, $gray-100 0%, $gray-100 10%, $gray-100 40%, $white 100%);
+        }
+
+        .third-sec {
+            background-color: $gray-400;
+            max-width: 500px;
+            border-top-left-radius: 24px;
+            border-bottom-left-radius: 24px;
+            color: #FFF3EA;
+
+        }
+
+        .img-sm-border-1 {
+            border: solid 2px $gray-400;
+            width: 332px;
+            aspect-ratio: 3/2;
+            border-top-left-radius: 80% 100%;
+            border-top-right-radius: 90% 60%;
+            border-bottom-left-radius: 90% 50%;
+            border-bottom-right-radius: 30% 80%;
+
+        }
+
+        .img-sm-border-2 {
+            border: solid 2px $gray-300;
+            width: 320px;
+            aspect-ratio: 25/15;
+            border-top-left-radius: 80% 30%;
+            border-top-right-radius: 80% 80%;
+            border-bottom-left-radius: 30% 50%;
+            border-bottom-right-radius: 70% 20%;
+            transform: rotate(-8deg);
+        }
+    }
+
+    .third_sm_section {
+        background: #ECF3ED;
+        border-top-left-radius: 70% 10%;
+        border-top-right-radius: 70% 10%;
+        border-bottom-left-radius: 70% 10%;
+        border-bottom-right-radius: 70% 10%;
+
+
+        img {
+            width: 100%;
+            max-width: 250px;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            object-position: center;
+
+        }
+
+        .third-sm-title {
+            color: $white;
+        }
+    }
+
+
+
+
 
 
 }
