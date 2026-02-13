@@ -247,7 +247,9 @@ export default function About() {
                     </div>
 
                     <div className='third-section d-none d-md-block'>
-                        <div className='pt-10 pb-9' ><h2 className='third-title fw-bold text-center'>我們相信：健康不是限制，而是自由</h2></div>
+                        <div className='pt-10 pb-9' >
+                            <h2 className='third-title fw-bold text-center'>我們相信：健康不是限制，而是自由</h2>
+                        </div>
 
                         <div className="container">
                             <div className="card-group">
@@ -288,13 +290,17 @@ export default function About() {
                             </div>
                         </div>
 
-                        <div className='pb-10 ' ><h2 className='text-center fw-bold mb-5 third-title'>只要讓 GreenGo 陪伴，健康就會自然到位。</h2></div>
+                        <div className='pb-10 ' >
+                            <h2 className='text-center fw-bold mb-5 third-title'>只要讓 GreenGo 陪伴，健康就會自然到位。</h2>
+                        </div>
 
                     </div>
 
 
                     <div className="third_sm_section d-md-none d-block">
-                        <div className='pt-10 pb-9' ><h2 className='third-title fw-bold text-center '>我們相信：<p className='py-2'>健康不是限制，而是自由</p></h2></div>
+                        <div className='pt-10 pb-9' >
+                            <h2 className='third-title fw-bold text-center '>我們相信：<p className='py-2'>健康不是限制，而是自由</p></h2>
+                        </div>
 
                         <Swiper {...swiperConfig} >
                             <SwiperSlide>
@@ -311,7 +317,7 @@ export default function About() {
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className="card border-0 bg-transparent text-center mb-9">
-
+                                    {/* 看以後要不要改這邊的字型排版 */}
                                     <img src={`${import.meta.env.BASE_URL}img/about_tomato.jpg`} className="rounded-circle mx-auto" alt="tomato img" />
                                     <div className="card-body">
                                         <h5 className="card-title">簡單</h5>
@@ -325,8 +331,8 @@ export default function About() {
                             </SwiperSlide>
                             <SwiperSlide>
                                 <div className="card border-0 bg-transparent text-center mb-9">
+                                    <img src={`${import.meta.env.BASE_URL}img/about_lettuce.jpg`} className="rounded-circle mx-auto" alt="lettuce img" />
                                     <div className="card-body">
-                                        <img src={`${import.meta.env.BASE_URL}img/about_lettuce.jpg`} className="rounded-circle mx-auto" alt="lettuce img" />
                                         <h5 className="card-title">可控</h5>
                                         <p className="card-text">你說了算的飲食自由</p>
                                         <p className="card-text"><small className="text-body-secondary">
@@ -340,7 +346,10 @@ export default function About() {
                             </SwiperSlide>
                         </Swiper>
 
-                        <div className='pb-10 ' ><h2 className='text-center fw-bold mb-5 third-title'>只要讓 GreenGo 陪伴，健康就會自然到位。</h2></div>
+                        <div className='pb-10 ' >
+                            <h2 className='text-center fw-bold mb-5 third-title'>只要讓 GreenGo 陪伴，
+                                <p className='py-2'>健康就會自然到位。</p></h2>
+                        </div>
 
                     </div>
 
