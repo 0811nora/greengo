@@ -6,14 +6,37 @@
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
+        z-index: 20;
+        @media (max-width: 992px){
+            height: 380px;
+        }
 
     }
+    .article-nav {
+        position: sticky;
+        top: 100px;  
+        z-index: 10;
+        ul{
+            overflow-y: auto;
+            white-space: nowrap;
+        }
+    }
+    .article-nav::before {
+        content: "";
+        position: absolute;
+        top: -100px;   
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: #71a36a; 
+
+    }
+
     .bg-cover{
         background-color: #71a36a8a;
     }
     .article-card {
         position: relative;
-
         padding: 10px;
         border-radius: 16px;
         box-shadow: 3px  3px  5px  #3c5d306d;
@@ -53,10 +76,9 @@
         font-size: 18px;
         font-weight: 600;
         width: 120px;
-        .active {
+        &.active {
             border-top: 5px solid #ffffff;
             border-bottom: 5px solid #ffffff;
-            border-top: 5px solid #ffffff;
 
         }
         &:hover {
