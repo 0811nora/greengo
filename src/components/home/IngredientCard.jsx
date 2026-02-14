@@ -1,0 +1,51 @@
+import { motion } from 'framer-motion';
+import { PageLinks, Ingredients } from '../../data/homeData';
+
+const IngredientCard = ({ item }) => {
+  const size = 60;
+  const strokeWidth = 5;
+  const radius = 25;
+  const percentage = 0.75; // 待改
+
+  return (
+    <motion.div
+      className={`ingredient-card ${item.pos}`}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 0.8, y: 0 }}
+      whileHover={{ opacity: 1, scale: 1.05, y: -5 }}
+    >
+      <img src={item.img} alt={item.name} />
+      <div className='progress-container'>
+        <div className='circle-content'>
+          <span className='label'>{item.nur}</span>
+          <span className='value'>{item.protein}</span>
+        </div>
+        {/* 圓圈 */}
+        <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke='#E0E0E0'
+            strokeWidth={strokeWidth}
+            fill='transparent'
+          />
+          {/* 進度條 */}
+          <motion.circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke='#F48A54'
+            strokeWidth={strokeWidth}
+            fill='transparent'
+            strokeLinecap='round'
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: percentage }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+          />
+        </svg>
+      </div>
+    </motion.div>
+  );
+};
+export default IngredientCard;

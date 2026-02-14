@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { Ingredients } from '../data/homeData';
 
 // swiper
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
@@ -16,8 +17,10 @@ import { getArticles } from '../api/ApiClient';
 import Loader from '../components/common/Loading';
 import ContentCard from '../components/home/ContentCard';
 import CommentCard from '../components/home/CommentCard';
-// import IngredientCard from "../components/home/IngredientCard";
+import IngredientCard from '../components/home/IngredientCard';
 import StepCard from '../components/home/StepCard';
+import HeroSection from '../components/home/sections/HeroSection';
+import NutritionSection from '../components/home/sections/NutritionSection';
 
 // 頁面 router
 const PageLinks = {
@@ -26,136 +29,6 @@ const PageLinks = {
   aboutLink: { title: '關於綠果', url: '/about' },
   articleLink: { title: '綠果專欄', url: '/article' },
 };
-
-// Hero Section
-const HERO_DECORS = [
-  {
-    id: 'left',
-    src: `${import.meta.env.BASE_URL}img/items/bowl-2.png`,
-    alt: 'bowl-2',
-    posX: 'start-0',
-    posY: 'top-10',
-  },
-  {
-    id: 'right',
-    src: `${import.meta.env.BASE_URL}img/items/bowl-1.png`,
-    alt: 'bowl-1',
-    posX: 'start-100',
-    posY: 'top-50',
-  },
-];
-// 果菜區
-const VEGGIE_ITEMS = [
-  { name: 'tomato', angle: '-120deg', dist: '26vw', delay: '-2s', dur: '20s' },
-  {
-    name: 'broccoli',
-    angle: '45deg',
-    dist: '26vw',
-    delay: '-15s',
-    dur: '25s',
-  },
-  { name: 'cabbage', angle: '150deg', dist: '26vw', delay: '-5s', dur: '22s' },
-  { name: 'carrot', angle: '90deg', dist: '26vw', delay: '-8s', dur: '20s' },
-  {
-    name: 'eggplant',
-    angle: '-45deg',
-    dist: '26vw',
-    delay: '-10s',
-    dur: '20s',
-  },
-  {
-    name: 'scallion',
-    angle: '-90deg',
-    dist: '26vw',
-    delay: '-10s',
-    dur: '20s',
-  },
-  {
-    name: 'spinach',
-    angle: '-120deg',
-    dist: '26vw',
-    delay: '-4s',
-    dur: '30s',
-  },
-  {
-    name: 'bellPepper',
-    angle: '30deg',
-    dist: '26vw',
-    delay: '-8s',
-    dur: '25s',
-  },
-];
-
-// 痛點區
-const TROUBLE_CARDS = [
-  {
-    id: 1,
-    text: '「不是不想吃健康，而是怕一個不小心，就吃錯、算錯、白努力。」',
-    align: 'ms-auto',
-    tailSide: 'right', // 對話框右
-  },
-  {
-    id: 2,
-    text: '「一般的健康餐只有固定的營養標示，但我今天多加了一份肉、少吃一點飯，熱量到底變多少？對正在飲控的我來說，真的很難計算...」',
-    align: 'me-auto',
-    tailSide: 'left', // 對話框左
-  },
-  {
-    id: 3,
-    text: '「每次打開外送平台，看著一堆標榜『健康』的餐盒，卻發現成分寫得模模糊糊：少了幾克蛋白？多了一匙醬料？到底差多少熱量完全不知道。為什麼好好吃一餐這麼困難呢？」',
-    align: 'ms-auto',
-    tailSide: 'right',
-  },
-];
-
-// 配菜區
-const INGREDIENTS = [
-  {
-    id: 'salmon',
-    name: '鮭魚',
-    nur: '蛋白質',
-    protein: '26g',
-    pos: 'pos-btm-left',
-    img: `${import.meta.env.BASE_URL}img/items/salmon.png`,
-  },
-  // 熱量：約 250 kcal/蛋白質：約 26 g/脂肪：約 16 g
-  {
-    id: 'tomato',
-    name: '番茄',
-    nur: '蛋白質',
-    protein: '1.1g',
-    pos: 'pos-top-mid',
-    img: `${import.meta.env.BASE_URL}img/items/tomato.png`,
-  },
-  // 熱量：約 11 kcal/碳水化合物：約 2.5 g/膳食纖維：約 0.8 g
-  {
-    id: 'pumpkin',
-    name: '南瓜',
-    nur: '蛋白質',
-    protein: '1.2g',
-    pos: 'pos-top-mid-left',
-    img: `${import.meta.env.BASE_URL}img/items/pumpkin.png`,
-  },
-  // 熱量：約 45 kcal/碳水化合物：約 11 g/膳食纖維：約 2 g
-  {
-    id: 'broccoli',
-    name: '花椰菜',
-    nur: '蛋白質',
-    protein: '2.5g',
-    pos: 'pos-top-right',
-    img: `${import.meta.env.BASE_URL}img/items/broccoli.png`,
-  },
-  // 熱量：約 28 kcal/碳水化合物：約 5 g/蛋白質：約 2.5 g/膳食纖維：約 2.2 g
-  {
-    id: 'cucumber',
-    name: '小黃瓜',
-    nur: '蛋白質',
-    protein: '0.7g',
-    pos: 'pos-btm-right',
-    img: `${import.meta.env.BASE_URL}img/items/cucumber.png`,
-  },
-  // 熱量：約 9 kcal/碳水化合物：約 2 g
-];
 
 // 餐點卡片區
 // 模擬資料，待接 API
@@ -229,8 +102,6 @@ const STEP_CARDS = [
 
 export default function Home() {
   // 監聽區
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // 文章 API
@@ -239,16 +110,6 @@ export default function Home() {
   const [mainArticle, setMainArticle] = useState(null);
   // sub article
   const [subArticles, setSubArticles] = useState([]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 500) {
-        setIsVisible(true);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // 文章
   useEffect(() => {
@@ -285,175 +146,9 @@ export default function Home() {
       <Loader mode={'page'} show={isLoading} />
       <main className='container-fluid p-0'>
         {/* Hero Section */}
-        <section className='container-fluid position-relative overflow-hidden'>
-          {/* 文字區 */}
-          <div className='home__hero-section py-8 py-md-10 my-md-10 text-center'>
-            <h1 className='fs-2 display-md-1 fw-bold text-center mb-7'>
-              生活<span className='comma'>，</span>
-              <br />從<span className='text-primary'>好好吃飯</span>
-              開始
-            </h1>
-            <p className='ft-en mb-2'>Elevate Your Day, Nourish Your Body.</p>
-            <p className='mb-3 mb-md-5'>
-              綠果相信，每一次的選擇都值得被用心對待
-            </p>
-            <NavLink
-              to={PageLinks.productLink.url}
-              className='home__btn-primary fw-medium'
-            >
-              立即點餐
-            </NavLink>
-          </div>
-
-          {/* 裝飾區 */}
-          {/* 左右圖 */}
-          {HERO_DECORS.map((decor) => (
-            <div
-              key={decor.id}
-              className={`position-absolute ${decor.posY} ${decor.posX} translate-middle`}
-            >
-              <img className='hero__decor' src={decor.src} alt={decor.alt} />
-              <div className='bowl-shadow'></div>
-            </div>
-          ))}
-          {/* 中央碗 */}
-          <div className='hero__decorations position-absolute top-100 start-50 translate-middle pt-10'>
-            <img
-              src={`${import.meta.env.BASE_URL}img/items/bowl-3.png`}
-              className='position-relative'
-              alt='bowl-3'
-            />
-            <div className='bowl-shadow'></div>
-            {/* 果菜區 */}
-            {VEGGIE_ITEMS.map((item) => (
-              <img
-                key={item.name}
-                src={`${import.meta.env.BASE_URL}img/items/${item.name}.png`}
-                className='veggie'
-                alt={item.name}
-                style={{
-                  '--a': item.angle,
-                  animationDelay: item.delay,
-                  animationDuration: item.dur,
-                }}
-              />
-            ))}
-          </div>
-        </section>
+        <HeroSection />
         {/* Smart Nutrition */}
-        <section className='container-fluid home__nur-section py-8 py-md-10'>
-          <div className='container py-6'>
-            <div className='row'>
-              {/* 說明 */}
-              <div className='col-md-7 mb-5'>
-                {/* 標題文字區 */}
-                <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2'>
-                  YOUR NUTRITION, DECODED
-                </h4>
-                <h2 className='fs-3 fs-md-1 fw-bold mb-2 mb-md-5'>
-                  拒絕盲吃！
-                  <br />
-                  營養成分，
-                  <span className=''>即時看得見</span>。
-                </h2>
-                {/* 桌機連結區 */}
-                <div className='d-none d-md-block'>
-                  <p className='fs-6 mb-3 px-4'>
-                    你不是不想吃得健康， <br />
-                    只是營養真的不好算。 <br />
-                    所以我們準備了兩種更輕鬆的選擇。
-                  </p>
-                  <ul className='home__nur-card d-flex gap-4'>
-                    <li className='home__nur-card-content d-flex flex-column justify-content-end'>
-                      <h3 className='fw-bold fs-6 mb-2'>
-                        綠果精選｜為你搭配好
-                      </h3>
-                      <p className='mb-4'>把營養交給我們，安心吃就好</p>
-                      <NavLink
-                        className='fw-medium mx-1 d-flex justify-content-between'
-                        to={PageLinks.productLink.url}
-                      >
-                        <span>{PageLinks.productLink.title}</span>
-                        <i className='bi bi-chevron-right'></i>
-                      </NavLink>
-                    </li>
-                    <li className='home__nur-card-content d-flex flex-column justify-content-end'>
-                      <h3 className='fw-bold fs-6 mb-2'>
-                        客製自由配｜你來決定
-                      </h3>
-                      <p className='mb-4'>依照你的需求，自由調整每一份營養</p>
-                      <NavLink
-                        className='fw-medium mx-1 d-flex justify-content-between'
-                        to={PageLinks.customLink.url}
-                      >
-                        <span>{PageLinks.customLink.title}</span>
-                        <i className='bi bi-chevron-right'></i>
-                      </NavLink>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              {/* 過去的困擾 */}
-              <div
-                ref={sectionRef}
-                className='col-md-5 d-flex flex-column gap-5'
-              >
-                {TROUBLE_CARDS.map((card) => (
-                  <div
-                    key={card.id}
-                    className={`sub-card bg-gray-100 rounded-4 position-relative py-3 px-4 py-md-5 px-md-6 ${card.align} ${isVisible ? 'is-visible' : ''}`}
-                  >
-                    <p className='text-warning fw-medium mb-1'>過去的困擾</p>
-                    <p className='mb-0'>{card.text}</p>
-                    <svg
-                      className='position-absolute'
-                      width='20'
-                      height='20'
-                      style={{
-                        bottom: '-15px',
-                        [card.tailSide]: '20px',
-                      }}
-                    >
-                      <path d='M0,0 L20,0 L10,20 Z' fill='#e3e7e0' />
-                    </svg>
-                  </div>
-                ))}
-              </div>
-              {/* 手機板連結區 */}
-              <div className='d-block d-md-none mt-5'>
-                <p className='fs-6 mb-3 px-4'>
-                  你不是不想吃得健康， <br />
-                  只是營養真的不好算。 <br />
-                  所以我們準備了兩種更輕鬆的選擇。
-                </p>
-                <ul className='home__nur-card d-flex gap-4'>
-                  <li className='home__nur-card-content d-flex flex-column justify-content-end'>
-                    <h3 className='fw-bold fs-6 mb-2'>綠果精選｜為你搭配好</h3>
-                    <p className='mb-4'>把營養交給我們，安心吃就好</p>
-                    <NavLink
-                      className='fw-medium mx-1 d-flex justify-content-between'
-                      to={PageLinks.productLink.url}
-                    >
-                      <span>{PageLinks.productLink.title}</span>
-                      <i className='bi bi-chevron-right'></i>
-                    </NavLink>
-                  </li>
-                  <li className='home__nur-card-content d-flex flex-column justify-content-end'>
-                    <h3 className='fw-bold fs-6 mb-2'>客製自由配｜你來決定</h3>
-                    <p className='mb-4'>依照你的需求，自由調整每一份營養</p>
-                    <NavLink
-                      className='fw-medium mx-1 d-flex justify-content-between'
-                      to={PageLinks.customLink.url}
-                    >
-                      <span>{PageLinks.customLink.title}</span>
-                      <i className='bi bi-chevron-right'></i>
-                    </NavLink>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+        <NutritionSection />
         {/* 精選區 */}
         <section className='home__signature-section container-fluid rounded-top-5'>
           {/* 示意區 */}
@@ -469,16 +164,8 @@ export default function Home() {
                     className='main-bowl-img'
                   />
                   {/* 配菜區 */}
-                  {INGREDIENTS.map((item) => (
-                    <div
-                      key={item.id}
-                      className={`ingredient-card ${item.pos}`}
-                    >
-                      <img src={item.img} alt={item.id} />
-                      <div className='macro-badge'>
-                        {item.nur} {item.protein}
-                      </div>
-                    </div>
+                  {Ingredients.map((data) => (
+                    <IngredientCard key={data.id} item={data} />
                   ))}
                 </div>
               </div>
