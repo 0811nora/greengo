@@ -159,7 +159,6 @@ export default function Custom() {
     }
 
     const selectFlat = CATEGORY_TABS.map( keys => selectedProduct[keys]).flat();
-    console.log('selectFlat',selectFlat)
 
 
     // 從已選品項找出三大營養素數據
@@ -373,7 +372,6 @@ export default function Custom() {
         setIsLoading(true);
         try{
             const cartRes = await getCart();
-            console.log(cartRes.data.data.carts)
 
             const cartList = cartRes.data.data.carts
             const currentType = selectedProduct.plan_type
@@ -424,10 +422,8 @@ export default function Custom() {
                 }       
             }
 
-            console.log(finalData)
 
             const addCartRes = await postAddToCart(finalData);
-            console.log(addCartRes.data.message)
             setStepState(4);
             window.scrollTo(0, 0);
         }catch(err){
