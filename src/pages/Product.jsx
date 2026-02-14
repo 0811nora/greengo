@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import Select from 'react-select';
-import classNames from 'classnames';
 import { getAllProducts } from '../api/ApiClient';
 import seafoodTag from '../assets/image/product/seafood.svg';
 import beefTag from '../assets/image/product/beef.svg';
@@ -10,7 +8,7 @@ import alcoholTag from '../assets/image/product/alcohol.svg';
 import milkTag from '../assets/image/product/milk.svg';
 import spicyTag from '../assets/image/product/spicy.svg';
 import sugarTag from '../assets/image/product/sugar.svg';
-import { ConfirmModal } from '../components/common/Modal';
+import MenuSection from '../components/product/MenuSection';
 
 const BLOCK_CONTENT_OPTIONS = [
 	{
@@ -19,7 +17,7 @@ const BLOCK_CONTENT_OPTIONS = [
 		subtitle: '由主廚精心搭配的營養組合',
 	},
 	{
-		icon: 'coffee',
+		icon: 'water_medium',
 		title: '健康飲品',
 		subtitle: '讓營養更完整的健康飲品',
 	},
@@ -61,32 +59,31 @@ const DATA = {
 	drinks: {
 		category: 'drinks',
 		title: {
-			icon: 'coffee',
+			icon: 'water_medium',
 			title: '健康飲品',
 			subtitle: '讓營養更完整的健康飲品',
 		},
-
 		sort: [
 			{ value: 'likeToLow', label: '人氣：高 → 低' },
 			{ value: 'priceToHigh', label: '價格：低 → 高' },
 			{ value: 'priceToLow', label: '價格：高 → 低' },
 		],
 		tab: [
-			{ key: 'all', label: '全部' },
-			{ key: 'tea', label: '茶' },
-			{ key: 'coffee', label: '咖啡' },
-			{ key: 'juice', label: '果汁' },
+			{ value: 'all', label: '全部' },
+			{ value: 'tea', label: '茶' },
+			{ value: 'coffee', label: '咖啡' },
+			{ value: 'juice', label: '果汁' },
 		],
 		flavor: [
-			{ key: 'alcohol', label: '無酒精', img: alcoholTag },
-			{ key: 'caffeine', label: '無咖啡因', img: coffeeTag },
-			{ key: 'sugar', label: '無糖', img: sugarTag },
+			{ value: 'alcohol', label: '無酒精', img: alcoholTag },
+			{ value: 'caffeine', label: '無咖啡因', img: coffeeTag },
+			{ value: 'sugar', label: '無糖', img: sugarTag },
 		],
 	},
 	soup: {
 		category: 'soup',
 		title: {
-			icon: 'water_medium',
+			icon: 'onsen',
 			title: '溫暖湯品',
 			subtitle: '讓營養更均衡的溫暖湯品',
 		},
@@ -141,6 +138,7 @@ export default function Product() {
 				const data = res.data.products.filter(
 					product => product.category !== 'item' && product.category !== 'custom',
 				);
+				console.log(data);
 				setApiProdutsData(data);
 				setIsLoading(false);
 			} catch (error) {
@@ -149,17 +147,7 @@ export default function Product() {
 		};
 		getProducts();
 	}, []);
-	useEffect(() => {
-		renderSetDisplayData(apiProdutsData, filterState);
-	}, [apiProdutsData, filterState]);
 
-	const CustomMultiValueRemove = ({ innerProps }) => {
-		return (
-			<span {...innerProps} className="material-symbols-rounded">
-				close
-			</span>
-		);
-	};
 	const toggleTabFilter = (category, value) => {
 		setFilterState(prev => ({
 			...prev,
@@ -190,21 +178,21 @@ export default function Product() {
 			},
 		}));
 	};
-	const renderSetDisplayData = (apiProdutsData, filterState) => {
+	const renderDisplayData = (apiProdutsData, filterState, category) => {
 		const filterData = apiProdutsData.filter(product => {
-			if (product.product_type !== 'set') return false;
-			if (filterState.set.tab !== 'all') {
-				if (!product.tab_collection.includes(filterState.set.tab)) return false;
+			if (product.product_type !== category) return false;
+			if (filterState[category].tab !== 'all') {
+				if (!product.tab_collection.includes(filterState[category].tab)) return false;
 			}
 			if (product.include_tags) {
-				for (const filterFlavor of filterState.set.flavor) {
+				for (const filterFlavor of filterState[category].flavor) {
 					if (product.include_tags?.includes(filterFlavor)) return false;
 				}
 			}
 			return true;
 		});
 		const sortData = [...filterData];
-		switch (filterState.set.sort) {
+		switch (filterState[category].sort) {
 			case 'default':
 				return sortData;
 			case 'proteinToLow':
@@ -218,39 +206,6 @@ export default function Product() {
 			default:
 				return sortData;
 		}
-	};
-	const renderUITag = (prodcutCategory, productTag) => {
-		if (!Array.isArray(productTag)) return null;
-
-		// 符合 category 的 tag data 列表
-		const tagDataList = DATA[prodcutCategory]?.flavor;
-		const result = [];
-		for (const dataTag of tagDataList) {
-			for (const UITag of productTag) {
-				if (dataTag.value === UITag) {
-					result.push(dataTag.img);
-				}
-			}
-		}
-		// 將 result 陣列用｜隔開組成字串
-		return result;
-	};
-
-	const renderUITabpill = (prodcutCategory, productTab) => {
-		if (!Array.isArray(productTab)) return null;
-
-		// 符合 category 的 tab data 列表
-		const tabDataList = DATA[prodcutCategory]?.tab;
-		const result = [];
-		for (const dataTab of tabDataList) {
-			for (const UITab of productTab) {
-				if (dataTab.value === UITab) {
-					result.push(dataTab.label);
-				}
-			}
-		}
-		// 將 result 陣列用｜隔開組成字串
-		return result;
 	};
 
 	return (
@@ -287,151 +242,43 @@ export default function Product() {
 			{/* <section>
         <i className="bi bi-arrow-down mt-4 text-primary"></i>
       </section> */}
-
 			{/* 固定餐 */}
-			<section className="container set-section">
-				{/* 固定餐標題 */}
-				<div className="title mb-10 position-relative">
-					<span className="material-symbols-rounded position-absolute top-0 start-50 translate-middle">
-						{DATA.set.title.icon}
-					</span>
-					<h2>{DATA.set.title.title}</h2>
-					<h6>{DATA.set.title.subtitle}</h6>
-				</div>
-
-				<div className="tab-filter d-flex flex-lg-row flex-column justify-content-between align-items-center gap-4">
-					{/* 固定餐類別篩選 */}
-					<ul className="nav nav-underline d-flex gap-md-6 gap-2 flex-fill">
-						{DATA.set.tab.map((tabItem, index) => (
-							<li className="nav-item" key={index}>
-								<button
-									className={`nav-link tab-navLink ${filterState.set.tab === tabItem.value ? 'active' : ''}`}
-									value={tabItem.value}
-									onClick={e => toggleTabFilter('set', e.target.value)}
-								>
-									{tabItem.label}
-								</button>
-							</li>
-						))}
-					</ul>
-					<div className="d-flex gap-4">
-						{/* 固定餐忌口篩選 */}
-						<Select
-							options={DATA.set.flavor}
-							placeholder="忌口篩選"
-							isMulti={true}
-							value={flavorSelect}
-							onChange={value => toggleFlavorFilter('set', value)}
-							components={{ MultiValueRemove: CustomMultiValueRemove }}
-							unstyled
-							classNamePrefix="rs"
-							classNames={{
-								control: ({ isFocused, hasValue }) =>
-									classNames('rs__control', isFocused && 'rs__focus', hasValue && 'rs__hasValue'),
-								menu: () => classNames('rs__menu'),
-								option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
-							}}
-						/>
-
-						{/* 固定餐排序篩選 */}
-						<Select
-							options={DATA.set.sort}
-							placeholder="排序"
-							value={sortSelect}
-							onChange={value => toggleSortFilter('set', value)}
-							unstyled
-							classNamePrefix="rs"
-							classNames={{
-								control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
-								menu: () => classNames('rs__menu'),
-								option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
-							}}
-						/>
-					</div>
-				</div>
-
-				<div className="row mt-9">
-					{/* {JSON.stringify(filterState)} */}
-
-					{renderSetDisplayData(apiProdutsData, filterState).map(product => (
-						<div className="col-xxl-3 col-lg-4" key={product.id}>
-							<div className="d-flex flex-md-column flex-sm-row card mb-6">
-								{/* 圖片 */}
-								<div className="img position-relative">
-									<img src={product.imageUrl} className="card-img-top" alt={product.title} />
-									<div className="position-absolute d-flex flex-column gap-1 tabPill-position-absolute">
-										{renderUITabpill(product.product_type, product.tab_collection)?.map(item => (
-											<div className="tabPill">{item}</div>
-										))}
-									</div>
-								</div>
-								<div className="card-body d-flex flex-column gap-4 px-6 pt-7 pb-7">
-									{/* 標題和忌口標籤 */}
-									<div className="d-flex gap-3 mb-2">
-										<h6 className="d-flex fw-semibold  text-gray-600">{product.title}</h6>
-										<div className=" flavorTag d-flex gap-1">
-											{renderUITag(product.product_type, product?.include_tags)?.map((img, index) => (
-												<div className="tag" key={index}>
-													<img src={img} alt="忌口選擇標籤" />
-												</div>
-											))}
-										</div>
-									</div>
-									{/* 營養素和內容物 */}
-									<div className="d-flex flex-column gap-1">
-										<div className="nutrition d-flex gap-1">
-											<div>
-												<span>{product.nutrition.calories}</span> Kcal
-											</div>
-											<div>｜</div>
-											<div>
-												P <span>{product.nutrition.protein}</span>
-											</div>
-											<div>｜</div>
-											<div>
-												F <span>{product.nutrition.fat}</span>
-											</div>
-											<div>｜</div>
-											<div>
-												C <span>{product.nutrition.carbs}</span>
-											</div>
-										</div>
-
-										<p className="fw-normal text-brown-300 text-truncate">
-											{product.product_type === 'set'
-												? `${product.ingredients.main}、新鮮蔬菜`
-												: `${product.ingredients.base}`}
-										</p>
-									</div>
-
-									<div className="h6 fw-semibold text-gray-600 mt-5">{`NT$ ${product.price}`}</div>
-									<div className="num-control position-absolute">
-										<button className="add">
-											<i class="bi bi-plus"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					))}
-				</div>
-			</section>
-
-			{/* <button type="button" onClick={() => setIsShowModal(true)}>
-				打開modal
-			</button>
-			<ConfirmModal
-				style={'front'}
-				show={isShowModal}
-				closeModal={handleClose}
-				text_icon={`bi bi-bag-check-fill`}
-				text_title={'確定要送購物車'}
-				text_content={'請確認購物內容及金額'}
-				text_cancel={'取消'}
-				cancelModal={handleClose}
-				text_confirm={'確認'}
-				confirmModal={handleClose}
-			/> */}
+			<MenuSection
+				data={DATA}
+				category="set"
+				filterState={filterState}
+				toggleTabFilter={toggleTabFilter}
+				flavorSelect={flavorSelect}
+				toggleFlavorFilter={toggleFlavorFilter}
+				sortSelect={sortSelect}
+				toggleSortFilter={toggleSortFilter}
+				apiProdutsData={apiProdutsData}
+				renderDisplayData={renderDisplayData}
+			/>
+			<MenuSection
+				data={DATA}
+				category="drinks"
+				filterState={filterState}
+				toggleTabFilter={toggleTabFilter}
+				flavorSelect={flavorSelect}
+				toggleFlavorFilter={toggleFlavorFilter}
+				sortSelect={sortSelect}
+				toggleSortFilter={toggleSortFilter}
+				apiProdutsData={apiProdutsData}
+				renderDisplayData={renderDisplayData}
+			/>
+			<MenuSection
+				data={DATA}
+				category="soup"
+				filterState={filterState}
+				toggleTabFilter={toggleTabFilter}
+				flavorSelect={flavorSelect}
+				toggleFlavorFilter={toggleFlavorFilter}
+				sortSelect={sortSelect}
+				toggleSortFilter={toggleSortFilter}
+				apiProdutsData={apiProdutsData}
+				renderDisplayData={renderDisplayData}
+			/>
 		</div>
 	);
 }

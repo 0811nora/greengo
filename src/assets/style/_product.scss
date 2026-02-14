@@ -175,13 +175,19 @@
 			transform: scaleX(1);
 		}
 	}
-	@media (max-width: 540px) {
+}
+@media (max-width: 768px) {
+	.product-page .tab-filter {
 		ul {
 			flex-wrap: nowrap;
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+		.nav-item {
+			flex-shrink: 0;
 		}
 	}
 }
-
 section.set-section {
 	gap: 0px;
 	margin-top: 300px;
