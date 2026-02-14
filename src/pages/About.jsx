@@ -81,12 +81,28 @@ export default function About() {
                 }
             });
 
+            const isMobile = width < 600;
+
+            if (!isMobile) {
+                Composite.add(engine.world, mouseConstraint);
+
+                // 移除桌機上的滾輪干擾
+                mouse.element.removeEventListener('wheel', mouse.mousewheel);
+                mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
+                mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
+            } else {
+                // 手機版：完全禁用 mouse 監聽，確保事件穿透到父層進行捲動
+                mouse.element.style.pointerEvents = 'none';
+            }
+
+
+
             const bowlObstacle = Bodies.circle(width / 2, height + 100, 650, {
                 isStatic: true,
                 render: { visible: false } // 開發時可以改 true 看看圓圈在哪
             });
 
-            const isMobile = width < 600;
+
 
             const updateBowl = (w, h, isMobileNow) => {
                 const radius = w * 0.4;
@@ -213,7 +229,17 @@ export default function About() {
                 });
                 Body.scale(rightWall, 1, wallScaleY);
 
+                if (!isMobileNow) {
+                    Composite.add(engine.world, mouseConstraint);
 
+                    // 移除桌機上的滾輪干擾
+                    mouse.element.removeEventListener('wheel', mouse.mousewheel);
+                    mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
+                    mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
+                } else {
+                    // 手機版：完全禁用 mouse 監聽，確保事件穿透到父層進行捲動
+                    mouse.element.style.pointerEvents = 'none';
+                }
 
                 updateBowl(newWidth, newHeight, isMobileNow);
 
@@ -266,7 +292,8 @@ export default function About() {
                     top: 0,
                     left: 0,
                     zIndex: 10,
-                    overflow: 'hidden' // 確保 5000px 的地板不會撐出滾動條
+                    overflow: 'hidden',
+
                 }}
             >
                 <canvas ref={canvasRef} />
