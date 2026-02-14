@@ -4,7 +4,7 @@ import Select from 'react-select';
 import classNames from 'classnames';
 import { getAllProducts } from '../api/ApiClient';
 import seafoodTag from '../assets/img/product/Seafood.svg';
-import { ComfirmModal } from '../components/common/Modal';
+import { ConfirmModal } from '../components/common/Modal';
 
 const BLOCK_CONTENT_OPTIONS = [
 	{
@@ -374,7 +374,7 @@ export default function Product() {
 			<button type="button" onClick={() => setIsShowModal(true)}>
 				打開modal
 			</button>
-			<ComfirmModal
+			<ConfirmModal
 				style={'front'}
 				show={isShowModal}
 				closeModal={handleClose}
