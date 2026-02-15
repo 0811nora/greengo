@@ -127,7 +127,7 @@ export default function Home() {
           <div className='container'>
             <div className='row align-items-center'>
               {/* 左邊示意區 */}
-              <div className='col-lg-7 d-none d-sm-flex home__signature-container my-8'>
+              <div className='col-lg-7 d-none d-sm-flex home__signature-container mt-10'>
                 {/* 碗 */}
                 <div className='home__signature-content'>
                   <img
@@ -164,7 +164,7 @@ export default function Home() {
             </div>
           </div>
           {/* 熱門商品 + swiper 套件*/}
-          <div className='container-fluid bg-white py-8 py-md-10 px-8 rounded-5'>
+          <div className='container-fluid bg-yellow-100 py-8 py-md-10 px-8 rounded-5'>
             <div className='row'>
               <Swiper
                 className='fixed-swiper'
@@ -233,11 +233,25 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <section className='bg-white'></section>
+        <svg
+          id='visual'
+          viewBox='0 0 1920 120'
+          width='100%'
+          height='auto'
+          xmlns='http://www.w3.org/2000/svg'
+          xmlns:xlink='http://www.w3.org/1999/xlink'
+          version='1.1'
+        >
+          <path
+            d='M0 30L35.5 35.3C71 40.7 142 51.3 213.2 47.8C284.3 44.3 355.7 26.7 426.8 22.3C498 18 569 27 640 36.2C711 45.3 782 54.7 853.2 54.8C924.3 55 995.7 46 1066.8 38.8C1138 31.7 1209 26.3 1280 29C1351 31.7 1422 42.3 1493.2 49C1564.3 55.7 1635.7 58.3 1706.8 58.5C1778 58.7 1849 56.3 1884.5 55.2L1920 54L1920 0L1884.5 0C1849 0 1778 0 1706.8 0C1635.7 0 1564.3 0 1493.2 0C1422 0 1351 0 1280 0C1209 0 1138 0 1066.8 0C995.7 0 924.3 0 853.2 0C782 0 711 0 640 0C569 0 498 0 426.8 0C355.7 0 284.3 0 213.2 0C142 0 71 0 35.5 0L0 0Z'
+            fill='#ecf3ed'
+            stroke-linecap='round'
+            stroke-linejoin='miter'
+          ></path>
+        </svg>
         {/* 自由配 */}
         <section
-          className='position-relative my-5'
+          className='position-relative mb-8'
           style={{ paddingTop: '80px' }}
         >
           <div className='container'>
@@ -265,51 +279,9 @@ export default function Home() {
                 />
               </div>
               {/* 右側卡片說明 */}
-              {/* <ul className='col-lg-6 d-flex flex-column justify-content-center makeBite-section'>
-                <li className='d-flex align-items-center'>
-                  <span className='ft-en fs-4 fs-md-2 fw-medium text-brown-200 ms-1 me-4'>
-                    1
-                  </span>
-                  <span className='fs-6 fs-md-4 fw-bold text-gray-500 me-3'>
-                    選擇基底
-                  </span>
-                  <span className='text-gray-400'>
-                    白米、糙米、紫米、藜麥、生菜
-                  </span>
-                </li>
-                <li className='d-flex align-items-center'>
-                  <span className='ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3'>
-                    2
-                  </span>
-                  <span className='fs-6 fs-md-4 fw-bold text-gray-500 me-3'>
-                    挑選主食
-                  </span>
-                  <span className='text-gray-400'>
-                    雞胸肉、牛肉、鮭魚、蝦仁，為你包山包海
-                  </span>
-                </li>
-                <li className='d-flex align-items-center'>
-                  <span className='ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3'>
-                    3
-                  </span>
-                  <span className='fs-6 fs-md-4 fw-bold text-gray-500 me-3'>
-                    搭配蔬果
-                  </span>
-                  <span className='text-gray-400'>
-                    配角可以比主角搶戲，季節時蔬任選 5 種
-                  </span>
-                </li>
-                <li className='d-flex align-items-center'>
-                  <span className='ft-en fs-4 fs-md-2 fw-medium text-brown-200 me-3'>
-                    4
-                  </span>
-                  <span className='fs-6 fs-md-4 fw-bold text-gray-500 me-3'>
-                    淋上醬汁
-                  </span>
-                  <span className='text-gray-400'>為你的餐盒來點靈魂</span>
-                </li>
-              </ul> */}
-              <StepCard />
+              <div className='col-lg-6'>
+                <StepCard />
+              </div>
             </div>
           </div>
         </section>
