@@ -10,7 +10,7 @@ export function CartProvider({ children }) {
   const getAllCart = async () => {
     try {
       const res = await getCart();
-      console.log('購物車 API ：', res.data.data);
+      // console.log('購物車 API ：', res.data.data);
       setCartData(res.data.data);
     } catch (error) {
       console.log('取得購物車失敗', error);
