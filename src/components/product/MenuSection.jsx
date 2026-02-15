@@ -13,6 +13,9 @@ const MenuSection = ({
 	toggleSortFilter,
 	renderDisplayData,
 	apiProdutsData,
+	handleOpenDetail,
+	// renderUITag,
+	// renderUITab,
 }) => {
 	const CustomMultiValueRemove = ({ innerProps }) => {
 		return (
@@ -23,7 +26,7 @@ const MenuSection = ({
 	};
 
 	return (
-		<section className="container set-section">
+		<section className="container menu-section">
 			{/* 固定餐標題 */}
 			<div className="title mb-10 position-relative">
 				<span className="material-symbols-rounded position-absolute top-0 start-50 translate-middle">
@@ -83,10 +86,17 @@ const MenuSection = ({
 					/>
 				</div>
 			</div>
-
+			{/*卡片區 */}
 			<div className="row mt-9">
 				{renderDisplayData(apiProdutsData, filterState, category).map(product => (
-					<ProductCard product={product} data={data} category={category} key={product.id} />
+					<ProductCard
+						product={product}
+						category={category}
+						// renderUITag={renderUITag}
+						// renderUITab={renderUITab}
+						handleOpenDetail={handleOpenDetail}
+						key={product.id}
+					/>
 				))}
 			</div>
 		</section>
