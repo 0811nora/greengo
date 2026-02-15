@@ -124,10 +124,16 @@ function ArticleDetail() {
                 </div>
               </div>
               <div className='col-lg-9 px-4 py-6'>
-                <div
-                  className='article-content'
-                  dangerouslySetInnerHTML={{ __html: article.content }}
-                />
+                <div className='article-container d-flex flex-column'>
+                  <div
+                    className='article-description'
+                    dangerouslySetInnerHTML={{ __html: article.description }}
+                  />
+                  <div
+                    className='article-content'
+                    dangerouslySetInnerHTML={{ __html: article.content }}
+                  />
+                </div>
                 {/* {article.content} -> 只能顯示最原始的文章(包含標籤) */}
                 {/* dangerouslySetInnerHTML -> 才能顯示文章樣式 */}
               </div>

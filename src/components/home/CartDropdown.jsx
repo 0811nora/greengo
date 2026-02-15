@@ -45,7 +45,7 @@ const CartDropdown = () => {
       if (isConfirm) {
         await deleteCartItem(id);
         notify('success', '已刪除該商品');
-        getAllCart();
+        await getAllCart();
       }
     } catch (error) {
       console.log('刪除失敗', error);

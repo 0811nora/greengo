@@ -41,7 +41,7 @@ const BestSellerSwiper = () => {
                 )}
                 <button
                   type='button'
-                  className='btn-add-cart position-absolute bottom-0 end-0 mb-2 me-2 z-3'
+                  className='home__swiper-btn position-absolute bottom-0 end-0 mb-2 me-2 z-3'
                   aria-label='加入購物車'
                 >
                   <i className='bi bi-bag'></i>
