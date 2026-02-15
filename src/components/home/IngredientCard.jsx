@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { PageLinks, Ingredients } from '../../data/homeData';
 
 const IngredientCard = ({ item }) => {
-  const size = 60;
-  const strokeWidth = 3;
+  const size = 70;
+  const strokeWidth = 4;
   const radius = (size - strokeWidth) / 2;
 
   return (
@@ -40,7 +40,7 @@ const IngredientCard = ({ item }) => {
             strokeLinecap='round'
             initial={{ pathLength: 0 }}
             animate={{ pathLength: item.percentage }}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
+            transition={{ duration: 3, ease: 'easeOut' }}
           />
         </svg>
       </div>

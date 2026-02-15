@@ -65,12 +65,10 @@
   font-size: 40px;
   text-shadow: 0px 1px 8px rgba(27, 32, 40, 0.3);
   transition: color 0.3s ease;
-
   &:hover {
     color: $gray-400;
     text-shadow: 0px 1px 8px rgba(254, 253, 253, 0.12);
   }
-
   @media (max-width: 991px) {
     color: $gray-400;
     font-size: 32px;
@@ -86,7 +84,6 @@
   margin: 0;
   padding: 4px 16px;
   gap: 8px;
-
   background:
     linear-gradient(
       135deg,
@@ -98,7 +95,6 @@
       rgba(77, 147, 43, 0.1) 0%,
       rgba(77, 147, 43, 0.05) 100%
     );
-
   backdrop-filter: blur(16px) saturate(180%);
   border-radius: 50px;
   border: 1px solid rgba(255, 255, 255, 0.6);
@@ -109,7 +105,6 @@
     inset 0 -1px 0 rgba(255, 255, 255, 0.2);
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
-
   &:hover {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95));
     box-shadow:
@@ -364,4 +359,44 @@
 footer i {
   padding: 4px;
   font-size: 32px;
+}
+
+// cart
+.header__cartdropdown {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.6) 100%
+    ),
+    linear-gradient(225deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 100%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  &:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95));
+    box-shadow:
+      0 12px 40px rgba(7, 78, 48, 0.15),
+      0 4px 12px rgba(7, 78, 48, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+  }
+}
+.header__cart-deletebtn {
+  border: none;
+  color: $gray-500;
+  background-color: transparent;
+  margin-right: 8px;
+  border-radius: 24px;
+  font-size: 18px;
+  &:hover {
+    color: $error;
+  }
 }

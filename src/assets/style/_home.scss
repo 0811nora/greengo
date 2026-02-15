@@ -302,11 +302,24 @@ li {
 
 // SIGNATURE BOWLS
 .home__signature-section {
-  background-image: url(/img/items/top-frame-1.png);
+  position: relative;
   background-color: $primary-100;
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: 100% auto;
+  padding-top: 100px;
+  overflow: hidden;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/img/items/top-frame-1.png);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% auto;
+    opacity: 0.4;
+    z-index: 0;
+  }
   .home__signature-container {
     display: flex;
     justify-content: center;
@@ -326,6 +339,24 @@ li {
         left: 50%;
       }
     }
+  }
+}
+.home__swiper {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/img/items/btm-frame-2.png');
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    background-size: 100% auto;
+    opacity: 0.3;
+    z-index: 0;
   }
 }
 

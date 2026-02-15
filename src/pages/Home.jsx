@@ -2,14 +2,6 @@ import { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { PageLinks, Ingredients } from '../data/homeData';
 
-// swiper
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-
 // API
 import { getArticles } from '../api/ApiClient';
 
@@ -19,58 +11,9 @@ import ContentCard from '../components/home/ContentCard';
 import CommentCard from '../components/home/CommentCard';
 import IngredientCard from '../components/home/IngredientCard';
 import StepCard from '../components/home/StepCard';
+import BestSellerSwiper from '../components/home/BestSellerSwiper';
 import HeroSection from '../components/home/sections/HeroSection';
 import NutritionSection from '../components/home/sections/NutritionSection';
-
-// 餐點卡片區
-// 模擬資料，待接 API
-const FIXED_PRODUCTS = [
-  {
-    id: 1,
-    name: '經典雙雞蛋白碗',
-    price: 230,
-    kcal: 550,
-    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
-    tags: ['豐富蛋白質', '輕盈低卡', '優質油脂'],
-    rank: 'TOP1',
-  },
-  {
-    id: 2,
-    name: '經典雙雞蛋白碗',
-    price: 230,
-    kcal: 550,
-    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
-    tags: ['豐富蛋白質', '輕盈低卡', '優質油脂'],
-    rank: 'TOP2',
-  },
-  {
-    id: 3,
-    name: '經典雙雞蛋白碗',
-    price: 230,
-    kcal: 550,
-    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
-    tags: ['豐富蛋白質', '輕盈低卡', '優質油脂'],
-    rank: 'TOP3',
-  },
-  {
-    id: 4,
-    name: '經典雙雞蛋白碗',
-    price: 230,
-    kcal: 550,
-    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
-    tags: ['豐富蛋白質', '輕盈低卡', '優質油脂'],
-    rank: 'TOP4',
-  },
-  {
-    id: 5,
-    name: '經典雙雞蛋白碗',
-    price: 230,
-    kcal: 550,
-    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
-    tags: ['豐富蛋白質', '輕盈低卡', '優質油脂'],
-    rank: 'TOP5',
-  },
-];
 
 export default function Home() {
   // 監聽區
@@ -164,72 +107,16 @@ export default function Home() {
             </div>
           </div>
           {/* 熱門商品 + swiper 套件*/}
-          <div className='container-fluid bg-yellow-100 py-8 py-md-10 px-8 rounded-5'>
+          <div className='container-fluid home__swiper bg-yellow-100 pt-5 pb-8 pb-md-10 px-8 rounded-5'>
+            <div className='text-center mb-2 mb-md-5'>
+              {' '}
+              <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2 mb-md-5'>
+                BEST SELLER
+              </h4>
+              <h2 className='fs-3 fs-md-1 fw-bold mb-2 mb-md-5'>熱銷排行</h2>
+            </div>
             <div className='row'>
-              <Swiper
-                className='fixed-swiper'
-                modules={[Navigation, A11y]}
-                spaceBetween={24}
-                slidesPerView={1.5}
-                navigation
-                breakpoints={{
-                  576: { slidesPerView: 2 },
-                  768: { slidesPerView: 3 },
-                  992: { slidesPerView: 4 },
-                }}
-                style={{
-                  paddingBottom: '10px',
-                  paddingLeft: '20px',
-                  paddingRight: '20px',
-                }}
-              >
-                {/* 待調整 */}
-                {FIXED_PRODUCTS.map((product) => (
-                  <SwiperSlide key={product.id}>
-                    <div className='home__fixed-card h-100'>
-                      <div className='position-relative overflow-hidden rounded-3'>
-                        {product.rank && (
-                          <span className='badge rounded-pill bg-success position-absolute top-0 start-0 mt-2 ms-2 z-3'>
-                            {product.rank}
-                          </span>
-                        )}
-                        <button
-                          type='button'
-                          className='btn-add-cart position-absolute bottom-0 end-0 mb-2 me-2 z-3'
-                          aria-label='加入購物車'
-                        >
-                          <i className='bi bi-bag'></i>
-                        </button>
-                        <img
-                          src={product.img}
-                          className='card-img-top object-fit-cover'
-                          alt={product.name}
-                        />
-                      </div>
-                      <div className='card-body mt-4'>
-                        <div className='d-flex justify-content-between align-items-center mb-1'>
-                          <h5 className='fs-6 fs-md-5 fw-bold mb-0'>
-                            {product.name}
-                          </h5>
-                          <span className='ft-en fs-6 fs-md-5 fw-bold'>
-                            ${product.price}
-                          </span>
-                        </div>
-                        <p className='ft-en fw-medium text-gray-300 mb-3'>
-                          {product.kcal} kcal
-                        </p>
-                        <div className='d-flex flex-wrap gap-2'>
-                          {product.tags.map((item, index) => (
-                            <span key={index} className='tag-item'>
-                              {item}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+              <BestSellerSwiper />
             </div>
           </div>
         </section>
@@ -237,16 +124,15 @@ export default function Home() {
           id='visual'
           viewBox='0 0 1920 120'
           width='100%'
-          height='auto'
           xmlns='http://www.w3.org/2000/svg'
-          xmlns:xlink='http://www.w3.org/1999/xlink'
+          xmlnsXlink='http://www.w3.org/1999/xlink'
           version='1.1'
         >
           <path
             d='M0 30L35.5 35.3C71 40.7 142 51.3 213.2 47.8C284.3 44.3 355.7 26.7 426.8 22.3C498 18 569 27 640 36.2C711 45.3 782 54.7 853.2 54.8C924.3 55 995.7 46 1066.8 38.8C1138 31.7 1209 26.3 1280 29C1351 31.7 1422 42.3 1493.2 49C1564.3 55.7 1635.7 58.3 1706.8 58.5C1778 58.7 1849 56.3 1884.5 55.2L1920 54L1920 0L1884.5 0C1849 0 1778 0 1706.8 0C1635.7 0 1564.3 0 1493.2 0C1422 0 1351 0 1280 0C1209 0 1138 0 1066.8 0C995.7 0 924.3 0 853.2 0C782 0 711 0 640 0C569 0 498 0 426.8 0C355.7 0 284.3 0 213.2 0C142 0 71 0 35.5 0L0 0Z'
             fill='#ecf3ed'
-            stroke-linecap='round'
-            stroke-linejoin='miter'
+            strokeLinecap='round'
+            strokeLinejoin='miter'
           ></path>
         </svg>
         {/* 自由配 */}

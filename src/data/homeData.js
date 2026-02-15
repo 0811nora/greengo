@@ -149,3 +149,53 @@ export const StepCards = [
     icon: 'bi bi-4-circle-fill',
   },
 ];
+
+// 餐點卡片區
+// 模擬資料，待接 API
+export const FixedMeals = [
+  {
+    id: 1,
+    name: '經典雙雞蛋白碗',
+    price: 230,
+    kcal: 550,
+    img: `${import.meta.env.BASE_URL}img/items/bowl-3.png`,
+    tags: ['多多蛋白', '人氣推薦'],
+    rank: 'TOP1',
+  },
+  {
+    id: 2,
+    name: '三重蛋白活力碗',
+    price: 240,
+    kcal: 416,
+    img: `${import.meta.env.BASE_URL}img/items/bowl-4.png`,
+    tags: ['多多蛋白'],
+    rank: 'TOP2',
+  },
+  {
+    id: 3,
+    name: '海味清爽檸香碗',
+    price: 220,
+    kcal: 332,
+    img: `${import.meta.env.BASE_URL}img/items/bowl-5.png`,
+    tags: ['低脂低卡'],
+    rank: 'TOP3',
+  },
+  {
+    id: 4,
+    name: '豆香高纖和風碗',
+    price: 150,
+    kcal: 313,
+    img: `${import.meta.env.BASE_URL}img/items/bowl-2.png`,
+    tags: ['低脂低卡', '新鮮蔬食'],
+    rank: 'TOP4',
+  },
+  {
+    id: 5,
+    name: '海陸三拼能量碗',
+    price: 280,
+    kcal: 594,
+    img: `${import.meta.env.BASE_URL}img/items/bowl-1.png`,
+    tags: ['多多蛋白'],
+    rank: 'TOP5',
+  },
+];

@@ -1,11 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { getCart, deleteCartItem } from '../../api/ApiClient';
+import { notify } from '../Notify';
 
 const CartDropdown = () => {
-  const { cartData } = useCart();
+  const { cartData, getAllCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [cartItem, setCartItem] = useState([]);
+  // 金額
+  const [total, setTotal] = useState(0);
+  const [finalTotal, setFinalTotal] = useState(0);
 
   // 切換 dropdown 開關
   const toggleDropdown = () => {
@@ -32,6 +38,20 @@ const CartDropdown = () => {
     return acc + item.customizations.custom_total * item.qty;
   }, 0);
 
+  // 刪除單一商品
+  const removeCartItem = async (id) => {
+    try {
+      const isConfirm = window.confirm('確定要移除該商品嗎？');
+      if (isConfirm) {
+        await deleteCartItem(id);
+        notify('success', '已刪除該商品');
+        getAllCart();
+      }
+    } catch (error) {
+      console.log('刪除失敗', error);
+    }
+  };
+
   return (
     <div className='position-relative' ref={dropdownRef}>
       {/* 購物車按鈕 */}
@@ -52,7 +72,7 @@ const CartDropdown = () => {
       {/* Dropdown 內容 */}
       {isOpen && (
         <div
-          className='position-absolute end-0 mt-2 bg-white border rounded-3 shadow'
+          className='header__cartdropdown position-absolute end-0 mt-2 rounded-3'
           style={{
             width: '320px',
             maxHeight: '450px',
@@ -97,11 +117,16 @@ const CartDropdown = () => {
                             </div>
                             <div className='text-gray-300 d-flex justify-content-between'>
                               <span>
-                                ${item.customizations.custom_total} x {item.qty}
+                                {item.qty} x NT$
+                                {item.customizations.custom_total}
                               </span>
-                              <span className='pe-2'>
-                                ${item.customizations.custom_total * item.qty}
-                              </span>
+                              <button
+                                type='button'
+                                className='header__cart-deletebtn'
+                                onClick={() => removeCartItem(item.id)}
+                              >
+                                <i className='bi bi-trash'></i>
+                              </button>
                             </div>
                           </div>
                         </li>
