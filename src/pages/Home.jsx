@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Ingredients } from '../data/homeData';
+import { PageLinks, Ingredients } from '../data/homeData';
 
 // swiper
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
@@ -21,14 +21,6 @@ import IngredientCard from '../components/home/IngredientCard';
 import StepCard from '../components/home/StepCard';
 import HeroSection from '../components/home/sections/HeroSection';
 import NutritionSection from '../components/home/sections/NutritionSection';
-
-// 頁面 router
-const PageLinks = {
-  productLink: { title: '綠果精選系列', url: '/product' },
-  customLink: { title: '客製化點餐', url: '/custom' },
-  aboutLink: { title: '關於綠果', url: '/about' },
-  articleLink: { title: '綠果專欄', url: '/article' },
-};
 
 // 餐點卡片區
 // 模擬資料，待接 API
@@ -78,26 +70,6 @@ const FIXED_PRODUCTS = [
     tags: ['豐富蛋白質', '輕盈低卡', '優質油脂'],
     rank: 'TOP5',
   },
-];
-
-// 步驟區
-const STEP_CARDS = [
-  {
-    id: 1,
-    step_title: '選擇基底',
-    step_content: '白米、糙米、紫米、藜麥、生菜',
-  },
-  {
-    id: 2,
-    step_title: '挑選主食',
-    step_content: '雞胸肉、牛肉、鮭魚、蝦仁，為你包山包海',
-  },
-  {
-    id: 3,
-    step_title: '搭配蔬果',
-    step_content: '配角可以比主角搶戲，季節時蔬任選 5 種',
-  },
-  { id: 4, step_title: '淋上醬汁', step_content: '為你的餐盒來點靈魂' },
 ];
 
 export default function Home() {
@@ -150,18 +122,18 @@ export default function Home() {
         {/* Smart Nutrition */}
         <NutritionSection />
         {/* 精選區 */}
-        <section className='home__signature-section container-fluid rounded-top-5'>
+        <section className='home__signature-section container-fluid rounded-top-5 py-10 px-6'>
           {/* 示意區 */}
           <div className='container'>
             <div className='row align-items-center'>
               {/* 左邊示意區 */}
-              <div className='col-lg-7 d-none d-sm-flex visual-area my-8 my-md-10'>
+              <div className='col-lg-7 d-none d-sm-flex home__signature-container my-8'>
                 {/* 碗 */}
-                <div className='main-bowl-container'>
+                <div className='home__signature-content'>
                   <img
                     src={`${import.meta.env.BASE_URL}img/items/bowl-5.png`}
                     alt='bowl-5'
-                    className='main-bowl-img'
+                    className='home__signature-img'
                   />
                   {/* 配菜區 */}
                   {Ingredients.map((data) => (
@@ -191,10 +163,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
-        {/* 熱門商品 + swiper 套件*/}
-        <section className='bg-white'>
-          <div className='container py-8 py-md-10'>
+          {/* 熱門商品 + swiper 套件*/}
+          <div className='container-fluid bg-white py-8 py-md-10 px-8 rounded-5'>
             <div className='row'>
               <Swiper
                 className='fixed-swiper'
@@ -209,8 +179,8 @@ export default function Home() {
                 }}
                 style={{
                   paddingBottom: '10px',
-                  paddingLeft: '80px',
-                  paddingRight: '80px',
+                  paddingLeft: '20px',
+                  paddingRight: '20px',
                 }}
               >
                 {/* 待調整 */}
@@ -263,6 +233,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <section className='bg-white'></section>
         {/* 自由配 */}
         <section
           className='position-relative my-5'

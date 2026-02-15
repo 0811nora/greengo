@@ -5,6 +5,8 @@ import { Outlet } from 'react-router-dom';
 import Header from './layout/Header.jsx';
 import Footer from './layout/Footer.jsx';
 import { CartProvider } from './context/CartContext.jsx';
+// 頁面切換時 自動回到頂端
+import ScrollToTop from './components/home/ScrollToTop.jsx';
 
 const token = document.cookie
   .split('; ')
@@ -18,6 +20,7 @@ function App() {
   return (
     <>
       <CartProvider>
+        <ScrollToTop />
         <Header />
         <main>
           <Outlet />

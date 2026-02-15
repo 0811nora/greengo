@@ -3,9 +3,8 @@ import { PageLinks, Ingredients } from '../../data/homeData';
 
 const IngredientCard = ({ item }) => {
   const size = 60;
-  const strokeWidth = 5;
-  const radius = 25;
-  const percentage = 0.75; // 待改
+  const strokeWidth = 3;
+  const radius = (size - strokeWidth) / 2;
 
   return (
     <motion.div
@@ -35,12 +34,12 @@ const IngredientCard = ({ item }) => {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke='#F48A54'
+            stroke={item.color}
             strokeWidth={strokeWidth}
             fill='transparent'
             strokeLinecap='round'
             initial={{ pathLength: 0 }}
-            animate={{ pathLength: percentage }}
+            animate={{ pathLength: item.percentage }}
             transition={{ duration: 1.5, ease: 'easeOut' }}
           />
         </svg>

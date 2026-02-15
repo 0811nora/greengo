@@ -301,39 +301,19 @@ li {
 }
 
 // SIGNATURE BOWLS
-// 配菜位置(待調整)
-@mixin ingredient-pos(
-  $top: null,
-  $right: null,
-  $bottom: null,
-  $left: null,
-  $m-top: null,
-  $m-right: null,
-  $m-bottom: null,
-  $m-left: null
-) {
-  top: $top;
-  right: $right;
-  bottom: $bottom;
-  left: $left;
-  @media (max-width: 992px) {
-    top: $m-top;
-    right: $m-right;
-    bottom: $m-bottom;
-    left: $m-left;
-  }
-}
 .home__signature-section {
-  background: linear-gradient(
-    180deg,
-    rgba(236, 243, 237, 1) 0%,
-    rgba(236, 243, 237, 0.5) 100%
-  );
-  background: $primary-100;
-  .visual-area {
+  background-image: url(/img/items/top-frame-1.png);
+  background-color: $primary-100;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% auto;
+  .home__signature-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     min-height: 500px;
-    .main-bowl-img {
+    .home__signature-img {
       max-width: 375px;
       width: 60%;
       position: absolute;
@@ -344,73 +324,6 @@ li {
       @media (max-width: 992px) {
         top: 50%;
         left: 50%;
-      }
-    }
-    .ingredient-card {
-      width: 150px;
-      height: 75px;
-      position: absolute;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 2;
-      background: $white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      opacity: 0.8;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      &:hover {
-        opacity: 0.9;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
-      }
-      img {
-        width: 60px;
-        margin-right: 8px;
-      }
-      // 配菜位置
-      &.pos-btm-left {
-        // 鮭魚
-        img {
-          width: 90px;
-        }
-        @include ingredient-pos(
-          $bottom: 20%,
-          $left: 25%,
-          $m-bottom: 20%,
-          $m-left: 10%
-        );
-      }
-      &.pos-top-mid {
-        // 番茄
-        @include ingredient-pos($top: 2%, $left: 50%, $m-top: 5%, $m-left: 35%);
-      }
-      &.pos-top-mid-left {
-        // 南瓜
-        @include ingredient-pos(
-          $top: 25%,
-          $left: 20%,
-          $m-top: 28%,
-          $m-left: 10%
-        );
-      }
-      &.pos-top-right {
-        // 花椰菜
-        @include ingredient-pos(
-          $top: 30%,
-          $right: 2%,
-          $m-top: 30%,
-          $m-right: 10%
-        );
-      }
-      &.pos-btm-right {
-        // 小黃瓜
-        @include ingredient-pos(
-          $top: 65%,
-          $right: 5%,
-          $m-top: 65%,
-          $m-right: 15%
-        );
       }
     }
   }

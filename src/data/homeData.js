@@ -65,6 +65,8 @@ export const Ingredients = [
     name: '鮭魚',
     nur: '蛋白質',
     protein: '26g',
+    percentage: 0.65,
+    color: '#ffa43b',
     pos: 'pos-btm-left',
     img: `${import.meta.env.BASE_URL}img/items/salmon.png`,
   },
@@ -72,8 +74,10 @@ export const Ingredients = [
   {
     id: 'tomato',
     name: '番茄',
-    nur: '蛋白質',
-    protein: '1.1g',
+    nur: '膳食纖維',
+    protein: '0.8g',
+    percentage: 0.06,
+    color: '#6FA9BB',
     pos: 'pos-top-mid',
     img: `${import.meta.env.BASE_URL}img/items/tomato.png`,
   },
@@ -81,8 +85,10 @@ export const Ingredients = [
   {
     id: 'pumpkin',
     name: '南瓜',
-    nur: '蛋白質',
-    protein: '1.2g',
+    nur: '膳食纖維',
+    protein: '2g',
+    percentage: 0.17,
+    color: '#6FA9BB',
     pos: 'pos-top-mid-left',
     img: `${import.meta.env.BASE_URL}img/items/pumpkin.png`,
   },
@@ -92,6 +98,8 @@ export const Ingredients = [
     name: '花椰菜',
     nur: '蛋白質',
     protein: '2.5g',
+    percentage: 0.06,
+    color: '#ffa43b',
     pos: 'pos-top-right',
     img: `${import.meta.env.BASE_URL}img/items/broccoli.png`,
   },
@@ -99,10 +107,45 @@ export const Ingredients = [
   {
     id: 'cucumber',
     name: '小黃瓜',
-    nur: '蛋白質',
-    protein: '0.7g',
+    nur: '碳水化合物',
+    protein: '2g',
+    percentage: 0.02,
+    color: '#C54F2D',
     pos: 'pos-btm-right',
     img: `${import.meta.env.BASE_URL}img/items/cucumber.png`,
   },
   // 熱量：約 9 kcal/碳水化合物：約 2 g
+];
+
+// step card
+// 步驟區
+export const StepCards = [
+  {
+    id: 1,
+    step_title: '選擇基底',
+    step_content: '白米、糙米、紫米、藜麥、生菜',
+    img: `${import.meta.env.BASE_URL}img/items/step1.png`,
+    icon: 'bi bi-1-circle-fill',
+  },
+  {
+    id: 2,
+    step_title: '挑選主食',
+    step_content: '雞胸肉、牛肉、鮭魚、蝦仁，為你包山包海',
+    img: `${import.meta.env.BASE_URL}img/items/step2.png`,
+    icon: 'bi bi-2-circle-fill',
+  },
+  {
+    id: 3,
+    step_title: '搭配蔬果',
+    step_content: '配角可以比主角搶戲，季節時蔬任選 5 種',
+    img: `${import.meta.env.BASE_URL}img/items/step3.png`,
+    icon: 'bi bi-3-circle-fill',
+  },
+  {
+    id: 4,
+    step_title: '淋上醬汁',
+    step_content: '為你的餐盒來點靈魂',
+    img: `${import.meta.env.BASE_URL}img/items/step4.png`,
+    icon: 'bi bi-4-circle-fill',
+  },
 ];
