@@ -350,47 +350,13 @@ li {
 .fixed-swiper {
   width: 1296px;
 }
-// swiper 樣式
-.custom-swiper {
-  --swiper-navigation-color: #000000;
-  --swiper-navigation-size: 60px;
-}
-.custom-swiper {
-  .swiper-button-prev {
-    left: 0;
-  }
-  .swiper-button-next {
-    right: 0;
-  }
-}
 
-.custom-swiper .swiper-button-prev,
-.custom-swiper .swiper-button-next {
-  background-color: rgba(255, 255, 255, 0.8);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 8px 12px 0 rgba(0, 0, 0, 0.3),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
 // swiper 樣式
 .fixed-swiper {
   --swiper-navigation-color: #000000;
-  --swiper-navigation-size: 60px;
+  --swiper-navigation-size: 80px;
 }
-.fixed-swiper .swiper-button-prev {
-  left: 2%;
-  top: 35%;
-}
-.fixed-swiper .swiper-button-next {
-  right: 2%;
-  top: 35%;
-}
+
 .fixed-swiper .swiper-button-prev,
 .fixed-swiper .swiper-button-next {
   background-color: rgba(255, 255, 255, 0.8);
