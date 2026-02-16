@@ -83,17 +83,21 @@ export default function About() {
 
             const isMobile = width < 600;
 
-            if (!isMobile) {
-                Composite.add(engine.world, mouseConstraint);
+            mouse.element.removeEventListener('wheel', mouse.mousewheel);
+            mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
+            mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
 
-                // 移除桌機上的滾輪干擾
-                mouse.element.removeEventListener('wheel', mouse.mousewheel);
-                mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
-                mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
-            } else {
-                // 手機版：完全禁用 mouse 監聽，確保事件穿透到父層進行捲動
-                mouse.element.style.pointerEvents = 'none';
-            }
+            // if (!isMobile) {
+            //     Composite.add(engine.world, mouseConstraint);
+
+            //     // 移除桌機上的滾輪干擾
+            //     mouse.element.removeEventListener('wheel', mouse.mousewheel);
+            //     mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
+            //     mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
+            // } else {
+            //     // 手機版：完全禁用 mouse 監聽，確保事件穿透到父層進行捲動
+            //     mouse.element.style.pointerEvents = 'none';
+            // }
 
 
 
@@ -213,7 +217,7 @@ export default function About() {
                 const floorScaleX = targetFloorWidth / currentFloorWidth;
                 Body.scale(floor, floorScaleX, 1);   // 只拉寬，不動高度
 
-                // ★★★ 新增：更新左右牆高度（保險起見）★★★
+                // 更新左右牆高度
                 const currentWallHeight = leftWall.bounds.max.y - leftWall.bounds.min.y;
                 const targetWallHeight = newHeight * 2;
                 const wallScaleY = targetWallHeight / currentWallHeight;
@@ -229,17 +233,17 @@ export default function About() {
                 });
                 Body.scale(rightWall, 1, wallScaleY);
 
-                if (!isMobileNow) {
-                    Composite.add(engine.world, mouseConstraint);
+                // if (!isMobileNow) {
+                //     Composite.add(engine.world, mouseConstraint);
 
-                    // 移除桌機上的滾輪干擾
-                    mouse.element.removeEventListener('wheel', mouse.mousewheel);
-                    mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
-                    mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
-                } else {
-                    // 手機版：完全禁用 mouse 監聽，確保事件穿透到父層進行捲動
-                    mouse.element.style.pointerEvents = 'none';
-                }
+                //     // 移除桌機上的滾輪干擾
+                //     mouse.element.removeEventListener('wheel', mouse.mousewheel);
+                //     mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
+                //     mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
+                // } else {
+                //     // 手機版：完全禁用 mouse 監聽，確保事件穿透到父層進行捲動
+                //     mouse.element.style.pointerEvents = 'none';
+                // }
 
                 updateBowl(newWidth, newHeight, isMobileNow);
 
