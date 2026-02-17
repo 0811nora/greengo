@@ -211,21 +211,22 @@ section.menu-section {
 	display: block;
 }
 .product-page .CTA-custom {
-	.img {
-		height: 600px;
-	}
-	img {
-		width: 100%;
-		height: 100%;
-	}
-	.content {
-		padding: 80px;
-		background: $primary-100;
-		height: 100%;
+	height: 650px;
+	background-image:
+		linear-gradient(rgba(23, 34, 17, 0.4), rgba(23, 34, 17, 0.4)),
+		url('https://images.unsplash.com/photo-1551218372-a8789b81b253?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+
+	.CTA-content {
+		background: $white;
+		border-radius: 24px;
+		box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
 		p {
 			color: $gray-200;
 			font-weight: $font-weight-semibold;
-			font-style: 20px;
 			font-size: 28px;
 		}
 		h2 {
@@ -239,6 +240,7 @@ section.menu-section {
 			color: $gray-300;
 		}
 	}
+
 	.cta-btn {
 		width: fit-content;
 		background: $primary-200;

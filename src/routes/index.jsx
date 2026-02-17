@@ -31,7 +31,7 @@ const routes = [
 		children: [
 			{ index: true, element: <Home /> },
 			{ path: 'product', element: <Product /> },
-			{ path: 'product/:id', element: <ProductDetail /> },
+			{ path: 'product/:id', element: <Product /> },
 			{ path: 'product2', element: <Product2 /> },
 			{ path: 'about', element: <About /> },
 			{ path: 'custom', element: <Custom /> },

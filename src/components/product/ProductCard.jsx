@@ -1,7 +1,8 @@
 import { renderUITab } from '../../utils/productUiRender';
 import { renderUITag } from '../../utils/productUiRender';
+import Loader from '../../components/common/Loading';
 
-const ProductCard = ({ product, category, handleOpenDetail }) => {
+const ProductCard = ({ product, category, handleOpenDetail, isAddCartLoading, handleAddCart }) => {
 	return (
 		<div className="col-xxl-3 col-lg-4  col-sm-6 col-12" key={product.id}>
 			<div className="d-flex flex-lg-column card mb-6" onClick={() => handleOpenDetail(product.id)}>
@@ -50,9 +51,19 @@ const ProductCard = ({ product, category, handleOpenDetail }) => {
 					<div className="h6 fw-semibold text-gray-600 mt-5">{`NT$ ${product.price}`}</div>
 
 					{/* 加入購物車按鈕 */}
-					<button className="addBtn position-absolute">
+					<div className="addBtn position-absolute">
 						<i className="bi bi-plus fs-4"></i>
-					</button>
+					</div>
+					{/* <button
+						className="addBtn position-absolute"
+						onClick={e => {
+							e.stopPropagation();
+							handleAddCart(product.id, 1, e);
+						}}
+					>
+						{isAddCartLoading || <i className="bi bi-plus fs-4"></i>}
+						<Loader mode="button" show={isAddCartLoading} className={'ms-2 text-primary-200'} />
+					</button> */}
 				</div>
 			</div>
 		</div>

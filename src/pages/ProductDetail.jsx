@@ -1,360 +1,271 @@
 import { useEffect, useState } from 'react';
-import { Accordion, Form } from 'react-bootstrap';
-import { Link, useParams } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import { getSingleProduct } from '../api/ApiClient';
-import { renderUITab } from '../utils/productUiRender';
-import { renderUITag } from '../utils/productUiRender';
+import { renderUITab, renderUITag } from '../utils/productUiRender';
+import DonutPFC from '../components/custom-comp/PFC_Chart';
+import Loader from '../components/common/Loading';
 
-const ProductDetail = () => {
+const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) => {
 	const { id } = useParams();
 	const [productDetail, setProductDetail] = useState(null);
+	const [num, setNum] = useState(1);
+	const [isDataLoading, setIsDataLoading] = useState(true);
 
+	// 取得單一產品資料
 	useEffect(() => {
 		const getProductDetail = async () => {
 			try {
 				const res = await getSingleProduct(id);
-				console.log(res.data);
 				setProductDetail(res.data.product);
+				setIsDataLoading(false);
 			} catch (error) {
 				console.log(error.response);
+				setIsDataLoading(false);
+				notify('error', '資料讀取失敗，請重新整理', 'top-right');
 			}
 		};
 		getProductDetail();
 	}, [id]);
 
+	// 點擊數量按鈕，決定訂購數量
+	const handleAddNum = () => {
+		if (num >= 20) return;
+		setNum(num + 1);
+	};
+	const handleMinusNum = () => {
+		if (num <= 1) return;
+		setNum(num - 1);
+	};
+
+	// 加入購物車(包含戳API)
+	// const addCart = async (id, qty) => {
+	// 	setIsAddCartLoading(true);
+	// 	const data = {
+	// 		product_id: id,
+	// 		qty: qty,
+	// 	};
+	// 	try {
+	// 		const res = await postAddToCart(data);
+	// 		console.log(res.data);
+	// 		setIsAddCartLoading(false);
+	// 		notify('success', '加入購物車成功', 'top-right');
+	// 		handleCloseDetail();
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 		setIsAddCartLoading(false);
+	// 		notify('error', '加入購物車失敗', 'top-right');
+	// 	}
+	// };
+
 	return (
 		<div className="productDetail-page bg-gray-50">
-			<div className="container">
-				{/* 回上一頁 */}
-				<Link className="back d-flex align-items-center" to="/product">
-					<span class="material-symbols-rounded">keyboard_backspace</span>
-					<h5>回上一頁</h5>
-				</Link>
-				<div className="row">
-					<div className="col-5">
-						{/* 圖片 */}
-						<div className="img d-flex justify-content-center">
-							<img src={productDetail?.imageUrl} alt={productDetail?.title} />
-						</div>
-					</div>
-					<div className="col-7">
-						<div className=" info d-flex flex-column">
-							{/* 標題和忌口選擇標籤 */}
-							<div className="d-flex">
-								<h1 className="h3 fw-semibold mb-4 me-4">{productDetail?.title}</h1>
-								<div className=" flavorTag d-flex gap-1">
-									{renderUITag(productDetail?.include_tags, productDetail?.product_type)?.map((img, index) => (
-										<div className="tag" key={index}>
-											<img src={img} alt="忌口選擇標籤" />
+			<Modal
+				show={Boolean(id)} // 判斷又沒有網址後面有沒有id，決定modal的出現與否
+				onHide={handleCloseDetail}
+				dialogClassName="product-detail"
+				aria-labelledby="product-detail"
+				size="xl"
+				scrollable="false"
+			>
+				<Modal.Header closeButton className="px-8 py-5">
+					{/* <Modal.Title id="productDetailModal">{productDetail?.title}</Modal.Title> */}
+				</Modal.Header>
+
+				<Modal.Body className="px-8">
+					{isDataLoading ? (
+						<Loader mode={'mask'} show={isDataLoading} text={'查看產品內容..'} />
+					) : (
+						<div className="container">
+							<div className="row">
+								<div className="col-5  position-relative">
+									{/* img */}
+									<div className="py-7 position-sticky top-0">
+										<div className="img d-flex justify-content-center ">
+											<img src={productDetail?.imageUrl} alt={productDetail?.title} />
 										</div>
-									))}
-								</div>
-							</div>
-
-							<div className="tab d-flex gap-1">
-								{renderUITab(productDetail?.tab_collection, productDetail?.product_type)?.map((item, index) => (
-									<span className="tabPill" key={index}>
-										{item}
-									</span>
-								))}
-							</div>
-							<p>500克 / 碗</p>
-							<p className="description">{productDetail?.description}</p>
-							<h5 className="fw-semibold">{`NT$ ${productDetail?.price}`}</h5>
-						</div>
-						<div className="ingredient py-7">
-							<h6 className="mb-4">內容物清單</h6>
-							<div className="d-flex flex-column gap-3 ">
-								<p>
-									<span className="key">基底</span>
-									{productDetail?.ingredients.base}
-								</p>
-								<p>
-									<span className="key">主食</span>
-									{productDetail?.ingredients.main}
-								</p>
-								<p>
-									<span className="key">配菜</span>
-									{productDetail?.ingredients.side}
-								</p>
-								<p>
-									<span className="key">醬料</span>
-									{productDetail?.ingredients.source}
-								</p>
-							</div>
-						</div>
-						<div className="nutrition py-7">
-							<h6 className="mb-4">營養素資訊</h6>
-							<div className="d-flex gap-3">
-								<p>
-									<span className="key">熱量</span>368 Kcal
-								</p>
-								<p>
-									<span className="key">蛋白質 P</span>10g
-								</p>
-								<p>
-									<span className="key">脂肪量 F</span>10g
-								</p>
-								<p>
-									<span className="key">碳水量 C</span>10g
-								</p>
-							</div>
-						</div>
-						{/* <div className="nutrition py-7">
-								<h6 className="mb-4">營養素資訊</h6>
-								<div className="d-flex gap-2">
-									<div className="block">
-										<p>
-											熱量<span className="value">368</span>cal
-										</p>
-									</div>
-									<div className="block">
-										<p>
-											蛋白量 P<span className="value">10</span>g
-										</p>
-									</div>
-									<div className="block">
-										<p>
-											脂肪 F<span className="value">10</span>g
-										</p>
-									</div>
-									<div className="block">
-										<p>
-											碳水量 C<span className="value">10</span>g
-										</p>
 									</div>
 								</div>
-							</div> */}
-						<div className="addon py-7">
-							<h6 className="mb-4">加購配料（皆另外包裝）</h6>
-							<div>
-								<Accordion defaultActiveKey="0" flush>
-									<Accordion.Item eventKey="0">
-										<Accordion.Header>加購額外基底</Accordion.Header>
-										<Accordion.Body>
-											<Form.Group className="d-flex align-items-center">
-												<Form.Label htmlFor="rice" className="d-flex align-items-center gap-4 me-auto">
-													<img
-														src="https://storage.googleapis.com/vue-course-api.appspot.com/miniburger/1770714624399.png"
-														alt=""
-													/>
-													<div>
-														<p>白米</p>
-														<span>100g / 130cal ｜P 10｜F 10｜C28</span>
-													</div>
-												</Form.Label>
+								<div className="col-7 ps-8">
+									{/* info */}
+									<div className=" info d-flex flex-column gap-5">
+										{/* title, tag */}
+										<div className="d-flex">
+											<h1 className="h3 fw-semibold me-4">{productDetail?.title}</h1>
+											<div className=" flavorTag d-flex align-items-center gap-2">
+												{renderUITag(productDetail?.include_tags, productDetail?.product_type)?.map(
+													(img, index) => (
+														<div key={index}>
+															<img src={img} alt="忌口選擇標籤" />
+														</div>
+													),
+												)}
+											</div>
+										</div>
+										{/* tab */}
+										<div className="tab d-flex gap-2">
+											{renderUITab(productDetail?.tab_collection, productDetail?.product_type)?.map(
+												(item, index) => (
+													<span className="tabPill" key={index}>
+														{item}
+													</span>
+												),
+											)}
+										</div>
+										{/* description */}
+										<div className="d-flex flex-column gap-2">
+											<p>{`${productDetail?.grams}克 / 碗`}</p>
+											<p className="description">{productDetail?.description}</p>
+										</div>
+										{/* price */}
+										<h5 className="fw-semibold">{`NT$ ${productDetail?.price}`}</h5>
+									</div>
+									{/* ingredient */}
+									<div className="ingredient">
+										<h6 className="mb-5">內容物清單</h6>
+										<div className="d-flex flex-column gap-3 ">
+											<p>
+												<span className="key">基底</span>
+												{productDetail?.ingredients.base}
+											</p>
+											{productDetail?.product_type === 'set' ? (
+												<>
+													<p>
+														<span className="key">主食</span>
+														{productDetail?.ingredients.main}
+													</p>
+													<p>
+														<span className="key">配菜</span>
+														{productDetail?.ingredients.side}
+													</p>
+													<p>
+														<span className="key">醬料</span>
+														{productDetail?.ingredients.source}
+													</p>
+												</>
+											) : (
+												''
+											)}
+										</div>
+									</div>
+									{/* nutrition */}
+									<div className="nutrition d-flex justify-content-between align-items-bottom">
+										<div>
+											<h6 className="mb-5">營養素資訊</h6>
+											<div className="d-flex flex-column gap-3">
+												<p>
+													<span className="key">熱量 Cal</span>
+													{`${productDetail?.nutrition.calories} Kcal`}
+												</p>
+												<p>
+													<span className="key">蛋白質 P</span>
+													{`${productDetail?.nutrition.protein} g`}
+												</p>
+												<p>
+													<span className="key">脂肪量 F</span>
+													{`${productDetail?.nutrition.fat} g`}
+												</p>
+												<p>
+													<span className="key">碳水量 C</span>
+													{`${productDetail?.nutrition.carbs} g`}
+												</p>
+											</div>
+										</div>
+										<div className="nutrition-chart">
+											<DonutPFC
+												protein={productDetail?.nutrition.protein}
+												fat={productDetail?.nutrition.fat}
+												carbs={productDetail?.nutrition.carbs}
+												calories={productDetail?.nutrition.calories}
+											/>
+										</div>
+									</div>
+									{/* addon */}
+									{/* <div className="addon py-7">
+									<h6 className="mb-4">加購配料（皆另外包裝）</h6>
+								
+									<div>
+										<Accordion defaultActiveKey="0" flush>
+											<Accordion.Item eventKey="0">
+												<Accordion.Header>加購額外基底</Accordion.Header>
+												<Accordion.Body className="d-flex flex-column gap-4">
+													{apiItemData
+														.filter(item => item.product_type === 'base')
+														.map(item => (
+															<Form.Group className="d-flex align-items-center" key={item.id}>
+																<Form.Label
+																	htmlFor={item.title}
+																	className="d-flex align-items-center gap-4 me-auto"
+																>
+																	<img src={item.imageUrl} alt={item.title} />
+																	<div>
+																		<p>{item.title}</p>
+																		<span>{`${item.grams}g / ${item.nutrition.calories}Kcal ｜P ${item.nutrition.protein}｜F ${item.nutrition.fat}｜C ${item.nutrition.carbs}`}</span>
+																	</div>
+																</Form.Label>
 
-												<div className="d-flex align-items-center">
-													<Form.Label htmlFor="rice">+ $30</Form.Label>
-													<Form.Check type="checkbox" id="rice" />
-												</div>
-											</Form.Group>
-										</Accordion.Body>
-									</Accordion.Item>
-									<Accordion.Item eventKey="1">
-										<Accordion.Header>加購額外主食​ (蛋白質)</Accordion.Header>
-										<Accordion.Body>
-											<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-										</Accordion.Body>
-									</Accordion.Item>
-									<Accordion.Item eventKey="2">
-										<Accordion.Header>加購額外醬​汁</Accordion.Header>
-										<Accordion.Body>
-											<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-										</Accordion.Body>
-									</Accordion.Item>
-									<Accordion.Item eventKey="3">
-										<Accordion.Header>加購額外​配料​</Accordion.Header>
-										<Accordion.Body>
-											<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-										</Accordion.Body>
-									</Accordion.Item>
-								</Accordion>
+																<div className="d-flex align-items-center">
+																	<Form.Label htmlFor={item.title}>{`+ $${item.price}`}</Form.Label>
+																	<Form.Check type="checkbox" id={item.title} />
+																</div>
+															</Form.Group>
+														))}
+												</Accordion.Body>
+											</Accordion.Item>
+											<Accordion.Item eventKey="1">
+												<Accordion.Header>加購額外主食​ (蛋白質)</Accordion.Header>
+												<Accordion.Body>
+													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
+												</Accordion.Body>
+											</Accordion.Item>
+											<Accordion.Item eventKey="2">
+												<Accordion.Header>加購額外醬​汁</Accordion.Header>
+												<Accordion.Body>
+													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
+												</Accordion.Body>
+											</Accordion.Item>
+											<Accordion.Item eventKey="3">
+												<Accordion.Header>加購額外​配料​</Accordion.Header>
+												<Accordion.Body>
+													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
+												</Accordion.Body>
+											</Accordion.Item>
+										</Accordion>
+									</div>
+								</div> */}
+								</div>
 							</div>
 						</div>
+					)}
+				</Modal.Body>
+
+				<Modal.Footer className="d-flex align-items-center gap-3">
+					<div className="num-control d-flex align-items-center justify-content-between gap-4">
+						<button className={`minus ${num <= 1 ? 'disable' : ''}`} onClick={handleMinusNum}>
+							<i className="bi bi-dash"></i>
+						</button>
+						<span className="fw-semibold text-center">{num}</span>
+						<button className={`add ${num >= 20 ? 'disable' : ''} `} onClick={handleAddNum}>
+							<i className="bi bi-plus"></i>
+						</button>
 					</div>
-				</div>
-			</div>
+
+					<button
+						className="addCart flex-fill"
+						onClick={() => {
+							handleAddCart(productDetail.id, num);
+						}}
+						disabled={isAddCartLoading}
+					>
+						<p>
+							{`加入 ${num} 份商品至購物車`}
+							<span className="fw-semibold ms-4">{`NT$ ${productDetail?.price * num}`}</span>
+							<Loader mode="button" show={isAddCartLoading} className={'ms-2'} />
+						</p>
+					</button>
+				</Modal.Footer>
+			</Modal>
 		</div>
-
-		// <Modal
-		// 	show={isOpenDetail}
-		// 	onHide={handleCloseDetail}
-		// 	dialogClassName="product-detail"
-		// 	aria-labelledby="product-detail"
-		// 	size="xl"
-		// 	className="product-detail"
-		// 	scrollable="false"
-		// >
-		// 	<Modal.Header closeButton>
-		// 		<Modal.Title id="productDetailModal">{productDetail?.title}</Modal.Title>
-		// 	</Modal.Header>
-		// 	<Modal.Body>
-		// 		<div className="container">
-		// 			<div className="row">
-		// 				<div className="col-6">
-		// 					<div className="img">
-		// 						<img src={productDetail?.imageUrl} alt={productDetail?.title} />
-		// 					</div>
-		// 				</div>
-		// 				<div className="col-6">
-		// 					<div className=" info d-flex flex-column gap-4 py-7">
-		// 						<div className="d-flex gap-2 mb-2">
-		// 							<h1 className="h3 fw-semibold">{productDetail?.title}</h1>
-		// 							<div className=" flavorTag d-flex gap-1">
-		// 								{/* {JSON.stringify(productDetail.include_tags)}
-		// 								{renderUITag(productDetail.include_tags, productDetail.product_type)?.map(
-		// 									(img, index) => (
-		// 										<div className="tag" key={index}>
-		// 											<img src={img} alt="忌口選擇標籤" />
-		// 										</div>
-		// 									),
-		// 								)} */}
-		// 							</div>
-		// 						</div>
-
-		// 						<div className="tabTag d-flex gap-1">
-		// 							{/* {JSON.stringify(productDetail.tab_collection)} */}
-		// 							{/* {renderUITab(productDetail.tab_collection, productDetail.product_type)?.map(
-		// 								(item, index) => (
-		// 									<span className="tabPill" key={index}>
-		// 										{item}
-		// 									</span>
-		// 								),
-		// 							)} */}
-		// 						</div>
-		// 						<p>500克 / 碗</p>
-		// 						<p className="description">{productDetail?.description}</p>
-		// 						<h5 className="fw-semibold">{`NT$ ${productDetail?.price}`}</h5>
-		// 					</div>
-		// 					<div className="ingredient py-7">
-		// 						<h6 className="mb-4">內容物清單</h6>
-		// 						<div className="d-flex flex-column gap-3 ">
-		// 							<p>
-		// 								<span className="key">基底</span>
-		// 								{productDetail?.ingredients.base}
-		// 							</p>
-		// 							<p>
-		// 								<span className="key">主食</span>
-		// 								{productDetail?.ingredients.main}
-		// 							</p>
-		// 							<p>
-		// 								<span className="key">配菜</span>
-		// 								{productDetail?.ingredients.side}
-		// 							</p>
-		// 							<p>
-		// 								<span className="key">醬料</span>
-		// 								{productDetail?.ingredients.source}
-		// 							</p>
-		// 						</div>
-		// 					</div>
-		// 					<div className="nutrition py-7">
-		// 						<h6 className="mb-4">營養素資訊</h6>
-		// 						<div className="d-flex gap-3">
-		// 							<p>
-		// 								<span className="key">熱量</span>368 Kcal
-		// 							</p>
-		// 							<p>
-		// 								<span className="key">蛋白質 P</span>10g
-		// 							</p>
-		// 							<p>
-		// 								<span className="key">脂肪量 F</span>10g
-		// 							</p>
-		// 							<p>
-		// 								<span className="key">碳水量 C</span>10g
-		// 							</p>
-		// 						</div>
-		// 					</div>
-		// 					{/* <div className="nutrition py-7">
-		// 						<h6 className="mb-4">營養素資訊</h6>
-		// 						<div className="d-flex gap-2">
-		// 							<div className="block">
-		// 								<p>
-		// 									熱量<span className="value">368</span>cal
-		// 								</p>
-		// 							</div>
-		// 							<div className="block">
-		// 								<p>
-		// 									蛋白量 P<span className="value">10</span>g
-		// 								</p>
-		// 							</div>
-		// 							<div className="block">
-		// 								<p>
-		// 									脂肪 F<span className="value">10</span>g
-		// 								</p>
-		// 							</div>
-		// 							<div className="block">
-		// 								<p>
-		// 									碳水量 C<span className="value">10</span>g
-		// 								</p>
-		// 							</div>
-		// 						</div>
-		// 					</div> */}
-		// 					<div className="addon py-7">
-		// 						<h6 className="mb-4">加購配料（皆另外包裝）</h6>
-		// 						<div>
-		// 							<Accordion defaultActiveKey="0" flush>
-		// 								<Accordion.Item eventKey="0">
-		// 									<Accordion.Header>加購額外基底</Accordion.Header>
-		// 									<Accordion.Body>
-		// 										<Form.Group className="d-flex align-items-center">
-		// 											<Form.Label htmlFor="rice" className="d-flex align-items-center gap-4 me-auto">
-		// 												<img
-		// 													src="https://storage.googleapis.com/vue-course-api.appspot.com/miniburger/1770714624399.png"
-		// 													alt=""
-		// 												/>
-		// 												<div>
-		// 													<p>白米</p>
-		// 													<span>100g / 130cal ｜P 10｜F 10｜C28</span>
-		// 												</div>
-		// 											</Form.Label>
-
-		// 											<div className="d-flex align-items-center">
-		// 												<Form.Label htmlFor="rice">+ $30</Form.Label>
-		// 												<Form.Check type="checkbox" id="rice" />
-		// 											</div>
-		// 										</Form.Group>
-		// 									</Accordion.Body>
-		// 								</Accordion.Item>
-		// 								<Accordion.Item eventKey="1">
-		// 									<Accordion.Header>加購額外主食​ (蛋白質)</Accordion.Header>
-		// 									<Accordion.Body>
-		// 										<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-		// 									</Accordion.Body>
-		// 								</Accordion.Item>
-		// 								<Accordion.Item eventKey="2">
-		// 									<Accordion.Header>加購額外醬​汁</Accordion.Header>
-		// 									<Accordion.Body>
-		// 										<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-		// 									</Accordion.Body>
-		// 								</Accordion.Item>
-		// 								<Accordion.Item eventKey="3">
-		// 									<Accordion.Header>加購額外​配料​</Accordion.Header>
-		// 									<Accordion.Body>
-		// 										<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-		// 									</Accordion.Body>
-		// 								</Accordion.Item>
-		// 							</Accordion>
-		// 						</div>
-		// 					</div>
-		// 				</div>
-		// 			</div>
-		// 		</div>
-		// 	</Modal.Body>
-		// 	<Modal.Footer className="d-flex align-items-center gap-3">
-		// 		<div className="num-control d-flex align-items-center justify-content-between gap-4">
-		// 			<button className="minus">
-		// 				<i class="bi bi-dash"></i>
-		// 			</button>
-		// 			<span className="fw-semibold text-center">1</span>
-		// 			<button className="add">
-		// 				<i class="bi bi-plus"></i>
-		// 			</button>
-		// 		</div>
-
-		// 		<button className="addCart flex-fill">加入3項項商品至購物車｜NT$ 500</button>
-		// 	</Modal.Footer>
-		// </Modal>
 	);
 };
 

@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAllProducts } from '../api/ApiClient';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getAllProducts, postAddToCart } from '../api/ApiClient';
+import { notify } from '../components/Notify';
 import MenuSection from '../components/product/MenuSection';
 import DATA from '../config/productUiData';
+import ProductDetail from './ProductDetail';
+import Loader from '../components/common/Loading';
 
 const BLOCK_CONTENT_OPTIONS = [
 	{
@@ -44,20 +47,23 @@ export default function Product() {
 	const [sortSelect, setSortSelect] = useState(null);
 	const [apiProdutsData, setApiProdutsData] = useState([]);
 	const [filterState, setFilterState] = useState(INITIAL_STATE_STATE);
+	const [isDataLoading, setIsDataLoading] = useState(true);
+	const [isAddCartLoading, setIsAddCartLoading] = useState(false);
 	const navigate = useNavigate();
+	const { id } = useParams();
 
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
 				const res = await getAllProducts();
-				const data = res.data.products.filter(
+				const productData = res.data.products.filter(
 					product => product.category !== 'item' && product.category !== 'custom',
 				);
-				console.log(data);
-				setApiProdutsData(data);
-				setIsLoading(false);
+				setApiProdutsData(productData);
+				setIsDataLoading(false);
 			} catch (error) {
 				console.log(error.response);
+				setIsDataLoading(false);
 			}
 		};
 		getProducts();
@@ -125,15 +131,32 @@ export default function Product() {
 
 	const handleOpenDetail = id => {
 		navigate(`/product/${id}`);
-		setIsOpenDetail(true);
 	};
 	const handleCloseDetail = () => {
 		navigate(`/product`);
-		setIsOpenDetail(false);
+	};
+	const handleAddCart = async (id, qty = 1) => {
+		setIsAddCartLoading(true);
+		const data = {
+			product_id: id,
+			qty: qty,
+		};
+		try {
+			const res = await postAddToCart(data);
+			setIsAddCartLoading(false);
+			notify('success', '加入購物車成功', 'top-right');
+			handleCloseDetail();
+		} catch (error) {
+			console.log(error);
+			setIsAddCartLoading(false);
+			notify('error', '加入購物車失敗', 'top-right');
+		}
 	};
 
 	return (
 		<div className="product-page">
+			{isDataLoading && <Loader mode={'page'} show={isDataLoading} />}
+
 			{/* 菜單hero */}
 			<header>
 				<div className="container d-flex flex-column justify-content-between align-items-center">
@@ -182,11 +205,21 @@ export default function Product() {
 				apiProdutsData={apiProdutsData}
 				renderDisplayData={renderDisplayData}
 				handleOpenDetail={handleOpenDetail}
+				isAddCartLoading={isAddCartLoading}
+				handleAddCart={handleAddCart}
 			/>
-			<section className="CTA-custom mt-10">
-				<div className="container-fluid p-0">
-					<div className="row">
-						<div className="col-5">
+			{/* 自由配導購區塊 */}
+			<section className="CTA-custom mt-10 d-flex justify-content-center align-items-center">
+				<div className="CTA-content d-flex flex-column align-items-center px-9 pt-10 pb-9">
+					<h2 className="mb-4">沒遇到理想的那「碗」嗎？</h2>
+					<h6 className="mb-8">到自選菜單，自由搭配出你的理想滋味吧！</h6>
+					<button type="button" className="home__btn-primary " onClick={() => navigate('/custom')}>
+						前往客製化點餐
+					</button>
+				</div>
+
+				{/* <div className="d-flex flex-md-row flex-column">
+						<div className="col-md-5 col-12">
 							<div className="img">
 								<img
 									src="https://images.unsplash.com/photo-1551218372-a8789b81b253?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -194,18 +227,19 @@ export default function Product() {
 								/>
 							</div>
 						</div>
-						<div className="col-7 ">
-							<div className="content d-flex flex-column justify-content-center">
-								<h2 className="mb-4">沒遇到理想的那「碗」嗎？</h2>
+						<div className="col-md-7 col-12">
+							<div className="content d-flex flex-column justify-content-center align-items-center">
+								<h2 className="mb-4 fs-xl-2 fs-3">沒遇到理想的那「碗」嗎？</h2>
 								<h6 className="mb-8">到自選菜單，自由搭配出你的理想滋味吧！</h6>
 								<button type="button" className="home__btn-primary " onClick={() => navigate('/custom')}>
 									前往客製化點餐
 								</button>
 							</div>
 						</div>
-					</div>
-				</div>
+					</div> */}
 			</section>
+
+			{/* 飲料 */}
 			<MenuSection
 				data={DATA}
 				category="drinks"
@@ -218,7 +252,11 @@ export default function Product() {
 				apiProdutsData={apiProdutsData}
 				renderDisplayData={renderDisplayData}
 				handleOpenDetail={handleOpenDetail}
+				isAddCartLoading={isAddCartLoading}
+				handleAddCart={handleAddCart}
 			/>
+
+			{/* 湯品 */}
 			<MenuSection
 				data={DATA}
 				category="soup"
@@ -231,7 +269,16 @@ export default function Product() {
 				apiProdutsData={apiProdutsData}
 				renderDisplayData={renderDisplayData}
 				handleOpenDetail={handleOpenDetail}
+				isAddCartLoading={isAddCartLoading}
+				handleAddCart={handleAddCart}
 			/>
+			{id && (
+				<ProductDetail
+					handleCloseDetail={handleCloseDetail}
+					isAddCartLoading={isAddCartLoading}
+					handleAddCart={handleAddCart}
+				/>
+			)}
 		</div>
 	);
 }

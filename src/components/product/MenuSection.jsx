@@ -14,8 +14,8 @@ const MenuSection = ({
 	renderDisplayData,
 	apiProdutsData,
 	handleOpenDetail,
-	// renderUITag,
-	// renderUITab,
+	isAddCartLoading,
+	handleAddCart,
 }) => {
 	const CustomMultiValueRemove = ({ innerProps }) => {
 		return (
@@ -92,10 +92,10 @@ const MenuSection = ({
 					<ProductCard
 						product={product}
 						category={category}
-						// renderUITag={renderUITag}
-						// renderUITab={renderUITab}
 						handleOpenDetail={handleOpenDetail}
 						key={product.id}
+						isAddCartLoading={isAddCartLoading}
+						handleAddCart={handleAddCart}
 					/>
 				))}
 			</div>
