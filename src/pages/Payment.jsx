@@ -5,6 +5,7 @@ import Loader from '../components/common/Loading';
 import { notify } from './../components/Notify';
 import { ConfirmModal } from '../components/common/Modal';
 import { useNavigate } from 'react-router-dom';
+import { PageSwitch} from '../components/common/AnimationWrapper';
 
 const Payment = () => {
   const { orderId } = useParams();
@@ -104,6 +105,7 @@ const Payment = () => {
 
   return (
     <div className="container payment-page cart-container ">
+      <PageSwitch>
       {/* 頁面標題 */}
       <div className="row mb-4">
         <div className="col-12 text-center">
@@ -326,6 +328,7 @@ const Payment = () => {
         }
         confirmModal={() => navigate('/member')}
       />
+      </PageSwitch>
     </div>
   );
 };
