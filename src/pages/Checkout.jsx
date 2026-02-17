@@ -3,6 +3,7 @@ import { getCart, postOrder } from '../api/ApiClient';
 import { useNavigate } from 'react-router-dom';
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import { useForm, useWatch } from 'react-hook-form';
+import { address } from 'framer-motion/client';
 
 const Checkout = () => {
   const [cartData, setCartData] = useState([]);
@@ -102,26 +103,25 @@ const Checkout = () => {
 
   // 處理送出訂單
   const onSubmit = async (data) => {
-    e.preventDefault();
-
     const pickupNumber = generatePickupNumber();
     const isCash = data.payment_method === 'cash';
     const paymentStatus = isCash ? 'unpaid' : 'paid';
     const orderStatus = isCash ? 'new' : 'ready';
 
-    // const data = {
-    //   user: {
-    //     ...formData,
-    //     addons_total: totalAddons,
-    //     final_total: finalTotal,
-    //     discount: discount,
-    //     order_number: pickupNumber,
-    //     payment_status: paymentStatus,
-    //     order_status: orderStatus,
-    //   },
-    // };
+    const predata = {
+      user: {
+        ...data,
+        addons_total: totalAddons,
+        final_total: finalTotal,
+        discount: discount,
+        order_number: pickupNumber,
+        payment_status: paymentStatus,
+        order_status: orderStatus,
+        address: 'Taipei',
+      },
+    };
     try {
-      const response = await postOrder(data);
+      const response = await postOrder(predata);
       const newOrderId = response.data.orderId;
       getCarts();
       // alert(
