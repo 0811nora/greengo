@@ -1,12 +1,12 @@
-import axios from "axios";
-import { notify } from "../../components/Notify";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { admSignin, admUserCheck } from "../../api/ApiAdmin";
+import axios from 'axios';
+import { notify } from '../../components/Notify';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { admSignin, admUserCheck } from '../../api/ApiAdmin';
 
 export default function AdminLogin() {
-  const [accountLogin, setAccountLogin] = useState("");
-  const [passwordLogin, setPasswordLogin] = useState("");
+  const [accountLogin, setAccountLogin] = useState('');
+  const [passwordLogin, setPasswordLogin] = useState('');
   // const [greenGoToken, setGreenGoToken] = useState("");
   const navigate = useNavigate();
 
@@ -22,9 +22,9 @@ export default function AdminLogin() {
       const { token, expired } = res.data;
 
       document.cookie = `greenToken=${token}; expires=${new Date(expired)}; path=/`;
-      axios.defaults.headers.common["Authorization"] = token;
+      axios.defaults.headers.common['Authorization'] = token;
       notify('success', '登入成功');
-      navigate("/admin/order");
+      navigate('/admin/order');
     } catch (error) {
       console.error(error);
       notify('error', '登入失敗');
@@ -33,41 +33,43 @@ export default function AdminLogin() {
     }
   };
 
-  // useEffect(() => {
-  //     const greenCookie = document.cookie.replace(
-  //         /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
-  //         "$1",
-  //     );
-  //     if (greenCookie) {
-  //         navigate('/admin');
-  //     }
-  // }, [navigate]);
-
+  // mini改的地方：----------------->
+  // login不驗證token是否可用，只判斷有沒有token，所以把驗證的程式碼註解，
+  // 將有token後的路由改成'/admin/order/today'
   useEffect(() => {
-    const greenCookie = document.cookie.replace(
-      /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1",
-    );
-    axios.defaults.headers.common["Authorization"] = greenCookie;
-    const checkLogin = async () => {
-      try {
-        const res = await admUserCheck();
-        console.log(res.data);
-        navigate("/admin/order/today");
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+    const greenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/, '$1');
     if (greenCookie) {
-      checkLogin();
+      navigate('/admin/order/today');
     }
   }, [navigate]);
 
-  const getAccount = (e) => {
+  // useEffect(() => {
+  //   const greenCookie = document.cookie.replace(
+  //     /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
+  //     "$1",
+  //   );
+  //   axios.defaults.headers.common["Authorization"] = greenCookie;
+  //   const checkLogin = async () => {
+  //     try {
+  //       const res = await admUserCheck();
+  //       console.log(res.data);
+  //       navigate("/admin/order/today");
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
+  //   if (greenCookie) {
+  //     checkLogin();
+  //   }
+  // }, [navigate]);
+
+  //--------------------------------------->
+
+  const getAccount = e => {
     setAccountLogin(e.target.value);
   };
 
-  const getPassword = (e) => {
+  const getPassword = e => {
     setPasswordLogin(e.target.value);
   };
 
@@ -105,11 +107,7 @@ export default function AdminLogin() {
                 placeholder="請輸入密碼"
               />
             </div>
-            <button
-              type="button"
-              className="btn btn-primary mt-4 px-5 py-2 btn_login_color"
-              onClick={Login}
-            >
+            <button type="button" className="btn btn-primary mt-4 px-5 py-2 btn_login_color" onClick={Login}>
               送出
             </button>
           </div>

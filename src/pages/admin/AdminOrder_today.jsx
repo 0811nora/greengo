@@ -10,6 +10,7 @@ export default function AdminOrder_today() {
 	const [filterType, setFilterType] = useState('all');
 	const [modalType, setModalType] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isModalShow, setIsModalShow] = useState(false);
 
 	// 取得 api 原始資料，新增訂單和付款狀態
 	useEffect(() => {
@@ -54,6 +55,9 @@ export default function AdminOrder_today() {
 		if (filterType === 'all') return true;
 		return filterType === order.order_status || filterType === order.payment_status;
 	});
+	const allOrderNum = orders.length;
+	const readyOrderNum = orders.filter(order => order.order_status === 'ready').length;
+	console.log(readyOrderNum);
 
 	// 時間戳轉換
 	const changeTimeStamp_date = timeStamp => {
@@ -76,23 +80,13 @@ export default function AdminOrder_today() {
 			case 'prepare':
 				return <span className="tag status-prepare">製餐中</span>;
 			case 'ready':
-				return (
-					<span className="tag status-ready">
-						可取餐
-						{/* <i className="bi bi-check-circle-fill"> 可取餐</i> */}
-					</span>
-				);
+				return <span className="tag status-ready">可取餐</span>;
 			case 'done':
 				return <span className="tag status-done">已取貨</span>;
 			case 'paid':
 				return <span className="tag status-done">已付款</span>;
 			case 'unpaid':
-				return (
-					<span className="tag status-unpaid">
-						未付款
-						{/* <i className="bi bi-credit-card-2-back-fill"> 未付款</i> */}
-					</span>
-				);
+				return <span className="tag status-unpaid">未付款</span>;
 			default:
 				return <span className="tag status-new">新訂單</span>;
 		}
@@ -143,13 +137,13 @@ export default function AdminOrder_today() {
 								>
 									<div className="d-flex align-items-center justify-content-between">
 										<div>
-											<h5 className="num">10</h5>
-											<p>目前所有訂單數</p>
-										</div>
+											<h5 className="num">{allOrderNum}</h5>
+											<p>今日所有訂單數</p>
+										</div >
 										<i className="bi bi-box2-fill"></i>
-									</div>
-								</button>
-							</div>
+									</div >
+								</button >
+							</div >
 							<div className="col-3">
 								<button
 									className="btn adm__glassbg w-100 filter__block"
@@ -159,13 +153,13 @@ export default function AdminOrder_today() {
 								>
 									<div className="d-flex align-items-center justify-content-between">
 										<div>
-											<h5 className="num">10</h5>
-											<p>目前可取餐數</p>
-										</div>
+											<h5 className="num">{readyOrderNum}</h5>
+											<p>可取餐數</p>
+										</div >
 										<i className="bi bi-check2-circle"></i>
-									</div>
-								</button>
-							</div>
+									</div >
+								</button >
+							</div >
 							<div className="col-3">
 								<button
 									className="btn adm__glassbg w-100 filter__block"
@@ -176,12 +170,12 @@ export default function AdminOrder_today() {
 									<div className="d-flex align-items-center justify-content-between">
 										<div>
 											<h5 className="num">10</h5>
-											<p>目前製作中數</p>
-										</div>
+											<p>製作中數</p>
+										</div >
 										<i className="bi bi-clock"></i>
-									</div>
-								</button>
-							</div>
+									</div >
+								</button >
+							</div >
 							<div className="col-3">
 								<button
 									className="btn adm__glassbg w-100 filter__block"
@@ -192,32 +186,35 @@ export default function AdminOrder_today() {
 									<div className="d-flex align-items-center justify-content-between">
 										<div>
 											<h5 className="num">10</h5>
-											<p>目前未付款數</p>
-										</div>
+											<p>未付款數</p>
+										</div >
 										<i className="bi bi-credit-card-2-back"></i>
-									</div>
-								</button>
-							</div>
-						</div>
-					</div>
+									</div >
+								</button >
+							</div >
+						</div >
+					</div >
 					<div className="content adm__glassbg">
 						<div className="d-flex flex-column gap-6">
-							<div className="toolbar">
-								<div className="d-flex justify-content-between align-items-center gap-2 ">
-									<div className="position-relative">
-										<i className="bi bi-search adm__text__icon search-bar__icon"></i>
-										<input
-											type="text"
-											className="form-control adm__input search-bar"
-											placeholder="搜尋所有訂單"
-										/>
-									</div>
-									<button type="button" className="btn adm__button__primary md text-nowrap">
-										<i className="bi bi-plus-lg me-2"></i>
-										新增訂單
-									</button>
-								</div>
-							</div>
+							{/* <div className="toolbar">
+                <div className="d-flex justify-content-between align-items-center gap-2 ">
+                  <div className="position-relative">
+                    <i className="bi bi-search adm__text__icon search-bar__icon"></i>
+                    <input
+                      type="text"
+                      className="form-control adm__input search-bar"
+                      placeholder="搜尋所有訂單"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn adm__button__primary md text-nowrap"
+                  >
+                    <i className="bi bi-plus-lg me-2"></i>
+                    新增訂單
+                  </button>
+                </div>
+              </div> */}
 							<table className="table">
 								<thead>
 									<tr>
@@ -268,10 +265,10 @@ export default function AdminOrder_today() {
 									)}
 								</tbody>
 							</table>
-						</div>
-					</div>
-				</div>
-			</main>
+						</div >
+					</div >
+				</div >
+			</main >
 
 			{modalType && (
 				<Modal
@@ -286,7 +283,8 @@ export default function AdminOrder_today() {
 					onBackdrop={handleCloseModal}
 					onCheckoutBtn={handleCheckoutOrder}
 				/>
-			)}
+			)
+			}
 		</>
 	);
 }

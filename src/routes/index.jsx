@@ -25,55 +25,55 @@ import ProductDetail from '../pages/ProductDetail.jsx';
 import AdminUpload from '../pages/admin/AdminUpload.jsx';
 
 const routes = [
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      { index: true, element: <Home /> },
-      { path: 'product', element: <Product /> },
-      { path: 'product2/:id', element: <Product2 /> },
-      { path: 'product2', element: <Product2 /> },
-      { path: 'about', element: <About /> },
-      { path: 'custom', element: <Custom /> },
-      { path: 'article', element: <Article /> },
-      { path: 'cart', element: <Cart /> },
-      { path: 'checkout', element: <Checkout /> },
-      { path: 'payment/:orderId', element: <Payment /> },
-      { path: 'article/:id', element: <ArticleDetail /> },
-      { path: 'member', element: <Member /> },
-    ],
-  },
-  {
-    path: '/admin/login',
-    element: <AdminLogin />,
-  },
-  {
-    path: '/admin',
-    element: <AdminPages />,
-    children: [
-      { index: true, element: <Navigate to="order" replace /> },
-      {
-        path: 'order',
-        element: <AdminOrder />,
-        children: [
-          {
-            index: true,
-            element: <Navigate to="today" replace />,
-          },
-          { path: 'today', element: <AdminOrder_today /> },
-          { path: 'history', element: <AdminOrder_history /> },
-        ],
-      },
-      { path: 'products', element: <AdminProducts /> },
-      { path: 'blog', element: <AdminBlog /> },
-      { path: 'report', element: <AdminReport /> },
-      { path: 'upload', element: <AdminUpload /> },
-    ],
-  },
-  // {
-  //   path: "*",
-  //   element: <NotFound />,
-  // }
+	{
+		path: '/',
+		element: <App />,
+		children: [
+			{ index: true, element: <Home /> },
+			{ path: 'product', element: <Product /> },
+			{ path: 'product/:id', element: <Product /> },
+			{ path: 'product2', element: <Product2 /> },
+			{ path: 'about', element: <About /> },
+			{ path: 'custom', element: <Custom /> },
+			{ path: 'article', element: <Article /> },
+			{ path: 'cart', element: <Cart /> },
+			{ path: 'checkout', element: <Checkout /> },
+			{ path: 'payment/:orderId', element: <Payment /> },
+			{ path: 'article/:id', element: <ArticleDetail /> },
+			{ path: 'member', element: <Member /> },
+		],
+	},
+	{
+		path: '/admin/login',
+		element: <AdminLogin />,
+	},
+	{
+		path: '/admin',
+		element: <AdminPages />,
+		children: [
+			{ index: true, element: <Navigate to="order" replace /> },
+			{
+				path: 'order',
+				element: <AdminOrder />,
+				children: [
+					{
+						index: true,
+						element: <Navigate to="today" replace />,
+					},
+					{ path: 'today', element: <AdminOrder_today /> },
+					{ path: 'history', element: <AdminOrder_history /> },
+				],
+			},
+			{ path: 'products', element: <AdminProducts /> },
+			{ path: 'blog', element: <AdminBlog /> },
+			{ path: 'report', element: <AdminReport /> },
+			{ path: 'upload', element: <AdminUpload /> },
+		],
+	},
+	// {
+	//   path: "*",
+	//   element: <NotFound />,
+	// }
 ];
 
 const router = createHashRouter(routes);
