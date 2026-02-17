@@ -7,9 +7,7 @@ const MenuSection = ({
 	category,
 	filterState,
 	toggleTabFilter,
-	flavorSelect,
 	toggleFlavorFilter,
-	sortSelect,
 	toggleSortFilter,
 	renderDisplayData,
 	apiProdutsData,
@@ -57,7 +55,7 @@ const MenuSection = ({
 						options={data[category].flavor}
 						placeholder="忌口篩選"
 						isMulti={true}
-						value={flavorSelect}
+						value={filterState[category].flavorSelec}
 						onChange={value => toggleFlavorFilter(category, value)}
 						components={{ MultiValueRemove: CustomMultiValueRemove }}
 						unstyled
@@ -74,7 +72,7 @@ const MenuSection = ({
 					<Select
 						options={data[category].sort}
 						placeholder="排序"
-						value={sortSelect}
+						value={filterState[category].sortSelect}
 						onChange={value => toggleSortFilter(category, value)}
 						unstyled
 						classNamePrefix="rs"

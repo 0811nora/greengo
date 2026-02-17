@@ -28,23 +28,27 @@ const INITIAL_STATE_STATE = {
 	set: {
 		tab: 'all',
 		flavor: [],
+		flavorSelect: null,
 		sort: 'default',
+		sortSelect: null,
 	},
 	drinks: {
 		tab: 'all',
 		flavor: [],
+		flavorSelect: null,
 		sort: 'default',
+		sortSelect: null,
 	},
 	soup: {
 		tab: 'all',
 		flavor: [],
+		flavorSelect: null,
 		sort: 'default',
+		sortSelect: null,
 	},
 };
 
 export default function Product() {
-	const [flavorSelect, setFlavorSelect] = useState(null);
-	const [sortSelect, setSortSelect] = useState(null);
 	const [apiProdutsData, setApiProdutsData] = useState([]);
 	const [filterState, setFilterState] = useState(INITIAL_STATE_STATE);
 	const [isDataLoading, setIsDataLoading] = useState(true);
@@ -79,23 +83,23 @@ export default function Product() {
 		}));
 	};
 	const toggleFlavorFilter = (category, value) => {
-		setFlavorSelect(value);
 		const flavorNewArry = value.map(valueItem => valueItem.value);
 		setFilterState(prev => ({
 			...prev,
 			[category]: {
 				...prev[category],
 				flavor: flavorNewArry,
+				flavorSelect: value,
 			},
 		}));
 	};
 	const toggleSortFilter = (category, value) => {
-		setSortSelect(value);
 		setFilterState(prev => ({
 			...prev,
 			[category]: {
 				...prev[category],
 				sort: value.value,
+				sortSelect: value,
 			},
 		}));
 	};
@@ -198,9 +202,7 @@ export default function Product() {
 				category="set"
 				filterState={filterState}
 				toggleTabFilter={toggleTabFilter}
-				flavorSelect={flavorSelect}
 				toggleFlavorFilter={toggleFlavorFilter}
-				sortSelect={sortSelect}
 				toggleSortFilter={toggleSortFilter}
 				apiProdutsData={apiProdutsData}
 				renderDisplayData={renderDisplayData}
@@ -245,9 +247,7 @@ export default function Product() {
 				category="drinks"
 				filterState={filterState}
 				toggleTabFilter={toggleTabFilter}
-				flavorSelect={flavorSelect}
 				toggleFlavorFilter={toggleFlavorFilter}
-				sortSelect={sortSelect}
 				toggleSortFilter={toggleSortFilter}
 				apiProdutsData={apiProdutsData}
 				renderDisplayData={renderDisplayData}
@@ -262,9 +262,7 @@ export default function Product() {
 				category="soup"
 				filterState={filterState}
 				toggleTabFilter={toggleTabFilter}
-				flavorSelect={flavorSelect}
 				toggleFlavorFilter={toggleFlavorFilter}
-				sortSelect={sortSelect}
 				toggleSortFilter={toggleSortFilter}
 				apiProdutsData={apiProdutsData}
 				renderDisplayData={renderDisplayData}
