@@ -7,6 +7,7 @@ import About from '../pages/About.jsx';
 import Article from '../pages/Article.jsx';
 import Cart from '../pages/Cart.jsx';
 import Checkout from '../pages/Checkout.jsx';
+import Payment from '../pages/Payment.jsx';
 import ArticleDetail from '../pages/ArticleDetail.jsx';
 import Member from '../pages/member.jsx';
 
@@ -30,13 +31,14 @@ const routes = [
 		children: [
 			{ index: true, element: <Home /> },
 			{ path: 'product', element: <Product /> },
-			{ path: 'product2/:id', element: <Product2 /> },
+			{ path: 'product/:id', element: <Product /> },
 			{ path: 'product2', element: <Product2 /> },
 			{ path: 'about', element: <About /> },
 			{ path: 'custom', element: <Custom /> },
 			{ path: 'article', element: <Article /> },
 			{ path: 'cart', element: <Cart /> },
 			{ path: 'checkout', element: <Checkout /> },
+			{ path: 'payment/:orderId', element: <Payment /> },
 			{ path: 'article/:id', element: <ArticleDetail /> },
 			{ path: 'member', element: <Member /> },
 		],

@@ -55,7 +55,6 @@ export default function AdminOrder_today() {
 		if (filterType === 'all') return true;
 		return filterType === order.order_status || filterType === order.payment_status;
 	});
-
 	const allOrderNum = orders.length;
 	const readyOrderNum = orders.filter(order => order.order_status === 'ready').length;
 	console.log(readyOrderNum);
@@ -82,7 +81,6 @@ export default function AdminOrder_today() {
 				return <span className="tag status-prepare">製餐中</span>;
 			case 'ready':
 				return <span className="tag status-ready">可取餐</span>;
-
 			case 'done':
 				return <span className="tag status-done">已取貨</span>;
 			case 'paid':
@@ -158,8 +156,8 @@ export default function AdminOrder_today() {
 											<h5 className="num">{readyOrderNum}</h5>
 											<p>可取餐數</p>
 										</div>
-										<i className="bi bi-check2-circle"></i>
 									</div>
+									<i className="bi bi-check2-circle"></i>
 								</button>
 							</div>
 							<div className="col-3">
@@ -174,8 +172,8 @@ export default function AdminOrder_today() {
 											<h5 className="num">10</h5>
 											<p>製作中數</p>
 										</div>
-										<i className="bi bi-clock"></i>
 									</div>
+									<i className="bi bi-clock"></i>
 								</button>
 							</div>
 							<div className="col-3">
@@ -190,8 +188,8 @@ export default function AdminOrder_today() {
 											<h5 className="num">10</h5>
 											<p>未付款數</p>
 										</div>
-										<i className="bi bi-credit-card-2-back"></i>
 									</div>
+									<i className="bi bi-credit-card-2-back"></i>
 								</button>
 							</div>
 						</div>
@@ -217,7 +215,6 @@ export default function AdminOrder_today() {
                   </button>
                 </div>
               </div> */}
-
 							<table className="table">
 								<thead>
 									<tr>
