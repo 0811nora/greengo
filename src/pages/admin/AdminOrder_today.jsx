@@ -3,61 +3,80 @@ import { getAdmOrders } from '../../api/ApiAdmin';
 import EmptyDataHint from '../../components/admin/order/EmptyDataHint';
 import Loading from '../../components/admin/order/Loading';
 import Modal from '../../components/admin/order/Modal';
+import OrderDetail from './AdminOrderDetail';
 
 export default function AdminOrder_today() {
-	const [orders, setOrders] = useState([]);
+	const [todayOrders, setTodayOrders] = useState([]);
 	const [specificOrder, setSpecificOrder] = useState(null);
 	const [filterType, setFilterType] = useState('all');
 	const [modalType, setModalType] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isDataLoading, setIsDataLoading] = useState(true);
 	const [isModalShow, setIsModalShow] = useState(false);
+	const [orderDetail, setOrderDetail] = useState(null);
+
+	// 建立今日訂單時間的範圍
+	const todayTime = new Date();
+	const todayStart = new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate()).getTime();
+	const todayEnd = todayStart + (24 * 60 * 60 * 1000 - 1);
 
 	// 取得 api 原始資料，新增訂單和付款狀態
-	useEffect(() => {
-		const getApiOrders = async () => {
-			try {
-				const res = await getAdmOrders();
-				console.log(res.data);
-				let order_status_value;
-				const withStatusOrders = res.data.orders.map(order => {
-					if (order.paid_date) {
-						if (Date.now() - order.paid_date * 1000 >= 900000) {
-							order_status_value = 'ready';
-						} else {
-							order_status_value = 'prepare';
-						}
-					} else {
-						order_status_value = 'new';
+	const getApiOrders = async () => {
+		try {
+			const res = await getAdmOrders(1);
+			let resOrds = res.data.orders;
+			console.log(res.data);
+			const totalPages = res.data.pagination.total_pages;
+
+			// const allPagesOrders = resOrds.filter(
+			// 	order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
+			// );
+
+			const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
+
+			// 如果第一頁沒有今日時間，就return
+			if (allPagesOrders.length === 0) {
+				setTodayOrders([]);
+				setIsDataLoading(false);
+				return;
+			}
+
+			// 如果第一頁有今日時間，就跑迴圈從第二頁開始戳api
+			if (allPagesOrders.length > 0) {
+				for (let page = 2; page <= totalPages; page++) {
+					const res = await getAdmOrders(page);
+					resOrds = res.data.orders;
+					const otherPagesOrder = resOrds.filter(
+						order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
+					);
+					// 如果現在頁數沒有今日時間，就break
+					if (otherPagesOrder.length === 0) {
+						break;
 					}
 
-					return {
-						...order,
-						order_status: order_status_value,
-						payment_status: order.is_paid ? 'paid' : 'unpaid',
-					};
-				});
-				setOrders(withStatusOrders);
-				setIsLoading(false);
-			} catch (error) {
-				console.log(error.response);
+					// 將所有有今日時間的訂單放一起
+					allPagesOrders.push(...otherPagesOrder);
+				}
 			}
-		};
+			setIsDataLoading(false);
+			setTodayOrders(allPagesOrders);
+		} catch (error) {
+			console.log(error.response);
+			setIsDataLoading(false);
+		}
+	};
+
+	useEffect(() => {
 		getApiOrders();
 	}, []);
 
-	// 視窗背景不滑動
-	useEffect(() => {
-		document.body.style.overflow = modalType !== null ? 'hidden' : '';
-	}, [modalType]);
-
-	// 透過狀態篩選，決定訂單列表的渲染
-	const displayOrders = orders.filter(order => {
+	// 透過狀態篩選，決定訂單列表的tag渲染
+	const displayOrders = todayOrders.filter(order => {
 		if (filterType === 'all') return true;
-		return filterType === order.order_status || filterType === order.payment_status;
+		return filterType === order.user.order_status || filterType === order.user.payment_status;
 	});
-	const allOrderNum = orders.length;
-	const readyOrderNum = orders.filter(order => order.order_status === 'ready').length;
-	console.log(readyOrderNum);
+
+	// const allOrderNum = orders.length;
+	// const readyOrderNum = orders.filter(order => order.order_status === 'ready').length;
 
 	// 時間戳轉換
 	const changeTimeStamp_date = timeStamp => {
@@ -77,12 +96,10 @@ export default function AdminOrder_today() {
 	// 選染列表上的狀態標籤
 	const renderTagStatus = status => {
 		switch (status) {
-			case 'prepare':
-				return <span className="tag status-prepare">製餐中</span>;
 			case 'ready':
 				return <span className="tag status-ready">可取餐</span>;
 			case 'done':
-				return <span className="tag status-done">已取貨</span>;
+				return <span className="tag status-done">已取餐</span>;
 			case 'paid':
 				return <span className="tag status-done">已付款</span>;
 			case 'unpaid':
@@ -93,14 +110,14 @@ export default function AdminOrder_today() {
 	};
 
 	// 查看產品詳細視窗
-	const handleOpenSpecificOrder = order => {
-		setModalType('detail');
-		setSpecificOrder(order);
+	const handleOpenDetail = order => {
+		setIsModalShow(true);
+		setOrderDetail(order);
 	};
 
 	// 關閉視窗
-	const handleCloseModal = () => {
-		setModalType(null);
+	const handleCloseDetail = () => {
+		setIsModalShow(false);
 	};
 
 	// 回到上一頁視窗
@@ -124,8 +141,9 @@ export default function AdminOrder_today() {
 
 	return (
 		<>
-			<main className=" container-fluid px-0 order-today">
+			<main className="container-fluid px-0 order-today">
 				<div className="d-flex flex-column gap-6">
+					{/* dashboard */}
 					<div className="dashboard">
 						<div className="row">
 							<div className="col-3">
@@ -137,10 +155,10 @@ export default function AdminOrder_today() {
 								>
 									<div className="d-flex align-items-center justify-content-between">
 										<div>
-											<h5 className="num">{allOrderNum}</h5>
+											<h5 className="num">10</h5>
 											<p>今日所有訂單數</p>
 										</div>
-										<i className="bi bi-box2-fill"></i>
+										<i className="bi bi-archive"></i>
 									</div>
 								</button>
 							</div>
@@ -153,27 +171,11 @@ export default function AdminOrder_today() {
 								>
 									<div className="d-flex align-items-center justify-content-between">
 										<div>
-											<h5 className="num">{readyOrderNum}</h5>
+											<h5 className="num">10</h5>
 											<p>可取餐數</p>
 										</div>
+										<i className="bi bi-check-circle"></i>
 									</div>
-									<i className="bi bi-check2-circle"></i>
-								</button>
-							</div>
-							<div className="col-3">
-								<button
-									className="btn adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('prepare');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">10</h5>
-											<p>製作中數</p>
-										</div>
-									</div>
-									<i className="bi bi-clock"></i>
 								</button>
 							</div>
 							<div className="col-3">
@@ -188,8 +190,24 @@ export default function AdminOrder_today() {
 											<h5 className="num">10</h5>
 											<p>未付款數</p>
 										</div>
+										<i className="bi bi-ban"></i>
 									</div>
-									<i className="bi bi-credit-card-2-back"></i>
+								</button>
+							</div>
+							<div className="col-3">
+								<button
+									className="btn adm__glassbg w-100 filter__block"
+									onClick={() => {
+										setFilterType('paid');
+									}}
+								>
+									<div className="d-flex align-items-center justify-content-between">
+										<div>
+											<h5 className="num">10</h5>
+											<p>已付款數</p>
+										</div>
+										<i className="bi bi-credit-card-2-back"></i>
+									</div>
 								</button>
 							</div>
 						</div>
@@ -231,7 +249,7 @@ export default function AdminOrder_today() {
 								</thead>
 
 								<tbody>
-									{isLoading ? (
+									{isDataLoading ? (
 										<Loading />
 									) : displayOrders.length === 0 ? (
 										<EmptyDataHint />
@@ -249,10 +267,10 @@ export default function AdminOrder_today() {
 
 													<td>{`$${order.total}`}</td>
 
-													<td>{renderTagStatus(order.order_status)}</td>
-													<td>{renderTagStatus(order.payment_status)}</td>
+													<td>{renderTagStatus(order.user.order_status)}</td>
+													<td>{renderTagStatus(order.user.payment_status)}</td>
 													<td>
-														<button className="btn" onClick={() => handleOpenSpecificOrder(order)}>
+														<button className="btn" onClick={() => handleOpenDetail(order)}>
 															<i className="bi bi-eye-fill"></i>
 														</button>
 														<button className="btn">
@@ -269,21 +287,14 @@ export default function AdminOrder_today() {
 					</div>
 				</div>
 			</main>
-
-			{modalType && (
-				<Modal
-					modalType={modalType}
-					order={specificOrder}
-					timeStamp_date={changeTimeStamp_date}
-					timeStamp_time={changeTimeStamp_time}
-					renderTagStatus={renderTagStatus}
-					onCloseBtn={handleCloseModal}
-					onBackBtn={handleBackToLast}
-					onPickBtn={handlePickOrder}
-					onBackdrop={handleCloseModal}
-					onCheckoutBtn={handleCheckoutOrder}
-				/>
-			)}
+			<OrderDetail
+				isModalShow={isModalShow}
+				handleCloseDetail={handleCloseDetail}
+				orderDetail={orderDetail}
+				timeStamp_date={changeTimeStamp_date}
+				timeStamp_time={changeTimeStamp_time}
+				renderTagStatus={renderTagStatus}
+			/>
 		</>
 	);
 }

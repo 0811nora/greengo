@@ -35,18 +35,19 @@ export default function AdminPages() {
 				return;
 			}
 
+			// b. 驗證token是否合法
 			try {
 				axios.defaults.headers.common['Authorization'] = greenCookie;
 				const res = await admUserCheck();
-				console.log(res.data);
-				navigate('/admin/order/today', { replace: true });
+				if (location.pathname === '/admin') {
+					navigate('/admin/order/today', { replace: true });
+				}
 
-				// // c. 驗證是否有管理員模式
+				// c. 驗證是否有管理員模式
 				// const needAdmModePath = ['/admin/order/history', '/admin/products', '/admin/blog', '/admin/report'];
 				// const isRestrictedPath = needAdmModePath.some(path => location.pathname?.startsWith(path));
 				// if (isRestrictedPath && !admMode) {
 				// 	notify('error', '請先開啟管理員模式');
-
 				// }
 			} catch (error) {
 				console.log(error.message);
@@ -55,9 +56,8 @@ export default function AdminPages() {
 			}
 		};
 
-		// b. 驗證token是否合法
 		checkLogin();
-	}, [location.pathname, admMode]);
+	}, [location.pathname]);
 
 	function handleNavMode(path) {
 		if (!admMode) {
