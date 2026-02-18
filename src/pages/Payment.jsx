@@ -7,7 +7,6 @@ import { ConfirmModal } from '../components/common/Modal';
 import { useNavigate } from 'react-router-dom';
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import DonutPFC from '../components/custom-comp/PFC_Chart';
-import { p } from 'framer-motion/client';
 
 const Payment = () => {
   const { orderId } = useParams();
@@ -186,7 +185,7 @@ const Payment = () => {
                 </h5>
               </div>
               <div>
-                {Object.values(orderData.products).map((product, index) => (
+                {orderProducts.map((product, index) => (
                   <div
                     key={index}
                     className="d-flex justify-content-between mb-1 fs-lg-6 fw-medium border-bottom border-gray-200 pb-4 mb-4 mb-lg-7"
@@ -265,7 +264,7 @@ const Payment = () => {
                 <span>小計</span>
                 <span>
                   <i class="bi bi-currency-dollar"></i>
-                  {orderData?.user?.final_total - orderData?.user?.addons_total}
+                  {orderData?.total}
                 </span>
               </div>
 
