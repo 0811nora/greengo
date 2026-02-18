@@ -5,21 +5,122 @@ import {
   deleteCartItem,
   deleteAllCart,
 } from '../api/ApiClient';
+import { notify } from './../components/Notify';
+import { ConfirmModal } from '../components/common/Modal';
+import Loader from '../components/common/Loading';
+import { PageSwitch } from '../components/common/AnimationWrapper';
+import DonutPFC from '../components/custom-comp/PFC_Chart';
 
 import { NavLink, useNavigate } from 'react-router-dom';
+import { p } from 'framer-motion/client';
+
+// 主組件：購物車頁面
+
+const Cart = () => {
+  const [cartItems, setCartItems] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getCarts = async () => {
+    try {
+      setIsLoading(true);
+      const res = await getCart();
+      setCartItems(res.data.data.carts);
+      console.log(res.data.data.carts);
+    } catch (error) {
+      notify('error', `取得失敗:${error.response.data.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getCarts();
+  }, []);
+
+  const handleCartItem = async (id, qty) => {
+    const data = {
+      product_id: id,
+      qty: qty,
+    };
+    setIsLoading(true);
+    try {
+      const res = await putCartItem(id, data);
+      getCarts();
+      notify('success', `調整成功`);
+    } catch (error) {
+      notify('error', `調整失敗:${error.response.data.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const { baseSubtotal, totalAddons } = cartItems.reduce(
+    (acc, item) => {
+      const itemBasePrice = item?.customizations?.plan_info?.base_price;
+
+      const itemExtraPrice = item.customizations?.extra_price
+        ? item?.customizations?.extra_price
+        : 0;
+
+      acc.baseSubtotal += itemBasePrice * item.qty;
+      acc.totalAddons += itemExtraPrice * item.qty;
+
+      return acc;
+    },
+    { baseSubtotal: 0, totalAddons: 0 }, // 初始值
+  );
+
+  const finalTotal = baseSubtotal + totalAddons;
+
+  return (
+    <div className="cart-container container-xl">
+      <Loader mode={'mask'} show={isLoading} text={'資料處理中..'} />
+      <PageSwitch>
+        <h1 className="page-title">您的購物車</h1>
+        <div className="row g-5">
+          {/* 左側：商品列表 */}
+          <section className="col-lg-8">
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                <CartItem
+                  key={item.id}
+                  item={item}
+                  onUpdateQuantity={handleCartItem}
+                  getCarts={getCarts}
+                />
+              ))
+            ) : (
+              <div
+                style={{ textAlign: 'center', padding: '40px', color: '#666' }}
+              >
+                <h3 className="fs-6 mb-2">購物車目前是空的</h3>
+              </div>
+            )}
+          </section>
+
+          {/* 右側：總覽 */}
+          <CartSummary
+            baseSubtotal={baseSubtotal}
+            totalAddons={totalAddons}
+            finalTotal={finalTotal}
+          />
+        </div>
+      </PageSwitch>
+    </div>
+  );
+};
 
 //單個購物車項目 (CartItem)
-const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
+const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const isCustom = item.product.category === 'custom';
   const isPoke = item.product.category === 'fixed' || isCustom;
-  const unitPrice = isCustom
-    ? item.customizations.custom_total
-    : item.product.price;
+  const unitPrice = item?.customizations?.custom_total;
   const itemTotalPrice = unitPrice * item.qty;
-  const nutritionInfo = isCustom
-    ? item.customizations.total_nutrition
-    : item.product.nutrition;
+  const nutritionInfo = item.customizations?.total_nutrition;
+  const addon = item?.customizations?.addon;
 
   const renderCustomItems = (items, mode = 'addon') => {
     if (!items || items.length === 0) return null;
@@ -39,7 +140,11 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
       }
 
       return (
-        <span key={index} style={{ marginRight: '8px' }}>
+        <span
+          className="text-brown-300"
+          key={index}
+          style={{ marginRight: '8px' }}
+        >
           {subItem.title}
 
           {subItem.qty > 1 && ` X${subItem.qty}`}
@@ -52,8 +157,6 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
     });
   };
 
-  const addon = item.customizations?.addon;
-
   const hasAddonsContent =
     addon &&
     (addon.base?.length > 0 ||
@@ -63,8 +166,34 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
       addon.drinks?.length > 0 ||
       addon.soup?.length > 0);
 
+  const handleRemoveItem = async (id) => {
+    setIsLoading(true);
+    try {
+      const res = await deleteCartItem(id);
+      setIsShowModal(false);
+      getCarts();
+      notify('success', `刪除成功`);
+    } catch (error) {
+      notify('error', `刪除失敗:${error.response.data.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [delProductId, setDelProductId] = useState('');
+  const handleClose = () => {
+    setIsShowModal(false);
+  };
+  const openConfirmModal = (id) => {
+    setIsShowModal(true);
+    setDelProductId(id);
+  };
+
   return (
     <div className={`cart-item ${isOpen ? 'details-open' : ''}`}>
+      <Loader mode={'mask'} show={isLoading} text={'資料處理中..'} />
+
       <div className="item-main">
         <div className="item-image">
           <img src={item.product.imageUrl} alt={item.product.title} />
@@ -73,18 +202,44 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
         <div className="item-info">
           <h3 className="fs-6 mb-2">{item.product.title}</h3>
 
-          <p className="unit-price">
-            單價： <i class="bi bi-currency-dollar"></i> {unitPrice}
-          </p>
+          <div
+            className="border-start border-4 border-gray-100 ms-1 ps-2 mt-3 mb-2"
+            style={{ maxWidth: '160px' }}
+          >
+            <p className="unit-price d-flex justify-content-between mb-1">
+              <span className="me-5">原價</span>
+              <span>
+                <i className="bi bi-currency-dollar"></i>
+                {item?.customizations?.plan_info?.base_price}
+              </span>
+            </p>
+            {hasAddonsContent && (
+              <p className="unit-price d-flex justify-content-between mb-1">
+                <span className="me-5">加購</span>
+                <span>
+                  <i className="bi bi-currency-dollar"></i>
+                  {item?.customizations?.extra_price}
+                </span>
+              </p>
+            )}
 
+            <p className="unit-price d-flex justify-content-between">
+              <span className="me-5">單品合計</span>
+              <span>
+                <i className="bi bi-currency-dollar"></i>
+                {unitPrice}
+              </span>
+            </p>
+          </div>
           <button
             type="button"
-            className="toggle-details-btn"
+            className="btn btn-sm py-1 px-2 btn-outline-orange-300 rounded-pill lh-sm ms-3"
+            style={{ fontSize: '0.75rem' }}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isPoke ? '查看明細與營養素' : '查看營養素'}
             <i
-              className={`bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`}
+              className={`ms-1 bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`}
             ></i>
           </button>
         </div>
@@ -109,17 +264,13 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
         </div>
 
         <div className="item-total">
-          <i class="bi bi-currency-dollar"></i> {itemTotalPrice}
+          <i className="bi bi-currency-dollar"></i> {itemTotalPrice}
         </div>
 
         <button
           type="button"
           className="delete-btn"
-          onClick={() => {
-            if (window.confirm('確定要刪除這項商品嗎？')) {
-              onRemove(item.id);
-            }
-          }}
+          onClick={() => openConfirmModal(item.id)}
         >
           <i className="bi bi-trash"></i>
         </button>
@@ -129,15 +280,21 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
         <div className="details-grid">
           {isPoke && (
             <div className="detail-column content-list">
-              <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center">
-                <i class="bi bi-postcard-heart me-2"></i>內容物明細
+              <h4
+                className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4"
+              >
+                <i className="bi bi-postcard-heart me-2"></i>內容物明細
               </h4>
-              <ul>
-                {isCustom ? (
-                  // 自選 Poke 的渲染邏輯
-                  <>
-                    <li>
-                      <span>基底：</span>
+
+              {isCustom ? (
+                // 自選 Poke 的渲染邏輯
+                <>
+                  <ul className="px-2">
+                    <li className="mb-3">
+                      <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                        基底
+                      </span>
 
                       {renderCustomItems(
                         item.customizations.included.base,
@@ -145,219 +302,266 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
                       )}
                     </li>
 
-                    <li>
-                      <span>主食：</span>
+                    <li className="mb-3">
+                      <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                        主食
+                      </span>
 
                       {renderCustomItems(
-                        item.customizations.included.protein,
+                        item?.customizations?.included?.protein,
                         'included_protein',
                       )}
                     </li>
 
-                    <li>
-                      <span>醬料：</span>
+                    <li className="mb-3">
+                      <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                        醬料
+                      </span>
 
                       {renderCustomItems(
-                        item.customizations.included.sauce,
+                        item?.customizations?.included?.sauce,
                         'included_general',
                       )}
                     </li>
 
-                    <li>
-                      <span>配菜：</span>
+                    <li className="mb-5">
+                      <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                        配菜
+                      </span>
 
                       {renderCustomItems(
                         item.customizations.included.side,
                         'included_general',
                       )}
                     </li>
+                  </ul>
+                  {/* 加購區 (Addons) */}
 
-                    {/* 加購區 (Addons) */}
+                  {hasAddonsContent && (
+                    <>
+                      <h4
+                        className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4"
+                      >
+                        <i className="bi bi-plus-circle-fill me-2"></i> 加購明細
+                      </h4>
+                      <ul className="px-2">
+                        {addon.base?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              基底
+                            </span>
 
-                    {hasAddonsContent && (
-                      <>
-                        <hr />
-                        <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center mt-4">
-                          <i className="bi bi-postcard-heart me-2"></i> 加購選項
-                        </h4>
-                        <ul>
-                          {addon.base?.length > 0 && (
-                            <li>
-                              <span>基底：</span>
+                            {renderCustomItems(
+                              item.customizations.addon.base,
+                              'addon',
+                            )}
+                          </li>
+                        )}
 
-                              {renderCustomItems(
-                                item.customizations.addon.base,
-                                'addon',
-                              )}
-                            </li>
-                          )}
+                        {addon.protein?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              主食
+                            </span>
+                            {renderCustomItems(
+                              item.customizations?.addon?.protein,
+                              'addon',
+                            )}
+                          </li>
+                        )}
 
-                          {addon.protein?.length > 0 && (
-                            <li>
-                              <span>主食：</span>
-                              {renderCustomItems(
-                                item.customizations.addon.protein,
-                                'addon',
-                              )}
-                            </li>
-                          )}
+                        {addon.sauce?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              醬料
+                            </span>
 
-                          {addon.sauce?.length > 0 && (
-                            <li>
-                              <span>醬料：</span>
+                            {renderCustomItems(
+                              item.customizations?.addon?.sauce,
+                              'addon',
+                            )}
+                          </li>
+                        )}
+                        {addon?.side?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              配菜
+                            </span>
 
-                              {renderCustomItems(
-                                item.customizations.addon.sauce,
-                                'addon',
-                              )}
-                            </li>
-                          )}
-                          {addon?.side?.length > 0 && (
-                            <li>
-                              <span>配菜：</span>
+                            {renderCustomItems(
+                              item.customizations?.addon?.side,
+                              'addon',
+                            )}
+                          </li>
+                        )}
 
-                              {renderCustomItems(
-                                item.customizations.addon.side,
-                                'addon',
-                              )}
-                            </li>
-                          )}
+                        {addon?.drinks?.length > 0 && (
+                          <li className="mb-3">
+                            <span>飲品：</span>
 
-                          {addon.drinks?.length > 0 && (
-                            <li>
-                              <span>飲品：</span>
+                            {renderCustomItems(
+                              item.customizations?.addon?.drinks,
+                              'addon',
+                            )}
+                          </li>
+                        )}
+                        {addon?.soup?.length > 0 && (
+                          <li className="mb-3">
+                            <span>湯品：</span>
 
-                              {renderCustomItems(
-                                item.customizations.addon.drinks,
-                                'addon',
-                              )}
-                            </li>
-                          )}
-                          {addon.soup?.length > 0 && (
-                            <li>
-                              <span>湯品：</span>
-
-                              {renderCustomItems(
-                                item.customizations.addon.soup,
-                                'addon',
-                              )}
-                            </li>
-                          )}
-                        </ul>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {item.product.ingredients && (
-                      <>
-                        <li>
-                          <span>基底：</span>
+                            {renderCustomItems(
+                              item.customizations?.addon?.soup,
+                              'addon',
+                            )}
+                          </li>
+                        )}
+                      </ul>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {item.product.ingredients && (
+                    <>
+                      <ul className="px-2">
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            基底
+                          </span>
                           <span>{item.product.ingredients.base}</span>
                         </li>
-                        <li>
-                          <span>主食：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            主食
+                          </span>
                           <span>{item.product.ingredients.main}</span>
                         </li>
-                        <li>
-                          <span>醬料：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            醬料
+                          </span>
                           <span>{item.product.ingredients.source}</span>
                         </li>
-                        <li>
-                          <span>配菜：</span>
+                        <li className="mb-5">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            配菜
+                          </span>
                           <span>{item.product.ingredients.side}</span>
                         </li>
-                      </>
-                    )}
+                      </ul>
+                    </>
+                  )}
 
-                    {/* 加購區 (Addons) */}
+                  {/* 加購區 (Addons) */}
 
-                    {hasAddonsContent && (
-                      <>
-                        <hr />
-                        <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center mt-4">
-                          <i className="bi bi-postcard-heart me-2"></i> 加購選項
-                        </h4>
-                        <ul>
-                          {addon.base?.length > 0 && (
-                            <li>
-                              <span>基底：</span>
+                  {hasAddonsContent && (
+                    <>
+                      <h4
+                        className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4"
+                      >
+                        <i className="bi bi-postcard-heart me-2"></i> 加購明細
+                      </h4>
+                      <ul className="px-2">
+                        {addon.base?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              基底
+                            </span>
 
-                              {renderCustomItems(
-                                item.customizations.addon.base,
-                                'addon',
-                              )}
-                            </li>
-                          )}
+                            {renderCustomItems(
+                              item.customizations.addon.base,
+                              'addon',
+                            )}
+                          </li>
+                        )}
 
-                          {addon.protein?.length > 0 && (
-                            <li>
-                              <span>主食：</span>
-                              {renderCustomItems(
-                                item.customizations.addon.protein,
-                                'addon',
-                              )}
-                            </li>
-                          )}
+                        {addon.protein?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              主食
+                            </span>
+                            {renderCustomItems(
+                              item?.customizations?.addon?.protein,
+                              'addon',
+                            )}
+                          </li>
+                        )}
 
-                          {addon.sauce?.length > 0 && (
-                            <li>
-                              <span>醬料：</span>
+                        {addon.sauce?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              醬料
+                            </span>
 
-                              {renderCustomItems(
-                                item.customizations.addon.sauce,
-                                'addon',
-                              )}
-                            </li>
-                          )}
-                          {addon?.side?.length > 0 && (
-                            <li>
-                              <span>配菜：</span>
+                            {renderCustomItems(
+                              item.customizations.addon.sauce,
+                              'addon',
+                            )}
+                          </li>
+                        )}
+                        {addon?.side?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              配菜
+                            </span>
 
-                              {renderCustomItems(
-                                item.customizations.addon.side,
-                                'addon',
-                              )}
-                            </li>
-                          )}
+                            {renderCustomItems(
+                              item.customizations.addon.side,
+                              'addon',
+                            )}
+                          </li>
+                        )}
 
-                          {addon.drinks?.length > 0 && (
-                            <li>
-                              <span>飲品：</span>
+                        {addon.drinks?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              飲品
+                            </span>
 
-                              {renderCustomItems(
-                                item.customizations.addon.drinks,
-                                'addon',
-                              )}
-                            </li>
-                          )}
-                          {addon.soup?.length > 0 && (
-                            <li>
-                              <span>湯品：</span>
+                            {renderCustomItems(
+                              item.customizations.addon.drinks,
+                              'addon',
+                            )}
+                          </li>
+                        )}
+                        {addon.soup?.length > 0 && (
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              湯品
+                            </span>
 
-                              {renderCustomItems(
-                                item.customizations.addon.soup,
-                                'addon',
-                              )}
-                            </li>
-                          )}
-                        </ul>
-                      </>
-                    )}
-                  </>
-                )}
-              </ul>
+                            {renderCustomItems(
+                              item.customizations.addon.soup,
+                              'addon',
+                            )}
+                          </li>
+                        )}
+                      </ul>
+                    </>
+                  )}
+                </>
+              )}
             </div>
           )}
 
           <div
-            className={`detail-column nutrition-info ${!isPoke ? 'full-width' : ''}`}
+            className={`detail-column nutrition-info mb-3 ${!isPoke ? 'full-width' : ''}`}
           >
-            <h4 className="fs-sm text-gray-300 mb-2 d-flex align-items-center">
-              <i class="bi bi-pie-chart-fill me-2"></i> 營養素資訊
+            <h4
+              className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4"
+            >
+              <i className="bi bi-pie-chart-fill me-2"></i> 單品營養素資訊
             </h4>
-
-            {nutritionInfo && (
+            <DonutPFC
+              protein={nutritionInfo?.protein}
+              fat={nutritionInfo?.fat}
+              carbs={nutritionInfo?.carbs}
+              calories={nutritionInfo?.calories}
+            />
+            {/* {nutritionInfo && (
               <div className="nutri-badges">
                 <div className="badge">
                   <span className="label">熱量</span>
@@ -380,17 +584,29 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
                   <span className="unit">g</span>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
+      <ConfirmModal
+        style={'front'}
+        show={isShowModal}
+        closeModal={handleClose}
+        text_icon={`bi bi-bag-check-fill`}
+        text_title={'確定要刪除此商品？'}
+        text_content={'請確認購物內容及金額'}
+        text_cancel={'取消'}
+        cancelModal={handleClose}
+        text_confirm={'確認'}
+        confirmModal={() => handleRemoveItem(delProductId)}
+      />
     </div>
   );
 };
 
 // 子組件：右側費用總覽 (CartSummary)
 
-const CartSummary = ({ baseSubtotal, totalAddons, discount, finalTotal }) => {
+const CartSummary = ({ baseSubtotal, totalAddons, finalTotal }) => {
   const navigate = useNavigate();
   return (
     <aside className="cart-summary col-lg-4">
@@ -402,21 +618,23 @@ const CartSummary = ({ baseSubtotal, totalAddons, discount, finalTotal }) => {
         <div className="d-flex justify-content-between mb-2">
           <span>小計</span>
           <span>
-            <i class="bi bi-currency-dollar"></i>{' '}
+            <i className="bi bi-currency-dollar"></i>{' '}
             {baseSubtotal.toLocaleString()}
           </span>
         </div>
         <div className="d-flex justify-content-between mb-2">
           <span>加購</span>
           <span>
-            <i class="bi bi-currency-dollar"></i> {totalAddons.toLocaleString()}
+            <i className="bi bi-currency-dollar"></i>{' '}
+            {totalAddons.toLocaleString()}
           </span>
         </div>
 
         <div className="d-flex justify-content-between mt-3 pt-3 border-top border-gray-100">
           <span className="fs-5 fw-medium">總計</span>
           <span className="fs-5 fw-medium text-primary">
-            <i class="bi bi-currency-dollar"></i> {finalTotal.toLocaleString()}
+            <i className="bi bi-currency-dollar"></i>{' '}
+            {finalTotal.toLocaleString()}
           </span>
         </div>
 
@@ -430,107 +648,6 @@ const CartSummary = ({ baseSubtotal, totalAddons, discount, finalTotal }) => {
         </button>
       </div>
     </aside>
-  );
-};
-
-// 4. 主組件：購物車頁面 (Cart Page)
-
-const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [discount, setDiscount] = useState(0); // 預留優惠碼功能
-
-  const getCarts = async () => {
-    try {
-      const res = await getCart();
-      setCartItems(res.data.data.carts);
-      console.log(res.data.data.carts);
-    } catch (error) {
-      alert('取得失敗: ' + error.response.data.message);
-    }
-  };
-
-  useEffect(() => {
-    getCarts();
-  }, []);
-
-  const handleCartItem = async (id, qty) => {
-    const data = {
-      product_id: id,
-      qty: qty,
-    };
-    try {
-      const res = await putCartItem(id, data);
-      getCarts();
-      alert('調整成功');
-    } catch (error) {
-      alert('取得失敗: ' + error.response.data.message);
-    }
-  };
-
-  const handleRemoveItem = async (id) => {
-    try {
-      const res = await deleteCartItem(id);
-      getCarts();
-      alert('刪除成功');
-    } catch (error) {
-      alert('刪除失敗: ' + error.response.data.message);
-    }
-  };
-
-  const { baseSubtotal, totalAddons } = cartItems.reduce(
-    (acc, item) => {
-      const isCustom = item.product.category === 'custom';
-
-      const itemBasePrice = item.product.price;
-
-      const itemExtraPrice =
-        isCustom && item.customizations?.extra_price
-          ? item.customizations.extra_price
-          : 0;
-
-      acc.baseSubtotal += itemBasePrice * item.qty;
-      acc.totalAddons += itemExtraPrice * item.qty;
-
-      return acc;
-    },
-    { baseSubtotal: 0, totalAddons: 0 }, // 初始值
-  );
-
-  const finalTotal = baseSubtotal + totalAddons - discount;
-
-  return (
-    <div className="cart-container container-xl">
-      <h1 className="page-title">您的購物車</h1>
-      <div className="row g-5">
-        {/* 左側：商品列表 */}
-        <section className="col-lg-8">
-          {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                onUpdateQuantity={handleCartItem}
-                onRemove={handleRemoveItem}
-              />
-            ))
-          ) : (
-            <div
-              style={{ textAlign: 'center', padding: '40px', color: '#666' }}
-            >
-              <h3 className="fs-6 mb-2">購物車目前是空的</h3>
-            </div>
-          )}
-        </section>
-
-        {/* 右側：總覽 */}
-        <CartSummary
-          baseSubtotal={baseSubtotal}
-          totalAddons={totalAddons}
-          discount={discount}
-          finalTotal={finalTotal}
-        />
-      </div>
-    </div>
   );
 };
 

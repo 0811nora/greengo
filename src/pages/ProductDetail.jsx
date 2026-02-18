@@ -253,7 +253,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 					<button
 						className="addCart flex-fill"
 						onClick={() => {
-							handleAddCart(productDetail.id, num);
+							handleAddCart(productDetail.id, num, productDetail);
 						}}
 						disabled={isAddCartLoading}
 					>

@@ -47,6 +47,24 @@ const INITIAL_STATE_STATE = {
 		sortSelect: null,
 	},
 };
+const INITIAL_CUSTOMIZATIONS = {
+	customizations: {
+		addon: null,
+		custom_total: 0,
+		extra_price: 0,
+		included: null,
+		plan_info: {
+			base_price: 0,
+			plan_type: 'set',
+		},
+		total_nutrition: {
+			calories: 0,
+			carbs: 0,
+			fat: 0,
+			protein: 0,
+		},
+	},
+};
 
 export default function Product() {
 	const [apiProdutsData, setApiProdutsData] = useState([]);
@@ -103,6 +121,7 @@ export default function Product() {
 			},
 		}));
 	};
+
 	const renderDisplayData = (apiProdutsData, filterState, category) => {
 		const filterData = apiProdutsData.filter(product => {
 			if (product.product_type !== category) return false;
@@ -133,17 +152,44 @@ export default function Product() {
 		}
 	};
 
+	// 開啟產品詳細頁
 	const handleOpenDetail = id => {
 		navigate(`/product/${id}`);
 	};
+
+	// 關閉產品詳細頁
 	const handleCloseDetail = () => {
 		navigate(`/product`);
 	};
-	const handleAddCart = async (id, qty = 1) => {
+
+	// 加入購物車
+	const handleAddCart = async (id, qty = 1, productDetail) => {
 		setIsAddCartLoading(true);
+		// 如果之後加購addon可以使用，再來擴充
+		const customizationsData = {
+			customizations: {
+				...INITIAL_CUSTOMIZATIONS.customizations,
+				addon: null,
+				custom_total: productDetail?.price,
+				extra_price: 0,
+				included: null,
+				plan_info: {
+					base_price: productDetail?.price,
+					plan_type: productDetail?.product_type,
+				},
+				total_nutrition: {
+					calories: productDetail?.nutrition.calories,
+					carbs: productDetail?.nutrition.carbs,
+					fat: productDetail?.nutrition.fat,
+					protein: productDetail?.nutrition.protein,
+				},
+			},
+		};
+
 		const data = {
 			product_id: id,
 			qty: qty,
+			...customizationsData,
 		};
 		try {
 			const res = await postAddToCart(data);
