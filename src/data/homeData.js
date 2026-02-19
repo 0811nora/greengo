@@ -154,7 +154,7 @@ export const StepCards = [
 // 模擬資料，待接 API
 export const FixedMeals = [
   {
-    id: 1,
+    id: '-Ol1k7ZvEvYKdnM5LjO5',
     name: '經典雙雞蛋白碗',
     price: 230,
     kcal: 550,
@@ -163,7 +163,7 @@ export const FixedMeals = [
     rank: 'TOP1',
   },
   {
-    id: 2,
+    id: '-Ol1jC5VMymiwkD5f9-6',
     name: '三重蛋白活力碗',
     price: 240,
     kcal: 416,
@@ -172,7 +172,7 @@ export const FixedMeals = [
     rank: 'TOP2',
   },
   {
-    id: 3,
+    id: '-Ol1ZiESsF3T3jX7eUlu',
     name: '海味清爽檸香碗',
     price: 220,
     kcal: 332,
@@ -181,7 +181,7 @@ export const FixedMeals = [
     rank: 'TOP3',
   },
   {
-    id: 4,
+    id: '-Ol1Yg6sYms42TFNwrEc',
     name: '豆香高纖和風碗',
     price: 150,
     kcal: 313,
@@ -190,7 +190,7 @@ export const FixedMeals = [
     rank: 'TOP4',
   },
   {
-    id: 5,
+    id: '-Ol1lnSihO7S16xBIymi',
     name: '海陸三拼能量碗',
     price: 280,
     kcal: 594,

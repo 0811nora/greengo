@@ -3,7 +3,6 @@ import { StepCards } from '../../data/homeData';
 
 const StepCard = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-
   return (
     <div className='step-card'>
       {StepCards.map((item, index) => (
