@@ -43,6 +43,7 @@
 // 後台 - components
 @import './style/admin/components/button';
 @import './style/admin/smallModal';
+@import './style/admin/components/order/adm-orderModal';
 
 // 後台 - layout
 @import './style/admin/layout/adm-header';
@@ -52,7 +53,6 @@
 @import './style/admin/adm-order';
 @import './style/admin/adm-order-today';
 @import './style/admin/adm-order-history';
-@import './style/admin/adm-orderDetail';
 @import './style/admin/adm-product';
 @import './style/admin/adm-blog';
 @import './style/admin/adm-report';

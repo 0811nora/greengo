@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react';
-import { getAdmOrders } from '../../api/ApiAdmin';
+import { Fragment, useEffect, useState } from 'react';
+import { delAdmSingleOrder, getAdmOrders, putAdmSingleOrder } from '../../api/ApiAdmin';
 import EmptyDataHint from '../../components/admin/order/EmptyDataHint';
 import Loading from '../../components/admin/order/Loading';
-import Modal from '../../components/admin/order/Modal';
-import OrderDetail from './AdminOrderDetail';
+import OrderDetail from '../../components/admin/order/AdminOrderDetail';
+import { notify } from '../../components/Notify';
+import { ConfirmModal } from '../../components/common/Modal';
+import CheckoutModal from '../../components/admin/order/CheckoutModal';
 
 export default function AdminOrder_today() {
 	const [todayOrders, setTodayOrders] = useState([]);
 	const [specificOrder, setSpecificOrder] = useState(null);
 	const [filterType, setFilterType] = useState('all');
-	const [modalType, setModalType] = useState(null);
+	const [modalType, setModalType] = useState(null); // null, detail, pickup, checkout
 	const [isDataLoading, setIsDataLoading] = useState(true);
-	const [isModalShow, setIsModalShow] = useState(false);
 	const [orderDetail, setOrderDetail] = useState(null);
 
 	// 建立今日訂單時間的範圍
@@ -19,7 +20,7 @@ export default function AdminOrder_today() {
 	const todayStart = new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate()).getTime();
 	const todayEnd = todayStart + (24 * 60 * 60 * 1000 - 1);
 
-	// 取得 api 原始資料，新增訂單和付款狀態
+	// 取得原始訂單資料API
 	const getApiOrders = async () => {
 		try {
 			const res = await getAdmOrders(1);
@@ -27,10 +28,12 @@ export default function AdminOrder_today() {
 			console.log(res.data);
 			const totalPages = res.data.pagination.total_pages;
 
+			// 以訂單建立時間，局限在今日時間
 			// const allPagesOrders = resOrds.filter(
 			// 	order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
 			// );
 
+			// 以訂單建立時間，局限在今日以前
 			const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
 
 			// 如果第一頁沒有今日時間，就return
@@ -109,15 +112,28 @@ export default function AdminOrder_today() {
 		}
 	};
 
+	// 刪除單一訂單API
+	const handleDeleteSingleOrder = async id => {
+		try {
+			const res = await delAdmSingleOrder(id);
+			console.log(res.data);
+			getApiOrders();
+			notify('success', '刪除當筆訂單成功', 'top-right');
+		} catch (error) {
+			console.log(error.response);
+			notify('error', '刪除當筆訂單失敗', 'top-right');
+		}
+	};
+
 	// 查看產品詳細視窗
 	const handleOpenDetail = order => {
-		setIsModalShow(true);
+		setModalType('detail');
 		setOrderDetail(order);
 	};
 
 	// 關閉視窗
 	const handleCloseDetail = () => {
-		setIsModalShow(false);
+		setModalType(null);
 	};
 
 	// 回到上一頁視窗
@@ -126,17 +142,32 @@ export default function AdminOrder_today() {
 	};
 
 	// 進入取餐頁面
-	const handlePickOrder = order => {
+	const OpenPickupPage = order => {
+		setModalType('pickup');
 		setSpecificOrder(order);
-		console.log(order);
-		setModalType('confirm');
+	};
+
+	//領取餐點行為-> 戳修改訂單API
+	const handlePickupMeal = async () => {
+		const id = specificOrder.id;
+		const data = { ...specificOrder, user: { ...specificOrder.user, order_status: 'done' } };
+
+		try {
+			const res = await putAdmSingleOrder(id, data);
+			getApiOrders();
+			notify('success', '餐點已領取', 'top-right');
+			handleCloseDetail();
+		} catch (error) {
+			console.log(error.response);
+			notify('error', '餐點領取失敗', 'top-right');
+		}
 	};
 
 	// 進入結帳頁面
-	const handleCheckoutOrder = order => {
+	const OpenCheckoutPage = order => {
+		setModalType('checkout');
 		setSpecificOrder(order);
 		console.log(order);
-		setModalType('checkout');
 	};
 
 	return (
@@ -273,7 +304,7 @@ export default function AdminOrder_today() {
 														<button className="btn" onClick={() => handleOpenDetail(order)}>
 															<i className="bi bi-eye-fill"></i>
 														</button>
-														<button className="btn">
+														<button className="btn" onClick={() => handleDeleteSingleOrder(order.id)}>
 															<i className="bi bi-trash-fill"></i>
 														</button>
 													</td>
@@ -287,14 +318,48 @@ export default function AdminOrder_today() {
 					</div>
 				</div>
 			</main>
-			<OrderDetail
-				isModalShow={isModalShow}
-				handleCloseDetail={handleCloseDetail}
-				orderDetail={orderDetail}
-				timeStamp_date={changeTimeStamp_date}
-				timeStamp_time={changeTimeStamp_time}
-				renderTagStatus={renderTagStatus}
-			/>
+			<Fragment>
+				{modalType === 'detail' ? (
+					<OrderDetail
+						isModalShow={modalType === 'detail'}
+						handleCloseDetail={handleCloseDetail}
+						orderDetail={orderDetail}
+						timeStamp_date={changeTimeStamp_date}
+						timeStamp_time={changeTimeStamp_time}
+						renderTagStatus={renderTagStatus}
+						OpenPickupPage={OpenPickupPage}
+						OpenCheckoutPage={OpenCheckoutPage}
+					/>
+				) : modalType === 'pickup' ? (
+					<ConfirmModal
+						style={'admin'}
+						show={modalType === 'pickup'}
+						closeModal={handleCloseDetail}
+						text_icon={`bi bi-question-circle-fill`}
+						text_title={'確認餐點已領取'}
+						text_content={
+							<div>
+								訂單 {specificOrder.id}
+								<br />
+								請確認已將餐點交予客人
+							</div>
+						}
+						text_cancel={'取消'}
+						cancelModal={() => handleBackToLast('detail')}
+						text_confirm={'確認'}
+						confirmModal={handlePickupMeal}
+					/>
+				) : modalType === 'checkout' ? (
+					<CheckoutModal
+						show={modalType === 'checkout'}
+						closeModal={handleCloseDetail}
+						orderDetail={orderDetail}
+						backToLast={() => handleBackToLast('detail')}
+					/>
+				) : (
+					''
+				)}
+			</Fragment>
 		</>
 	);
 }
