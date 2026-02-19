@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import AdmButton from '../../../components/admin/common/AdmButton';
 import { useForm, useWatch } from 'react-hook-form';
 
@@ -12,10 +12,10 @@ const TAG_DATA = {
       { value: 'veg', label: '新鮮蔬食' },
     ],
     include_tags: [
-      { value: 'beef', label: '不含牛肉' },
-      { value: 'pork', label: '不含豬肉' },
-      { value: 'seafood', label: '不含海鮮' },
-      { value: 'spicy', label: '不辣' },
+      { value: 'beef', label: '牛肉' },
+      { value: 'pork', label: '豬肉' },
+      { value: 'seafood', label: '海鮮' },
+      { value: 'spicy', label: '辣' },
     ],
   },
   // 飲料
@@ -26,9 +26,9 @@ const TAG_DATA = {
       { key: 'juice', label: '果汁' },
     ],
     include_tags: [
-      { key: 'alcohol', label: '無酒精' },
-      { key: 'caffeine', label: '無咖啡因' },
-      { key: 'sugar', label: '無糖' },
+      { key: 'alcohol', label: '酒精' },
+      { key: 'caffeine', label: '咖啡因' },
+      { key: 'sugar', label: '糖' },
     ],
   },
   // 湯品
@@ -39,8 +39,8 @@ const TAG_DATA = {
       { key: 'vegSoup', label: '素食湯' },
     ],
     include_tags: [
-      { key: 'beef', label: '不含牛肉' },
-      { key: 'daily', label: '不含奶' },
+      { key: 'beef', label: '牛肉' },
+      { key: 'daily', label: '奶' },
     ],
   },
 };
@@ -131,7 +131,8 @@ export default function AdmProductModal({
         { value: 'soup', label: '湯品 (Soup)' },
         { value: 'drinks', label: '飲料 (Drinks)' },
       ],
-      showComplexFields: false,
+      showComplexFields: true,
+      isOther: true,
     },
   };
 
@@ -220,7 +221,6 @@ export default function AdmProductModal({
                     className="img-fluid rounded shadow-sm"
                     alt="Product"
                     onError={(e) => {
-                      // 如果使用者輸入的網址掛了，自動切換回預設圖，並避免無限迴圈
                       if (e.target.src !== defaultImageUrl) {
                         e.target.src = defaultImageUrl;
                       }
@@ -466,60 +466,65 @@ export default function AdmProductModal({
                           )}
                         </label>
                       </div>
-                      <div className="col-12">
-                        <label className="form-label d-block">
-                          主食 (Main) <span className="text-danger">*</span>
-                          <input
-                            type="text"
-                            className={`form-control rounded-pill ${errors.ingredients?.main ? 'is-invalid' : ''}`}
-                            {...register('ingredients.main', {
-                              required: '主食為必填欄位',
-                            })}
-                          />
-                          {errors.ingredients?.main && (
-                            <div className="invalid-feedback">
-                              {errors.ingredients.main.message}
-                            </div>
-                          )}
-                        </label>
-                      </div>
-
-                      <div className="col-12">
-                        <label className="form-label d-block">
-                          配菜 (Side) <span className="text-danger">*</span>
-                          <textarea
-                            type="text"
-                            className={`form-control rounded-3 mt-1 ${errors.ingredients?.side ? 'is-invalid' : ''}`}
-                            rows="2"
-                            {...register('ingredients.side', {
-                              required: '配菜為必填欄位',
-                            })}
-                          ></textarea>
-                          {errors.ingredients?.side && (
-                            <div className="invalid-feedback">
-                              {errors.ingredients.side.message}
-                            </div>
-                          )}
-                        </label>
-                      </div>
-
-                      <div className="col-12">
-                        <label className="form-label d-block">
-                          醬料 (Source) <span className="text-danger">*</span>
-                          <input
-                            type="text"
-                            className={`form-control rounded-pill ${errors.ingredients?.source ? 'is-invalid' : ''}`}
-                            {...register('ingredients.source', {
-                              required: '醬料為必填欄位',
-                            })}
-                          />
-                          {errors.ingredients?.source && (
-                            <div className="invalid-feedback">
-                              {errors.ingredients.source.message}
-                            </div>
-                          )}
-                        </label>
-                      </div>
+                      {config.isOther ? (
+                        ''
+                      ) : (
+                        <>
+                          <div className="col-12">
+                            <label className="form-label d-block">
+                              主食 (Main) <span className="text-danger">*</span>
+                              <input
+                                type="text"
+                                className={`form-control rounded-pill ${errors.ingredients?.main ? 'is-invalid' : ''}`}
+                                {...register('ingredients.main', {
+                                  required: '主食為必填欄位',
+                                })}
+                              />
+                              {errors.ingredients?.main && (
+                                <div className="invalid-feedback">
+                                  {errors.ingredients.main.message}
+                                </div>
+                              )}
+                            </label>
+                          </div>
+                          <div className="col-12">
+                            <label className="form-label d-block">
+                              配菜 (Side) <span className="text-danger">*</span>
+                              <textarea
+                                type="text"
+                                className={`form-control rounded-3 mt-1 ${errors.ingredients?.side ? 'is-invalid' : ''}`}
+                                rows="2"
+                                {...register('ingredients.side', {
+                                  required: '配菜為必填欄位',
+                                })}
+                              ></textarea>
+                              {errors.ingredients?.side && (
+                                <div className="invalid-feedback">
+                                  {errors.ingredients.side.message}
+                                </div>
+                              )}
+                            </label>
+                          </div>
+                          <div className="col-12">
+                            <label className="form-label d-block">
+                              醬料 (Source){' '}
+                              <span className="text-danger">*</span>
+                              <input
+                                type="text"
+                                className={`form-control rounded-pill ${errors.ingredients?.source ? 'is-invalid' : ''}`}
+                                {...register('ingredients.source', {
+                                  required: '醬料為必填欄位',
+                                })}
+                              />
+                              {errors.ingredients?.source && (
+                                <div className="invalid-feedback">
+                                  {errors.ingredients.source.message}
+                                </div>
+                              )}
+                            </label>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 )}
