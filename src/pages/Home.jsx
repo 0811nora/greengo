@@ -162,7 +162,7 @@ export default function Home() {
                 />
               </div>
               {/* 右側卡片說明 */}
-              <div className='col-lg-6'>
+              <div className='col-lg-6 position-relative'>
                 <StepCard />
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function Home() {
           width='100%'
           height='auto'
           xmlns='http://www.w3.org/2000/svg'
-          xmlns:xlink='http://www.w3.org/1999/xlink'
+          xmlnsXlink='http://www.w3.org/1999/xlink'
           version='1.1'
         >
           <path
@@ -201,11 +201,11 @@ export default function Home() {
             <div className='container position-relative'>
               <div className='row align-items-center'>
                 <div className='col-md-6 position-relative'>
-                  {/* <img
+                  <img
                     src={`${import.meta.env.BASE_URL}img/items/bowl-5.png`}
                     alt='bowl'
                     className='position-absolute start-0 top-50 translate-middle-y'
-                  /> */}
+                  />
                 </div>
                 {/* 文字區 */}
                 <div className='col-md-6 col-lg-4'>

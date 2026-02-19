@@ -1,9 +1,11 @@
 import { NavLink, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { useCart } from '../context/CartContext';
+// import { useCart } from '../context/CartContext';
 
 // header cart
 import CartDropdown from '../components/home/CartDropdown';
+import LoginModal from '../components/home/LoginModal';
+import UserDropdown from '../components/home/UserDropdown';
 
 const NavbarData = {
   brand: {
@@ -47,7 +49,7 @@ export default function Header() {
   }, [isMobileMenuOpen]);
 
   // cart
-  const { cartData, getAllCart } = useCart();
+  // const { cartData, getAllCart } = useCart();
 
   return (
     <>
@@ -78,12 +80,15 @@ export default function Header() {
               </ul>
 
               {/* cart + login */}
-              {/* 整體待修 */}
-              <div className='d-flex align-items-center gap-3'>
+              <div
+                className='d-flex justify-content-end align-items-center gap-5'
+                style={{ width: '180px' }}
+              >
                 <CartDropdown />
-                <button className='btn btn-outline-primary-300 rounded-pill'>
+                <UserDropdown />
+                {/* <button className='btn btn-outline-primary-300 rounded-pill'>
                   登入 / 註冊
-                </button>
+                </button> */}
               </div>
             </div>
 
@@ -148,9 +153,10 @@ export default function Header() {
                   </nav>
 
                   <div className='mobile-container__footer'>
-                    <button className='btn btn-outline-primary-300 w-100 rounded-pill'>
+                    <UserDropdown />
+                    {/* <button className='btn btn-outline-primary-300 w-100 rounded-pill'>
                       登入 / 註冊
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
@@ -167,6 +173,7 @@ export default function Header() {
         }`}
         onClick={closeMenu}
       ></div>
+      <LoginModal />
     </>
   );
 }

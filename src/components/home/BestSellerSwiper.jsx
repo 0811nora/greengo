@@ -1,4 +1,13 @@
+// import { useState } from 'react';
 import { FixedMeals } from '../../data/homeData';
+import { notify } from '../Notify';
+
+// header 購物車
+import { useDispatch } from 'react-redux';
+import { renderRefresh } from '../../store/slices/cartSlice';
+
+// API
+import { postAddToCart } from '../../api/ApiClient';
 
 // swiper
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
@@ -9,6 +18,24 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 const BestSellerSwiper = () => {
+  const dispatch = useDispatch();
+
+  // 加入購物車
+  const addCartBtn = async (id = '', qty = 1) => {
+    try {
+      const cartData = {
+        product_id: id,
+        qty: qty,
+      };
+      const res = await postAddToCart(cartData);
+      console.log('加入購物車資料:', res.data);
+      notify('success', '成功加入購物車！');
+      dispatch(renderRefresh());
+    } catch (error) {
+      notify('error', '加入失敗');
+      console.log(error, error.data);
+    }
+  };
   return (
     <>
       {' '}
@@ -43,6 +70,7 @@ const BestSellerSwiper = () => {
                   type='button'
                   className='home__swiper-btn position-absolute bottom-0 end-0 mb-2 me-2 z-3'
                   aria-label='加入購物車'
+                  onClick={() => addCartBtn(product.id, 1)}
                 >
                   <i className='bi bi-bag'></i>
                 </button>

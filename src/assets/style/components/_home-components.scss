@@ -120,6 +120,7 @@
   width: 100%;
   height: 400px;
   gap: 12px;
+
   @media (max-width: 768px) {
     flex-direction: column;
     height: auto;
