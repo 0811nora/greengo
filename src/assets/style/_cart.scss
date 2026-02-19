@@ -48,9 +48,8 @@
 
     .item-info {
       .unit-price {
-        color: $gray-300;
+        color: $brown-300;
         font-size: 14px;
-        margin-bottom: 8px;
       }
 
       .toggle-details-btn {
@@ -155,7 +154,7 @@
     // 當 .details-open 被 JS 加入時的樣式
     &.details-open {
       .item-details-panel {
-        max-height: 500px;
+        max-height: 800px;
       }
     }
 

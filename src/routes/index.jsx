@@ -9,7 +9,7 @@ import Cart from '../pages/Cart.jsx';
 import Checkout from '../pages/Checkout.jsx';
 import Payment from '../pages/Payment.jsx';
 import ArticleDetail from '../pages/ArticleDetail.jsx';
-import Member from '../pages/member.jsx';
+import Member from '../pages/Member.jsx';
 
 import AdminPages from '../pages/admin/AdminPages.jsx';
 import AdminHome from '../pages/admin/AdminHome.jsx';
@@ -31,7 +31,7 @@ const routes = [
     children: [
       { index: true, element: <Home /> },
       { path: 'product', element: <Product /> },
-      { path: 'product2/:id', element: <Product2 /> },
+      { path: 'product/:id', element: <Product /> },
       { path: 'product2', element: <Product2 /> },
       { path: 'about', element: <About /> },
       { path: 'custom', element: <Custom /> },

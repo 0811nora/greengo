@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import seafoodTag from '../assets/img/product/Seafood.svg';
-import beefTag from '../assets/img/product/Beef.svg';
-import spicyTag from '../assets/img/product/Spicy.svg';
+import seafoodTag from '../assets/image/product/Seafood.svg';
+import beefTag from '../assets/image/product/Beef.svg';
+import spicyTag from '../assets/image/product/Spicy.svg';
 import { getAllProducts } from '../api/ApiClient';
 import { Accordion, Form } from 'react-bootstrap';
 import Select from 'react-select';
