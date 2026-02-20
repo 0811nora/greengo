@@ -11,6 +11,7 @@
 		"deploy": "npm run build && gh-pages -d dist"
 	},
 	"dependencies": {
+		"@reduxjs/toolkit": "^2.11.2",
 		"aos": "^2.3.4",
 		"apexcharts": "^5.3.6",
 		"axios": "^1.13.2",
@@ -20,6 +21,7 @@
 		"framer-motion": "^12.30.0",
 		"gh-pages": "^6.3.0",
 		"matter-js": "^0.20.0",
+		"motion": "^12.34.0",
 		"react": "^19.2.0",
 		"react-apexcharts": "^1.9.0",
 		"react-bootstrap": "^2.10.10",
@@ -27,6 +29,7 @@
 		"react-hook-form": "^7.71.1",
 		"react-infinite-scroll-component": "^6.1.1",
 		"react-quill-new": "^3.7.0",
+		"react-redux": "^9.2.0",
 		"react-router-dom": "^7.11.0",
 		"react-select": "^5.10.2",
 		"react-toastify": "^11.0.5",
