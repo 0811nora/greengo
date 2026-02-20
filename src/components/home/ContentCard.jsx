@@ -37,5 +37,4 @@ const ContentCard = ({
     </div>
   );
 };
-
 export default ContentCard;

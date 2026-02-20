@@ -45,6 +45,7 @@ const LoginModal = () => {
   const isModalOpen = useSelector(selectIsModalOpen);
   // 登入或註冊
   const [activeTab, setActiveTab] = useState('login');
+  // const [isRegisterMode, setIsRegisterMode] = useState(false);
 
   // 登入
   const onLoginSubmit = (data) => {
@@ -64,11 +65,13 @@ const LoginModal = () => {
   const resetAndClose = () => {
     dispatch(closeModal());
     setActiveTab('login');
+    // setIsRegisterMode(false);
     resetLogin();
     resetRegister();
   };
   const handleTabSwitch = (tab) => {
     setActiveTab(tab);
+    // setIsRegisterMode(!isRegisterMode);
     resetLogin();
     resetRegister();
   };
@@ -220,7 +223,7 @@ const LoginModal = () => {
                     還沒有帳號？
                     <button
                       type='button'
-                      className='btn home__btn-link fs-sm p-0 text-primary text-decoration-none ms-1'
+                      className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
                       onClick={() => handleTabSwitch('register')}
                     >
                       立即註冊
@@ -328,7 +331,7 @@ const LoginModal = () => {
                     已有帳號？
                     <button
                       type='button'
-                      className='btn home__btn-link p-0 fs-sm text-gray-400 text-decoration-none ms-1'
+                      className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
                       onClick={() => handleTabSwitch('login')}
                     >
                       立即登入

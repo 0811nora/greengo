@@ -10,6 +10,7 @@ import Loader from '../components/common/Loading';
 import ContentCard from '../components/home/ContentCard';
 import CommentCard from '../components/home/CommentCard';
 import StepCard from '../components/home/StepCard';
+import FadeIn from '../components/home/FadeIn';
 import HeroSection from '../components/home/sections/HeroSection';
 import NutritionSection from '../components/home/sections/NutritionSection';
 import SignatureSection from '../components/home/sections/SignatureSection';
@@ -233,7 +234,7 @@ export default function Home() {
                               {mainArticle.tag?.map((tag, index) => (
                                 <span
                                   key={index}
-                                  className='ms-2 badge bg-brown-300 text-brown-100'
+                                  className='ms-2 badge bg-accent text-gray-600'
                                 >
                                   #{tag}
                                 </span>
@@ -269,7 +270,7 @@ export default function Home() {
                             {article.tag?.map((tag, index) => (
                               <span
                                 key={index}
-                                className='ms-2 badge bg-brown-300 text-brown-100'
+                                className='ms-2 badge bg-accent text-gray-600'
                               >
                                 #{tag}
                               </span>

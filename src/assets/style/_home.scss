@@ -199,6 +199,8 @@ li {
 .home__btn-link {
   position: relative;
   color: $primary-300;
+  background-color: transparent;
+  border: none;
   text-decoration: none;
   &::after {
     content: '';
