@@ -33,12 +33,12 @@ const NutritionSection = () => {
                 營養成分，
                 <span className=''>即時看得見</span>。
               </h2>
-              {/* 桌機連結區 */}
+              {/* 桌機板 */}
               <div className='d-none d-md-block'>
                 <p className='fs-6 mb-3 px-4'>
-                  你不是不想吃得健康， <br />
-                  只是營養真的不好算。 <br />
-                  所以我們準備了兩種更輕鬆的選擇。
+                  別讓算熱量成了負擔， <br />
+                  你的每一份營養， <br />
+                  我們幫你把關。
                 </p>
                 <ul className='home__nur-card d-flex gap-4'>
                   <li className='home__nur-card-content d-flex flex-column justify-content-end'>
@@ -67,13 +67,16 @@ const NutritionSection = () => {
               </div>
             </div>
             {/* 過去的困擾 */}
-            <div ref={sectionRef} className='col-md-5 d-flex flex-column gap-5'>
+            <div
+              ref={sectionRef}
+              className='col-md-5 d-flex flex-column mt-2 mt-lg-5 gap-5 gap-lg-8'
+            >
               {TroubleCards.map((card) => (
                 <div
                   key={card.id}
                   className={`sub-card bg-gray-100 rounded-4 position-relative py-3 px-4 py-md-5 px-md-6 ${card.align} ${isVisible ? 'is-visible' : ''}`}
                 >
-                  <p className='text-warning fw-medium mb-1'>過去的困擾</p>
+                  <p className='text-warning fw-medium mb-2'>過去的困擾</p>
                   <p className='mb-0'>{card.text}</p>
                   <svg
                     className='position-absolute'
@@ -89,12 +92,12 @@ const NutritionSection = () => {
                 </div>
               ))}
             </div>
-            {/* 手機板連結區 */}
+            {/* 手機版 */}
             <div className='d-block d-md-none mt-5'>
               <p className='fs-6 mb-3 px-4'>
-                你不是不想吃得健康， <br />
-                只是營養真的不好算。 <br />
-                所以我們準備了兩種更輕鬆的選擇。
+                別讓算熱量成了負擔， <br />
+                你的每一份營養， <br />
+                我們幫你把關。
               </p>
               <ul className='home__nur-card d-flex gap-4'>
                 <li className='home__nur-card-content d-flex flex-column justify-content-end'>
