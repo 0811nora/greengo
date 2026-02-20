@@ -9,11 +9,11 @@ import { getArticles } from '../api/ApiClient';
 import Loader from '../components/common/Loading';
 import ContentCard from '../components/home/ContentCard';
 import CommentCard from '../components/home/CommentCard';
-import IngredientCard from '../components/home/IngredientCard';
 import StepCard from '../components/home/StepCard';
-import BestSellerSwiper from '../components/home/BestSellerSwiper';
+import FadeIn from '../components/home/FadeIn';
 import HeroSection from '../components/home/sections/HeroSection';
 import NutritionSection from '../components/home/sections/NutritionSection';
+import SignatureSection from '../components/home/sections/SignatureSection';
 
 export default function Home() {
   // 監聽區
@@ -62,64 +62,10 @@ export default function Home() {
       <main className='container-fluid p-0'>
         {/* Hero Section */}
         <HeroSection />
-        {/* Smart Nutrition */}
+        {/* Nutrition Section */}
         <NutritionSection />
         {/* 精選區 */}
-        <section className='home__signature-section container-fluid rounded-top-5 py-10 px-6'>
-          {/* 示意區 */}
-          <div className='container'>
-            <div className='row align-items-center'>
-              {/* 左邊示意區 */}
-              <div className='col-lg-7 d-none d-sm-flex home__signature-container mt-10'>
-                {/* 碗 */}
-                <div className='home__signature-content'>
-                  <img
-                    src={`${import.meta.env.BASE_URL}img/items/bowl-5.png`}
-                    alt='bowl-5'
-                    className='home__signature-img'
-                  />
-                  {/* 配菜區 */}
-                  {Ingredients.map((data) => (
-                    <IngredientCard key={data.id} item={data} />
-                  ))}
-                </div>
-              </div>
-              {/* 右邊文字區 */}
-              <div className='col-lg-5'>
-                <ContentCard
-                  subTitle='SIGNATURE BOWLS'
-                  title={
-                    <>
-                      綠果 <br /> 精選系列
-                    </>
-                  }
-                  description={
-                    <>
-                      綠果堅持由營養團隊精心設計的黃金比例組合，
-                      <br />
-                      無須思考，打開就能享用一份零失誤的健康。
-                    </>
-                  }
-                  buttonText='查看精選菜單'
-                  to={PageLinks.productLink.url}
-                />
-              </div>
-            </div>
-          </div>
-          {/* 熱門商品 + swiper 套件*/}
-          <div className='container-fluid home__swiper bg-yellow-100 pt-5 pb-8 pb-md-10 px-8 rounded-5'>
-            <div className='text-center mb-2 mb-md-5'>
-              {' '}
-              <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2 mb-md-5'>
-                BEST SELLER
-              </h4>
-              <h2 className='fs-3 fs-md-1 fw-bold mb-2 mb-md-5'>熱銷排行</h2>
-            </div>
-            <div className='row'>
-              <BestSellerSwiper />
-            </div>
-          </div>
-        </section>
+        <SignatureSection />
         <svg
           id='visual'
           viewBox='0 0 1920 120'
@@ -172,7 +118,6 @@ export default function Home() {
           id='visual'
           viewBox='0 0 1920 250'
           width='100%'
-          height='auto'
           xmlns='http://www.w3.org/2000/svg'
           xmlnsXlink='http://www.w3.org/1999/xlink'
           version='1.1'
@@ -231,6 +176,7 @@ export default function Home() {
             <div className='row'>
               <div className='col-lg-4 mb-5 mb-lg-0'>
                 <ContentCard
+                  hasBorder
                   subTitle='YOUR INSPIRATION'
                   title='綠果專欄'
                   description={
@@ -288,7 +234,7 @@ export default function Home() {
                               {mainArticle.tag?.map((tag, index) => (
                                 <span
                                   key={index}
-                                  className='ms-2 badge bg-brown-300 text-brown-100'
+                                  className='ms-2 badge bg-accent text-gray-600'
                                 >
                                   #{tag}
                                 </span>
@@ -324,7 +270,7 @@ export default function Home() {
                             {article.tag?.map((tag, index) => (
                               <span
                                 key={index}
-                                className='ms-2 badge bg-brown-300 text-brown-100'
+                                className='ms-2 badge bg-accent text-gray-600'
                               >
                                 #{tag}
                               </span>

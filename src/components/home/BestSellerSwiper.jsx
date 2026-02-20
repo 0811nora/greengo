@@ -1,6 +1,7 @@
 // import { useState } from 'react';
 import { FixedMeals } from '../../data/homeData';
 import { notify } from '../Notify';
+import { Link } from 'react-router-dom';
 
 // header 購物車
 import { useDispatch } from 'react-redux';
@@ -38,69 +39,81 @@ const BestSellerSwiper = () => {
   };
   return (
     <>
-      {' '}
       <Swiper
         className='fixed-swiper'
         modules={[Navigation, A11y]}
         spaceBetween={24}
-        slidesPerView={1.5}
+        slidesPerView={1}
         navigation
         breakpoints={{
-          576: { slidesPerView: 2 },
-          768: { slidesPerView: 3 },
-          992: { slidesPerView: 4 },
-        }}
-        style={{
-          paddingBottom: '10px',
-          paddingLeft: '20px',
-          paddingRight: '20px',
+          576: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          992: { slidesPerView: 3 },
+          1296: { slidesPerView: 4 },
         }}
       >
-        {/* 待調整 */}
-        {FixedMeals.map((product) => (
-          <SwiperSlide key={product.id}>
-            <div className='home__fixed-card h-100'>
-              <div className='position-relative overflow-hidden rounded-3'>
-                {product.rank && (
-                  <span className='badge rounded-pill bg-success position-absolute top-0 start-0 mt-2 ms-2 z-3'>
-                    {product.rank}
-                  </span>
-                )}
-                <button
-                  type='button'
-                  className='home__swiper-btn position-absolute bottom-0 end-0 mb-2 me-2 z-3'
-                  aria-label='加入購物車'
-                  onClick={() => addCartBtn(product.id, 1)}
-                >
-                  <i className='bi bi-bag'></i>
-                </button>
-                <img
-                  src={product.img}
-                  className='card-img-top object-fit-cover'
-                  alt={product.name}
-                />
-              </div>
-              <div className='card-body mt-4'>
-                <div className='d-flex justify-content-between align-items-center mb-1'>
-                  <h5 className='fs-6 fs-md-5 fw-bold mb-0'>{product.name}</h5>
-                  <span className='ft-en fs-6 fs-md-5 fw-bold'>
-                    ${product.price}
-                  </span>
+        <div style={{ width: '1296px' }}>
+          {FixedMeals.map((product) => (
+            <SwiperSlide key={product.id}>
+              <Link
+                to={`/product/${product.id}`}
+                className='text-decoration-none'
+              >
+                <div className='home__fixed-card h-100'>
+                  <div className='position-relative overflow-hidden'>
+                    {product.rank && (
+                      <span className='badge rounded-pill bg-accent text-gray-600 position-absolute top-0 start-0 mt-2 ms-2 z-3'>
+                        {product.rank}
+                      </span>
+                    )}
+                    <button
+                      type='button'
+                      className='home__swiper-btn position-absolute bottom-0 end-0 mb-2 me-2 z-3'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        addCartBtn(product.id, 1);
+                      }}
+                    >
+                      <i className='bi bi-bag'></i>
+                    </button>
+                    <img
+                      src={product.img}
+                      className='card-img-top object-fit-cover rounded-bottom-0'
+                      alt={product.name}
+                    />
+                  </div>
+                  <div className='card-body py-3 px-5'>
+                    <div className='d-flex justify-content-between align-items-center text-gray-600 mb-1'>
+                      <h5 className='fs-6 fs-md-5 fw-bold mb-0'>
+                        {product.name}
+                      </h5>
+                      <span className='fs-6 fs-md-5 fw-bold'>
+                        ${product.price}
+                      </span>
+                    </div>
+                    <p className='fw-medium text-primary-300 mb-3 d-flex justify-content-between'>
+                      <span title='熱量'>
+                        {product.nutrition.calories} kcal
+                      </span>
+                      <span title='P：蛋白質｜F：脂肪｜C：碳水'>
+                        P&nbsp;{product.nutrition.protein}&nbsp;|&nbsp;F&nbsp;
+                        {product.nutrition.fat}&nbsp;|&nbsp;C&nbsp;
+                        {product.nutrition.carbs}
+                      </span>
+                    </p>
+                    <div className='d-flex flex-wrap gap-2'>
+                      {product.tags.map((item, index) => (
+                        <span key={index} className='tag-item'>
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <p className='ft-en fw-medium text-gray-300 mb-3'>
-                  {product.kcal} kcal
-                </p>
-                <div className='d-flex flex-wrap gap-2'>
-                  {product.tags.map((item, index) => (
-                    <span key={index} className='tag-item'>
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
+              </Link>
+            </SwiperSlide>
+          ))}
+        </div>
       </Swiper>
     </>
   );
