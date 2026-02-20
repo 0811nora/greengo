@@ -5,6 +5,8 @@ import { PageSwitch} from '../components/common/AnimationWrapper';
 import { notify } from '../components/Notify';
 
 import AdmButton from "../components/admin/common/AdmButton";
+import Loader from "../components/common/Loading";
+import { ConfirmModal } from '../components/common/Modal';
 
 import ClickOutsideHandler from "../components/common/ClickOutsideHandler";
 
@@ -94,6 +96,8 @@ export default function Custom() {
     const [ addOnTabs ,setAddonTabs ] =  useState('base');
     const [ isOpenOrderModal , setIsOpenOrderModal] = useState(false);
     const [ isOpenPFCBtn , setIsOpenPFCBtn] = useState(false);
+    const [ isLoading , setIsLoading ] = useState(false);
+    const [isShowModal, setIsShowModal] = useState(false);
 
     const navigate = useNavigate(null);
 
@@ -118,13 +122,7 @@ export default function Custom() {
         
     },[])
 
-    const handleClose = (mode) => {
-        if(mode === "order"){
-            setIsOpenOrderModal(false);
-        }else{
-            setIsOpenPFCBtn(false)
-        }
-    };
+
     
 
     
@@ -161,7 +159,6 @@ export default function Custom() {
     }
 
     const selectFlat = CATEGORY_TABS.map( keys => selectedProduct[keys]).flat();
-    console.log('selectFlat',selectFlat)
 
 
     // 從已選品項找出三大營養素數據
@@ -313,6 +310,21 @@ export default function Custom() {
 
     }
 
+    // 重新選擇套餐
+    const reselect = () => {
+        setSelectedProduct(INITIAL_SELECTED_PRODUCT);
+        setStepState(1);
+        scrollToTop();
+        setIsShowModal(false)
+    }
+
+    const handleClose = (mode) => {
+        if(mode === "order"){
+            setIsOpenOrderModal(false);
+        }else{
+            setIsOpenPFCBtn(false)
+        }
+    };
 
 
     // 上一步按鈕的判斷
@@ -321,13 +333,7 @@ export default function Custom() {
             setStepState(2)
             scrollToTop()
         }else if(stepState === 2){
-            const isLeave = window.confirm("回首頁將會清空所有選擇，確定要離開嗎？");
-            if(isLeave){
-                setSelectedProduct(INITIAL_SELECTED_PRODUCT);
-                setStepState(1);
-                scrollToTop();
-            }
-
+            setIsShowModal(true)
         }
     }
 
@@ -363,10 +369,9 @@ export default function Custom() {
 
     // 送購物車的資料
     const handleSendCart = async() => {
-
+        setIsLoading(true);
         try{
             const cartRes = await getCart();
-            console.log(cartRes.data.data.carts)
 
             const cartList = cartRes.data.data.carts
             const currentType = selectedProduct.plan_type
@@ -417,14 +422,14 @@ export default function Custom() {
                 }       
             }
 
-            console.log(finalData)
 
             const addCartRes = await postAddToCart(finalData);
-            console.log(addCartRes.data.message)
-            notify('success','加入成功','bottom-center')
             setStepState(4);
+            window.scrollTo(0, 0);
         }catch(err){
             console.log(err)
+        }finally{
+            setIsLoading(false);
         }
 
 
@@ -487,7 +492,8 @@ export default function Custom() {
 
 
 
-    return (
+    return ( <>
+        
         <main className="custom-main">
             <div className="custom-bg">
                 <div className="bg-overlay">
@@ -969,6 +975,21 @@ export default function Custom() {
 
                 </div>
             </div>
+            <Loader mode={"mask"} show={isLoading}/>
+            <ConfirmModal
+                style={'front'}
+                show={isShowModal}
+                closeModal={()=>setIsShowModal(false)}
+                text_icon={null}
+                text_title={'是否重新選擇套餐？'}
+                text_content={'離開此頁面將會清空已選擇的套餐內容'}
+                text_cancel={'取消'}
+                cancelModal={()=>setIsShowModal(false)}
+                text_confirm={'確認'}
+                confirmModal={reselect}
+            />
         </main>
-    )
+
+
+    </>)
 }

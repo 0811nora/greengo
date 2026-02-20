@@ -73,35 +73,36 @@
 } // 這個比較白
 
 // // adm__modal 彈跳視窗
-// .adm-theme {
-//   .adm__modal__comfirm {
-//     border-radius: 20px;
-//     padding: 48px 48px;
-//   }
-//   .adm__modal__info {
-//     border-radius: 20px;
-//   }
-//   .adm__modal__body {
-//     padding: 0;
-//     display: flex;
-//     flex-direction: column;
-//     gap: 40px;
+.adm-theme {
+  .adm__modal__comfirm {
+    border-radius: 20px;
+    padding: 48px 48px;
+  }
+  .adm__modal__info {
+    border-radius: 20px;
+  }
+  .adm__modal__body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 
-//     h1 {
-//       text-align: center;
-//       margin-bottom: 16px;
-//     }
-//     p {
-//       text-align: center;
-//       color: $subtitle;
-//     }
-//   }
-// }
+    h1 {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    p {
+      text-align: center;
+      color: $subtitle;
+    }
+  }
+}
 
 // adm__input 輸入框
 .adm-theme {
   .adm__input {
-    border-color: $border;
+    border-color: $adm-gray-300;
+    background-color: $adm-gray-white;
     &::placeholder {
       color: $adm-gray-300;
     }

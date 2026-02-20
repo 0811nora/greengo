@@ -1,7 +1,7 @@
 
 import { toast } from 'react-toastify';
 
-export const notify = (type, msg, position = 'top-right') => {
+export const notify = (type, msg, position = 'bottom-center') => {
     const toastTypes = {
         success: toast.success,
         error: toast.error,

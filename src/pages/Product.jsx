@@ -1,60 +1,226 @@
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import Select from 'react-select';
-import classNames from 'classnames';
-import { getAllProducts } from '../api/ApiClient';
-import seafoodTag from '../assets/img/product/Seafood.svg';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getAllProducts, postAddToCart } from '../api/ApiClient';
+import { notify } from '../components/Notify';
+import MenuSection from '../components/product/MenuSection';
+import DATA from '../config/productUiData';
+import ProductDetail from './ProductDetail';
+import Loader from '../components/common/Loading';
 
-const sortOptions = [
-	{ value: 'proteinToLow', label: '蛋白：高 → 低' },
-	{ value: 'kcalToHigh', label: '熱量：低 → 高' },
-	{ value: 'likeToLow', label: '人氣：高 → 低' },
-	{ value: 'priceToHigh', label: '價格：低 → 高' },
-	{ value: 'priceToLow', label: '價格：高 → 低' },
+const BLOCK_CONTENT_OPTIONS = [
+	{
+		icon: 'allergies',
+		title: '經典綠果碗',
+		subtitle: '由主廚精心搭配的營養組合',
+	},
+	{
+		icon: 'local_cafe',
+		title: '健康飲品',
+		subtitle: '讓營養更完整的健康飲品',
+	},
+	{
+		icon: 'soup_kitchen',
+		title: '溫暖湯品',
+		subtitle: '讓營養更均衡的溫暖湯品',
+	},
 ];
-
-const flavorOptions = [
-	{ value: 'noSeafood', label: '不要海鮮' },
-	{ value: 'noSpicy', label: '不要辣' },
-	{ value: 'noBeef', label: '不要牛' },
-	{ value: 'noPork', label: '不要豬' },
-	{ value: 'spicy', label: '辣' },
-];
-
-const filterBlockCts = [{}];
+const INITIAL_STATE_STATE = {
+	set: {
+		tab: 'all',
+		flavor: [],
+		flavorSelect: null,
+		sort: 'default',
+		sortSelect: null,
+	},
+	drinks: {
+		tab: 'all',
+		flavor: [],
+		flavorSelect: null,
+		sort: 'default',
+		sortSelect: null,
+	},
+	soup: {
+		tab: 'all',
+		flavor: [],
+		flavorSelect: null,
+		sort: 'default',
+		sortSelect: null,
+	},
+};
+const INITIAL_CUSTOMIZATIONS = {
+	customizations: {
+		addon: null,
+		custom_total: 0,
+		extra_price: 0,
+		included: null,
+		plan_info: {
+			base_price: 0,
+			plan_type: 'set',
+		},
+		total_nutrition: {
+			calories: 0,
+			carbs: 0,
+			fat: 0,
+			protein: 0,
+		},
+	},
+};
 
 export default function Product() {
-	const [sortSelect, setSortSelect] = useState(null);
-	const [flavorSelect, setFlavorSelect] = useState(null);
-	const [productsData, setProductsData] = useState([]);
+	const [apiProdutsData, setApiProdutsData] = useState([]);
+	const [filterState, setFilterState] = useState(INITIAL_STATE_STATE);
+	const [isDataLoading, setIsDataLoading] = useState(true);
+	const [isAddCartLoading, setIsAddCartLoading] = useState(false);
+	const navigate = useNavigate();
+	const { id } = useParams();
 
 	useEffect(() => {
 		const getProducts = async () => {
 			try {
 				const res = await getAllProducts();
-				console.log(res.data);
-				setProductsData(res.data.products);
+				const productData = res.data.products.filter(
+					product => product.category !== 'item' && product.category !== 'custom',
+				);
+				setApiProdutsData(productData);
+				setIsDataLoading(false);
 			} catch (error) {
 				console.log(error.response);
+				setIsDataLoading(false);
 			}
 		};
 		getProducts();
 	}, []);
 
-	const fixedProducts = productsData?.filter(product => product.category === 'fixed');
+	const toggleTabFilter = (category, value) => {
+		setFilterState(prev => ({
+			...prev,
+			[category]: {
+				...prev[category],
+				tab: value,
+			},
+		}));
+	};
+	const toggleFlavorFilter = (category, value) => {
+		const flavorNewArry = value.map(valueItem => valueItem.value);
+		setFilterState(prev => ({
+			...prev,
+			[category]: {
+				...prev[category],
+				flavor: flavorNewArry,
+				flavorSelect: value,
+			},
+		}));
+	};
+	const toggleSortFilter = (category, value) => {
+		setFilterState(prev => ({
+			...prev,
+			[category]: {
+				...prev[category],
+				sort: value.value,
+				sortSelect: value,
+			},
+		}));
+	};
+
+	const renderDisplayData = (apiProdutsData, filterState, category) => {
+		const filterData = apiProdutsData.filter(product => {
+			if (product.product_type !== category) return false;
+			if (filterState[category].tab !== 'all') {
+				if (!product.tab_collection.includes(filterState[category].tab)) return false;
+			}
+			if (product.include_tags) {
+				for (const filterFlavor of filterState[category].flavor) {
+					if (product.include_tags?.includes(filterFlavor)) return false;
+				}
+			}
+			return true;
+		});
+		const sortData = [...filterData];
+		switch (filterState[category].sort) {
+			case 'default':
+				return sortData;
+			case 'proteinToLow':
+				return sortData.sort((a, b) => b.nutrition.protein - a.nutrition.protein);
+			case 'kcalToHigh':
+				return sortData.sort((a, b) => a.nutrition.calories - b.nutrition.calories);
+			case 'priceToHigh':
+				return sortData.sort((a, b) => a.price - b.price);
+			case 'priceToLow':
+				return sortData.sort((a, b) => b.price - a.price);
+			default:
+				return sortData;
+		}
+	};
+
+	// 開啟產品詳細頁
+	const handleOpenDetail = id => {
+		navigate(`/product/${id}`);
+	};
+
+	// 關閉產品詳細頁
+	const handleCloseDetail = () => {
+		navigate(`/product`);
+	};
+
+	// 加入購物車
+	const handleAddCart = async (id, qty = 1, productDetail) => {
+		setIsAddCartLoading(true);
+		// 如果之後加購addon可以使用，再來擴充
+		const customizationsData = {
+			customizations: {
+				...INITIAL_CUSTOMIZATIONS.customizations,
+				addon: null,
+				custom_total: productDetail?.price,
+				extra_price: 0,
+				included: null,
+				plan_info: {
+					base_price: productDetail?.price,
+					plan_type: productDetail?.product_type,
+				},
+				total_nutrition: {
+					calories: productDetail?.nutrition.calories,
+					carbs: productDetail?.nutrition.carbs,
+					fat: productDetail?.nutrition.fat,
+					protein: productDetail?.nutrition.protein,
+				},
+			},
+		};
+
+		const data = {
+			product_id: id,
+			qty: qty,
+			...customizationsData,
+		};
+		try {
+			const res = await postAddToCart(data);
+			setIsAddCartLoading(false);
+			notify('success', '加入購物車成功', 'top-right');
+			handleCloseDetail();
+		} catch (error) {
+			console.log(error);
+			setIsAddCartLoading(false);
+			notify('error', '加入購物車失敗', 'top-right');
+		}
+	};
 
 	return (
 		<div className="product-page">
+			{isDataLoading && <Loader mode={'page'} show={isDataLoading} />}
+
 			{/* 菜單hero */}
 			<header>
 				<div className="container d-flex flex-column justify-content-between align-items-center">
-					<div className="d-flex flex-column align-items-center">
-						<h1 className="text-primary-300 fw-semibold mb-5">Green Go 精選菜單</h1>
+					<div className="d-flex flex-column align-items-center animate__animated animate__fadeInDown">
+						<h1 className="mb-6">Green Go 精選菜單</h1>
 						<div className="d-flex flex-column flex-md-row">
-							<h5 className="fw-normal text-brown-300 text-center m-1">當季最新鮮、營養最到位，</h5>
-							<h5 className="fw-normal text-brown-300 text-center m-1">每一口都是 GreenGo 的健康提案</h5>
+							<h5 className="m-1">當季最新鮮、營養最到位，</h5>
+							<h5 className="m-1">每一口都是 GreenGo 的健康提案</h5>
 						</div>
 					</div>
+				</div>
+				{/* 向下箭頭 */}
+				<div className="z-1">
+					<i className="bi bi-arrow-down mt-4 text-white"></i>
 				</div>
 			</header>
 
@@ -62,321 +228,101 @@ export default function Product() {
 			<section className="position-relative">
 				<div className="block-filter container position-absolute top-0 start-50 translate-middle">
 					<div className="d-flex flex-column flex-md-row justify-content-between gap-6 gap-xxl-8 ">
-						<div className="block-item d-flex flex-column align-items-center">
-							<span className="material-symbols-rounded">chef_hat</span>
-							<p className="h5 fw-semibold">Green Go 幫你配</p>
-							<p>由主廚精心搭配的營養組合</p>
-						</div>
-						<div className="block-item">
-							<span className="material-symbols-rounded">allergies</span>
-							<p className="h5 fw-semibold">$149 隨心自由配</p>
-							<p>自由選擇喜歡的食材組合</p>
-						</div>
-						<div className="block-item">
-							<span className="material-symbols-rounded">coffee</span>
-							<p className="h5 fw-semibold">口渴加價配</p>
-							<p>加價選擇飲品和湯品</p>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			{/* 向下箭頭 */}
-			{/* <section>
-        <i className="bi bi-arrow-down mt-4 text-primary"></i>
-      </section> */}
-
-			{/* 菜單錨點 */}
-			{/* <section className="block-filter container mt-7">
-        <div className="d-flex flex-column flex-md-row justify-content-between gap-6 gap-xxl-8 ">
-          <div className="block-item d-flex flex-column align-items-center">
-            <span className="material-symbols-rounded">chef_hat</span>
-            <p className="h5 fw-semibold">Green Go 幫你配</p>
-            <p>由主廚精心搭配的營養組合</p>
-          </div>
-          <div className="block-item">
-            <span className="material-symbols-rounded">allergies</span>
-            <p className="h5 fw-semibold">$149 隨心自由配</p>
-            <p>自由選擇喜歡的食材組合</p>
-          </div>
-          <div className="block-item">
-            <span className="material-symbols-rounded">coffee</span>
-            <p className="h5 fw-semibold">口渴加價配</p>
-            <p>加價選擇飲品和湯品</p>
-          </div>
-        </div>
-      </section> */}
-
-			{/* 固定餐*/}
-			<section className="container set-section ">
-				<div className="title">
-					<h2>Green Go 幫你配</h2>
-					<h6>主廚的精心搭配，讓專業為你把關！</h6>
-				</div>
-				<div className="meal-filter d-flex justify-content-between gap-6 mt-10">
-					<ul className="nav nav-underline flex-fill">
-						<li className="nav-item">
-							<NavLink className="nav-link active" aria-selected="true" to="#">
-								全部
-							</NavLink>
-						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">
-								人氣推薦
-							</a>
-						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">
-								多多蛋白
-							</a>
-						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">
-								低脂低卡
-							</a>
-						</li>
-						<li className="nav-item">
-							<a className="nav-link" href="#">
-								健康蔬食
-							</a>
-						</li>
-					</ul>
-					<Select
-						options={flavorOptions}
-						placeholder="忌口篩選"
-						isMulti={true}
-						value={flavorSelect}
-						onChange={setFlavorSelect}
-						unstyled
-						classNamePrefix="rs"
-						classNames={{
-							control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
-							menu: () => classNames('rs__menu'),
-							option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
-						}}
-					/>
-					<Select
-						options={sortOptions}
-						placeholder="排序"
-						value={sortSelect}
-						onChange={setSortSelect}
-						unstyled
-						classNamePrefix="rs"
-						classNames={{
-							control: ({ isFocused }) => classNames('rs__control', isFocused && 'rs__focus'),
-							menu: () => classNames('rs__menu'),
-							option: ({ isFocused }) => classNames('rs__option', isFocused && 'rs__focus'),
-						}}
-					/>
-				</div>
-
-				<div className="row mt-9">
-					{fixedProducts.map(product => (
-						<div className="col-3" key={product.id}>
-							<div className="card">
-								<div className="img position-raletive">
-									<img
-										src="https://storage.googleapis.com/vue-course-api.appspot.com/miniburger/1770205696564.png"
-										className="card-img-top"
-										alt={product.title}
-									/>
-								</div>
-
-								{/* <div className="nutrition d-flex gap-2 px-6 py-1">
-                  <span className="">{`${
-                    product.nutrition.calories
-                  } Kcal`}</span>{" "}
-                  |<span>{`P ${product.nutrition.protein}`}</span> |
-                  <span>{`F ${product.nutrition.fat}`}</span>|{" "}
-                  <span>{`C ${product.nutrition.carbs}`}</span>
-                </div> */}
-
-								<div className="card-body d-flex flex-column gap-5 px-6 py-7">
-									<div className="d-flex gap-1">
-										<h6 className="fw-semibold mb-2 text-gray-600">{product.title}</h6>
-										<div className="d-flex gap-1">
-											<div className="tag">
-												<img src={seafoodTag} alt="" />
-											</div>
-											<div className="tag">
-												<img src={seafoodTag} alt="" />
-											</div>
-											<div className="tag">
-												<img src={seafoodTag} alt="" />
-											</div>
-										</div>
-									</div>
-									<div className="d-flex flex-column gap-1">
-										<p className="fw-normal text-brown-300">多多蛋白｜人氣推薦</p>
-										<p className="fw-normal text-brown-300">416 Kcal｜P 60｜F 13｜C 9</p>
-									</div>
-									{/* <div className="d-flex flex-column gap-1">
-                    <p className="fw-normal text-brown-300">
-                      {`${product.ingredients.base}、${product.ingredients.source}`}
-                    </p>
-                    <p className="fw-normal text-brown-300">
-                      {`${product.ingredients.main}`}
-                    </p>
-                    <p className="fw-normal text-brown-300">
-                      {`${product.ingredients.side}`}
-                    </p>
-                  </div> */}
-
-									<div className="card-footer">
-										<div className="h6 fw-semibold text-primary-200 mb-5">
-											{`NT$${product.price}`}
-										</div>
-										<div className="button-section d-flex align-items-center gap-3">
-											<div className="num-control d-flex align-items-center justify-content-between flex-fill">
-												<button className="minus">
-													<i class="bi bi-dash"></i>
-												</button>
-												<span className="fw-semibold text-center">1</span>
-												<button className="add">
-													<i class="bi bi-plus"></i>
-												</button>
-											</div>
-
-											<button className="addCart primary-btn">加入購物車</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					))}
-				</div>
-			</section>
-
-			{/*以下是用col*/}
-			{/* <div className="row mt-8">
-				<div className="col-2">
-					類別區塊
-					<Accordion defaultActiveKey="1" flush>
-						<Accordion.Item eventKey="1">
-							<Accordion.Header onClick={() => toggleFStateByCategory('set')}>
-								經典poke碗
-							</Accordion.Header>
-							<Accordion.Body>
-								{FILTER_OPTIONS[currentCategoryState]?.tab?.map((item, index) => (
-									<Form.Check
-										key={index}
-										type="radio"
-										id={item.key}
-										label={item.label}
-										name={currentCategoryState}
-										value={item.key}
-										checked={filterState[currentCategoryState].tab === item.key}
-										onChange={e => toggleFStateByTab(e)}
-									/>
-								))}
-							</Accordion.Body>
-						</Accordion.Item>
-						<Accordion.Item eventKey="2">
-							<Accordion.Header onClick={() => toggleFStateByCategory('drinks')}>
-								健康飲品
-							</Accordion.Header>
-							<Accordion.Body>
-								{FILTER_OPTIONS[currentCategoryState]?.tab?.map((item, index) => (
-									<Button variant="primary" onClick={() => toggleFStateByTab(item.key)} key={index}>
-										{item.label}
-									</Button>
-								))}
-							</Accordion.Body>
-						</Accordion.Item>
-						<Accordion.Item eventKey="3">
-							<Accordion.Header onClick={() => toggleFStateByCategory('soup')}>溫暖湯品</Accordion.Header>
-							<Accordion.Body>
-								{FILTER_OPTIONS[currentCategoryState]?.tab?.map((item, index) => (
-									<Button variant="primary" onClick={() => toggleFStateByTab(item.key)} key={index}>
-										{item.label}
-									</Button>
-								))}
-							</Accordion.Body>
-						</Accordion.Item>
-					</Accordion>
-
-					忌口選擇區塊
-					<div>
-						{tagSectionStyle?.map((item, index) => (
-							<Form.Check
+						{BLOCK_CONTENT_OPTIONS.map((option, index) => (
+							<div
+								className="block-item d-flex flex-column align-items-center animate__animated animate__zoomIn"
 								key={index}
-								type="checkbox"
-								id={item.key}
-								label={item.label}
-								value={item.key}
-								checked={filterState[currentCategoryState]?.tag.includes(item.key)}
-								onChange={e => toggleFStateByTag(e)}
-							/>
-						))}
-					</div>
-				</div>
-				產品列表
-				<div className="col-10">
-					{String(currentCategoryState)}
-							{JSON.stringify(filterState[currentCategoryState])}
-					<div className="row">
-						{displayProducts.map(product => (
-							<div className="col-4" key={product.id}>
-								<div className="card">
-									圖片
-									<div className="img position-raletive">
-										<img src={product.imageUrl} className="card-img-top" alt={product.title} />
-										{product.tab_collection?.includes('popular') && (
-											<div className="popular position-absolute">Top</div>
-										)}
-									</div>
-									<div className="card-body d-flex flex-column gap-5 px-6 pt-7 pb-5">
-										標題和忌口標籤
-										<div className="d-flex gap-3">
-											<h5 className="fw-semibold mb-2 text-gray-600">{product.title}</h5>
-											<div className=" tag d-flex gap-1">
-												{renderUITag(product.product_type, product?.include_tags)?.map(
-													(tagSrc, index) => (
-														<div className="tag" key={index}>
-															<img src={tagSrc} alt="忌口選擇標籤" />
-														</div>
-													),
-												)}
-											</div>
-										</div>
-										類別標籤和營養素
-										<div className="d-flex flex-column gap-1">
-											<p className="fw-normal text-brown-300">
-												{renderUITab(product.product_type, product.tab_collection)}
-											</p>
-
-											<div className="fw-normal text-brown-300">
-												<span>{`${product.nutrition.calories} Kcal`}</span>
-												<span>
-													{`｜P ${product.nutrition.protein}｜F ${product.nutrition.fat}｜C  ${product.nutrition.carbs}`}
-												</span>
-											</div>
-										</div>
-										<div className="card-footer">
-											<div className="h6 fw-semibold text-primary-200 mb-5">
-												{`NT$ ${product.price}`}
-											</div>
-											<div className="button-section d-flex align-items-center gap-3">
-												<div className="num-control d-flex align-items-center justify-content-between flex-fill">
-													<button className="minus">
-														<i class="bi bi-dash"></i>
-													</button>
-													<span className="fw-medium text-center">1</span>
-													<button className="add">
-														<i class="bi bi-plus"></i>
-													</button>
-												</div>
-
-												<button className="addCart primary-btn">加入購物車</button>
-											</div>
-										</div>
-									</div>
-								</div>
+							>
+								<span className="material-symbols-rounded">{option.icon}</span>
+								<p className="h5 fw-semibold">{option.title}</p>
+								<p className="text-center">{option.subtitle}</p>
 							</div>
 						))}
 					</div>
 				</div>
-			</div> */}
+			</section>
+
+			{/* 固定餐 */}
+			<MenuSection
+				data={DATA}
+				category="set"
+				filterState={filterState}
+				toggleTabFilter={toggleTabFilter}
+				toggleFlavorFilter={toggleFlavorFilter}
+				toggleSortFilter={toggleSortFilter}
+				apiProdutsData={apiProdutsData}
+				renderDisplayData={renderDisplayData}
+				handleOpenDetail={handleOpenDetail}
+				isAddCartLoading={isAddCartLoading}
+				handleAddCart={handleAddCart}
+			/>
+			{/* 自由配導購區塊 */}
+			<section className="CTA-custom mt-10 d-flex justify-content-center align-items-center">
+				<div className="CTA-content d-flex flex-column align-items-center px-9 pt-10 pb-9">
+					<h2 className="mb-4">沒遇到理想的那「碗」嗎？</h2>
+					<h6 className="mb-8">到自選菜單，自由搭配出你的理想滋味吧！</h6>
+					<button type="button" className="home__btn-primary " onClick={() => navigate('/custom')}>
+						前往客製化點餐
+					</button>
+				</div>
+
+				{/* <div className="d-flex flex-md-row flex-column">
+						<div className="col-md-5 col-12">
+							<div className="img">
+								<img
+									src="https://images.unsplash.com/photo-1551218372-a8789b81b253?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+									alt="CTA-custom"
+								/>
+							</div>
+						</div>
+						<div className="col-md-7 col-12">
+							<div className="content d-flex flex-column justify-content-center align-items-center">
+								<h2 className="mb-4 fs-xl-2 fs-3">沒遇到理想的那「碗」嗎？</h2>
+								<h6 className="mb-8">到自選菜單，自由搭配出你的理想滋味吧！</h6>
+								<button type="button" className="home__btn-primary " onClick={() => navigate('/custom')}>
+									前往客製化點餐
+								</button>
+							</div>
+						</div>
+					</div> */}
+			</section>
+
+			{/* 飲料 */}
+			<MenuSection
+				data={DATA}
+				category="drinks"
+				filterState={filterState}
+				toggleTabFilter={toggleTabFilter}
+				toggleFlavorFilter={toggleFlavorFilter}
+				toggleSortFilter={toggleSortFilter}
+				apiProdutsData={apiProdutsData}
+				renderDisplayData={renderDisplayData}
+				handleOpenDetail={handleOpenDetail}
+				isAddCartLoading={isAddCartLoading}
+				handleAddCart={handleAddCart}
+			/>
+
+			{/* 湯品 */}
+			<MenuSection
+				data={DATA}
+				category="soup"
+				filterState={filterState}
+				toggleTabFilter={toggleTabFilter}
+				toggleFlavorFilter={toggleFlavorFilter}
+				toggleSortFilter={toggleSortFilter}
+				apiProdutsData={apiProdutsData}
+				renderDisplayData={renderDisplayData}
+				handleOpenDetail={handleOpenDetail}
+				isAddCartLoading={isAddCartLoading}
+				handleAddCart={handleAddCart}
+			/>
+			{id && (
+				<ProductDetail
+					handleCloseDetail={handleCloseDetail}
+					isAddCartLoading={isAddCartLoading}
+					handleAddCart={handleAddCart}
+				/>
+			)}
 		</div>
 	);
 }

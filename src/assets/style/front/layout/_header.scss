@@ -40,7 +40,7 @@
   background: transparent;
   @media (min-width: 992px) {
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
       z-index: -1;
@@ -65,12 +65,10 @@
   font-size: 40px;
   text-shadow: 0px 1px 8px rgba(27, 32, 40, 0.3);
   transition: color 0.3s ease;
-
   &:hover {
     color: $gray-400;
     text-shadow: 0px 1px 8px rgba(254, 253, 253, 0.12);
   }
-
   @media (max-width: 991px) {
     color: $gray-400;
     font-size: 32px;
@@ -86,7 +84,6 @@
   margin: 0;
   padding: 4px 16px;
   gap: 8px;
-
   background:
     linear-gradient(
       135deg,
@@ -98,7 +95,6 @@
       rgba(77, 147, 43, 0.1) 0%,
       rgba(77, 147, 43, 0.05) 100%
     );
-
   backdrop-filter: blur(16px) saturate(180%);
   border-radius: 50px;
   border: 1px solid rgba(255, 255, 255, 0.6);
@@ -109,7 +105,6 @@
     inset 0 -1px 0 rgba(255, 255, 255, 0.2);
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
-
   &:hover {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95));
     box-shadow:
@@ -178,11 +173,6 @@
   }
 }
 
-// cart
-.cart-dropdown:hover .dropdown-menu {
-  display: block;
-}
-
 // mobile liquid glass
 .mobile-container {
   position: relative;
@@ -235,7 +225,7 @@
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 0;
     left: 20px;
@@ -312,7 +302,7 @@
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 20px;
@@ -369,4 +359,205 @@
 footer i {
   padding: 4px;
   font-size: 32px;
+}
+
+// cart + login
+.header__dropdown {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.6) 100%
+    ),
+    linear-gradient(225deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 100%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  &:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95));
+    box-shadow:
+      0 12px 40px rgba(7, 78, 48, 0.15),
+      0 4px 12px rgba(7, 78, 48, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+  }
+}
+.header__cartBtn {
+  border: none;
+  color: $primary;
+  background-color: transparent;
+  border-radius: 36px;
+  font-size: 18px;
+}
+.header__cart-deletebtn {
+  border: none;
+  color: $gray-500;
+  background-color: transparent;
+  margin-right: 8px;
+  border-radius: 24px;
+  font-size: 18px;
+  &:hover {
+    color: $error;
+  }
+}
+.header__loginBtn {
+  color: $white;
+  margin: 6px 0;
+  padding: 4px 8px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.1)
+  );
+  backdrop-filter: blur(16px) saturate(150%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.3)
+    );
+    transform: translateY(-1px);
+  }
+}
+
+.header__defaultBtn {
+  color: $primary;
+  background-color: transparent;
+  border: none;
+  &:hover {
+    color: $primary-200;
+  }
+}
+
+// header login modal
+.header__modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  animation: fadeIn 0.2s ease-out;
+}
+.header__modal-img {
+  max-width: 50%;
+  background-color: #3a3b42;
+  img {
+    object-fit: contain;
+    object-position: center;
+    height: 100%;
+  }
+}
+.header__modal-container {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0.5) 100%
+    ),
+    linear-gradient(225deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 100%);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease-out;
+  &:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8));
+    box-shadow:
+      0 12px 40px rgba(7, 78, 48, 0.15),
+      0 4px 12px rgba(7, 78, 48, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+  }
+}
+.header__modal-tabs {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 1.5rem 0;
+  border-bottom: 1px solid #dee2e6;
+}
+.header__tab {
+  background: none;
+  border: none;
+  font-weight: 600;
+  color: $gray-400;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+  &:hover {
+    color: $gray-600;
+  }
+  &.active {
+    color: $primary;
+  }
+  &.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: $primary;
+  }
+  &:active {
+    border: $primary-200;
+  }
+}
+.header__modal-body {
+  padding: 1.5rem;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 576px) {
+  .header__modal-container {
+    width: 95%;
+    margin: 1rem;
+  }
+  .header__modal-body {
+    padding: 1rem;
+  }
 }
