@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCart, deleteCartItem } from '../../api/ApiClient';
 // component
 import Loader from '../common/Loading';
+import { ConfirmModal } from '../common/Modal';
 // cartSilce 區
 import {
   openCart,
@@ -33,6 +34,9 @@ const CartDropdown = () => {
   const needsRefresh = useSelector(selectNeedsRefresh);
   // 處理 hover 狀態
   const closeTimer = useRef(null);
+  // 確認 modal
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
 
   // 取得購物車商品
   const getAllCart = async () => {
@@ -48,13 +52,20 @@ const CartDropdown = () => {
     }
   };
   // 刪除購物車商品
-  const handleRemove = async (id) => {
-    const isConfirm = window.confirm('確定要移除該商品嗎？');
-    if (!isConfirm) return;
-
+  // 確認刪除 modal
+  const handleOpenDeleteModal = (id) => {
+    setDeleteTargetId(id);
+    setIsShowModal(true);
+  };
+  const handleClose = () => {
+    setDeleteTargetId(null);
+    setIsShowModal(false);
+  };
+  const handleRemove = async () => {
+    if (!deleteTargetId) return;
     dispatch(setLoading(true));
     try {
-      await deleteCartItem(id);
+      await deleteCartItem(deleteTargetId);
       await getAllCart();
       notify('success', '已移除商品');
     } catch (err) {
@@ -62,6 +73,7 @@ const CartDropdown = () => {
       console.log('刪除失敗', err);
     } finally {
       dispatch(setLoading(false));
+      handleClose();
     }
   };
   useEffect(() => {
@@ -89,6 +101,7 @@ const CartDropdown = () => {
     dispatch(openCart());
   };
   const handleMouseLeave = () => {
+    if (isShowModal) return;
     closeTimer.current = setTimeout(() => {
       dispatch(closeCart());
     }, 300);
@@ -127,6 +140,19 @@ const CartDropdown = () => {
           </span>
         )}
       </button>
+      {/* 確認 modal */}
+      <ConfirmModal
+        style={'front'}
+        show={isShowModal}
+        closeModal={handleClose}
+        text_icon={`bi bi-trash`}
+        text_title={'確定要移除該商品嗎？'}
+        text_content={'移除後該商品將從購物車中消失。'}
+        text_cancel={'取消'}
+        cancelModal={handleClose}
+        text_confirm={'確認移除'}
+        confirmModal={handleRemove}
+      />
       {/* dropdown 區 */}
       {isOpen && (
         <div
@@ -179,12 +205,13 @@ const CartDropdown = () => {
                         </div>
                         <div className='d-flex justify-content-between align-items-center mt-1'>
                           <span className='text-gray-300'>
-                            NT${getItemPrice(item)} x {item.qty}
+                            NT${getItemPrice(item).toLocaleString()} x{' '}
+                            {item.qty}
                           </span>
                           <button
                             type='button'
                             className='header__cart-deletebtn p-0 text-gray-300'
-                            onClick={() => handleRemove(item.id)}
+                            onClick={() => handleOpenDeleteModal(item.id)}
                           >
                             <i className='bi bi-trash header__cart-deletebtn'></i>
                           </button>
@@ -193,10 +220,13 @@ const CartDropdown = () => {
                     </li>
                   ))}
                 </ul>
+
                 {/* 總計 */}
                 <div className='d-flex justify-content-between align-items-center mt-4 mb-2'>
                   <span className='fs-6 text-gray-500'>總計</span>
-                  <h5 className='text-primary mb-0'>NT${totalPrice}</h5>
+                  <h5 className='text-primary mb-0'>
+                    NT${totalPrice.toLocaleString()}
+                  </h5>
                 </div>
                 {/* 前往購物車頁面 */}
                 <Link
