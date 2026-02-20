@@ -29,12 +29,12 @@ export default function AdminOrder_today() {
 			const totalPages = res.data.pagination.total_pages;
 
 			// 以訂單建立時間，局限在今日時間
-			// const allPagesOrders = resOrds.filter(
-			// 	order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
-			// );
+			const allPagesOrders = resOrds.filter(
+				order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
+			);
 
 			// 以訂單建立時間，局限在今日以前
-			const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
+			// const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
 
 			// 如果第一頁沒有今日時間，就return
 			if (allPagesOrders.length === 0) {
@@ -67,19 +67,46 @@ export default function AdminOrder_today() {
 			setIsDataLoading(false);
 		}
 	};
-
 	useEffect(() => {
 		getApiOrders();
 	}, []);
+
+	// filter blocks：即時顯示相關訂單數
+	const calDiffFilterStateNum = category => {
+		if (category === 'all') return todayOrders.length;
+		return todayOrders.filter(order => order.user.order_status === category || order.user.payment_status === category)
+			.length;
+	};
+
+	// filter blocks：UI 渲染資料預備
+	const filterBlocks_fields = [
+		{
+			category: 'all',
+			title: '今日所有訂單數',
+			icon: 'bi bi-archive',
+		},
+		{
+			category: 'ready',
+			title: '可取餐數',
+			icon: 'bi bi-check-circle',
+		},
+		{
+			category: 'unpaid',
+			title: '未付款數',
+			icon: 'bi bi-credit-card-2-back',
+		},
+		{
+			category: 'done',
+			title: '已完成數',
+			icon: 'bi bi-ban',
+		},
+	];
 
 	// 透過狀態篩選，決定訂單列表的tag渲染
 	const displayOrders = todayOrders.filter(order => {
 		if (filterType === 'all') return true;
 		return filterType === order.user.order_status || filterType === order.user.payment_status;
 	});
-
-	// const allOrderNum = orders.length;
-	// const readyOrderNum = orders.filter(order => order.order_status === 'ready').length;
 
 	// 時間戳轉換
 	const changeTimeStamp_date = timeStamp => {
@@ -114,13 +141,16 @@ export default function AdminOrder_today() {
 
 	// 刪除單一訂單API
 	const handleDeleteSingleOrder = async id => {
+		// setIsDataLoading(true);
 		try {
 			const res = await delAdmSingleOrder(id);
 			console.log(res.data);
 			getApiOrders();
+			// setIsDataLoading(false);
 			notify('success', '刪除當筆訂單成功', 'top-right');
 		} catch (error) {
 			console.log(error.response);
+			// setIsDataLoading(false);
 			notify('error', '刪除當筆訂單失敗', 'top-right');
 		}
 	};
@@ -170,6 +200,12 @@ export default function AdminOrder_today() {
 		console.log(order);
 	};
 
+	// 價格有千分位逗號
+	const formatPrice = num => {
+		const value = Number(num) || 0;
+		return value.toLocaleString();
+	};
+
 	return (
 		<>
 			<main className="container-fluid px-0 order-today">
@@ -177,70 +213,24 @@ export default function AdminOrder_today() {
 					{/* dashboard */}
 					<div className="dashboard">
 						<div className="row">
-							<div className="col-3">
-								<button
-									className="adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('all');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">10</h5>
-											<p>今日所有訂單數</p>
+							{filterBlocks_fields.map(block => (
+								<div className="col-3" key={block.category}>
+									<button
+										className="adm__glassbg w-100 filter__block"
+										onClick={() => {
+											setFilterType(block.category);
+										}}
+									>
+										<div className="d-flex align-items-center justify-content-between">
+											<div>
+												<h5 className="num">{calDiffFilterStateNum(block.category)}</h5>
+												<p>{block.title}</p>
+											</div>
+											<i className={block.icon}></i>
 										</div>
-										<i className="bi bi-archive"></i>
-									</div>
-								</button>
-							</div>
-							<div className="col-3">
-								<button
-									className="btn adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('ready');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">10</h5>
-											<p>可取餐數</p>
-										</div>
-										<i className="bi bi-check-circle"></i>
-									</div>
-								</button>
-							</div>
-							<div className="col-3">
-								<button
-									className="btn adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('unpaid');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">10</h5>
-											<p>未付款數</p>
-										</div>
-										<i className="bi bi-ban"></i>
-									</div>
-								</button>
-							</div>
-							<div className="col-3">
-								<button
-									className="btn adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('paid');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">10</h5>
-											<p>已付款數</p>
-										</div>
-										<i className="bi bi-credit-card-2-back"></i>
-									</div>
-								</button>
-							</div>
+									</button>
+								</div>
+							))}
 						</div>
 					</div>
 					<div className="content adm__glassbg">
@@ -292,11 +282,11 @@ export default function AdminOrder_today() {
 														<span className="date">{changeTimeStamp_date(order.create_at)}</span>
 														<span className="time">{changeTimeStamp_time(order.create_at)}</span>
 													</td>
-													<td>{order.user.tel.slice(-4)}</td>
+													<td>{order.user.order_number}</td>
 													<td>{order.user.name}</td>
 													<td>{order.user.tel}</td>
 
-													<td>{`$${order.total}`}</td>
+													<td>{`$${formatPrice(order.total)}`}</td>
 
 													<td>{renderTagStatus(order.user.order_status)}</td>
 													<td>{renderTagStatus(order.user.payment_status)}</td>
@@ -329,6 +319,7 @@ export default function AdminOrder_today() {
 						renderTagStatus={renderTagStatus}
 						OpenPickupPage={OpenPickupPage}
 						OpenCheckoutPage={OpenCheckoutPage}
+						formatPrice={formatPrice}
 					/>
 				) : modalType === 'pickup' ? (
 					<ConfirmModal
@@ -355,6 +346,8 @@ export default function AdminOrder_today() {
 						closeModal={handleCloseDetail}
 						orderDetail={orderDetail}
 						backToLast={() => handleBackToLast('detail')}
+						getApiOrders={getApiOrders}
+						formatPrice={formatPrice}
 					/>
 				) : (
 					''

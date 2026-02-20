@@ -1,5 +1,4 @@
 import { Modal, Accordion } from 'react-bootstrap';
-import AdmButton from '../common/AdmButton';
 import { Fragment } from 'react';
 
 const OrderDetail = ({
@@ -11,7 +10,18 @@ const OrderDetail = ({
 	renderTagStatus,
 	OpenPickupPage,
 	OpenCheckoutPage,
+	formatPrice,
 }) => {
+	const payment_mothod_fields = [
+		{ value: 'cash', label: '現金' },
+		{ value: 'e_payment', label: '電子支付' },
+		{ value: 'credit_card', label: '信用卡' },
+	];
+
+	const renderPaymentUI = payment_method => {
+		if (!payment_method) return '-';
+		return payment_mothod_fields.find(item => item.value === payment_method).label;
+	};
 	const memberContent_fields = [
 		{
 			key: '訂單時間',
@@ -57,7 +67,7 @@ const OrderDetail = ({
 		},
 		{
 			key: '交易方式',
-			value: orderDetail?.user.payment_method ? orderDetail?.user.payment_method : '-',
+			value: renderPaymentUI(orderDetail?.user.payment_method),
 		},
 		{
 			key: '交易狀態',
@@ -166,7 +176,7 @@ const OrderDetail = ({
 		return (
 			<span className={`price ms-auto ${visible ? '' : 'hidden'}`}>
 				+<i className="bi bi-currency-dollar" />
-				{extraPrice}
+				{formatPrice(extraPrice)}
 			</span>
 		);
 	};
@@ -221,7 +231,7 @@ const OrderDetail = ({
 									<span className="qty me-2 ms-auto">{`x ${item.qty}`}</span>
 									<span className="price ms-auto">
 										+<i className="bi bi-currency-dollar" />
-										{item.price}
+										{formatPrice(item.price)}
 									</span>
 								</div>
 							</div>
@@ -244,7 +254,7 @@ const OrderDetail = ({
 								<span className="me-2 ms-auto">{`x ${orderProduct.qty}`}</span>
 								<span className="fw-bold price">
 									<i className="bi bi-currency-dollar" />
-									{orderProduct.customizations.custom_total}
+									{formatPrice(orderProduct.customizations.custom_total)}
 								</span>
 							</Accordion.Header>
 							<Accordion.Body>
@@ -367,21 +377,21 @@ const OrderDetail = ({
 												<span>小計</span>
 												<span>
 													<i className="bi bi-currency-dollar"></i>
-													{subtotal}
+													{formatPrice(subtotal)}
 												</span>
 											</p>
 											<p>
 												<span>加購</span>
 												<span>
 													<i className="bi bi-currency-dollar"></i>
-													{addTotal}
+													{formatPrice(addTotal)}
 												</span>
 											</p>
 											<p className="total-price">
 												<span>總計</span>
 												<span className="">
 													<i className="bi bi-currency-dollar"></i>
-													{finalTotal}
+													{formatPrice(finalTotal)}
 												</span>
 											</p>
 										</div>
