@@ -90,7 +90,7 @@ const LoginModal = () => {
         className='header__modal-container d-flex align-items-stretch gap-0'
         style={{ width: '100%' }}
       >
-        <div className='header__modal-img'>
+        <div className='header__modal-img d-none d-lg-flex'>
           <img
             src={`${import.meta.env.BASE_URL}img/items/header-login-bg.png`}
             alt=''

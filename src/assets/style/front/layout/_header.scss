@@ -486,7 +486,7 @@ footer i {
   border-radius: 24px;
   width: 100%;
   max-width: 600px;
-  max-height: 90vh;
+  height: 450px;
   overflow-y: auto;
   animation: slideIn 0.3s ease-out;
   &:hover {
@@ -498,11 +498,11 @@ footer i {
       inset 0 -1px 0 rgba(255, 255, 255, 0.3);
   }
 }
+
 .header__modal-tabs {
   display: flex;
-  gap: 1rem;
-  padding: 0.5rem 1.5rem 0;
-  border-bottom: 1px solid #dee2e6;
+  gap: 16px;
+  padding: 8px 24px 0;
 }
 .header__tab {
   background: none;
@@ -532,7 +532,7 @@ footer i {
   }
 }
 .header__modal-body {
-  padding: 1.5rem;
+  padding: 24px;
 }
 @keyframes fadeIn {
   from {
@@ -555,9 +555,12 @@ footer i {
 @media (max-width: 576px) {
   .header__modal-container {
     width: 95%;
-    margin: 1rem;
+    margin: 16px;
   }
   .header__modal-body {
-    padding: 1rem;
+    padding: 16px;
   }
+}
+.bg-transparent {
+  background-color: transparent;
 }

@@ -4,11 +4,25 @@ const ContentCard = ({
   subTitle, // 英文標題
   title, // 中文標題
   description, // 內文
-  buttonText, // 按鈕文字
+  buttonText, // 按鈕
   to, // link
+  hasBorder = false, // 有無線框
+  bgColor = 'white', // 背景色
 }) => {
+  const bgColors = {
+    white: 'bg-white',
+    primary: 'bg-primary-100',
+    transparent: 'bg-transparent',
+  };
+
+  const cardClass = `
+    content-card 
+    ${bgColors[bgColor] || bgColors.white} 
+    ${hasBorder ? 'border border-gray-200 shadow' : ''}
+  `.trim();
+
   return (
-    <div className='content-card bg-white shadow'>
+    <div className={cardClass}>
       <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2 mb-md-5'>
         {subTitle}
       </h4>

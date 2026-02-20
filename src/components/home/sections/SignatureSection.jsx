@@ -13,7 +13,7 @@ const SignatureSection = () => {
         <div className='container'>
           <div className='row align-items-center'>
             {/* 左邊示意區 */}
-            <div className='col-lg-7 d-none d-sm-flex home__signature-container mt-10'>
+            <div className='order-2 order-lg-1 col-lg-6 d-none d-sm-flex home__signature-container mt-10'>
               {/* 碗 */}
               <div className='home__signature-content'>
                 <img
@@ -28,7 +28,7 @@ const SignatureSection = () => {
               </div>
             </div>
             {/* 右邊文字區 */}
-            <div className='col-lg-5'>
+            <div className='order-1 order-lg-2 col-lg-6'>
               <ContentCard
                 subTitle='SIGNATURE BOWLS'
                 title={

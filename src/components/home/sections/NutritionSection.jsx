@@ -94,12 +94,12 @@ const NutritionSection = () => {
             </div>
             {/* 手機版 */}
             <div className='d-block d-md-none mt-5'>
-              <p className='fs-6 mb-3 px-4'>
+              <p className='fs-6 mt-5 mb-3 px-4 text-center'>
                 別讓算熱量成了負擔， <br />
                 你的每一份營養， <br />
                 我們幫你把關。
               </p>
-              <ul className='home__nur-card d-flex gap-4'>
+              <ul className='home__nur-card d-flex flex-column w-100 gap-4'>
                 <li className='home__nur-card-content d-flex flex-column justify-content-end'>
                   <h3 className='fw-bold fs-6 mb-2'>綠果精選｜為你搭配好</h3>
                   <p className='mb-4'>把營養交給我們，安心吃就好</p>

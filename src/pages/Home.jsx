@@ -9,9 +9,7 @@ import { getArticles } from '../api/ApiClient';
 import Loader from '../components/common/Loading';
 import ContentCard from '../components/home/ContentCard';
 import CommentCard from '../components/home/CommentCard';
-import IngredientCard from '../components/home/IngredientCard';
 import StepCard from '../components/home/StepCard';
-import BestSellerSwiper from '../components/home/BestSellerSwiper';
 import HeroSection from '../components/home/sections/HeroSection';
 import NutritionSection from '../components/home/sections/NutritionSection';
 import SignatureSection from '../components/home/sections/SignatureSection';
@@ -177,6 +175,7 @@ export default function Home() {
             <div className='row'>
               <div className='col-lg-4 mb-5 mb-lg-0'>
                 <ContentCard
+                  hasBorder
                   subTitle='YOUR INSPIRATION'
                   title='綠果專欄'
                   description={
