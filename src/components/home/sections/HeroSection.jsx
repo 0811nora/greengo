@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { PageLinks, HeroDecors, VeggieItems } from '../../../data/homeData';
+import FadeIn from '../FadeIn';
 
 const HeroSection = () => {
   return (
