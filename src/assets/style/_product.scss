@@ -1,24 +1,39 @@
 // header
 .product-page header {
 	width: 100%;
-	height: 550px;
+	height: 600px;
 	background-image:
-		linear-gradient(rgba(23, 34, 17, 0), rgba(23, 34, 17, 0.2)), url('/public/img/product/header-bg.jpg');
+		linear-gradient(rgba(23, 34, 17, 0), rgba(23, 34, 17, 0.3)),
+		url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
 	background-size: cover;
-	background-position: 40% 40%;
+	background-position: 18% 18%;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
+	// background-image:
+	// 	linear-gradient(rgba(23, 34, 17, 0), rgba(23, 34, 17, 0.2)), url('/public/img/product/header-bg.jpg');
+	// background-size: cover;
+	// background-position: 40% 40%;
+	// background-repeat: no-repeat;
+	// background-attachment: fixed;
 
 	.container {
 		height: 100%;
 	}
 	h1,
 	h5 {
+		color: $white;
+		text-shadow: black 0.1em 0.1em 0.2em;
 		letter-spacing: 0.5px;
+		text-align: center;
 	}
 	h1 {
 		margin-top: 200px;
-		font-size: 44px;
+		font-size: 48px;
+		font-weight: $font-weight-semibold;
+	}
+	h5 {
+		font-size: 28px;
+		font-weight: $font-weight-normal;
 	}
 }
 .product-page .header-circle {
@@ -40,6 +55,7 @@
 	display: block;
 	font-size: 36px;
 	text-align: center;
+	text-shadow: black 0.1em 0.1em 0.2em;
 	animation: moveArrow 1.2s infinite;
 }
 @keyframes moveArrow {
@@ -65,14 +81,15 @@
 	background-color: $white;
 	border: solid 1px $gray-200;
 
-	box-shadow: 0px 2px 10px $gray-100;
+	box-shadow: 0px 2px 8px $gray-100;
+	transition: all 0.25s;
+
 	&:hover {
 		border: solid 1px $primary;
 		color: $primary;
 		background-color: $primary-100;
 		box-shadow: 0px 2px 10px rgba(77, 113, 53, 0.25);
 		transform: scale(1.025);
-		transition: all 0.25s;
 		p,
 		span,
 		h5 {
@@ -141,8 +158,10 @@
 		color: $gray-400;
 		padding: 0px 16px 16px 16px;
 		cursor: pointer;
-		&:hover {
+		&:hover,
+		&:focus {
 			color: $primary-200;
+			font-weight: $font-weight-medium;
 		}
 
 		&::after {
@@ -162,15 +181,73 @@
 		&:hover::after {
 			transform: scaleX(1);
 		}
-
-		&.active::after {
-			color: $primary-200;
-			font-weight: $font-weight-medium;
+		&:focus::after {
+			transform: scaleX(1);
+		}
+	}
+	.tab-navLink.active {
+		color: $primary-200;
+		font-weight: $font-weight-medium;
+		&::after {
 			transform: scaleX(1);
 		}
 	}
 }
-
-section.set-section {
+@media (max-width: 768px) {
+	.product-page .tab-filter {
+		ul {
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+		.nav-item {
+			flex-shrink: 0;
+		}
+	}
+}
+section.menu-section {
+	gap: 0px;
 	margin-top: 300px;
+	display: block;
+}
+.product-page .CTA-custom {
+	height: 650px;
+	background-image:
+		linear-gradient(rgba(23, 34, 17, 0.4), rgba(23, 34, 17, 0.4)),
+		url('https://images.unsplash.com/photo-1551218372-a8789b81b253?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+
+	.CTA-content {
+		background: $white;
+		border-radius: 24px;
+		box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+		p {
+			color: $gray-200;
+			font-weight: $font-weight-semibold;
+			font-size: 28px;
+		}
+		h2 {
+			letter-spacing: 0.5px;
+			color: $gray-600;
+			font-weight: $font-weight-bold;
+		}
+		h6 {
+			letter-spacing: 0.5px;
+			font-weight: $font-weight-normal;
+			color: $gray-300;
+		}
+	}
+
+	.cta-btn {
+		width: fit-content;
+		background: $primary-200;
+		color: $white;
+		border-radius: $border-radius-pill;
+		padding: 0.75rem 1.5rem;
+		border: none;
+		font-size: 20px;
+	}
 }
