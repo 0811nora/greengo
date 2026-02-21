@@ -227,16 +227,15 @@
 
 // comment card 區
 .comment-card {
-  width: 300px;
-  height: 180px;
+  width: 350px;
   border: 1.5px solid $primary-200;
   border-bottom: 4px solid $primary-200;
   background-color: $white;
-  padding: 32px 24px;
+  padding: 16px 24px;
   border-radius: 24px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  flex-shrink: 0;
   margin-right: 12px;
 }
 // comment card 動畫
@@ -248,17 +247,15 @@
 .scroll-track-right {
   display: flex;
   flex-shrink: 0;
+  animation-name: marquee;
+  animation-duration: 30s;
   animation-iteration-count: infinite;
-  animation-direction: alternate;
   animation-timing-function: ease-in-out;
 }
 .scroll-track-left {
-  animation-name: marquee;
-  animation-duration: 20s;
+  animation-direction: alternate;
 }
 .scroll-track-right {
-  animation-name: marquee;
-  animation-duration: 25s;
   animation-direction: alternate-reverse;
 }
 @keyframes marquee {
@@ -266,7 +263,7 @@
     transform: translateX(0%);
   }
   to {
-    transform: translateX(-30%);
+    transform: translateX(-50%);
   }
 }
 .scroll-container:hover .scroll-track-left,

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { PageLinks, Ingredients } from '../data/homeData';
+import { PageLinks, Ingredients, CommentContent } from '../data/homeData';
 
 // API
 import { getArticles } from '../api/ApiClient';
@@ -140,9 +140,9 @@ export default function Home() {
           ></path>
         </svg>
         {/* 關於我們 + 專欄 */}
-        <section className='container-fluid bg-primary-100'>
+        <section className='home__article container-fluid py-8 px-0'>
           {/* 關於我們 */}
-          <section className='container-fluid bg-primary-100 py-7 overflow-hidden'>
+          <section className='container-fluid py-7 overflow-hidden'>
             <div className='container position-relative'>
               <div className='row align-items-center'>
                 <div className='col-md-6 position-relative'>
@@ -304,11 +304,10 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <div className='container'></div>
         </section>
         {/* 顧客意見 */}
-        <section>
-          <div className='container-fluid my-8 my-md-10'>
+        <section className='home__testimonials'>
+          <div className='container-fluid px-0 py-5'>
             <div className='d-flex flex-column justify-content-center align-items-center'>
               <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2'>
                 TESTIMONIALS
@@ -327,41 +326,14 @@ export default function Home() {
                 style={{ marginLeft: '-50px' }}
               >
                 <div className='scroll-track-left'>
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
+                  {CommentContent.map((item, index) => (
+                    <CommentCard
+                      key={index}
+                      commentContent={item.commentContent}
+                      customer={item.customer}
+                      star={item.star}
+                    />
+                  ))}
                 </div>
               </div>
               <div
@@ -369,41 +341,14 @@ export default function Home() {
                 style={{ marginLeft: '50px' }}
               >
                 <div className='scroll-track-right'>
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
-                  <CommentCard
-                    commentContent={
-                      '真的很好吃！特別喜歡藜麥飯的口感，完全不乾，很Q彈～'
-                    }
-                    customer={'@ashley_dailyhealthy'}
-                    star={'💖💖💖'}
-                  />
+                  {CommentContent.map((item, index) => (
+                    <CommentCard
+                      key={index}
+                      commentContent={item.commentContent}
+                      customer={item.customer}
+                      star={item.star}
+                    />
+                  ))}
                 </div>
               </div>
             </section>
