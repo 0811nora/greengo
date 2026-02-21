@@ -78,13 +78,16 @@ const BestSellerSwiper = () => {
                     </button>
                     <img
                       src={product.img}
-                      className='card-img-top object-fit-cover rounded-bottom-0'
+                      className='card-img-top object-fit-contain rounded-bottom-0'
                       alt={product.name}
                     />
                   </div>
                   <div className='card-body py-3 px-5'>
                     <div className='d-flex justify-content-between align-items-center text-gray-600 mb-1'>
-                      <h5 className='fs-6 fs-md-5 fw-bold mb-0'>
+                      <h5
+                        className='fs-6 fs-md-5 fw-bold mb-0'
+                        title={product.name}
+                      >
                         {product.name}
                       </h5>
                       <span className='fs-6 fs-md-5 fw-bold'>
@@ -103,7 +106,7 @@ const BestSellerSwiper = () => {
                     </p>
                     <div className='d-flex flex-wrap gap-2'>
                       {product.tags.map((item, index) => (
-                        <span key={index} className='tag-item'>
+                        <span key={index} className='tag-item' title={item}>
                           {item}
                         </span>
                       ))}

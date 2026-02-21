@@ -14,11 +14,11 @@ const HeroSection = () => {
             <br />從<span className='text-primary'>好好吃飯</span>
             開始
           </h1>
-          <p className='ft-en mb-2'>Elevate Your Day, Nourish Your Body.</p>
+          <p className='mb-2'>Elevate Your Day, Nourish Your Body.</p>
           <p className='mb-3 mb-md-5'>綠果相信，每一次的選擇都值得被用心對待</p>
           <NavLink
             to={PageLinks.productLink.url}
-            className='home__btn-primary fw-medium'
+            className='home__btn-primary mt-5 mt-md-0 fw-medium'
           >
             立即點餐
           </NavLink>
