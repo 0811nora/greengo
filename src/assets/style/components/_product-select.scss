@@ -1,5 +1,7 @@
 // 下拉選單
 .product-page .rs__control {
+	min-height: 51px;
+	color: $primary-200;
 	border-radius: $border-radius-pill;
 	border: 1px solid $gray-200;
 	padding: 10px 24px;
@@ -56,8 +58,17 @@
 	border-radius: $border-radius-s;
 }
 
+.product-page .rs__value-container {
+	flex-wrap: nowrap !important;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+	scrollbar-width: none;
+}
+
 .rs__multi-value {
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
 	gap: 4px;
 	font-size: 14px;
@@ -66,8 +77,9 @@
 	color: $primary-200;
 	background-color: rgba(227, 231, 224, 0.6);
 	border-radius: $border-radius-pill;
+	text-overflow: ellipsis;
 	span {
-		display: inline-flexbox;
+		display: inline-block;
 		font-size: 14px;
 		font-weight: $font-weight-semibold;
 	}

@@ -54,7 +54,7 @@ function ItemCard({
                             <div className="d-flex d-lg-none justify-content-between align-items-center">
                                 <div className={`text-center ${isClickableCard ? "text-end w-100" : ""}`}>
                                     <p className="fs-ssm mb-1">
-                                        <span>{detail.grams}g</span> / <span>{detail.calories} cal</span>
+                                        <span>{detail.grams}g</span> / <span>{detail.calories} kcal</span>
                                     </p>
                                     <p className="fs-ssm mb-0">
                                         <span>P {detail.protein}</span> / <span>F {detail.fat}</span> / <span>C {detail.carbs}</span>
@@ -81,7 +81,7 @@ function ItemCard({
                         <div className="d-none d-lg-flex justify-content-between align-items-center">
                             <div className={isClickableCard ? "text-end w-100" : ""}>
                                 <p className="fs-ssm mb-1">
-                                    <span>{detail.grams}g</span> / <span>{detail.calories} cal</span>
+                                    <span>{detail.grams}g</span> / <span>{detail.calories} kcal</span>
                                 </p>
                                 <p className="fs-ssm mb-0">
                                     <span>P {detail.protein}</span> / <span>F {detail.fat}</span> / <span>C {detail.carbs}</span>

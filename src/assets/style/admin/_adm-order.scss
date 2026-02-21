@@ -1,347 +1,124 @@
 // order-page 文字
 .adm_text-primary {
-  color: $adm-primary;
+	color: $adm-primary;
 }
 .adm_text-subtitle {
-  color: $adm-gray-500;
+	color: $adm-gray-500;
 }
 .adm_text-danger {
-  color: $adm-danger;
+	color: $adm-danger;
 }
 
 // order-page 全域
 .adm-theme .order-page {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  padding: 120px 16px 40px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	padding: 120px 16px 40px 16px;
 }
 
 // order-page navbar
 .adm-theme .order-page {
-  .order-navbar {
-    background: none; // 清除別人的設定
-    backdrop-filter: none; // 清除別人的設定
-    border: 0px; // 清除別人的設定
-    position: relative; // 清除別人的設定
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .navbar-title {
-    text-decoration: none;
-    color: $adm-gray-black;
-    font-size: 18px;
-    font-weight: 400;
-  }
-  .navbar-title.active {
-    font-size: 28px;
-    font-weight: bold;
-  }
-  .navbar-title.disable {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    font-weight: 400;
-    color: $adm-gray-300;
-    cursor: default;
-    &::after {
-      content: "\F47A";
-      font-family: "bootstrap-icons";
-      margin-left: 2px;
-      color: $adm-gray-300;
-    }
-  }
+	.order-navbar {
+		background: none; // 清除別人的設定
+		backdrop-filter: none; // 清除別人的設定
+		border: 0px; // 清除別人的設定
+		position: relative; // 清除別人的設定
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.navbar-title {
+		text-decoration: none;
+		color: $adm-gray-800;
+		font-size: 18px;
+		font-weight: 400;
+	}
+	.navbar-title.active {
+		color: $adm-gray-black;
+		font-size: 28px;
+		font-weight: bold;
+	}
+	.navbar-title.disable {
+		display: flex;
+		align-items: center;
+		font-size: 18px;
+		font-weight: 400;
+		color: $adm-gray-300;
+		cursor: default;
+		&::after {
+			content: '\F47A';
+			font-family: 'bootstrap-icons';
+			margin-left: 2px;
+			color: $adm-gray-300;
+		}
+	}
+}
+
+// order-page search-bar
+.adm-theme .order-page {
+	.search-bar {
+		height: 45px;
+		border-radius: 100px;
+		padding-left: 40px;
+		padding-right: 12px;
+	}
+	.search-bar__icon {
+		color: $adm-gray-800;
+		position: absolute;
+		left: 16px;
+		top: 10px;
+	}
 }
 
 // modal-backdrop
 .modal .backdrop {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(27, 32, 40, 0.4);
-  z-index: -1;
-}
-
-// 訂單詳細modal
-.adm-theme .modal {
-  --bs-modal-bg: transparent; // 清除bs樣式
-  --bs-modal-border-width: 0; // 清除bs樣式
-}
-.adm-theme .modal-content {
-  border-radius: 20px;
-  overflow: hidden;
-}
-.adm-theme .order-detail {
-  .modal-header {
-    padding: 40px 40px 28px 40px;
-    border-bottom: 1px solid $adm-gray-300;
-  }
-  .modal-header .modal-close-button {
-    position: absolute;
-    top: 40px;
-    right: 40px;
-  }
-
-  .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 28px 40px;
-  }
-  .modal-body .member-content,
-  .payment-content,
-  .products-content {
-    ul {
-      margin-bottom: 0;
-      padding-left: 32px;
-    }
-    li {
-      display: flex;
-    }
-    .subtitle {
-      width: fit-content;
-      font-weight: 500;
-      padding: 4px 8px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid $adm-gray-800;
-    }
-    .key {
-      font-weight: 500;
-      margin-right: 60px;
-      color: $adm-gray-800;
-    }
-  }
-
-  .modal-body .amount {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 20px 20px 20px 20px;
-    background-color: $adm-gray-200;
-    border-radius: 12px;
-    // border-top: 1.5px solid $adm-gray-300;
-
-    p {
-      display: flex;
-      justify-content: space-between;
-    }
-    span {
-      display: inline-block;
-    }
-    .total-price {
-      border-top: 1px solid $adm-gray-500;
-      padding-top: 20px;
-      font-weight: 600;
-    }
-  }
-  .modal-footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 28px;
-    border-top: 1px solid $adm-gray-300;
-  }
-  .modal-footer .total-price {
-    padding: 20px;
-    background-color: $adm-primary-light;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    font-weight: 500;
-    font-size: 20px;
-  }
-  .accordion {
-    --bs-accordion-border-width: none; // 清除bs樣式
-    --bs-accordion-bg: ; // 清除bs樣式
-  }
-  .accordion-item {
-    border-radius: 12px;
-    border: 1px solid $adm-gray-500;
-    margin-bottom: 12px;
-  }
-  .accordion-button {
-    padding: 20px;
-    &::after {
-      background-image: none; // 清除bs樣式
-      width: auto; // 清除bs樣式
-      height: auto; // 清除bs樣式
-      margin-left: 0; // 清除bs樣式
-    }
-    .price {
-      display: inline-block;
-      width: 53px;
-      text-align: end;
-      color: $adm-primary;
-    }
-    &:focus,
-    &:active {
-      box-shadow: none;
-    }
-    &:not(.collapsed) {
-      color: $adm-gray-black;
-      background-color: $adm-primary-light;
-      border-radius: 12px 12px 0px 0px;
-    }
-  }
-  .accordion-body {
-    p {
-      font-size: 14px;
-    }
-  }
-}
-
-// 確認modal
-.adm-theme .modal .order-confirm {
-  --bs-modal-bg: transparent; // 清除bs樣式
-  --bs-modal-border-width: 0; // 清除bs樣式
-}
-.adm-theme .order-confirm {
-  .modal-header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 48px 48px 0px 48px;
-    border-bottom: 1px solid transparent;
-  }
-  .modal-header i {
-    font-size: 52px;
-    color: $adm-primary;
-    margin-bottom: 8px;
-  }
-  .modal-body {
-    padding: 8px 48px;
-  }
-  .modal-body .confirm-content {
-    padding: 24px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-  .modal-footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 48px 48px 48px;
-    border-top: 1px solid transparent;
-  }
-}
-
-// 結帳modal
-.adm-theme .modal .order-checkout {
-  border-radius: 20px;
-  overflow: hidden;
-}
-.adm-theme .order-checkout {
-  .modal-header {
-    padding: 40px 40px 28px 40px;
-    border-bottom: 1px solid $adm-gray-300;
-  }
-  .modal-header .modal-close-button {
-    position: absolute;
-    top: 40px;
-    right: 40px;
-  }
-  .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding: 28px 40px;
-  }
-  .payment-method {
-    ul {
-      margin-bottom: 0;
-      padding-left: 32px;
-    }
-    li {
-      display: flex;
-    }
-    .subtitle {
-      width: fit-content;
-      font-weight: 500;
-      padding: 4px 8px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid $adm-gray-800;
-    }
-    .key {
-      font-weight: 500;
-      margin-right: 60px;
-      color: $adm-gray-800;
-    }
-  }
-  .payment-method label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    border-radius: 12px;
-    border: 1px solid $adm-gray-300;
-    color: $adm-gray-black;
-    i {
-      font-size: 22px;
-    }
-  }
-  .payment-method input:checked + label {
-    color: $adm-primary;
-    border: 1px solid $adm-primary;
-    background-color: $adm-gray-white;
-    box-shadow: 0px 2px 10px $btn-primary-shadow;
-  }
-  .modal-footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 28px;
-    border-top: 1px solid $adm-gray-300;
-  }
-  .modal-footer .total-price {
-    padding: 20px;
-    background-color: $adm-primary-light;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    font-weight: 500;
-    font-size: 20px;
-  }
+	position: fixed;
+	inset: 0;
+	background-color: rgba(27, 32, 40, 0.4);
+	z-index: -1;
 }
 
 // tag, status設計
 .adm-theme .order-page,
 .order-detail {
-  .tag {
-    font-size: 12px;
-    border-radius: 100px;
-    padding: 10px 16px;
-    font-weight: 400;
-    line-height: 100%;
-    .bi {
-      font-size: 12px;
-      font-style: normal;
-    }
-  }
-  .status-new {
-    background-color: $adm-gray-black;
-    color: $adm-gray-white;
-  }
-  .status-done {
-    background-color: $adm-gray-200;
-    color: $adm-gray-300;
-    border: 1px solid $adm-gray-300;
-    border: none;
-  }
-  .status-prepare {
-    background-color: $adm-gray-white;
-    color: $adm-gray-black;
-    border: 1px solid $adm-gray-300;
-    font-weight: 500;
-  }
-  .status-ready {
-    background-color: #e7f5ee;
-    color: #33b277;
-    border: 1px solid #b1e1ca;
-    font-weight: 500;
-  }
-  .status-unpaid {
-    background-color: #fcebee;
-    color: #e94051;
-    border: 1px solid #f6b8bf;
-    font-weight: 500;
-  }
+	.tag {
+		font-size: 12px;
+		border-radius: 100px;
+		padding: 10px 16px;
+		font-weight: 400;
+		line-height: 100%;
+		.bi {
+			font-size: 12px;
+			font-style: normal;
+		}
+	}
+	.status-new {
+		background-color: $adm-gray-black;
+		color: $adm-gray-white;
+	}
+	.status-done {
+		text-align: center;
+		background-color: $adm-gray-200;
+		color: $adm-gray-300;
+		border: 1px solid $adm-gray-300;
+		border: none;
+	}
+	.status-prepare {
+		background-color: $adm-gray-white;
+		color: $adm-gray-black;
+		border: 1px solid $adm-gray-300;
+		font-weight: 500;
+	}
+	.status-ready {
+		background-color: #e7f5ee;
+		color: #33b277;
+		border: 1px solid #b1e1ca;
+		font-weight: 500;
+	}
+	.status-unpaid {
+		background-color: #fcebee;
+		color: #e94051;
+		border: 1px solid #f6b8bf;
+		font-weight: 500;
+	}
 }

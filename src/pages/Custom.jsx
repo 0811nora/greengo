@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllProducts,postAddToCart,getCart } from "../api/ApiClient";
 import { PageSwitch} from '../components/common/AnimationWrapper';
 import { notify } from '../components/Notify';
 
+import { useDispatch } from 'react-redux';
+import { renderRefresh } from '../store/slices/cartSlice';
+
 import AdmButton from "../components/admin/common/AdmButton";
 import Loader from "../components/common/Loading";
+import { ConfirmModal } from '../components/common/Modal';
 
 import ClickOutsideHandler from "../components/common/ClickOutsideHandler";
 
@@ -95,8 +99,12 @@ export default function Custom() {
     const [ addOnTabs ,setAddonTabs ] =  useState('base');
     const [ isOpenOrderModal , setIsOpenOrderModal] = useState(false);
     const [ isOpenPFCBtn , setIsOpenPFCBtn] = useState(false);
+    const [ isLoading , setIsLoading ] = useState(false);
+    const [isShowModal, setIsShowModal] = useState(false);
 
     const navigate = useNavigate(null);
+    const contentScrollRef = useRef(null);
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
@@ -106,7 +114,7 @@ export default function Custom() {
 
 
       // 取得所有產品
-    useEffect( () => {
+    useEffect(() => {
         const getCustomProduct = async() => {
             try{
                 const res = await getAllProducts()
@@ -119,13 +127,16 @@ export default function Custom() {
         
     },[])
 
-    const handleClose = (mode) => {
-        if(mode === "order"){
-            setIsOpenOrderModal(false);
-        }else{
-            setIsOpenPFCBtn(false)
+    useEffect(() => {
+        if (contentScrollRef.current) {
+            contentScrollRef.current.scrollTo({
+                top: 0, 
+                behavior: 'instant' 
+            });
         }
-    };
+    }, [activeTab,addOnTabs]);
+
+
     
 
     
@@ -162,7 +173,6 @@ export default function Custom() {
     }
 
     const selectFlat = CATEGORY_TABS.map( keys => selectedProduct[keys]).flat();
-    console.log('selectFlat',selectFlat)
 
 
     // 從已選品項找出三大營養素數據
@@ -314,6 +324,21 @@ export default function Custom() {
 
     }
 
+    // 重新選擇套餐
+    const reselect = () => {
+        setSelectedProduct(INITIAL_SELECTED_PRODUCT);
+        setStepState(1);
+        scrollToTop();
+        setIsShowModal(false)
+    }
+
+    const handleClose = (mode) => {
+        if(mode === "order"){
+            setIsOpenOrderModal(false);
+        }else{
+            setIsOpenPFCBtn(false)
+        }
+    };
 
 
     // 上一步按鈕的判斷
@@ -322,13 +347,7 @@ export default function Custom() {
             setStepState(2)
             scrollToTop()
         }else if(stepState === 2){
-            const isLeave = window.confirm("回首頁將會清空所有選擇，確定要離開嗎？");
-            if(isLeave){
-                setSelectedProduct(INITIAL_SELECTED_PRODUCT);
-                setStepState(1);
-                scrollToTop();
-            }
-
+            setIsShowModal(true)
         }
     }
 
@@ -364,10 +383,9 @@ export default function Custom() {
 
     // 送購物車的資料
     const handleSendCart = async() => {
-
+        setIsLoading(true);
         try{
             const cartRes = await getCart();
-            console.log(cartRes.data.data.carts)
 
             const cartList = cartRes.data.data.carts
             const currentType = selectedProduct.plan_type
@@ -418,14 +436,15 @@ export default function Custom() {
                 }       
             }
 
-            console.log(finalData)
 
             const addCartRes = await postAddToCart(finalData);
-            console.log(addCartRes.data.message)
-            notify('success','加入成功','bottom-center')
+            dispatch(renderRefresh());
             setStepState(4);
+            window.scrollTo(0, 0);
         }catch(err){
             console.log(err)
+        }finally{
+            setIsLoading(false);
         }
 
 
@@ -482,11 +501,6 @@ export default function Custom() {
         });
     };
 
-    
-
-
-
-
 
     return ( <>
         
@@ -504,14 +518,14 @@ export default function Custom() {
                                 <section className=" py-5 text-center tracking-in-contract overflow-hidden" >
                                     <h1 className="mb-5 fs-1 c-fs-lg-80  mb-8 ">
                                         <span className="position-relative d-inline-block">
-                                        <span className="text-price fw-bold"style={{ position: 'relative', zIndex: 2 }}>$149 </span>
+                                        <span className="text-primary fw-bold"style={{ position: 'relative', zIndex: 2 }}>$149 </span>
                                         <span className="fs-2" style={{ position: 'relative', zIndex: 2 }}>起</span> 
                                         <HighlightLine color="#edd749d0" strokeWidth={13} />
                                         </span>
                                         
 
                                         <br />
-                                        <span className="fw-bolder">隨心自由配</span>
+                                        <span className="fw-bolder text-dark">隨心自由配</span>
                                     </h1>
                                     <AdmButton
                                         onClick={() => setStepState( stepState + 1 )}
@@ -666,7 +680,7 @@ export default function Custom() {
                                             </div>
                                         </div>
                                         
-                                        <div className="col-lg-8  h-100 overflow-y-auto py-4 py-lg-0">
+                                        <div className="col-lg-8  h-100 overflow-y-auto py-4 py-lg-0" ref={contentScrollRef}>
                                             {activeTab === 'protein' && 
                                                 <ProteinTip mode={"mobile"} maxCount={maxCount} activeTab={activeTab}/>
                                             }
@@ -790,7 +804,7 @@ export default function Custom() {
                                                 <i className="bi bi-arrow-left-circle-fill"></i>
                                             </button>
                                         </div>
-                                        <div className="col-lg-8 h-100 pe-lg-5">
+                                        <div className="col-lg-8 h-100 pe-lg-5 overflow-y-auto">
                                             <ClickOutsideHandler onOutsideClick={()=> handleClose("order")}>
                                                 <OrderList 
                                                     onClose={()=>setIsOpenOrderModal(!isOpenOrderModal)}
@@ -815,7 +829,7 @@ export default function Custom() {
                                         </div>
 
                                         <div className="col-lg-3 h-100">
-                                            <div className="d-flex flex-column justify-content-between h-100">
+                                            <div className="d-flex flex-column justify-content-between h-100 overflow-y-auto overflow-x-hidden">
                                                 <div className="d-none d-lg-block" >
                                                     <CompleteNutrition 
                                                         calcPFC={pfcRatio()} 
@@ -971,9 +985,21 @@ export default function Custom() {
 
                 </div>
             </div>
+            <Loader mode={"mask"} show={isLoading}/>
+            <ConfirmModal
+                style={'front'}
+                show={isShowModal}
+                closeModal={()=>setIsShowModal(false)}
+                text_icon={null}
+                text_title={'是否重新選擇套餐？'}
+                text_content={'離開此頁面將會清空已選擇的套餐內容'}
+                text_cancel={'取消'}
+                cancelModal={()=>setIsShowModal(false)}
+                text_confirm={'確認'}
+                confirmModal={reselect}
+            />
         </main>
-        {/* <Loader mode={"page"}/> */}
-        {/* <Loader mode={"mask"}/> */}
+
 
     </>)
 }

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getOrders } from '../api/ApiClient';
 import Loader from '../components/common/Loading';
+import { PageSwitch } from '../components/common/AnimationWrapper';
+import DonutPFC from '../components/custom-comp/PFC_Chart';
 
 const Member = () => {
   const [activeTab, setActiveTab] = useState('orders'); // orders | profile
@@ -34,82 +36,84 @@ const Member = () => {
 
   return (
     <div className="member-center-container">
-      {isLoading ? <Loader mode={'mask'} /> : ''}
-      <div className="container">
-        <h1 className="fs-1 text-center fw-bold mb-8">會員中心</h1>
+      <PageSwitch>
+        {isLoading ? <Loader mode={'mask'} /> : ''}
+        <div className="container">
+          <h1 className="fs-1 text-center fw-bold mb-8">會員中心</h1>
 
-        {/* Tab 切換 */}
-        <ul className="nav nav-tabs justify-content-center mb-9">
-          <li className="nav-item">
-            <button
-              className={`nav-link me-7 ${activeTab === 'orders' ? 'active' : ''}`}
-              onClick={() => setActiveTab('orders')}
-            >
-              <i class="bi bi-clipboard-fill me-2"></i>
-              訂單紀錄
-            </button>
-          </li>
-          <li className="nav-item">
-            <button
-              className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`}
-              onClick={() => setActiveTab('profile')}
-            >
-              <i className="bi bi-person-lines-fill me-2"></i>個人資料
-            </button>
-          </li>
-        </ul>
+          {/* Tab 切換 */}
+          <ul className="nav nav-tabs justify-content-center mb-9">
+            <li className="nav-item">
+              <button
+                className={`nav-link me-7 ${activeTab === 'orders' ? 'active' : ''}`}
+                onClick={() => setActiveTab('orders')}
+              >
+                <i class="bi bi-clipboard-fill me-2"></i>
+                訂單紀錄
+              </button>
+            </li>
+            <li className="nav-item">
+              <button
+                className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`}
+                onClick={() => setActiveTab('profile')}
+              >
+                <i className="bi bi-person-lines-fill me-2"></i>個人資料
+              </button>
+            </li>
+          </ul>
 
-        {/* 內容區塊 */}
-        {activeTab === 'orders' ? (
-          <div className="order-list-section">
-            {orders.map((item) => (
-              <OrderCard key={item.id} data={item} />
-            ))}
+          {/* 內容區塊 */}
+          {activeTab === 'orders' ? (
+            <div className="order-list-section">
+              {orders.map((item) => (
+                <OrderCard key={item.id} data={item} />
+              ))}
 
-            {/* 頁碼切換 */}
-            <nav className="mt-4">
-              <ul className="pagination justify-content-center">
-                <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
-                  <button
-                    className="page-link"
-                    onClick={() => page > 1 && setPage(page - 1)}
-                  >
-                    上一頁
-                  </button>
-                </li>
+              {/* 頁碼切換 */}
+              <nav className="mt-4">
+                <ul className="pagination justify-content-center">
+                  <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
+                    <button
+                      className="page-link"
+                      onClick={() => page > 1 && setPage(page - 1)}
+                    >
+                      上一頁
+                    </button>
+                  </li>
 
-                {/* 頁碼按鈕 */}
-                {[...Array(totalPages)].map((_, i) => (
+                  {/* 頁碼按鈕 */}
+                  {[...Array(totalPages)].map((_, i) => (
+                    <li
+                      key={i}
+                      className={`page-item ${page === i + 1 ? 'active' : ''}`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => setPage(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+
                   <li
-                    key={i}
-                    className={`page-item ${page === i + 1 ? 'active' : ''}`}
+                    className={`page-item ${page === totalPages ? 'disabled' : ''}`}
                   >
                     <button
                       className="page-link"
-                      onClick={() => setPage(i + 1)}
+                      onClick={() => page < totalPages && setPage(page + 1)}
                     >
-                      {i + 1}
+                      下一頁
                     </button>
                   </li>
-                ))}
-
-                <li
-                  className={`page-item ${page === totalPages ? 'disabled' : ''}`}
-                >
-                  <button
-                    className="page-link"
-                    onClick={() => page < totalPages && setPage(page + 1)}
-                  >
-                    下一頁
-                  </button>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        ) : (
-          <ProfileSection />
-        )}
-      </div>
+                </ul>
+              </nav>
+            </div>
+          ) : (
+            <ProfileSection />
+          )}
+        </div>
+      </PageSwitch>
     </div>
   );
 };
@@ -126,7 +130,7 @@ const formatTimestamp = (timestamp) => {
       minute: '2-digit',
       hour12: false,
     })
-    .replace(/,/g, ''); // 移除部分瀏覽器可能產生的逗號
+    .replace(/,/g, '');
 };
 
 // 訂單卡片子組件
@@ -158,7 +162,7 @@ const OrderCard = ({ data }) => {
     <>
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={`order-card w-100 rounded-3 p-7 mb-6 ${isOpen ? 'details-open' : ''}`}
+        className={`order-card rounded-3 px-5 py-6 p-md-7 mb-6 ${isOpen ? 'details-open' : ''}`}
         style={{ cursor: 'pointer' }}
       >
         <div className="d-flex justify-content-between align-items-center mb-2 card-header-info">
@@ -171,25 +175,36 @@ const OrderCard = ({ data }) => {
         </div>
 
         <div className="d-flex align-items-center flex-wrap">
-          <span className="border-md-end border-gray-200 pe-4 me-4">
-            取餐號碼 <i className="bi bi-hash text-primary"></i>
-            {data.user.order_number}
-          </span>
-          <span className="border-md-end border-gray-200 pe-4 me-4">
-            總金額：{data.user.final_total} 元
-          </span>
-          <span
+          <div className="border-md-end border-gray-200 pe-4 me-4 mb-5 mb-md-0">
+            <span className="bg-yellow-200 rounded-pill px-3 py-1 me-2">
+              取餐號碼
+            </span>
+            <div className="d-inline">
+              <i className="bi bi-hash text-primary"></i>
+              <span className="fw-semibold">{data.user.order_number}</span>
+            </div>
+          </div>
+          <div className="border-md-end border-gray-200 pe-4 me-4 mb-4 mb-md-0">
+            <span className="bg-yellow-200 rounded-pill px-3 py-1 me-2">
+              總金額
+            </span>
+            {data.user.final_total} 元
+          </div>
+          <div
             className={`${
               data.user.order_status === 'new'
                 ? 'status-text-unpicked'
                 : 'status-text-picked'
             }`}
           >
+            <span className="bg-yellow-200 text-dark rounded-pill px-3 py-1 me-2">
+              訂單狀態
+            </span>
+            {data.user.order_status === 'new' ? '餐點準備中' : '可取餐'}
             <i
-              className={`bi ${data.user.order_status === 'new' ? 'bi-exclamation-circle-fill' : 'bi-check-circle-fill'} me-1`}
+              className={`bi ${data.user.order_status === 'new' ? 'bi-exclamation-circle-fill' : 'bi-check-circle-fill'} ms-1`}
             ></i>
-            訂單狀態：{data.user.order_status === 'new' ? '未取餐' : '可取餐'}
-          </span>
+          </div>
 
           <i
             className={`bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down text-primary'} ms-auto fs-5`}
@@ -199,16 +214,25 @@ const OrderCard = ({ data }) => {
         {/* 詳細清單 */}
 
         <div className="order-detail-box mt-3 rounded-2">
-          <div className="row mb-7 text-start">
-            <div className="col-lg-4 fs-sm fs-lg-md pb-2">
-              訂單編號 {data.id}
+          <div className="row mb-6 text-start">
+            <div className="col-lg-4 fs-sm fs-lg-md pb-2 mb-2 mb-lg-0">
+              <span className="bg-orange-100 rounded-pill px-3 py-1 me-2">
+                訂單編號
+              </span>
+              {data.id}
             </div>
-            <div className="col-lg-4 fs-sm fs-lg-md pb-2">
-              支付方式：
+            <div className="col-lg-4 fs-sm fs-lg-md pb-2 mb-2 mb-lg-0">
+              <span className="bg-orange-100 rounded-pill px-3 py-1 me-2">
+                支付方式
+              </span>
+
               {PAYMENT_METHOD_MAP[data.user.payment_method] || '其他支付'}
             </div>
             <div className="col-lg-4 fs-sm fs-lg-md">
-              支付狀態：
+              <span className="bg-orange-100 rounded-pill px-3 py-1 me-2">
+                支付狀態
+              </span>
+
               <span
                 className={
                   data.user.payment_status === 'paid'
@@ -247,8 +271,8 @@ const OrderCard = ({ data }) => {
                   )}
                 </span>
 
-                <span>
-                  <i className="bi bi-currency-dollar"></i>{' '}
+                <span className="me-md-4 text-nowrap">
+                  <i className="bi bi-currency-dollar"></i>
                   {product.customizations?.final_total ||
                     product.customizations?.custom_total}
                 </span>
@@ -256,23 +280,36 @@ const OrderCard = ({ data }) => {
             ))}
           </div>
 
-          <div className="text-end">
-            <div className="mb-4">
-              小計 <i className="bi bi-currency-dollar"></i>
-              {data.user.final_total - data.user.discount}
+          <div className="ms-auto me-md-4 " style={{ maxWidth: 260 }}>
+            <div className="d-flex justify-content-between mb-4">
+              <span className="ms-6">小計</span>
+              <span>
+                <i className="bi bi-currency-dollar"></i>
+                {data.user.final_total -
+                  data.user.discount -
+                  data.user.addons_total}
+              </span>
             </div>
-            <div className="mb-4">
-              加購 <i className="bi bi-currency-dollar"></i>
-              未完成
+            <div className="d-flex justify-content-between mb-4">
+              <span className="ms-6">加購</span>
+              <span>
+                <i className="bi bi-currency-dollar"></i>
+                {data.user.addons_total}
+              </span>
             </div>
-            <div className="mb-4">
-              折扣 -<i className="bi bi-currency-dollar"></i>
-              {data.user.discount}
+            <div className="d-flex justify-content-between mb-4">
+              <span className="ms-6">折扣</span>
+              <span>
+                -<i className="bi bi-currency-dollar"></i>
+                {data.user.discount}
+              </span>
             </div>
-            <div className="fw-medium fs-6 text-primary">
-              總金額 <i className="bi bi-currency-dollar"></i>
-              {/* {data.user.final_total} */}
-              未完成
+            <div className="d-flex justify-content-between fw-medium fs-6 text-primary">
+              <span>總金額</span>
+              <span className="text-orange-600">
+                <i className="bi bi-currency-dollar"></i>
+                {data.user.final_total}
+              </span>
             </div>
           </div>
         </div>
@@ -328,29 +365,89 @@ const ProfileSection = () => {
               <div>
                 <div class="marquee-container">
                   <div class="marquee-content">
-                    <img src="/img/member/food-1.png" alt="Poke碗" />
-                    <img src="/img/member/food-2.png" alt="鮭魚" />
-                    <img src="/img/member/food-3.png" alt="酪梨" />
-                    <img src="/img/member/food-4.png" alt="毛豆" />
-                    <img src="/img/member/food-5.png" alt="海藻" />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-1.png`}
+                      alt="Poke碗"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-2.png`}
+                      alt="鮭魚"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-3.png`}
+                      alt="酪梨"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-4.png`}
+                      alt="毛豆"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-5.png`}
+                      alt="海藻"
+                    />
 
-                    <img src="/img/member/food-6.png" alt="Poke碗" />
-                    <img src="/img/member/food-7.png" alt="鮭魚" />
-                    <img src="/img/member/food-8.png" alt="酪梨" />
-                    <img src="/img/member/food-9.png" alt="毛豆" />
-                    <img src="/img/member/food-10.png" alt="海藻" />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-6.png`}
+                      alt="Poke碗"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-7.png`}
+                      alt="鮭魚"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-8.png`}
+                      alt="酪梨"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-9.png`}
+                      alt="毛豆"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-10.png`}
+                      alt="海藻"
+                    />
 
-                    <img src="/img/member/food-1.png" alt="Poke碗" />
-                    <img src="/img/member/food-2.png" alt="鮭魚" />
-                    <img src="/img/member/food-3.png" alt="酪梨" />
-                    <img src="/img/member/food-4.png" alt="毛豆" />
-                    <img src="/img/member/food-5.png" alt="海藻" />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-1.png`}
+                      alt="Poke碗"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-2.png`}
+                      alt="鮭魚"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-3.png`}
+                      alt="酪梨"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-4.png`}
+                      alt="毛豆"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-5.png`}
+                      alt="海藻"
+                    />
 
-                    <img src="/img/member/food-6.png" alt="Poke碗" />
-                    <img src="/img/member/food-7.png" alt="鮭魚" />
-                    <img src="/img/member/food-8.png" alt="酪梨" />
-                    <img src="/img/member/food-9.png" alt="毛豆" />
-                    <img src="/img/member/food-10.png" alt="海藻" />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-6.png`}
+                      alt="Poke碗"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-7.png`}
+                      alt="鮭魚"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-8.png`}
+                      alt="酪梨"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-9.png`}
+                      alt="毛豆"
+                    />
+                    <img
+                      src={`${import.meta.env.BASE_URL}img/member/food-10.png`}
+                      alt="海藻"
+                    />
                   </div>
                 </div>
               </div>
@@ -503,7 +600,11 @@ const RecipeModal = ({ product, onClose }) => {
       }
 
       return (
-        <span key={index} style={{ marginRight: '8px' }}>
+        <span
+          className="text-brown-300"
+          key={index}
+          style={{ marginRight: '8px' }}
+        >
           {subItem.title}
 
           {subItem.qty > 1 && ` X${subItem.qty}`}
@@ -535,122 +636,181 @@ const RecipeModal = ({ product, onClose }) => {
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header bg-orange-100 border-bottom-0 p-5">
-            <h5 className="modal-title">{product.name} 配料明細</h5>
+            <h5 className="modal-title fs-6">{product.product.title} 明細</h5>
             <button
               type="button"
               className="btn-close"
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body p-6">
-            <h4 className="fs-6 text-brown-300 mb-2 d-flex align-items-center">
-              <i class="bi bi-postcard-heart me-2"></i>內容物明細
+          <div className="modal-body p-6 text-gray-300 fs-sm">
+            <h4
+              className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-2"
+            >
+              <i class="bi bi-coin me-2"></i>費用明細
+            </h4>
+            <div
+              className="text-brown-300 mb-6 px-2"
+              style={{ maxWidth: '220px' }}
+            >
+              <p className="d-flex justify-content-between mb-1">
+                <span className="me-5">原價</span>
+                <span>
+                  <i className="bi bi-currency-dollar"></i>
+                  {product?.customizations?.plan_info?.base_price}
+                </span>
+              </p>
+              {hasAddonsContent && (
+                <p className="d-flex justify-content-between mb-1">
+                  <span className="me-5">加購</span>
+                  <span>
+                    <i className="bi bi-currency-dollar"></i>
+                    {product?.customizations?.extra_price}
+                  </span>
+                </p>
+              )}
+
+              <p className="d-flex justify-content-between">
+                <span className="me-5">單品合計</span>
+                <span>
+                  <i className="bi bi-currency-dollar"></i>
+                  {product?.customizations?.custom_total}
+                </span>
+              </p>
+            </div>
+            <h4
+              className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4"
+            >
+              <i className="bi bi-postcard-heart me-2"></i>內容物明細
+              <span>{}</span>
             </h4>
             {isCustom ? (
+              // 自選 Poke 的渲染邏輯
               <>
-                <li>
-                  <span>基底：</span>
+                <ul className="px-2">
+                  <li className="mb-3">
+                    <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                      基底
+                    </span>
 
-                  {renderCustomItems(
-                    product.customizations.included.base,
-                    'included_general',
-                  )}
-                </li>
+                    {renderCustomItems(
+                      product?.customizations.included.base,
+                      'included_general',
+                    )}
+                  </li>
 
-                <li>
-                  <span>主食：</span>
+                  <li className="mb-3">
+                    <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                      主食
+                    </span>
 
-                  {renderCustomItems(
-                    product.customizations.included.protein,
-                    'included_protein',
-                  )}
-                </li>
+                    {renderCustomItems(
+                      product?.customizations?.included?.protein,
+                      'included_protein',
+                    )}
+                  </li>
 
-                <li>
-                  <span>醬料：</span>
+                  <li className="mb-3">
+                    <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                      醬料
+                    </span>
 
-                  {renderCustomItems(
-                    product.customizations.included.sauce,
-                    'included_general',
-                  )}
-                </li>
+                    {renderCustomItems(
+                      product?.customizations?.included?.sauce,
+                      'included_general',
+                    )}
+                  </li>
 
-                <li>
-                  <span>配菜：</span>
+                  <li className="mb-3">
+                    <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                      配菜
+                    </span>
 
-                  {renderCustomItems(
-                    product.customizations.included.side,
-                    'included_general',
-                  )}
-                </li>
-
+                    {renderCustomItems(
+                      product?.customizations.included.side,
+                      'included_general',
+                    )}
+                  </li>
+                </ul>
                 {/* 加購區 (Addons) */}
 
                 {hasAddonsContent && (
                   <>
-                    <hr className="border-orange-200" />
-                    <h4 className="fs-6 text-brown-300 mb-2 d-flex align-items-center mt-4">
-                      <i className="bi bi-postcard-heart me-2"></i> 加購選項
+                    <h4
+                      className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4 mt-5"
+                    >
+                      <i className="bi bi-plus-circle-fill me-2"></i> 加購明細
                     </h4>
-                    <ul>
+                    <ul className="px-2">
                       {addon.base?.length > 0 && (
-                        <li>
-                          <span>基底：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            基底
+                          </span>
 
                           {renderCustomItems(
-                            product.customizations.addon.base,
+                            product?.customizations.addon.base,
                             'addon',
                           )}
                         </li>
                       )}
 
                       {addon.protein?.length > 0 && (
-                        <li>
-                          <span>主食：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            主食
+                          </span>
                           {renderCustomItems(
-                            product.customizations.addon.protein,
+                            product?.customizations?.addon?.protein,
                             'addon',
                           )}
                         </li>
                       )}
 
                       {addon.sauce?.length > 0 && (
-                        <li>
-                          <span>醬料：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            醬料
+                          </span>
 
                           {renderCustomItems(
-                            product.customizations.addon.sauce,
+                            product?.customizations?.addon?.sauce,
                             'addon',
                           )}
                         </li>
                       )}
                       {addon?.side?.length > 0 && (
-                        <li>
-                          <span>配菜：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            配菜
+                          </span>
 
                           {renderCustomItems(
-                            product.customizations.addon.side,
+                            product?.customizations?.addon?.side,
                             'addon',
                           )}
                         </li>
                       )}
 
-                      {addon.drinks?.length > 0 && (
-                        <li>
+                      {addon?.drinks?.length > 0 && (
+                        <li className="mb-3">
                           <span>飲品：</span>
 
                           {renderCustomItems(
-                            product.customizations.addon.drinks,
+                            product?.customizations?.addon?.drinks,
                             'addon',
                           )}
                         </li>
                       )}
-                      {addon.soup?.length > 0 && (
-                        <li>
+                      {addon?.soup?.length > 0 && (
+                        <li className="mb-3">
                           <span>湯品：</span>
 
                           {renderCustomItems(
-                            product.customizations.addon.soup,
+                            product?.customizations?.addon?.soup,
                             'addon',
                           )}
                         </li>
@@ -661,24 +821,34 @@ const RecipeModal = ({ product, onClose }) => {
               </>
             ) : (
               <>
-                {product.product.ingredients && (
+                {product?.product.ingredients && (
                   <>
-                    <li>
-                      <span>基底：</span>
-                      <span>{product.product.ingredients.base}</span>
-                    </li>
-                    <li>
-                      <span>主食：</span>
-                      <span>{product.product.ingredients.main}</span>
-                    </li>
-                    <li>
-                      <span>醬料：</span>
-                      <span>{product.product.ingredients.source}</span>
-                    </li>
-                    <li>
-                      <span>配菜：</span>
-                      <span>{product.product.ingredients.side}</span>
-                    </li>
+                    <ul className="px-2">
+                      <li className="mb-3">
+                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                          基底
+                        </span>
+                        <span>{product?.product.ingredients.base}</span>
+                      </li>
+                      <li className="mb-3">
+                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                          主食
+                        </span>
+                        <span>{product?.product.ingredients.main}</span>
+                      </li>
+                      <li className="mb-3">
+                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                          醬料
+                        </span>
+                        <span>{product?.product.ingredients.source}</span>
+                      </li>
+                      <li className="mb-5">
+                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                          配菜
+                        </span>
+                        <span>{product?.product.ingredients.side}</span>
+                      </li>
+                    </ul>
                   </>
                 )}
 
@@ -686,69 +856,83 @@ const RecipeModal = ({ product, onClose }) => {
 
                 {hasAddonsContent && (
                   <>
-                    <hr />
-                    <h4 className="fs-6 text-brown-300 mb-2 d-flex align-items-center mt-4">
-                      <i className="bi bi-postcard-heart me-2"></i> 加購選項
+                    <h4
+                      className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4"
+                    >
+                      <i className="bi bi-postcard-heart me-2"></i> 加購明細
                     </h4>
-                    <ul>
+                    <ul className="px-2">
                       {addon.base?.length > 0 && (
-                        <li>
-                          <span>基底：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            基底
+                          </span>
 
                           {renderCustomItems(
-                            product.customizations.addon.base,
+                            product?.customizations.addon.base,
                             'addon',
                           )}
                         </li>
                       )}
 
                       {addon.protein?.length > 0 && (
-                        <li>
-                          <span>主食：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            主食
+                          </span>
                           {renderCustomItems(
-                            product.customizations.addon.protein,
+                            product?.customizations?.addon?.protein,
                             'addon',
                           )}
                         </li>
                       )}
 
                       {addon.sauce?.length > 0 && (
-                        <li>
-                          <span>醬料：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            醬料
+                          </span>
 
                           {renderCustomItems(
-                            product.customizations.addon.sauce,
+                            product?.customizations.addon.sauce,
                             'addon',
                           )}
                         </li>
                       )}
                       {addon?.side?.length > 0 && (
-                        <li>
-                          <span>配菜：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            配菜
+                          </span>
 
                           {renderCustomItems(
-                            product.customizations.addon.side,
+                            product?.customizations.addon.side,
                             'addon',
                           )}
                         </li>
                       )}
 
                       {addon.drinks?.length > 0 && (
-                        <li>
-                          <span>飲品：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            飲品
+                          </span>
 
                           {renderCustomItems(
-                            product.customizations.addon.drinks,
+                            product?.customizations.addon.drinks,
                             'addon',
                           )}
                         </li>
                       )}
                       {addon.soup?.length > 0 && (
-                        <li>
-                          <span>湯品：</span>
+                        <li className="mb-3">
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            湯品
+                          </span>
 
                           {renderCustomItems(
-                            product.customizations.addon.soup,
+                            product?.customizations.addon.soup,
                             'addon',
                           )}
                         </li>
@@ -758,6 +942,18 @@ const RecipeModal = ({ product, onClose }) => {
                 )}
               </>
             )}
+            <h4
+              className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4 mt-5"
+            >
+              <i className="bi bi-pie-chart-fill me-2"></i> 單品營養素資訊
+            </h4>
+            <DonutPFC
+              protein={product?.customizations?.total_nutrition?.protein}
+              fat={product?.customizations?.total_nutrition?.fat}
+              carbs={product?.customizations?.total_nutrition?.carbs}
+              calories={product?.customizations?.total_nutrition?.calories}
+            />
           </div>
           <div className="modal-footer border-gray-50">
             <button
