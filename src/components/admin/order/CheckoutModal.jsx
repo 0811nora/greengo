@@ -15,7 +15,7 @@ const CheckoutModal = ({ show, closeModal, orderDetail, backToLast, getApiOrders
 
 	// 加購金額
 	const addTotal = orderProductsArry
-		.reduce((accu, curr) => accu + curr?.customizations.extra_price ?? 0, 0)
+		.reduce((accu, curr) => accu + (curr?.customizations.extra_price ?? 0), 0)
 		.toLocaleString();
 
 	// 總計金額
