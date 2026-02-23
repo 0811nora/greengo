@@ -25,19 +25,24 @@ const NutritionSection = () => {
           <div className='container py-6'>
             <div className='row'>
               {/* 說明 */}
-              <div className='col-md-7 mb-5'>
+              <div className='d-flex align-item-center mb-5'>
                 {/* 標題文字區 */}
-                <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2'>
-                  YOUR NUTRITION, DECODED
-                </h4>
-                <h2 className='fs-3 fs-md-1 fw-bold mb-2 mb-md-5'>
-                  拒絕盲吃！
-                  <br />
-                  營養成分，
-                  <span className=''>即時看得見</span>。
-                </h2>
+                <div>
+                  <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2'>
+                    YOUR NUTRITION, DECODED
+                  </h4>
+                  <h2 className='fs-3 fs-md-1 fw-bold mb-2 mb-md-5'>
+                    拒絕盲吃！
+                    <br />
+                    營養成分，
+                    <span className=''>即時看得見</span>。
+                  </h2>
+                  <p className='text-gray-400 mb-5'>
+                    別讓算熱量成了負擔，你的每一份營養，由我們幫你把關。
+                  </p>
+                </div>
                 {/* 桌機板 */}
-                <div className='d-none d-md-block'>
+                {/* <div className='d-none d-md-block'>
                   <p className='fs-6 mb-3 px-4'>
                     別讓算熱量成了負擔， <br />
                     你的每一份營養， <br />
@@ -71,10 +76,10 @@ const NutritionSection = () => {
                       </NavLink>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </div>
               {/* 過去的困擾 */}
-              <div
+              {/* <div
                 ref={sectionRef}
                 className='col-md-5 d-flex flex-column mt-2 mt-lg-5 gap-5 gap-lg-8'
               >
@@ -98,9 +103,9 @@ const NutritionSection = () => {
                     </svg>
                   </div>
                 ))}
-              </div>
+              </div> */}
               {/* 手機版 */}
-              <div className='d-block d-md-none mt-5'>
+              {/* <div className='d-block d-md-none mt-5'>
                 <p className='fs-6 mt-5 mb-3 px-4 text-center'>
                   別讓算熱量成了負擔， <br />
                   你的每一份營養， <br />
@@ -130,6 +135,76 @@ const NutritionSection = () => {
                     </NavLink>
                   </li>
                 </ul>
+              </div> */}
+            </div>
+            <div className='row'>
+              <div className='col-md-6'>
+                <NavLink
+                  to={PageLinks.productLink.url}
+                  className='text-decoration-none'
+                >
+                  <div className='row align-items-center py-5 my-8'>
+                    <div className='col-md-6 mb-5 mb-md-0 position-relative'>
+                      <div className='bg-bubble'>
+                        <img
+                          src={`${import.meta.env.BASE_URL}img/items/bowl-2.png`}
+                          alt='綠果精選系列'
+                          className='position-absolute'
+                        />
+                      </div>
+                    </div>
+                    <div className='col-md-6 mb-5 mb-md-0'>
+                      <div className='badge tag-item p-2'>
+                        為你搭配好 <i className='bi bi-stars'></i>
+                      </div>
+                      <h2 className='fs-4 text-gray-600 my-4'>綠果精選系列</h2>
+                      <p className='text-gray-400 mb-4'>
+                        營養師與主廚共同研發，把完美的巨量營養素比例藏在美味裡。
+                        <br />
+                        把營養交給我們，你只需要張開嘴巴安心吃就好！
+                      </p>
+                      <span className='home__btn-link d-flex justify-content-between'>
+                        <span>{PageLinks.productLink.title}</span>
+                        <i className='bi bi-chevron-right'></i>
+                      </span>
+                    </div>
+                  </div>
+                </NavLink>
+              </div>
+              <div className='col-md-6'>
+                <NavLink
+                  className='text-decoration-none'
+                  to={PageLinks.customLink.url}
+                >
+                  <div className='row align-items-center py-5 my-8'>
+                    <div className='col-md-6 mb-5 mb-md-0 position-relative'>
+                      <div className='bg-bubble2'>
+                        <img
+                          src={`${import.meta.env.BASE_URL}img/items/bowl-3.png`}
+                          alt='綠果精選系列'
+                          className='position-absolute'
+                        />
+                      </div>
+                    </div>
+                    <div className='col-md-6 mb-5 mb-md-0'>
+                      <div className='badge tag-item p-2'>
+                        由你來決定 <i className='bi bi-asterisk'></i>
+                      </div>
+                      <h2 className='fs-4 text-gray-600 my-4'>客製自由配</h2>
+                      <p className=' text-gray-400 mb-4'>
+                        今天想多點肉？還是嚴格無澱粉？
+                        <br />
+                        超過 15
+                        種健康配料任你挑選，點餐時即時計算總熱量，打造專屬於你的超完美餐盒。
+                      </p>{' '}
+                      <span className='home__btn-link d-flex justify-content-between'>
+                        {' '}
+                        <span>{PageLinks.customLink.title}</span>
+                        <i className='bi bi-chevron-right'></i>
+                      </span>
+                    </div>
+                  </div>{' '}
+                </NavLink>
               </div>
             </div>
           </div>
