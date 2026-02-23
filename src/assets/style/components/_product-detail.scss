@@ -1,12 +1,3 @@
-// back-text
-// .productDetail-page .back {
-// 	padding-top: 100px;
-// 	text-decoration: none;
-// 	span {
-// 		font-size: 32px;
-// 	}
-// }
-
 // img
 .product-detail {
 	border-radius: 20px;
@@ -36,8 +27,8 @@
 
 	img {
 		display: block;
-		width: 90%;
-		height: 90%;
+		width: 100%;
+		height: 100%;
 		object-fit: cover;
 	}
 }
@@ -75,6 +66,7 @@
 .product-detail .ingredient,
 .nutrition {
 	.key {
+		min-width: 50px;
 		display: block;
 		background-color: $gray-100;
 		font-size: 14px;
@@ -89,6 +81,9 @@
 		display: flex;
 		align-items: center;
 	}
+}
+.product-detail .nutrition-content {
+	min-width: 180px;
 }
 
 // modal-content
@@ -167,6 +162,14 @@
 	&:hover {
 		background-color: rgba($color: $primary-200, $alpha: 0.9);
 		transform: scale(1.01);
+	}
+}
+@media (max-width: 576px) {
+	.product-detail .addCart {
+		width: 100%;
+		span {
+			display: block;
+		}
 	}
 }
 

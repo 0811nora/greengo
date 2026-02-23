@@ -11,7 +11,7 @@ const ProductCard = ({ product, category, handleOpenDetail, isAddCartLoading, ha
 					<img
 						src={product.imageUrl}
 						alt={product.title}
-						className={`${category === 'set' ? 'poke-img' : category === 'drinks' ? 'drink-img' : 'poke-img'}`}
+						className={`${category === 'set' ? 'poke-img' : category === 'drinks' ? 'drink-img' : 'soup-img'}`}
 					/>
 					{/* tab分類 */}
 					<div className="position-absolute d-flex flex-column gap-1 tabPill-position-absolute">
@@ -52,7 +52,7 @@ const ProductCard = ({ product, category, handleOpenDetail, isAddCartLoading, ha
 
 					{/* 加入購物車按鈕 */}
 					<div className="addBtn position-absolute">
-						<i className="bi bi-plus fs-4"></i>
+						<i className="bi bi-arrow-right-short fs-4"></i>
 					</div>
 					{/* <button
 						className="addBtn position-absolute"

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAllProducts, postAddToCart } from '../api/ApiClient';
 import { notify } from '../components/Notify';
@@ -7,21 +7,28 @@ import DATA from '../config/productUiData';
 import ProductDetail from './ProductDetail';
 import Loader from '../components/common/Loading';
 
+// header 購物車
+import { useDispatch } from 'react-redux';
+import { renderRefresh } from '../../src/store/slices/cartSlice';
+
 const BLOCK_CONTENT_OPTIONS = [
 	{
 		icon: 'allergies',
 		title: '經典綠果碗',
 		subtitle: '由主廚精心搭配的營養組合',
+		category: 'set',
 	},
 	{
 		icon: 'local_cafe',
 		title: '健康飲品',
 		subtitle: '讓營養更完整的健康飲品',
+		category: 'drinks',
 	},
 	{
 		icon: 'soup_kitchen',
 		title: '溫暖湯品',
 		subtitle: '讓營養更均衡的溫暖湯品',
+		category: 'soup',
 	},
 ];
 const INITIAL_STATE_STATE = {
@@ -71,24 +78,78 @@ export default function Product() {
 	const [filterState, setFilterState] = useState(INITIAL_STATE_STATE);
 	const [isDataLoading, setIsDataLoading] = useState(true);
 	const [isAddCartLoading, setIsAddCartLoading] = useState(false);
+	const [isBlockDisappear, setIsBlockDisappear] = useState(false);
+	const [isShowSmallFilterItem, setIsShowSmallFilterItem] = useState(false);
 	const navigate = useNavigate();
 	const { id } = useParams();
+	const dispatch = useDispatch();
 
+	// 如果media小於768px，則大block消失，小block出現
+	const md_media = window.matchMedia('(max-width: 768px)');
+	const filterBlockShowInMedia = () => {
+		if (md_media.matches) {
+			setIsBlockDisappear(true);
+		} else {
+			setIsBlockDisappear(false);
+		}
+	};
+
+	// 打開右下小 filter block
+	const openSmallFilterBlock = () => {
+		if (isShowSmallFilterItem) {
+			setIsShowSmallFilterItem(false);
+		} else {
+			setIsShowSmallFilterItem(true);
+		}
+	};
+
+	// filter block items useRef
+	const anchorSectionRef = {
+		set: useRef(null),
+		drinks: useRef(null),
+		soup: useRef(null),
+	};
+
+	// filter block 如果滾動滑鼠消失在視窗中時
+	const filterBlockRef = useRef(null);
+	const checkIsBlockDisappear = () => {
+		const blockRange = filterBlockRef.current.getBoundingClientRect();
+
+		if (blockRange.bottom < 0) {
+			setIsBlockDisappear(true);
+			setIsShowSmallFilterItem(false);
+		}
+		if (blockRange.top > 0) {
+			setIsBlockDisappear(false);
+		}
+	};
+
+	// 獲取產品資料(戳API)
+	const getProducts = async () => {
+		try {
+			const res = await getAllProducts();
+			const productData = res.data.products.filter(
+				product => product.category !== 'item' && product.category !== 'custom',
+			);
+			setApiProdutsData(productData);
+			setIsDataLoading(false);
+		} catch (error) {
+			console.log(error.response);
+			setIsDataLoading(false);
+		}
+	};
+
+	// 初始化的行為
 	useEffect(() => {
-		const getProducts = async () => {
-			try {
-				const res = await getAllProducts();
-				const productData = res.data.products.filter(
-					product => product.category !== 'item' && product.category !== 'custom',
-				);
-				setApiProdutsData(productData);
-				setIsDataLoading(false);
-			} catch (error) {
-				console.log(error.response);
-				setIsDataLoading(false);
-			}
-		};
 		getProducts();
+		window.addEventListener('scroll', checkIsBlockDisappear);
+		md_media.addEventListener('change', filterBlockShowInMedia);
+		filterBlockShowInMedia();
+
+		return () => {
+			window.removeEventListener('scroll', checkIsBlockDisappear);
+			md_media.removeEventListener('change', filterBlockShowInMedia);
+		};
 	}, []);
 
 	const toggleTabFilter = (category, value) => {
@@ -194,13 +255,19 @@ export default function Product() {
 		try {
 			const res = await postAddToCart(data);
 			setIsAddCartLoading(false);
-			notify('success', '加入購物車成功', 'top-right');
+			notify('success', '加入購物車成功', 'bottom-center');
+			dispatch(renderRefresh()); // <-- header購物車redux
 			handleCloseDetail();
 		} catch (error) {
 			console.log(error);
 			setIsAddCartLoading(false);
-			notify('error', '加入購物車失敗', 'top-right');
+			notify('error', '加入購物車失敗', 'bottom-center');
 		}
+	};
+
+	// filter block btn 錨點功能
+	const handleAnchor = category => {
+		anchorSectionRef[category].current?.scrollIntoView({ behavior: 'smooth', block: 'center', offset: '100px' });
 	};
 
 	return (
@@ -219,19 +286,22 @@ export default function Product() {
 					</div>
 				</div>
 				{/* 向下箭頭 */}
-				<div className="z-1">
+				{/* <div className="z-1">
 					<i className="bi bi-arrow-down mt-4 text-white"></i>
-				</div>
+				</div> */}
 			</header>
 
 			{/* 菜單錨點 */}
-			<section className="position-relative">
-				<div className="block-filter container position-absolute top-0 start-50 translate-middle">
+			<section className="position-relative" ref={filterBlockRef}>
+				<div
+					className={`block-filter container position-absolute top-0 start-50 translate-middle ${isBlockDisappear ? 'hidden' : ''}`}
+				>
 					<div className="d-flex flex-column flex-md-row justify-content-between gap-6 gap-xxl-8 ">
 						{BLOCK_CONTENT_OPTIONS.map((option, index) => (
 							<div
 								className="block-item d-flex flex-column align-items-center animate__animated animate__zoomIn"
 								key={index}
+								onClick={() => handleAnchor(option.category)}
 							>
 								<span className="material-symbols-rounded">{option.icon}</span>
 								<p className="h5 fw-semibold">{option.title}</p>
@@ -255,6 +325,7 @@ export default function Product() {
 				handleOpenDetail={handleOpenDetail}
 				isAddCartLoading={isAddCartLoading}
 				handleAddCart={handleAddCart}
+				anchorSectionRef={anchorSectionRef}
 			/>
 			{/* 自由配導購區塊 */}
 			<section className="CTA-custom mt-10 d-flex justify-content-center align-items-center">
@@ -300,6 +371,7 @@ export default function Product() {
 				handleOpenDetail={handleOpenDetail}
 				isAddCartLoading={isAddCartLoading}
 				handleAddCart={handleAddCart}
+				anchorSectionRef={anchorSectionRef}
 			/>
 
 			{/* 湯品 */}
@@ -315,7 +387,49 @@ export default function Product() {
 				handleOpenDetail={handleOpenDetail}
 				isAddCartLoading={isAddCartLoading}
 				handleAddCart={handleAddCart}
+				anchorSectionRef={anchorSectionRef}
 			/>
+			{/* smallFilterBlock */}
+			<div
+				className={`small-block-section d-flex flex-column justify-content-end align-items-center ${isShowSmallFilterItem ? 'itemShow' : ''} ${isBlockDisappear ? 'show' : ''}`}
+			>
+				<div
+					className={`small-filter-block set ${isShowSmallFilterItem ? 'show' : ''}`}
+					onClick={() => handleAnchor('set')}
+				>
+					<div className="d-flex justify-content-center align-items-center block">
+						<span className="material-symbols-rounded">allergies</span>
+					</div>
+					<p>綠果碗</p>
+				</div>
+				<div
+					className={`small-filter-block drinks ${isShowSmallFilterItem ? 'show' : ''}`}
+					onClick={() => handleAnchor('drinks')}
+				>
+					<div className="d-flex justify-content-center align-items-center block">
+						<span className="material-symbols-rounded">local_cafe</span>
+					</div>
+					<p>飲品</p>
+				</div>
+				<div
+					className={`small-filter-block soup ${isShowSmallFilterItem ? 'show' : ''}`}
+					onClick={() => handleAnchor('soup')}
+				>
+					<div className="d-flex justify-content-center align-items-center block">
+						<span className="material-symbols-rounded">soup_kitchen</span>
+					</div>
+					<p>湯品</p>
+				</div>
+				<div
+					className={`small-filter-block menu ${isShowSmallFilterItem ? 'show' : ''}`}
+					onClick={openSmallFilterBlock}
+				>
+					<div className="d-flex justify-content-center align-items-center block">
+						<span className="material-symbols-rounded">menu_book</span>
+					</div>
+					{/* <p>菜單</p> */}
+				</div>
+			</div>
 			{id && (
 				<ProductDetail
 					handleCloseDetail={handleCloseDetail}
