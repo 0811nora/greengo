@@ -188,7 +188,7 @@ const OrderDetail = ({
 	const subtotal = orderProductsArry.reduce((accu, curr) => accu + curr?.final_total, 0);
 
 	// 加購金額
-	const addTotal = orderProductsArry.reduce((accu, curr) => accu + curr?.customizations.extra_price ?? 0, 0);
+	const addTotal = orderProductsArry.reduce((accu, curr) => accu + (curr?.customizations.extra_price ?? 0), 0);
 
 	// 總計金額
 	const finalTotal = subtotal + addTotal;
