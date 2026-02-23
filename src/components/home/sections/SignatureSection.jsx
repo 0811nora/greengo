@@ -33,19 +33,17 @@ const SignatureSection = () => {
               <div className='order-1 order-lg-2 col-lg-6'>
                 <ContentCard
                   subTitle='SIGNATURE BOWLS'
-                  title={
-                    <>
-                      綠果 <br /> 精選系列
-                    </>
-                  }
+                  title={<>綠果精選系列</>}
                   description={
                     <>
-                      綠果堅持由營養團隊精心設計的黃金比例組合，
+                      綠果堅持由營養團隊精心設計的黃金比例組合。
                       <br />
                       無須思考，打開就能享用一份零失誤的健康。
                     </>
                   }
                   buttonText='查看精選菜單'
+                  bgColor='transparent'
+                  textPosition='text-center'
                   to={PageLinks.productLink.url}
                 />
               </div>
