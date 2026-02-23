@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { getCart, postOrder } from '../api/ApiClient';
 import { useNavigate } from 'react-router-dom';
 import { PageSwitch } from '../components/common/AnimationWrapper';
-import { useForm, useWatch } from 'react-hook-form';
-import { address } from 'framer-motion/client';
+import { useForm } from 'react-hook-form';
 
 const Checkout = () => {
   const [cartData, setCartData] = useState([]);
@@ -26,8 +25,6 @@ const Checkout = () => {
   const {
     register,
     handleSubmit,
-    control,
-    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -57,14 +54,8 @@ const Checkout = () => {
   // 計算金額
   const { baseSubtotal, totalAddons } = cartData.reduce(
     (acc, item) => {
-      const isCustom = item.product.category === 'custom';
-
       const itemBasePrice = item.product.price;
-
-      const itemExtraPrice =
-        isCustom && item.customizations?.extra_price
-          ? item.customizations.extra_price
-          : 0;
+      const itemExtraPrice = item.customizations?.extra_price;
 
       acc.baseSubtotal += itemBasePrice * item.qty;
       acc.totalAddons += itemExtraPrice * item.qty;
@@ -77,10 +68,10 @@ const Checkout = () => {
   const finalTotal = baseSubtotal + totalAddons - discount;
 
   // 處理輸入變更
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
 
   // 處理優惠券
   const applyCoupon = () => {
@@ -111,6 +102,7 @@ const Checkout = () => {
     const predata = {
       user: {
         ...data,
+        base_total: baseSubtotal,
         addons_total: totalAddons,
         final_total: finalTotal,
         discount: discount,
@@ -120,13 +112,11 @@ const Checkout = () => {
         address: 'Taipei',
       },
     };
+    // console.log(predata);
     try {
       const response = await postOrder(predata);
       const newOrderId = response.data.orderId;
       getCarts();
-      // alert(
-      //   `訂單已送出！\n您的取餐號碼為: 【 ${pickupNumber} 】\n付款方式: ${formData.payment_method}\n總金額: $${finalTotal}`,
-      // );
       navigate(`/payment/${newOrderId}`);
     } catch (error) {
       alert('取得失敗: ' + error.response.data.message);
@@ -371,21 +361,7 @@ const Checkout = () => {
                     </button>
                   </div>
                 </div>
-                {/* <div className="input-group pt-3 pb-6">
-                <input
-                  type="text"
-                  placeholder="輸入 SAVE100"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                />
-                <button
-                  className="btn btn-outline-secondary"
-                  type="button"
-                  onClick={applyCoupon}
-                >
-                  套用
-                </button>
-              </div> */}
+
                 {couponMsg && (
                   <div
                     className={`alert alert-${couponMsg.type} py-1 px-2 mb-3 small`}

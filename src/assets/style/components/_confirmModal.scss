@@ -83,7 +83,7 @@ $btn-tertiary-shadow: #1b202833; // opacity:20%
 		// bootstrap屬性
 		.modal-content {
 			border-radius: 36px;
-			padding: 52px 44px 48px 44px;
+			padding: 52px 40px 48px 40px;
 		}
 	}
 	/* 手機 */
@@ -104,7 +104,7 @@ $btn-tertiary-shadow: #1b202833; // opacity:20%
 		background-color: none;
 		.modal__icon {
 			font-size: 60px;
-			margin-bottom: 16px;
+			margin-bottom: 20px;
 		}
 
 		h1 {
@@ -116,7 +116,7 @@ $btn-tertiary-shadow: #1b202833; // opacity:20%
 		p {
 			font-size: 17px;
 			text-align: center;
-			margin-bottom: 40px;
+			margin-bottom: 48px;
 			line-height: 1.8;
 		}
 	}
@@ -166,6 +166,7 @@ $btn-tertiary-shadow: #1b202833; // opacity:20%
 	.modal-dialog {
 		// bootstrap屬性
 		.modal-content {
+			border-radius: 28px;
 			background:
 				linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.7) 100%),
 				linear-gradient(225deg, rgba(147, 97, 43, 0.1) 0%, rgba(147, 97, 43, 0.05) 100%);

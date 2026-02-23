@@ -59,7 +59,6 @@ export default function AdminBlog() {
         setIsLoading(true);
         try{
             const res = await getAdmArticles(page)
-            console.log(res)
             setArticleList(res.data.articles);
             setPage(res.data.pagination)
             setIsLoading(false);
@@ -214,7 +213,6 @@ export default function AdminBlog() {
 
     // 表單變動時資料保存
     const handleEditChange = (e) => {
-        console.log(e.target.value)
 
         const { name , value ,checked, type } = e.target;
         if(name === "tag"){
@@ -249,7 +247,6 @@ export default function AdminBlog() {
     const addNewArticle = async() => {
         try{
             const res = await postAdminAddArticle(singleDetail)
-            console.log(res);
             setIsOpenModal(false);
             setIsEdit(false);
             getArticle();
@@ -285,8 +282,6 @@ export default function AdminBlog() {
             setIsOpenModal(false);
             detailModal.current.hide();
             getArticle();
-            
-            console.log(res)
         }catch(err){
             console.log(err)
         }

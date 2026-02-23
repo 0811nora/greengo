@@ -18,6 +18,7 @@
 // 前台
 @import './style/front/layout/header';
 @import './style/home';
+@import './style/components/home-components';
 @import './style/custom/custom';
 @import './style/custom/pickTypeCard';
 @import './style/custom/typeListBtn';
@@ -42,6 +43,7 @@
 // 後台 - components
 @import './style/admin/components/button';
 @import './style/admin/smallModal';
+@import './style/admin/components/order/adm-orderModal';
 
 // 後台 - layout
 @import './style/admin/layout/adm-header';
