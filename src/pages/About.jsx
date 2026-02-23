@@ -532,12 +532,12 @@ export default function About() {
                             <h2 className='fs-2 lh-sm  sub-title'>行動，<span className='d-block sub-title'>然後成果。</span> </h2>
                             <h3 className='fs-5 lh-sm  sub-title'>The Story of GreenGo</h3>
                         </div>
-                        <div className="position-absolute top-10 start-10">
+                        {/* <div className="position-absolute top-10 start-10">
                             <div className='img-sm-border-1'></div>
                         </div>
                         <div className="position-absolute bottom-10 start-10">
                             <div className='img-sm-border-2'></div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="d-flex justify-content-center align-items-center mid-sec">
                         <div className="py-8 px-5">

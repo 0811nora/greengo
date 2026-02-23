@@ -1,63 +1,112 @@
-import { useEffect, useState } from 'react';
-import { getAdmOrders } from '../../api/ApiAdmin';
+import { Fragment, useEffect, useState } from 'react';
+import { delAdmSingleOrder, getAdmOrders, putAdmSingleOrder } from '../../api/ApiAdmin';
 import EmptyDataHint from '../../components/admin/order/EmptyDataHint';
 import Loading from '../../components/admin/order/Loading';
-import Modal from '../../components/admin/order/Modal';
+import OrderDetail from '../../components/admin/order/AdminOrderDetail';
+import { notify } from '../../components/Notify';
+import { ConfirmModal } from '../../components/common/Modal';
+import CheckoutModal from '../../components/admin/order/CheckoutModal';
 
 export default function AdminOrder_today() {
-	const [orders, setOrders] = useState([]);
+	const [todayOrders, setTodayOrders] = useState([]);
 	const [specificOrder, setSpecificOrder] = useState(null);
 	const [filterType, setFilterType] = useState('all');
-	const [modalType, setModalType] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isModalShow, setIsModalShow] = useState(false);
+	const [modalType, setModalType] = useState(null); // null, detail, pickup, checkout
+	const [isDataLoading, setIsDataLoading] = useState(true);
+	const [orderDetail, setOrderDetail] = useState(null);
 
-	// 取得 api 原始資料，新增訂單和付款狀態
-	useEffect(() => {
-		const getApiOrders = async () => {
-			try {
-				const res = await getAdmOrders();
-				console.log(res.data);
-				let order_status_value;
-				const withStatusOrders = res.data.orders.map(order => {
-					if (order.paid_date) {
-						if (Date.now() - order.paid_date * 1000 >= 900000) {
-							order_status_value = 'ready';
-						} else {
-							order_status_value = 'prepare';
-						}
-					} else {
-						order_status_value = 'new';
+	// 建立今日訂單時間的範圍
+	const todayTime = new Date();
+	const todayStart = new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate()).getTime();
+	const todayEnd = todayStart + (24 * 60 * 60 * 1000 - 1);
+
+	// 取得原始訂單資料API
+	const getApiOrders = async () => {
+		try {
+			const res = await getAdmOrders(1);
+			let resOrds = res.data.orders;
+			console.log(res.data);
+			const totalPages = res.data.pagination.total_pages;
+
+			// 以訂單建立時間，局限在今日時間
+			const allPagesOrders = resOrds.filter(
+				order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
+			);
+
+			// 以訂單建立時間，局限在今日以前
+			// const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
+
+			// 如果第一頁沒有今日時間，就return
+			if (allPagesOrders.length === 0) {
+				setTodayOrders([]);
+				setIsDataLoading(false);
+				return;
+			}
+
+			// 如果第一頁有今日時間，就跑迴圈從第二頁開始戳api
+			if (allPagesOrders.length > 0) {
+				for (let page = 2; page <= totalPages; page++) {
+					const res = await getAdmOrders(page);
+					resOrds = res.data.orders;
+					const otherPagesOrder = resOrds.filter(
+						order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
+					);
+					// 如果現在頁數沒有今日時間，就break
+					if (otherPagesOrder.length === 0) {
+						break;
 					}
 
-					return {
-						...order,
-						order_status: order_status_value,
-						payment_status: order.is_paid ? 'paid' : 'unpaid',
-					};
-				});
-				setOrders(withStatusOrders);
-				setIsLoading(false);
-			} catch (error) {
-				console.log(error.response);
+					// 將所有有今日時間的訂單放一起
+					allPagesOrders.push(...otherPagesOrder);
+				}
 			}
-		};
+			setIsDataLoading(false);
+			setTodayOrders(allPagesOrders);
+		} catch (error) {
+			console.log(error.response);
+			setIsDataLoading(false);
+		}
+	};
+	useEffect(() => {
 		getApiOrders();
 	}, []);
 
-	// 視窗背景不滑動
-	useEffect(() => {
-		document.body.style.overflow = modalType !== null ? 'hidden' : '';
-	}, [modalType]);
+	// filter blocks：即時顯示相關訂單數
+	const calDiffFilterStateNum = category => {
+		if (category === 'all') return todayOrders.length;
+		return todayOrders.filter(order => order.user.order_status === category || order.user.payment_status === category)
+			.length;
+	};
 
-	// 透過狀態篩選，決定訂單列表的渲染
-	const displayOrders = orders.filter(order => {
+	// filter blocks：UI 渲染資料預備
+	const filterBlocks_fields = [
+		{
+			category: 'all',
+			title: '今日所有訂單數',
+			icon: 'bi bi-archive',
+		},
+		{
+			category: 'ready',
+			title: '可取餐數',
+			icon: 'bi bi-check-circle',
+		},
+		{
+			category: 'unpaid',
+			title: '未付款數',
+			icon: 'bi bi-credit-card-2-back',
+		},
+		{
+			category: 'done',
+			title: '已完成數',
+			icon: 'bi bi-ban',
+		},
+	];
+
+	// 透過狀態篩選，決定訂單列表的tag渲染
+	const displayOrders = todayOrders.filter(order => {
 		if (filterType === 'all') return true;
-		return filterType === order.order_status || filterType === order.payment_status;
+		return filterType === order.user.order_status || filterType === order.user.payment_status;
 	});
-	const allOrderNum = orders.length;
-	const readyOrderNum = orders.filter(order => order.order_status === 'ready').length;
-	console.log(readyOrderNum);
 
 	// 時間戳轉換
 	const changeTimeStamp_date = timeStamp => {
@@ -77,12 +126,10 @@ export default function AdminOrder_today() {
 	// 選染列表上的狀態標籤
 	const renderTagStatus = status => {
 		switch (status) {
-			case 'prepare':
-				return <span className="tag status-prepare">製餐中</span>;
 			case 'ready':
 				return <span className="tag status-ready">可取餐</span>;
 			case 'done':
-				return <span className="tag status-done">已取貨</span>;
+				return <span className="tag status-done">已取餐</span>;
 			case 'paid':
 				return <span className="tag status-done">已付款</span>;
 			case 'unpaid':
@@ -92,14 +139,30 @@ export default function AdminOrder_today() {
 		}
 	};
 
+	// 刪除單一訂單API
+	const handleDeleteSingleOrder = async id => {
+		// setIsDataLoading(true);
+		try {
+			const res = await delAdmSingleOrder(id);
+			console.log(res.data);
+			getApiOrders();
+			// setIsDataLoading(false);
+			notify('success', '刪除當筆訂單成功', 'top-right');
+		} catch (error) {
+			console.log(error.response);
+			// setIsDataLoading(false);
+			notify('error', '刪除當筆訂單失敗', 'top-right');
+		}
+	};
+
 	// 查看產品詳細視窗
-	const handleOpenSpecificOrder = order => {
+	const handleOpenDetail = order => {
 		setModalType('detail');
-		setSpecificOrder(order);
+		setOrderDetail(order);
 	};
 
 	// 關閉視窗
-	const handleCloseModal = () => {
+	const handleCloseDetail = () => {
 		setModalType(null);
 	};
 
@@ -109,91 +172,67 @@ export default function AdminOrder_today() {
 	};
 
 	// 進入取餐頁面
-	const handlePickOrder = order => {
+	const OpenPickupPage = order => {
+		setModalType('pickup');
 		setSpecificOrder(order);
-		console.log(order);
-		setModalType('confirm');
+	};
+
+	//領取餐點行為-> 戳修改訂單API
+	const handlePickupMeal = async () => {
+		const id = specificOrder.id;
+		const data = { ...specificOrder, user: { ...specificOrder.user, order_status: 'done' } };
+
+		try {
+			const res = await putAdmSingleOrder(id, data);
+			getApiOrders();
+			notify('success', '餐點已領取', 'top-right');
+			handleCloseDetail();
+		} catch (error) {
+			console.log(error.response);
+			notify('error', '餐點領取失敗', 'top-right');
+		}
 	};
 
 	// 進入結帳頁面
-	const handleCheckoutOrder = order => {
+	const OpenCheckoutPage = order => {
+		setModalType('checkout');
 		setSpecificOrder(order);
 		console.log(order);
-		setModalType('checkout');
+	};
+
+	// 價格有千分位逗號
+	const formatPrice = num => {
+		const value = Number(num) || 0;
+		return value.toLocaleString();
 	};
 
 	return (
 		<>
-			<main className=" container-fluid px-0 order-today">
+			<main className="container-fluid px-0 order-today">
 				<div className="d-flex flex-column gap-6">
+					{/* dashboard */}
 					<div className="dashboard">
 						<div className="row">
-							<div className="col-3">
-								<button
-									className="adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('all');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">{allOrderNum}</h5>
-											<p>今日所有訂單數</p>
-										</div >
-										<i className="bi bi-box2-fill"></i>
-									</div >
-								</button >
-							</div >
-							<div className="col-3">
-								<button
-									className="btn adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('ready');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">{readyOrderNum}</h5>
-											<p>可取餐數</p>
-										</div >
-										<i className="bi bi-check2-circle"></i>
-									</div >
-								</button >
-							</div >
-							<div className="col-3">
-								<button
-									className="btn adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('prepare');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">10</h5>
-											<p>製作中數</p>
-										</div >
-										<i className="bi bi-clock"></i>
-									</div >
-								</button >
-							</div >
-							<div className="col-3">
-								<button
-									className="btn adm__glassbg w-100 filter__block"
-									onClick={() => {
-										setFilterType('unpaid');
-									}}
-								>
-									<div className="d-flex align-items-center justify-content-between">
-										<div>
-											<h5 className="num">10</h5>
-											<p>未付款數</p>
-										</div >
-										<i className="bi bi-credit-card-2-back"></i>
-									</div >
-								</button >
-							</div >
-						</div >
-					</div >
+							{filterBlocks_fields.map(block => (
+								<div className="col-3" key={block.category}>
+									<button
+										className="adm__glassbg w-100 filter__block"
+										onClick={() => {
+											setFilterType(block.category);
+										}}
+									>
+										<div className="d-flex align-items-center justify-content-between">
+											<div>
+												<h5 className="num">{calDiffFilterStateNum(block.category)}</h5>
+												<p>{block.title}</p>
+											</div>
+											<i className={block.icon}></i>
+										</div>
+									</button>
+								</div>
+							))}
+						</div>
+					</div>
 					<div className="content adm__glassbg">
 						<div className="d-flex flex-column gap-6">
 							{/* <div className="toolbar">
@@ -231,7 +270,7 @@ export default function AdminOrder_today() {
 								</thead>
 
 								<tbody>
-									{isLoading ? (
+									{isDataLoading ? (
 										<Loading />
 									) : displayOrders.length === 0 ? (
 										<EmptyDataHint />
@@ -243,19 +282,19 @@ export default function AdminOrder_today() {
 														<span className="date">{changeTimeStamp_date(order.create_at)}</span>
 														<span className="time">{changeTimeStamp_time(order.create_at)}</span>
 													</td>
-													<td>{order.user.tel.slice(-4)}</td>
+													<td>{order.user.order_number}</td>
 													<td>{order.user.name}</td>
 													<td>{order.user.tel}</td>
 
-													<td>{`$${order.total}`}</td>
+													<td>{`$${formatPrice(order.total)}`}</td>
 
-													<td>{renderTagStatus(order.order_status)}</td>
-													<td>{renderTagStatus(order.payment_status)}</td>
+													<td>{renderTagStatus(order.user.order_status)}</td>
+													<td>{renderTagStatus(order.user.payment_status)}</td>
 													<td>
-														<button className="btn" onClick={() => handleOpenSpecificOrder(order)}>
+														<button className="btn" onClick={() => handleOpenDetail(order)}>
 															<i className="bi bi-eye-fill"></i>
 														</button>
-														<button className="btn">
+														<button className="btn" onClick={() => handleDeleteSingleOrder(order.id)}>
 															<i className="bi bi-trash-fill"></i>
 														</button>
 													</td>
@@ -265,26 +304,55 @@ export default function AdminOrder_today() {
 									)}
 								</tbody>
 							</table>
-						</div >
-					</div >
-				</div >
-			</main >
-
-			{modalType && (
-				<Modal
-					modalType={modalType}
-					order={specificOrder}
-					timeStamp_date={changeTimeStamp_date}
-					timeStamp_time={changeTimeStamp_time}
-					renderTagStatus={renderTagStatus}
-					onCloseBtn={handleCloseModal}
-					onBackBtn={handleBackToLast}
-					onPickBtn={handlePickOrder}
-					onBackdrop={handleCloseModal}
-					onCheckoutBtn={handleCheckoutOrder}
-				/>
-			)
-			}
+						</div>
+					</div>
+				</div>
+			</main>
+			<Fragment>
+				{modalType === 'detail' ? (
+					<OrderDetail
+						isModalShow={modalType === 'detail'}
+						handleCloseDetail={handleCloseDetail}
+						orderDetail={orderDetail}
+						timeStamp_date={changeTimeStamp_date}
+						timeStamp_time={changeTimeStamp_time}
+						renderTagStatus={renderTagStatus}
+						OpenPickupPage={OpenPickupPage}
+						OpenCheckoutPage={OpenCheckoutPage}
+						formatPrice={formatPrice}
+					/>
+				) : modalType === 'pickup' ? (
+					<ConfirmModal
+						style={'admin'}
+						show={modalType === 'pickup'}
+						closeModal={handleCloseDetail}
+						text_icon={`bi bi-question-circle-fill`}
+						text_title={'確認餐點已領取'}
+						text_content={
+							<div>
+								訂單 {specificOrder.id}
+								<br />
+								請確認已將餐點交予客人
+							</div>
+						}
+						text_cancel={'取消'}
+						cancelModal={() => handleBackToLast('detail')}
+						text_confirm={'確認'}
+						confirmModal={handlePickupMeal}
+					/>
+				) : modalType === 'checkout' ? (
+					<CheckoutModal
+						show={modalType === 'checkout'}
+						closeModal={handleCloseDetail}
+						orderDetail={orderDetail}
+						backToLast={() => handleBackToLast('detail')}
+						getApiOrders={getApiOrders}
+						formatPrice={formatPrice}
+					/>
+				) : (
+					''
+				)}
+			</Fragment>
 		</>
 	);
 }
