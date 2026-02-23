@@ -109,7 +109,7 @@ export default function Article() {
             <button className={`nav-filter-btn ${activeTab === "全部" ? "active" : ""}`} onClick={handleArticleType}>全部</button>
           </li>
           {articleTypeList.map((item)=> (
-            <li>
+            <li key={item}>
               <button className={`nav-filter-btn ${activeTab === item ? "active" : ""}`} onClick={handleArticleType}>{item}</button>
             </li>
           ))}
@@ -137,7 +137,7 @@ export default function Article() {
             >
             <div className="row row-cols-1 row-cols-lg-3 gx-0" >
               {renderTypeArticle?.map((data) => (
-                <div className="col  px-4 mb-8">
+                <div className="col  px-4 mb-8" key={data.id}>
                   <PageSwitch nodeKey={activeTab}>
                   <div className="article-card h-100 d-flex flex-column justify-content-between">
                     <div>
@@ -146,7 +146,7 @@ export default function Article() {
                         <img src={data.image} className="card-img-top" alt={data.title} style={{height:"200px",borderRadius: "16px 16px 0 0"}}/>
                         <div className="position-absolute bottom-0 start-0 m-2 ">
                           {data['tag'].map((i)=>(
-                            <span className=" px-2 py-1 mx-2 rounded-1 bg-primary text-white shadow fs-sm"># {i}</span>
+                            <span key={i} className=" px-2 py-1 mx-2 rounded-1 bg-primary text-white shadow fs-sm"># {i}</span>
                           ))}
                         </div>
                         
