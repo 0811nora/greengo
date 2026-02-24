@@ -10,6 +10,8 @@ import Checkout from '../pages/Checkout.jsx';
 import Payment from '../pages/Payment.jsx';
 import ArticleDetail from '../pages/ArticleDetail.jsx';
 import Member from '../pages/Member.jsx';
+import Privacy from '../pages/Privacy.jsx';
+import Terms from '../pages/Terms.jsx';
 
 import AdminPages from '../pages/admin/AdminPages.jsx';
 import AdminHome from '../pages/admin/AdminHome.jsx';
@@ -41,6 +43,8 @@ const routes = [
       { path: 'payment/:orderId', element: <Payment /> },
       { path: 'article/:id', element: <ArticleDetail /> },
       { path: 'member', element: <Member /> },
+      { path: 'privacy', element: <Privacy /> },
+      { path: 'terms', element: <Terms /> },
     ],
   },
   {
@@ -51,14 +55,14 @@ const routes = [
     path: '/admin',
     element: <AdminPages />,
     children: [
-      { index: true, element: <Navigate to="order" replace /> },
+      { index: true, element: <Navigate to='order' replace /> },
       {
         path: 'order',
         element: <AdminOrder />,
         children: [
           {
             index: true,
-            element: <Navigate to="today" replace />,
+            element: <Navigate to='today' replace />,
           },
           { path: 'today', element: <AdminOrder_today /> },
           { path: 'history', element: <AdminOrder_history /> },
