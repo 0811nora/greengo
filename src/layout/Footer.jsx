@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import { FooterData } from '../data/footerData';
 
 const FooterBrand = ({ brand, socialMedia }) => {
@@ -67,9 +68,15 @@ export default function Footer() {
                 <ul className='list-unstyled'>
                   {FooterData.policy.links.map((link, index) => (
                     <li className='fs-6 fw-medium mb-3 mb-md-4' key={index}>
-                      <Link className='nav-link' to={link.url}>
-                        <div className='text-primary-100'>{link.title}</div>
-                      </Link>
+                      {link.url.includes('#') ? (
+                        <HashLink smooth className='nav-link' to={link.url}>
+                          <div className='text-primary-100'>{link.title}</div>
+                        </HashLink>
+                      ) : (
+                        <Link className='nav-link' to={link.url}>
+                          <div className='text-primary-100'>{link.title}</div>
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

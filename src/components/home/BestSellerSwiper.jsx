@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { renderRefresh } from '../../store/slices/cartSlice';
 
 // API
-import { postAddToCart } from '../../api/ApiClient';
+import { postAddToCart, getSingleProduct } from '../../api/ApiClient';
 
 // swiper
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
@@ -18,16 +18,79 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
+// {
+//     "customizations": {
+//         "custom_total": 240,
+//         "extra_price": 0,
+//         "plan_info": {
+//             "base_price": 240,
+//             "plan_type": "set"
+//         },
+//         "total_nutrition": {
+//             "calories": 368,
+//             "carbs": 12,
+//             "fat": 13,
+//             "protein": 60
+//         }
+//     },
+//     "final_total": 240,
+//     "id": "-OmEb8y6cQ-0-TCXk8J6",
+//     "product": {
+//         "category": "fixed",
+//         "nutrition": {
+//             "calories": 368,
+//             "carbs": 12,
+//             "fat": 13,
+//             "protein": 60
+//         },
+//         "origin_price": 0,
+//         "price": 240,
+//         "product_type": "set",
+//         "tab_collection": [
+//             "highProtein",
+//             "lowFat",
+//             "popular"
+//         ],
+//         "title": "低​脂雞胸​活力​碗",
+//         "unit": "份"
+//     },
+//     "product_id": "-OkcMxg4fqkTz7s1cTZa",
+//     "qty": 1,
+//     "total": 240
+// }
+
 const BestSellerSwiper = () => {
   const dispatch = useDispatch();
 
   // 加入購物車
   const addCartBtn = async (id = '', qty = 1) => {
     try {
+      // 先取得產品資訊
+      const productRes = await getSingleProduct(id);
+      const productData = productRes.data.product;
+      // 算金額
+      const totalPrice = productData.price * qty;
+      // 傳送購物車資料(包含 customizations)
       const cartData = {
         product_id: id,
         qty: qty,
+        total: totalPrice,
+        customizations: {
+          custom_total: totalPrice,
+          extra_price: 0,
+          plan_info: {
+            base_price: productData.price,
+            plan_type: productData.product_type || 'set',
+          },
+          total_nutrition: {
+            calories: productData.nutrition.calories,
+            carbs: productData.nutrition.carbs,
+            fat: productData.nutrition.fat,
+            protein: productData.nutrition.protein,
+          },
+        },
       };
+
       const res = await postAddToCart(cartData);
       console.log('加入購物車資料:', res.data);
       notify('success', '成功加入購物車！');
