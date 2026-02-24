@@ -18,7 +18,7 @@ function ArticleDetail() {
       setIsLoading(true);
       try {
         const res = await getSingleArticle(id);
-        console.log('單篇文章資料:', res.data.article);
+        // console.log('單篇文章資料:', res.data.article);
         setArticle(res.data.article);
         setIsLoading(false);
       } catch (error) {
@@ -37,7 +37,7 @@ function ArticleDetail() {
     const getPickUpArticles = async (page = 1) => {
       try {
         const res = await getArticles(page);
-        console.log('文章 API 資料：', res.data.articles);
+        // console.log('文章 API 資料：', res.data.articles);
         const allArticles = res.data.articles;
         // 先排除當前文章
         const otherArticles = allArticles.filter((item) => item.id !== id);
