@@ -171,7 +171,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 												</p>
 											</div>
 										</div>
-										<div className="nutrition-chart mt-5 mt-sm-0">
+										<div className="nutrition-chart mt-5 mt-sm-0 flex-fill">
 											<DonutPFC
 												protein={productDetail?.nutrition.protein}
 												fat={productDetail?.nutrition.fat}

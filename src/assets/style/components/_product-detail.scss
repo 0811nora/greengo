@@ -85,6 +85,9 @@
 .product-detail .nutrition-content {
 	min-width: 180px;
 }
+.product-detail .nutrition-chart {
+	overflow: hidden;
+}
 
 // modal-content
 .product-detail .modal-content {
@@ -119,6 +122,7 @@
 	box-shadow: 0px -10px 20px 0px rgba(0, 0, 0, 1);
 }
 .product-detail .num-control {
+	margin: 0 auto;
 	border: 0px;
 	span {
 		font-size: 20px;
@@ -164,7 +168,7 @@
 		transform: scale(1.01);
 	}
 }
-@media (max-width: 576px) {
+@media (max-width: 768px) {
 	.product-detail .addCart {
 		width: 100%;
 		span {
