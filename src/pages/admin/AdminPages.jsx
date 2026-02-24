@@ -100,7 +100,7 @@ export default function AdminPages() {
 		if (admPassword === '0000') {
 			handlePasswordSuccess();
 		} else {
-			alert('登入失敗');
+			notify('error', '登入失敗', 'bottom-center');
 		}
 		setAdmPassword('');
 	}
@@ -108,12 +108,12 @@ export default function AdminPages() {
 		setAdmMode(true);
 		closeLoginModal();
 		navigate(pagePath);
-		alert('登入成功');
+		notify('success', '登入成功', 'bottom-center');
 	}
 	function logoutMode() {
 		setAdmMode(false);
 		closeLogoutModal();
-		console.log('登出成功');
+		notify('success', '登出成功', 'bottom-center');
 	}
 
 	return (
