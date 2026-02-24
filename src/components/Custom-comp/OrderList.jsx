@@ -1,3 +1,4 @@
+import { div } from "framer-motion/client";
 
 const OrderList = ({
     onClose,
@@ -13,7 +14,8 @@ const OrderList = ({
     onDeleteAddOn,
     isModel,
     isEdit,
-    styleType
+    styleType,
+    onAddonEdit
 }) => {
     const titleName = { base: "基底", protein: "蛋白質", side: "配菜", sauce: "醬料" };
 
@@ -177,19 +179,24 @@ const OrderList = ({
                             <h6 className="fw-bold text-dark border-bottom pb-2">加購品項</h6>
                         </div>
                         {selectedProduct["addOn"].length > 0 ? (
-                            <div className="list-group list-group-flush">
-                                {selectedProduct["addOn"].map((p, i) => (
-                                    <div key={i} className="list-group-item bg-transparent border-0 px-0 py-2 d-flex justify-content-between align-items-center">
-                                        <div className="d-flex flex-column">
-                                            <span className="small fw-bold text-dark">{p.title}</span>
-                                            <small className="text-muted" style={{fontSize: '0.75rem'}}>數量: {p.qty}</small>
+                            <div className="d-flex flex-column justify-content-between h-100">
+                                <div className="list-group list-group-flush ">
+                                    {selectedProduct["addOn"].map((p, i) => (
+                                        <div key={i} className="list-group-item bg-transparent border-0 px-0 py-2 d-flex justify-content-between align-items-center">
+                                            <div className="d-flex flex-column">
+                                                <span className="small fw-bold text-dark">{p.title}</span>
+                                                <small className="text-muted" style={{fontSize: '0.75rem'}}>數量: {p.qty}</small>
+                                            </div>
+                                            <div className="d-flex align-items-center gap-3">
+                                                <span className="small fw-bold text-dark">${p.price * p.qty}</span>
+                                                {isEdit && <i className="bi bi-trash text-danger" onClick={() => onDeleteAddOn(p.title)} style={{cursor:'pointer', fontSize: '0.9rem'}}></i>}
+                                            </div>
                                         </div>
-                                        <div className="d-flex align-items-center gap-3">
-                                            <span className="small fw-bold text-dark">${p.price * p.qty}</span>
-                                            {isEdit && <i className="bi bi-trash text-danger" onClick={() => onDeleteAddOn(p.title)} style={{cursor:'pointer', fontSize: '0.9rem'}}></i>}
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
+                                <div className="text-center mb-4">
+                                    <button className="btn btn-sm btn-outline-primary w-50 mt-3" onClick={onAddonEdit}>編輯加購品項</button>
+                                </div>
                             </div>
                         ) : (
                             <div className="text-center py-5  rounded-3 mx-2">
@@ -199,20 +206,6 @@ const OrderList = ({
                     </div>
                 </div>
             </div>
-
-            {/* 3. 固定底部總計區 (flex-shrink-0) */}
-            {/* <div className="flex-shrink-0 p-4 border-top bg-white shadow-lg" style={{ zIndex: 5 }}>
-                <div className="d-flex justify-content-between align-items-center">
-                    <div className="text-start">
-                        <div className="text-muted small">自由配小計：${basePrice + totalProteinPrice}</div>
-                        {totalAddonPrice > 0 && <div className="text-muted small">加購品項小計：${totalAddonPrice}</div>}
-                    </div>
-                    <div className="text-end">
-                        <span className="me-2 fw-bold">總計金額</span>
-                        <span className="fs-3 fw-bold text-orange-400">$ {finalPrice}</span>
-                    </div>
-                </div>
-            </div> */}
 
             <style>{`
                 @media (min-width: 992px) {
