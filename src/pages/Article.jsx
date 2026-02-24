@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import { getArticles, } from "../api/ApiClient"
 import { Link } from "react-router-dom";
 import Loader from "../components/common/Loading";
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { a } from "framer-motion/client";
 
 
 
@@ -17,29 +16,7 @@ export default function Article() {
   const [ hasMore , setHasMore ] = useState();
 
 
-  
-
   const articleTypeList = ["新手入門","飲食營養","增肌減脂","訓練健身","健康生活"];
-
-  useEffect(()=>{
-    console.log("articleList", articleList)
-  },[articleList])
-
-
-  // 切換文章類別時，畫面滑動到指定位置(卡片處)
-  useEffect(() => {
-    const navElement = document.getElementById('sticky-nav-bar');
-    
-    if (navElement) {
-        const topOffset = navElement.offsetTop;
-        window.scrollTo({
-            top: topOffset - 100, 
-            behavior: 'smooth'
-        });
-    }
-  }, [activeTab]);
-  
-
 
 
   //  時間轉換顯示
@@ -63,9 +40,6 @@ export default function Article() {
 
       const { articles , pagination } = res.data
 
-      console.log(res.data)
-      console.log(articles)
-
       setArticleList((prev) => 
         pagination.current_page === 1 
           ? articles 
@@ -87,17 +61,15 @@ export default function Article() {
     articleData(1);
   },[])
 
+  useEffect(() => {
+      window.scrollTo(0, 0);
+  }, [activeTab]);
+
   const loadNextPage = () => {
-    console.log("觸發載入下一頁！目前的頁數是:", page);
     if(isLoading) return;
     articleData(page + 1)
   }
 
-  console.log("檢查狀態:", { 
-    資料長度: articleList.length, 
-    還有更多嗎: hasMore, 
-    目前頁碼: page 
-  });
 
     // 切換文章類別
   const handleArticleType = (e) => {
@@ -116,6 +88,7 @@ export default function Article() {
 
 
 
+
   return(<>
   <PageSwitch>
     <main className="article_main">
@@ -130,13 +103,13 @@ export default function Article() {
         </div>
       </section>
     
-      <section className="article-nav" >
+      <section className="article-nav"  >
         <ul className="  bg-gray-400 d-flex justify-content-lg-center justify-content-start align-items-center ">
           <li>
             <button className={`nav-filter-btn ${activeTab === "全部" ? "active" : ""}`} onClick={handleArticleType}>全部</button>
           </li>
           {articleTypeList.map((item)=> (
-            <li>
+            <li key={item}>
               <button className={`nav-filter-btn ${activeTab === item ? "active" : ""}`} onClick={handleArticleType}>{item}</button>
             </li>
           ))}
@@ -164,24 +137,24 @@ export default function Article() {
             >
             <div className="row row-cols-1 row-cols-lg-3 gx-0" >
               {renderTypeArticle?.map((data) => (
-                <div className="col  px-4 mb-8">
+                <div className="col  px-4 mb-8" key={data.id}>
                   <PageSwitch nodeKey={activeTab}>
-                  <div class="article-card h-100 d-flex flex-column justify-content-between">
+                  <div className="article-card h-100 d-flex flex-column justify-content-between">
                     <div>
                       <Link to={`/article/${data.id}`} className="stretched-link"/>
                       <div className="position-relative">
-                        <img src={data.image} class="card-img-top" alt={data.title} style={{height:"200px",borderRadius: "16px 16px 0 0"}}/>
+                        <img src={data.image} className="card-img-top" alt={data.title} style={{height:"200px",borderRadius: "16px 16px 0 0"}}/>
                         <div className="position-absolute bottom-0 start-0 m-2 ">
                           {data['tag'].map((i)=>(
-                            <span className=" px-2 py-1 mx-2 rounded-1 bg-primary text-white shadow fs-sm"># {i}</span>
+                            <span key={i} className=" px-2 py-1 mx-2 rounded-1 bg-primary text-white shadow fs-sm"># {i}</span>
                           ))}
                         </div>
                         
                         
                       </div>
-                      <div class="card-body pb-4 pt-6 px-3">
-                        <h5 class="card-title mb-4 line-clamp-2">{data.title}</h5>
-                        <p class="card-text line-clamp-2 text-brown-300">{data.description}</p>
+                      <div className="card-body pb-4 pt-6 px-3">
+                        <h5 className="card-title mb-4 line-clamp-2">{data.title}</h5>
+                        <p className="card-text line-clamp-2 text-brown-300">{data.description}</p>
                       </div>
                     </div>
                     

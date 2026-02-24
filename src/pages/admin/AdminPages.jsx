@@ -6,6 +6,7 @@ import { AdmModal_confirm, AdmModal_password } from '../../component/AdmModal';
 import { ADM_MODE_LOGOUT } from '../../config/confirmModal';
 import axios from 'axios';
 import { admUserCheck } from '../../api/ApiAdmin';
+import { notify } from '../../components/Notify';
 
 let loginModal;
 let logoutModal;
@@ -27,33 +28,36 @@ export default function AdminPages() {
 		const checkLogin = async () => {
 			const greenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-			// a. 驗證是否有cookie，沒有直接回登入頁
+			// a. 驗證是否有token，沒有直接回登入頁
 			if (!greenCookie) {
 				navigate('/admin/login');
+				notify('error', '登入錯誤，請先輸入帳號密碼');
 				return;
 			}
 
+			// b. 驗證token是否合法
 			try {
 				axios.defaults.headers.common['Authorization'] = greenCookie;
 				const res = await admUserCheck();
-				console.log(res.data);
-
-				// c. 驗證是否有管理員模式
-				const needAdmModePath = ['/admin/order/history', '/admin/products', '/admin/blog', '/admin/report'];
-				const isRestrictedPath = needAdmModePath.some(path => location.pathname?.startsWith(path));
-				if (isRestrictedPath && !admMode) {
-					alert('請先開啟管理員模式');
+				if (location.pathname === '/admin') {
 					navigate('/admin/order/today', { replace: true });
 				}
+
+				// c. 驗證是否有管理員模式
+				// const needAdmModePath = ['/admin/order/history', '/admin/products', '/admin/blog', '/admin/report'];
+				// const isRestrictedPath = needAdmModePath.some(path => location.pathname?.startsWith(path));
+				// if (isRestrictedPath && !admMode) {
+				// 	notify('error', '請先開啟管理員模式');
+				// }
 			} catch (error) {
 				console.log(error.message);
+				notify('error', '登入錯誤，請先輸入帳號密碼');
 				navigate('/admin/login');
 			}
 		};
 
-		// b. 驗證token是否合法
 		checkLogin();
-	}, [location.pathname, admMode]);
+	}, [location.pathname]);
 
 	function handleNavMode(path) {
 		if (!admMode) {
