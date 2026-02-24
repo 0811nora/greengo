@@ -14,6 +14,7 @@ const MenuSection = ({
 	handleOpenDetail,
 	isAddCartLoading,
 	handleAddCart,
+	anchorSectionRef,
 }) => {
 	const CustomMultiValueRemove = ({ innerProps }) => {
 		return (
@@ -34,7 +35,10 @@ const MenuSection = ({
 				<h6>{data[category].title.subtitle}</h6>
 			</div>
 
-			<div className="tab-filter d-flex flex-xxl-row flex-column justify-content-between align-items-center gap-4">
+			<div
+				className="tab-filter d-flex flex-xxl-row flex-column justify-content-between align-items-center gap-4"
+				ref={anchorSectionRef[category]}
+			>
 				{/* 固定餐類別篩選 */}
 				<ul className="nav nav-underline d-flex gap-sm-6 gap-2 flex-fill">
 					{data[category].tab.map((tabItem, index) => (

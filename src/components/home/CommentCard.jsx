@@ -4,7 +4,7 @@ import { CommentContent } from '../../data/homeData';
 const CommentCard = ({
   commentContent, // 留言內容
   customer, // 留言顧客帳號名稱
-  star, // 內文
+  star, // 評分數
 }) => {
   return (
     <div className='comment-card bg-brown-100 text-primary shadow'>

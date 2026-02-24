@@ -9,11 +9,13 @@ import { getArticles } from '../api/ApiClient';
 import Loader from '../components/common/Loading';
 import ContentCard from '../components/home/ContentCard';
 import CommentCard from '../components/home/CommentCard';
-import StepCard from '../components/home/StepCard';
 import FadeIn from '../components/home/FadeIn';
 import HeroSection from '../components/home/sections/HeroSection';
 import NutritionSection from '../components/home/sections/NutritionSection';
 import SignatureSection from '../components/home/sections/SignatureSection';
+import CustomSection from '../components/home/sections/CustomSection';
+import AboutSection from '../components/home/sections/AboutSection';
+import TestimonialSection from '../components/home/sections/Testimonials';
 
 export default function Home() {
   // 監聽區
@@ -32,7 +34,7 @@ export default function Home() {
       setIsLoading(true);
       try {
         const res = await getArticles(page);
-        console.log('文章 API 資料：', res.data.articles);
+        // console.log('文章 API 資料：', res.data.articles);
         const allArticles = res.data.articles;
         const sortedArticles = [...allArticles].sort(
           (a, b) => b.create_at - a.create_at,
@@ -82,38 +84,7 @@ export default function Home() {
           ></path>
         </svg>
         {/* 自由配 */}
-        <section className='home__custom position-relative'>
-          <div className='container mb-0'>
-            <div className='row d-flex align-items-center mb-0'>
-              {/* 左側卡片介紹 */}
-              <div className='col-lg-6'>
-                <ContentCard
-                  subTitle='MAKE YOUR BITE'
-                  title={
-                    <>
-                      訂製自己的健康，
-                      <br />
-                      不需要複雜
-                    </>
-                  }
-                  description={
-                    <>
-                      從基底、主食到蔬菜與醬料，慢慢堆疊屬於自己的風味。
-                      <br />
-                      健康其實不難，他只需要一點點透明與理解。
-                    </>
-                  }
-                  buttonText='前往客製化點餐'
-                  to={PageLinks.customLink.url}
-                />
-              </div>
-              {/* 右側卡片說明 */}
-              <div className='col-lg-6 position-relative'>
-                <StepCard />
-              </div>
-            </div>
-          </div>
-        </section>
+        <CustomSection />
         <svg
           id='visual'
           viewBox='0 0 1920 250'
@@ -140,41 +111,13 @@ export default function Home() {
           ></path>
         </svg>
         {/* 關於我們 + 專欄 */}
-        <section className='home__article container-fluid py-8 px-0'>
-          {/* 關於我們 */}
-          <section className='container-fluid py-7 overflow-hidden'>
-            <div className='container position-relative'>
-              <div className='row align-items-center'>
-                <div className='col-md-6 position-relative'>
-                  <img
-                    src={`${import.meta.env.BASE_URL}img/items/bowl-5.png`}
-                    alt='bowl'
-                    className='position-absolute start-0 top-50 translate-middle-y'
-                  />
-                </div>
-                {/* 文字區 */}
-                <div className='col-md-6 col-lg-4'>
-                  <ContentCard
-                    subTitle='OUR BELIEF'
-                    title='綠果的堅持'
-                    description={
-                      <>
-                        我們深信，真正的健康不應是道難題。
-                        <br />
-                        這份信念，驅使著綠果的每一步。
-                      </>
-                    }
-                    buttonText='聽聽我們的故事'
-                    to={PageLinks.aboutLink.url}
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-          {/* 專欄 */}
+        {/* 關於我們 */}
+        <AboutSection />
+        {/* 專欄 */}{' '}
+        <section className='home__article container-fluid py-8 py-md-10 px-0'>
           <section className='container py-7'>
             <div className='row'>
-              <div className='col-lg-4 mb-5 mb-lg-0'>
+              <div className='col-lg-4 my-auto'>
                 <ContentCard
                   hasBorder
                   subTitle='YOUR INSPIRATION'
@@ -187,113 +130,157 @@ export default function Home() {
                     </>
                   }
                   buttonText='看看我們的文章'
+                  bgColor='transparent'
+                  textPosition='text-center'
+                  contentPadding='py-7 mt-5'
                   to={PageLinks.articleLink.url}
                 />
               </div>
               {/* 文章區 */}
               <div className='col-lg-8'>
-                <div className='row g-4'>
+                <div className='row g-4 d-flex align-items-center'>
                   {/* 主文章 */}
-                  <div className='col-md-7'>
+                  <div className='col-md-7 mt-0'>
                     {mainArticle && (
-                      <div className='card border-0 shadow-green rounded-4 overflow-hidden h-100'>
-                        {mainArticle.image && (
-                          <img
-                            src={mainArticle.image}
-                            className='card-img-top'
-                            alt={mainArticle.title}
-                            style={{ height: '200px', objectFit: 'cover' }}
-                          />
-                        )}
-                        <div className='card-body px-6 py-4 d-flex flex-column align-items-start'>
-                          <span className='badge bg-brown-300 text-brown-100 mb-2'>
-                            NEW
-                          </span>
-                          <Link
-                            to={`/article/${mainArticle.id}`}
-                            className='text-decoration-none'
-                          >
-                            <h5 className='card-title fw-bold mb-3 text-brown-300'>
+                      <Link
+                        to={`/article/${mainArticle.id}`}
+                        className='text-decoration-none'
+                      >
+                        <div className='home__article-link card border-0 shadow-green rounded-4 overflow-hidden'>
+                          {mainArticle.image && (
+                            <>
+                              <div className='position-relative'>
+                                <span className='position-absolute badge fs-6 bg-brown-100 text-brown-300 mt-4 ms-4 mb-2'>
+                                  NEW
+                                </span>
+                                <img
+                                  src={mainArticle.image}
+                                  className='card-img-top'
+                                  alt={mainArticle.title}
+                                  style={{
+                                    height: '250px',
+                                    objectFit: 'cover',
+                                  }}
+                                />
+                              </div>
+                            </>
+                          )}
+                          <div className='card-body px-6 py-4 d-flex flex-column align-items-start'>
+                            <h5 className='card-title fw-bold mb-3 text-gray-600'>
                               {mainArticle.title}
                             </h5>
-                          </Link>
 
-                          <p className='card-text text-brown-300'>
-                            {/* 限制文章顯示字數 */}
-                            {mainArticle.description
-                              ? mainArticle.description.length > 50
-                                ? mainArticle.description.substring(0, 50) +
-                                  '...'
-                                : mainArticle.description
-                              : '暫無內容'}
-                          </p>
-                          <div className='mt-auto'>
-                            <p className='text-brown-300 d-block mb-2'>
-                              {formatDate(mainArticle.create_at)} ‧
-                              {mainArticle.author} ‧
-                              {mainArticle.tag?.map((tag, index) => (
-                                <span
-                                  key={index}
-                                  className='ms-2 badge bg-accent text-gray-600'
-                                >
-                                  #{tag}
-                                </span>
-                              ))}
+                            <p className='card-text text-brown-300'>
+                              {/* 限制文章顯示字數 */}
+                              {mainArticle.description
+                                ? mainArticle.description.length > 50
+                                  ? mainArticle.description.substring(0, 50) +
+                                    '...'
+                                  : mainArticle.description
+                                : '暫無內容'}
                             </p>
-                            <Link
-                              to={`/article/${mainArticle.id}`}
-                              className='home__btn-link fw-bold text-decoration-none'
-                            >
-                              閱讀全文 <i className='bi bi-chevron-right'></i>
-                            </Link>
+                            <div className='mt-8 d-flex flex-column flex-md-row justify-content-between w-100'>
+                              <p className='text-brown-300 d-block mb-2'>
+                                {formatDate(mainArticle.create_at)} ‧
+                                {mainArticle.author} ‧
+                                {mainArticle.tag?.map((tag, index) => (
+                                  <span
+                                    key={index}
+                                    className='ms-2 badge bg-accent text-gray-600'
+                                  >
+                                    #{tag}
+                                  </span>
+                                ))}
+                              </p>
+                              <button type='button' className='home__btn-link'>
+                                <span className='hover-underline'>
+                                  閱讀全文
+                                </span>
+                                <svg
+                                  id='arrow-horizontal'
+                                  xmlns='http://www.w3.org/2000/svg'
+                                  width='30'
+                                  height='8'
+                                  viewBox='0 0 46 16'
+                                  fill='currentColor'
+                                >
+                                  <path
+                                    id='Path_10'
+                                    d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
+                                    transform='translate(30)'
+                                  ></path>
+                                </svg>
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     )}
                   </div>
 
                   {/* 文章卡片*/}
                   <div className='col-md-5'>
-                    <div className='card border-0 shadow rounded-4 p-5 h-100'>
+                    <div className='card border-0 shadow rounded-4 p-3 h-100'>
                       {subArticles.map((article) => (
                         <div key={article.id} className='py-3 border-bottom'>
                           <Link
                             to={`/article/${article.id}`}
                             className='text-decoration-none'
                           >
-                            <h6 className='fw-bold text-brown-300'>
-                              {article.title}
-                            </h6>
-                          </Link>
-                          <p className='mb-2 text-brown-300'>
-                            {formatDate(article.create_at)} ‧{' '}
-                            {article.tag?.map((tag, index) => (
-                              <span
-                                key={index}
-                                className='ms-2 badge bg-accent text-gray-600'
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                          </p>
-                          <Link
-                            to={`/article/${article.id}`}
-                            className='home__btn-link text-decoration-none'
-                          >
-                            閱讀全文<i className='bi bi-chevron-right'></i>
+                            <div className='home__article-link'>
+                              <h6 className='mb-4 fw-bold text-gray-600'>
+                                {article.title}
+                              </h6>
+                              <div className='mt-auto d-flex flex-column'>
+                                <span>
+                                  {article.tag?.map((tag, index) => (
+                                    <span
+                                      key={index}
+                                      className='badge bg-accent text-gray-600 mb-2'
+                                    >
+                                      #{tag}
+                                    </span>
+                                  ))}
+                                </span>
+                                <p className='mb-2 text-brown-300 d-flex justify-content-between flex-nowrap'>
+                                  {formatDate(article.create_at)}
+
+                                  <button
+                                    type='button'
+                                    className='home__btn-link text-end'
+                                  >
+                                    <span className='hover-underline'>
+                                      閱讀全文
+                                    </span>
+                                    <svg
+                                      id='arrow-horizontal'
+                                      xmlns='http://www.w3.org/2000/svg'
+                                      width='30'
+                                      height='8'
+                                      viewBox='0 0 46 16'
+                                      fill='currentColor'
+                                    >
+                                      <path
+                                        id='Path_10'
+                                        d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
+                                        transform='translate(30)'
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                </p>
+                              </div>
+                            </div>
                           </Link>
                         </div>
                       ))}
-
                       {/* 如果沒有文章 */}
                       {subArticles.length === 0 && (
                         <div className='py-3'>目前沒有更多文章</div>
                       )}
-
                       <div className='mt-auto pt-3 text-center'>
                         <Link
                           to='/articles'
-                          className='home__btn-primary text-decoration-none rounded-pill d-inline-block px-4 py-2'
+                          className='home__btn-primary text-decoration-none rounded-pill d-inline-block px-4 py-2 my-4'
                         >
                           探索更多
                         </Link>
@@ -306,54 +293,7 @@ export default function Home() {
           </section>
         </section>
         {/* 顧客意見 */}
-        <section className='home__testimonials'>
-          <div className='container-fluid px-0 py-5'>
-            <div className='d-flex flex-column justify-content-center align-items-center'>
-              <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2'>
-                TESTIMONIALS
-              </h4>
-              <h2 className='fs-3 fs-md-1 fw-bold mb-2 mb-md-5'>
-                大家的真實分享
-              </h2>
-              <h4 className='text-orange-300 fs-6 fs-md-4 fw-semibold mb-2'>
-                LOVE FROM OUR CUSTOMERS
-              </h4>
-            </div>
-
-            <section className='py-5' style={{ overflowX: 'hidden' }}>
-              <div
-                className='d-flex gap-2 mb-3 scroll-container'
-                style={{ marginLeft: '-50px' }}
-              >
-                <div className='scroll-track-left'>
-                  {CommentContent.map((item, index) => (
-                    <CommentCard
-                      key={index}
-                      commentContent={item.commentContent}
-                      customer={item.customer}
-                      star={item.star}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div
-                className='d-flex gap-2 mb-3 scroll-container'
-                style={{ marginLeft: '50px' }}
-              >
-                <div className='scroll-track-right'>
-                  {CommentContent.map((item, index) => (
-                    <CommentCard
-                      key={index}
-                      commentContent={item.commentContent}
-                      customer={item.customer}
-                      star={item.star}
-                    />
-                  ))}
-                </div>
-              </div>
-            </section>
-          </div>
-        </section>
+        <TestimonialSection />
       </main>
     </>
   );

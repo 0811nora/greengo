@@ -29,12 +29,12 @@ export default function AdminOrder_today() {
 			const totalPages = res.data.pagination.total_pages;
 
 			// 以訂單建立時間，局限在今日時間
-			const allPagesOrders = resOrds.filter(
-				order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
-			);
+			// const allPagesOrders = resOrds.filter(
+			// 	order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
+			// );
 
 			// 以訂單建立時間，局限在今日以前
-			// const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
+			const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
 
 			// 如果第一頁沒有今日時間，就return
 			if (allPagesOrders.length === 0) {
@@ -147,11 +147,11 @@ export default function AdminOrder_today() {
 			console.log(res.data);
 			getApiOrders();
 			// setIsDataLoading(false);
-			notify('success', '刪除當筆訂單成功', 'top-right');
+			notify('success', '刪除當筆訂單成功', 'bottom-center');
 		} catch (error) {
 			console.log(error.response);
 			// setIsDataLoading(false);
-			notify('error', '刪除當筆訂單失敗', 'top-right');
+			notify('error', '刪除當筆訂單失敗', 'bottom-center');
 		}
 	};
 
@@ -216,7 +216,7 @@ export default function AdminOrder_today() {
 							{filterBlocks_fields.map(block => (
 								<div className="col-3" key={block.category}>
 									<button
-										className="adm__glassbg w-100 filter__block"
+										className={`adm__glassbg w-100 filter__block ${filterType === block.category ? 'focus ' : ''}`}
 										onClick={() => {
 											setFilterType(block.category);
 										}}

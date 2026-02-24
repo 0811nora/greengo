@@ -68,7 +68,7 @@ const PickTypeCard = ({
                         </div>
                     </div>
                     <div className={`position-absolute top-0 start-0 c-pick-btn ${selectedValue === typeText ? "c-active-pick-btn" : ""}`}>
-                        <i class="bi bi-check-circle-fill"></i>
+                        <i className="bi bi-check-circle-fill"></i>
                     </div>
                 </div>
                 
