@@ -13,7 +13,7 @@ import { ConfirmModal } from '../components/common/Modal';
 
 import ClickOutsideHandler from "../components/common/ClickOutsideHandler";
 
-import ItemCard from "../components/custom-comp/itemCard";
+import ItemCard from "../components/Custom-comp/ItemCard";
 import HighlightLine from "../components/custom-comp/HighlightLine";
 import Stepper from "../components/custom-comp/Stepper";
 import PickTypeCard from "../components/custom-comp/PickTypeCard";
@@ -786,7 +786,6 @@ export default function Custom() {
                             <section className=" h-100  pt-10 pb-6 py-lg-4 px-lg-8 px-3  d-flex flex-column overflow-hidden" >
 
                                 
-                                
                                 <div className="d-flex mb-5 flex-column flex-shrink-0" >
                                     <div className="text-center text-lg-start">
                                         <h2 className=" mb-lg-3 fs-2 pt-6  ">
@@ -820,6 +819,7 @@ export default function Custom() {
                                                     isEdit={true}
                                                     styleType={"order-details-card"}
                                                     onEdit={(tab) => {setActiveTab(tab);setStepState(2);}}
+                                                    onAddonEdit={() => {setActiveTab("addOn");setStepState(2);}}
                                                     onDeleteAddOn={(title) => {
                                                         setSelectedProduct(pre => ({...pre,addOn: pre.addOn.filter(i => i.title !== title)}));
                                                     }}
