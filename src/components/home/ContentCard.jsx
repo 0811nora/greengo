@@ -10,7 +10,7 @@ const ContentCard = ({
   bgColor = 'white', // 背景色
   textPosition = 'text-center', // 文字位置
   contentPosition = 'align-items-center', // 內容位置
-  contentPadding = 'py-5',
+  contentPadding = 'py-5 px-4',
   children,
 }) => {
   const bgColors = {

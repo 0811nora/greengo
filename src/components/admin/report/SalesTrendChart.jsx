@@ -11,31 +11,30 @@ import {
 } from 'recharts';
 
 const SalesTrendChart = ({ data }) => {
-  const lineSettings = [
-    {
-      id: 'cash',
-      name: '現金',
-      color: '#94B38A',
-      index: 0,
-      isTotal: false,
-    },
-    {
-      id: 'creditCard',
-      name: '信用卡',
-      color: '#6FA9BB',
-      index: 1,
-      isTotal: false,
-    },
-    {
-      id: 'ePayment',
-      name: '電子支付',
-      color: '#E8A87C',
-      index: 2,
-      isTotal: false,
-    },
-  ];
-
-  const sortedLines = lineSettings.sort((a, b) => a.index - b.index);
+  // const lineSettings = [
+  //   {
+  //     id: 'cash',
+  //     name: '現金',
+  //     color: '#94B38A',
+  //     index: 0,
+  //     isTotal: false,
+  //   },
+  //   {
+  //     id: 'creditCard',
+  //     name: '信用卡',
+  //     color: '#6FA9BB',
+  //     index: 1,
+  //     isTotal: false,
+  //   },
+  //   {
+  //     id: 'ePayment',
+  //     name: '電子支付',
+  //     color: '#E8A87C',
+  //     index: 2,
+  //     isTotal: false,
+  //   },
+  // ];
+  // const sortedLines = lineSettings.sort((a, b) => a.index - b.index);
   return (
     <div className='card adm__report-card h-100'>
       <div className='card-body'>

@@ -18,47 +18,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-// {
-//     "customizations": {
-//         "custom_total": 240,
-//         "extra_price": 0,
-//         "plan_info": {
-//             "base_price": 240,
-//             "plan_type": "set"
-//         },
-//         "total_nutrition": {
-//             "calories": 368,
-//             "carbs": 12,
-//             "fat": 13,
-//             "protein": 60
-//         }
-//     },
-//     "final_total": 240,
-//     "id": "-OmEb8y6cQ-0-TCXk8J6",
-//     "product": {
-//         "category": "fixed",
-//         "nutrition": {
-//             "calories": 368,
-//             "carbs": 12,
-//             "fat": 13,
-//             "protein": 60
-//         },
-//         "origin_price": 0,
-//         "price": 240,
-//         "product_type": "set",
-//         "tab_collection": [
-//             "highProtein",
-//             "lowFat",
-//             "popular"
-//         ],
-//         "title": "低​脂雞胸​活力​碗",
-//         "unit": "份"
-//     },
-//     "product_id": "-OkcMxg4fqkTz7s1cTZa",
-//     "qty": 1,
-//     "total": 240
-// }
-
 const BestSellerSwiper = () => {
   const dispatch = useDispatch();
 
@@ -105,11 +64,11 @@ const BestSellerSwiper = () => {
       <Swiper
         className='fixed-swiper'
         modules={[Navigation, A11y]}
-        spaceBetween={24}
-        slidesPerView={1.2}
+        spaceBetween={12}
+        slidesPerView={1.5}
         navigation
         breakpoints={{
-          576: { slidesPerView: 1.2 },
+          576: { slidesPerView: 2.2 },
           768: { slidesPerView: 2 },
           992: { slidesPerView: 3 },
           1296: { slidesPerView: 4 },
