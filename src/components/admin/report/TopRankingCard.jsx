@@ -7,7 +7,7 @@ const TopRankingCard = ({ title, data }) => {
         <div className='card adm__report-card h-100'>
           <div className='card-body'>
             <h5 className='card-title mb-3'>{title}</h5>
-            <p className='text-gray-900 text-center py-4'>暫無資料</p>
+            <p className='text-gray-500 text-center py-4'>暫無資料</p>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@ const TopRankingCard = ({ title, data }) => {
     <div className='col-md-6 mb-3'>
       <div className='card adm__report-card h-100'>
         <div className='card-body'>
-          <h5 className='card-title text-gray-900 mb-3'>{title}</h5>
+          <h5 className='card-title text-gray-500 mb-3'>{title}</h5>
           {/* 排行卡片內容 */}
           <div className='list-group list-group-flush'>
             {data.map((item, index) => (
@@ -27,7 +27,7 @@ const TopRankingCard = ({ title, data }) => {
                 className='list-group-item d-flex justify-content-between align-items-center px-0'
               >
                 <div className='d-flex align-items-center'>
-                  {/* 排名 badge + 名次顏色排序(待調整) */}
+                  {/* 排名 badge + 名次顏色排序 */}
                   <span
                     className={`badge me-3 ${
                       index === 0
@@ -43,15 +43,13 @@ const TopRankingCard = ({ title, data }) => {
                   {/* 商品名稱 */}
                   <div>
                     <div className='fw-medium'>{item.name}</div>
-                    <small className='text-brown-300'>
-                      售出 {item.count} 份
-                    </small>
+                    <p className='fs-sm text-brown-300'>售出 {item.count} 份</p>
                   </div>
                 </div>
 
                 {/* 銷售額 */}
                 <div className='text-end'>
-                  <div className='fw-bold text-gray-900'>
+                  <div className='fw-bold text-gray-500'>
                     NT$ {item.revenue.toLocaleString()}
                   </div>
                 </div>

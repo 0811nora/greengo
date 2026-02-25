@@ -10,6 +10,7 @@ import StatCard from '../../components/admin/report/StatCard';
 import SalesTrendChart from '../../components/admin/report/SalesTrendChart';
 import PaymentPieChart from '../../components/admin/report/PaymentPieChart';
 import TopRankingCard from '../../components/admin/report/TopRankingCard';
+import IngredientRankingCard from '../../components/admin/report/Ingredientrankingcard';
 
 const AdminReport = () => {
   // 選擇時間（預設今日）
@@ -65,7 +66,6 @@ const AdminReport = () => {
     // topCustom,
     topOthers,
     filterOrders,
-    // customTypeStats,
     topBases,
     topProteins,
     topSides,
@@ -161,13 +161,13 @@ const AdminReport = () => {
       {/* 圖表區 */}
       <div className='row mb-4'>
         {/* 折線圖 */}
-        <div className='col-12 mb-3'>
+        <div className='col-lg-8 mb-3'>
           <SalesTrendChart data={salesTrend} />
         </div>
         {/* 圓餅圖 */}
-        {/* <div className='col-lg-4 mb-3'>
+        <div className='col-lg-4 mb-3'>
           <PaymentPieChart data={paymentMethod} />
-        </div> */}
+        </div>
       </div>
 
       {/* 排行區 */}
@@ -178,6 +178,17 @@ const AdminReport = () => {
         <TopRankingCard title='固定套餐 Top 5' data={topFixed} />
         {/* <TopRankingCard title='自由配 Top 5' data={topCustom} /> */}
         <TopRankingCard title='其他附餐 Top 5' data={topOthers} />
+      </div>
+
+      {/* 自由配各項統計區 */}
+      <div className='row pb-5 pb-md-7'>
+        <div className='col-12 mb-3'>
+          <h4>自由配熱銷排行</h4>
+        </div>
+        <IngredientRankingCard title='基底 Top 3' data={topBases} />
+        <IngredientRankingCard title='蛋白質 Top 5' data={topProteins} />
+        <IngredientRankingCard title='配菜 Top 5' data={topSides} />
+        <IngredientRankingCard title='醬料 Top 3' data={topSauces} />
       </div>
     </div>
   );
