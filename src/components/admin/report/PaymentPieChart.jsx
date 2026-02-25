@@ -6,30 +6,30 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts';
 
 const PaymentPieChart = ({ data }) => {
-  const colors = ["#6FA9BB", "#94B38A", "#c7916d"];
+  const colors = ['#6FA9BB', '#94B38A', '#c7916d'];
 
   return (
-    <div className="card adm__report-card h-100">
-      <div className="card-body">
-        <h5 className="card-title mb-4">支付方式分布</h5>
+    <div className='card adm__report-card h-100'>
+      <div className='card-body'>
+        <h5 className='card-title mb-4'>支付方式分布</h5>
 
         {/* 圓餅圖區 */}
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width='100%' height={350}>
           <PieChart>
             <Pie
               data={data}
-              cx="50%"
-              cy="50%"
+              cx='50%'
+              cy='50%'
               labelLine={false}
               label={({ name, percent }) =>
                 `${name} ${(percent * 100).toFixed(0)}%`
               }
-              outerRadius={80}
-              fill="#C54F2D"
-              dataKey="value"
+              outerRadius={70}
+              fill='#C54F2D'
+              dataKey='value'
             >
               {data.map((entry, index) => (
                 <Cell
