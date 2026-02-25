@@ -14,6 +14,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: all 0.3s ease;
+    position: relative;
 
     .item-main {
       display: grid;
@@ -298,6 +299,9 @@
         .check-icon {
           display: block;
         }
+        .payment-icon {
+          color: $orange-300;
+        }
       }
     }
 
@@ -343,8 +347,6 @@
       width: 60px;
       height: 60px;
       object-fit: cover;
-      border-radius: 0.25rem;
-      border: 1px solid #dee2e6;
     }
 
     .list-group-item {
@@ -352,8 +354,6 @@
     }
 
     .promo-section {
-      margin-bottom: 25px;
-
       label {
         display: block;
         font-size: 14px;
