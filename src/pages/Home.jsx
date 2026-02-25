@@ -132,7 +132,7 @@ export default function Home() {
                   buttonText='看看我們的文章'
                   bgColor='transparent'
                   textPosition='text-center'
-                  contentPadding='py-7 mt-5 mb-8'
+                  contentPadding='py-7 px-5 mt-5 mb-8'
                   to={PageLinks.articleLink.url}
                 />
               </div>
