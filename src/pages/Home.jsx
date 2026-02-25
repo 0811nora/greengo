@@ -114,8 +114,8 @@ export default function Home() {
         {/* 關於我們 */}
         <AboutSection />
         {/* 專欄 */}{' '}
-        <section className='home__article container-fluid py-8 py-md-10 px-0'>
-          <section className='container py-7'>
+        <section className='home__article container-fluid py-6 py-md-10 px-0'>
+          <section className='container py-md-7'>
             <div className='row'>
               <div className='col-lg-4 my-auto'>
                 <ContentCard
@@ -132,7 +132,7 @@ export default function Home() {
                   buttonText='看看我們的文章'
                   bgColor='transparent'
                   textPosition='text-center'
-                  contentPadding='py-7 mt-5'
+                  contentPadding='py-7 mt-5 mb-8'
                   to={PageLinks.articleLink.url}
                 />
               </div>
@@ -179,7 +179,7 @@ export default function Home() {
                                   : mainArticle.description
                                 : '暫無內容'}
                             </p>
-                            <div className='mt-8 d-flex flex-column flex-md-row justify-content-between w-100'>
+                            <div className='mt-8 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100'>
                               <p className='text-brown-300 d-block mb-2'>
                                 {formatDate(mainArticle.create_at)} ‧
                                 {mainArticle.author} ‧
@@ -220,7 +220,7 @@ export default function Home() {
 
                   {/* 文章卡片*/}
                   <div className='col-md-5'>
-                    <div className='card border-0 shadow rounded-4 p-3 h-100'>
+                    <div className='card border-0 shadow rounded-4 p-5 h-100'>
                       {subArticles.map((article) => (
                         <div key={article.id} className='py-3 border-bottom'>
                           <Link

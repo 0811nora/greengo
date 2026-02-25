@@ -106,10 +106,10 @@ const BestSellerSwiper = () => {
         className='fixed-swiper'
         modules={[Navigation, A11y]}
         spaceBetween={24}
-        slidesPerView={1}
+        slidesPerView={1.2}
         navigation
         breakpoints={{
-          576: { slidesPerView: 1 },
+          576: { slidesPerView: 1.2 },
           768: { slidesPerView: 2 },
           992: { slidesPerView: 3 },
           1296: { slidesPerView: 4 },

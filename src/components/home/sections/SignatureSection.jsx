@@ -54,7 +54,7 @@ const SignatureSection = () => {
         {/* 熱門商品 + swiper 套件*/}
         <FadeIn delay={0.3}>
           {' '}
-          <div className='container-fluid home__swiper bg-yellow-100 pt-5 pb-8 pb-md-10 px-8 rounded-5'>
+          <div className='container-fluid home__swiper bg-yellow-100 pt-5 pb-8 pb-md-10 px-5 px-md-8 rounded-5'>
             <div className='text-center mb-2 mb-md-5'>
               <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2 mb-md-5'>
                 BEST SELLER
