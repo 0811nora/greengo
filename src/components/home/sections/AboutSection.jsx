@@ -45,8 +45,7 @@ const AboutSection = () => {
               <img
                 src={`${import.meta.env.BASE_URL}img/items/bowl-5.png`}
                 alt='bowl'
-                className='position-absolute end-80 top-50 translate-middle-y'
-                style={{ opacity: 0.7 }}
+                className='position-absolute end-80 top-50 translate-middle-y home__about-img'
               />
 
               {/* 文字區 */}
@@ -72,8 +71,7 @@ const AboutSection = () => {
               <img
                 src={`${import.meta.env.BASE_URL}img/items/bowl-4.png`}
                 alt='bowl'
-                className='position-absolute start-80 top-50 translate-middle-y'
-                style={{ opacity: 0.7 }}
+                className='position-absolute start-80 top-50 translate-middle-y home__about-img'
               />
             </div>
           </div>

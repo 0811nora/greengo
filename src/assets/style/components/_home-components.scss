@@ -320,3 +320,10 @@
 .scroll-container:hover .scroll-track-right {
   animation-play-state: paused;
 }
+
+.home__about-img {
+  opacity: 0.7;
+  @media (max-width: 768px) {
+    opacity: 0.2;
+  }
+}
