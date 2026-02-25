@@ -1,8 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getOrders } from '../api/ApiClient';
 import Loader from '../components/common/Loading';
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import DonutPFC from '../components/custom-comp/PFC_Chart';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal, selectIsLogin } from '../store/slices/userSlice';
+import { notify } from '../components/Notify';
+import { useNavigate } from 'react-router-dom';
 
 const Member = () => {
   const [activeTab, setActiveTab] = useState('orders'); // orders | profile
@@ -10,13 +14,23 @@ const Member = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const isLogin = useSelector(selectIsLogin);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLogin) {
+      notify('info', '請先登入');
+      navigate('/');
+      dispatch(openModal());
+    }
+  }, [isLogin, navigate, dispatch]);
 
   // 取得訂單列表
   const fetchOrders = async (targetPage) => {
     setIsLoading(true);
     try {
       const res = await getOrders(targetPage);
-
       console.log(res.data);
       setOrders(res.data.orders || []);
       setTotalPages(res.data.pagination.total_pages || 1);
@@ -36,8 +50,8 @@ const Member = () => {
 
   return (
     <div className="member-center-container">
+      <Loader mode={'page'} show={isLoading} />
       <PageSwitch>
-        {isLoading ? <Loader mode={'mask'} /> : ''}
         <div className="container">
           <h1 className="fs-1 text-center fw-bold mb-8">會員中心</h1>
 
@@ -48,7 +62,7 @@ const Member = () => {
                 className={`nav-link me-7 ${activeTab === 'orders' ? 'active' : ''}`}
                 onClick={() => setActiveTab('orders')}
               >
-                <i class="bi bi-clipboard-fill me-2"></i>
+                <i className="bi bi-clipboard-fill me-2"></i>
                 訂單紀錄
               </button>
             </li>
@@ -138,84 +152,129 @@ const OrderCard = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showRecipeModal, setShowRecipeModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isScrollable, setIsScrollable] = useState(false);
+  const listRef = useRef(null);
 
   const PAYMENT_STATUS_MAP = {
     paid: '已付款',
-    unpaid: '未付款',
+    unpaid: '尚未付款',
   };
 
   const PAYMENT_METHOD_MAP = {
     credit_card: '信用卡',
-    cash: '現金',
+    cash: '臨櫃現金',
     e_payment: '電子支付',
+  };
+
+  const ORDER_STATES_MAP = {
+    done: '訂單已完成',
+    new: '餐點準備中',
+    ready: '可取餐',
+  };
+  const ORDER_STATES_COLOR_MAP = {
+    done: 'text-primary',
+    new: 'text-error',
+    ready: 'text-orange-500',
+  };
+  const ORDER_STATES_ICON_MAP = {
+    done: 'bi-check-circle-fill',
+    new: 'bi-cup-hot-fill',
+    ready: 'bi-exclamation-circle-fill',
   };
 
   const handleViewRecipe = (e, product) => {
     e.stopPropagation();
-
     setSelectedProduct(product);
     setShowRecipeModal(true);
-    console.log('打開配方:', product.product.title);
   };
+
+  useEffect(() => {
+    if (listRef.current) {
+      const hasScrollbar =
+        listRef.current.scrollHeight > listRef.current.clientHeight;
+      setIsScrollable(hasScrollbar);
+    }
+  }, [data.products]);
+
+  const imageIndex = (data.create_at % 10) + 1;
 
   return (
     <>
       <div
-        onClick={() => setIsOpen(!isOpen)}
-        className={`order-card rounded-3 px-5 py-6 p-md-7 mb-6 ${isOpen ? 'details-open' : ''}`}
-        style={{ cursor: 'pointer' }}
+        className={`order-card rounded-3 px-5 py-6 p-md-7 mb-6 position-relative ${isOpen ? 'details-open' : ''}`}
       >
-        <div className="d-flex justify-content-between align-items-center mb-2 card-header-info">
-          <div>
+        <div onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer' }}>
+          <div className="d-flex align-items-center mb-5 card-header-info">
+            <img
+              src={`${import.meta.env.BASE_URL}img/member/food-${imageIndex}.png`}
+              alt="食材"
+              style={{ maxWidth: 60 }}
+              className="d-none d-sm-block me-3"
+            />
+            <img
+              src={`${import.meta.env.BASE_URL}img/member/food-${imageIndex}.png`}
+              alt="食材"
+              style={{ maxWidth: 60 }}
+              className="position-absolute top-0 end-0 translate-middle mt-9 d-sm-none"
+            />
             <span className="fw-semibold fs-6">
               {formatTimestamp(data.create_at)}
             </span>
-            {/* <span className="status-tag">外帶</span> */}
           </div>
-        </div>
 
-        <div className="d-flex align-items-center flex-wrap">
-          <div className="border-md-end border-gray-200 pe-4 me-4 mb-5 mb-md-0">
-            <span className="bg-yellow-200 rounded-pill px-3 py-1 me-2">
-              取餐號碼
-            </span>
-            <div className="d-inline">
-              <i className="bi bi-hash text-primary"></i>
-              <span className="fw-semibold">{data.user.order_number}</span>
+          <div className="row align-items-center flex-wrap mb-xl-6">
+            <div className="col-xxl-2 mb-5 mb-xxl-0">
+              <span className="bg-yellow-200 fw-medium rounded-pill px-3 py-1 me-2">
+                取餐號碼
+              </span>
+              <div className="d-inline">
+                <i className="bi bi-hash "></i>
+                <span className="fw-semibold text-orange-500">
+                  {data.user.order_number}
+                </span>
+              </div>
+            </div>
+            <div className="col-xxl-3 mb-5 mb-xxl-0">
+              <span className="bg-yellow-200 fw-medium rounded-pill px-3 py-1 me-2">
+                預計取餐時間
+              </span>
+              <div className="d-inline">
+                <i className="bi bi-clock-history me-1"></i>
+                <span className="fw-semibold">
+                  {formatTimestamp(data.create_at + 1800)}
+                </span>
+              </div>
+            </div>
+            <div className="col-xxl-2 mb-4 mb-xxl-0">
+              <span className="bg-yellow-200 fw-medium rounded-pill px-3 py-1 me-2">
+                總金額
+              </span>
+              {data?.user?.final_total?.toLocaleString() || '計算中'} 元
+            </div>
+            <div
+              className={`col-xxl-3 mb-4 mb-xxl-0 ${ORDER_STATES_COLOR_MAP[data.user.order_status]}`}
+            >
+              <span className="bg-yellow-200 text-dark fw-medium rounded-pill px-3 py-1 me-2">
+                訂單狀態
+              </span>
+              {ORDER_STATES_MAP[data.user.order_status]}
+              <i
+                className={`bi ${ORDER_STATES_ICON_MAP[data.user.order_status]} ms-1`}
+              ></i>
+            </div>
+            <div className="col-2 col-md-1 ms-auto">
+              <i
+                className={`bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down text-primary'} ms-auto fs-5`}
+              ></i>
             </div>
           </div>
-          <div className="border-md-end border-gray-200 pe-4 me-4 mb-4 mb-md-0">
-            <span className="bg-yellow-200 rounded-pill px-3 py-1 me-2">
-              總金額
-            </span>
-            {data.user.final_total} 元
-          </div>
-          <div
-            className={`${
-              data.user.order_status === 'new'
-                ? 'status-text-unpicked'
-                : 'status-text-picked'
-            }`}
-          >
-            <span className="bg-yellow-200 text-dark rounded-pill px-3 py-1 me-2">
-              訂單狀態
-            </span>
-            {data.user.order_status === 'new' ? '餐點準備中' : '可取餐'}
-            <i
-              className={`bi ${data.user.order_status === 'new' ? 'bi-exclamation-circle-fill' : 'bi-check-circle-fill'} ms-1`}
-            ></i>
-          </div>
-
-          <i
-            className={`bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down text-primary'} ms-auto fs-5`}
-          ></i>
         </div>
 
         {/* 詳細清單 */}
 
         <div className="order-detail-box mt-3 rounded-2">
           <div className="row mb-6 text-start">
-            <div className="col-lg-4 fs-sm fs-lg-md pb-2 mb-2 mb-lg-0">
+            <div className="col-xl-4 fs-sm fs-lg-md pb-2 mb-2 mb-xl-0">
               <span className="bg-orange-100 rounded-pill px-3 py-1 me-2">
                 訂單編號
               </span>
@@ -245,10 +304,18 @@ const OrderCard = ({ data }) => {
             </div>
           </div>
 
-          <div className="overflow-y-auto" style={{ maxHeight: 280 }}>
-            {Object.keys(data.products).length > 3 && (
-              <div className="text-center text-secondary small py-2 mb-6 bg-yellow-200 rounded-3">
-                <i className="bi bi-mouse me-1"></i> 請滑動檢視更多餐點
+          <div
+            ref={listRef}
+            className="overflow-y-auto mb-4"
+            style={{ maxHeight: 300, WebkitOverflowScrolling: 'touch' }}
+            onClick={(e) => e.stopPropagation()} // 防止點擊事件往上傳遞
+            onTouchMove={(e) => e.stopPropagation()} // 防止滑動事件干擾上層
+          >
+            {isScrollable && (
+              <div className="text-center text-gray-300 small mb-6 rounded-3">
+                請滑動檢視更多餐點
+                <i className="bi bi-mouse ms-1"></i>
+                <i className="bi bi-arrow-down-up"></i>
               </div>
             )}
             {Object.values(data.products).map((product, index) => (
@@ -258,23 +325,21 @@ const OrderCard = ({ data }) => {
               >
                 <span>
                   {product.product.title} x {product.qty}
-                  {(product.product.category === 'fixed' ||
-                    product.product.category === 'custom') && (
-                    <button
-                      className="btn btn-sm btn-outline-orange-300 ms-2 py-0 px-2 mb-1"
-                      style={{ fontSize: '0.75rem', borderRadius: '20px' }}
-                      onClick={(e) => handleViewRecipe(e, product)}
-                    >
-                      <i className="bi bi-info-circle me-1"></i>
-                      明細
-                    </button>
-                  )}
+                  <button
+                    className="btn btn-sm btn-outline-orange-300 ms-2 py-0 px-2 mb-1"
+                    style={{ fontSize: '0.75rem', borderRadius: '20px' }}
+                    onClick={(e) => handleViewRecipe(e, product)}
+                  >
+                    <i className="bi bi-info-circle me-1"></i>
+                    明細
+                  </button>
                 </span>
 
                 <span className="me-md-4 text-nowrap">
                   <i className="bi bi-currency-dollar"></i>
-                  {product.customizations?.final_total ||
-                    product.customizations?.custom_total}
+                  {(
+                    product.customizations?.custom_total * product.qty
+                  ).toLocaleString() || '計算中'}
                 </span>
               </div>
             ))}
@@ -285,30 +350,28 @@ const OrderCard = ({ data }) => {
               <span className="ms-6">小計</span>
               <span>
                 <i className="bi bi-currency-dollar"></i>
-                {data.user.final_total -
-                  data.user.discount -
-                  data.user.addons_total}
+                {data?.user?.base_total?.toLocaleString() || '計算中'}
               </span>
             </div>
             <div className="d-flex justify-content-between mb-4">
               <span className="ms-6">加購</span>
               <span>
                 <i className="bi bi-currency-dollar"></i>
-                {data.user.addons_total}
+                {data?.user?.addons_total?.toLocaleString() || '計算中'}
               </span>
             </div>
             <div className="d-flex justify-content-between mb-4">
               <span className="ms-6">折扣</span>
               <span>
                 -<i className="bi bi-currency-dollar"></i>
-                {data.user.discount}
+                {data?.user?.discount?.toLocaleString() || '計算中'}
               </span>
             </div>
             <div className="d-flex justify-content-between fw-medium fs-6 text-primary">
               <span>總金額</span>
               <span className="text-orange-600">
                 <i className="bi bi-currency-dollar"></i>
-                {data.user.final_total}
+                {data?.user?.final_total?.toLocaleString() || '計算中'}
               </span>
             </div>
           </div>
@@ -356,15 +419,9 @@ const ProfileSection = () => {
         <div className="col-lg-8">
           <div className="card shadow-sm border-0 profile-card p-7 rounded-3">
             <div className="card-body px-4 py-4">
-              {/* <div className="text-center mb-4">
-                <div className="avatar-placeholder mb-8">
-                  <i className="bi bi-person-circle px-6"></i>
-                </div>
-                <h5 className="fw-bold">{formData.name || '使用者'}</h5>
-              </div> */}
               <div>
-                <div class="marquee-container">
-                  <div class="marquee-content">
+                <div className="marquee-container">
+                  <div className="marquee-content">
                     <img
                       src={`${import.meta.env.BASE_URL}img/member/food-1.png`}
                       alt="Poke碗"
@@ -578,6 +635,7 @@ const ProfileSection = () => {
   );
 };
 
+// 明細
 const RecipeModal = ({ product, onClose }) => {
   if (!product) return null;
   const isCustom = product.product.category === 'custom';
@@ -684,7 +742,6 @@ const RecipeModal = ({ product, onClose }) => {
                       border-5 border-gray-100 mb-4"
             >
               <i className="bi bi-postcard-heart me-2"></i>內容物明細
-              <span>{}</span>
             </h4>
             {isCustom ? (
               // 自選 Poke 的渲染邏輯
@@ -825,29 +882,38 @@ const RecipeModal = ({ product, onClose }) => {
                   <>
                     <ul className="px-2">
                       <li className="mb-3">
-                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                          基底
-                        </span>
+                        {product?.product.category !== 'other' ? (
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            基底
+                          </span>
+                        ) : (
+                          ''
+                        )}
+
                         <span>{product?.product.ingredients.base}</span>
                       </li>
-                      <li className="mb-3">
-                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                          主食
-                        </span>
-                        <span>{product?.product.ingredients.main}</span>
-                      </li>
-                      <li className="mb-3">
-                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                          醬料
-                        </span>
-                        <span>{product?.product.ingredients.source}</span>
-                      </li>
-                      <li className="mb-5">
-                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                          配菜
-                        </span>
-                        <span>{product?.product.ingredients.side}</span>
-                      </li>
+                      {product?.product.category !== 'other' && (
+                        <>
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              主食
+                            </span>
+                            <span>{product?.product.ingredients.main}</span>
+                          </li>
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              醬料
+                            </span>
+                            <span>{product?.product.ingredients.source}</span>
+                          </li>
+                          <li className="mb-5">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              配菜
+                            </span>
+                            <span>{product?.product.ingredients.side}</span>
+                          </li>
+                        </>
+                      )}
                     </ul>
                   </>
                 )}
