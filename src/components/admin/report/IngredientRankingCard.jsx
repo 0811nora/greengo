@@ -17,9 +17,6 @@ const IngredientRankingCard = ({ title, data, icon }) => {
     );
   }
 
-  // 找出最高使用次數（用於計算百分比）
-  const maxCount = data.length > 0 ? data[0].count : 1;
-
   return (
     <div className='col-md-6 col-lg-3 mb-3'>
       <div className='card adm__report-card h-100'>
@@ -50,7 +47,6 @@ const IngredientRankingCard = ({ title, data, icon }) => {
                     >
                       {index + 1}
                     </span>
-
                     {/* 配料名稱 */}
                     <span
                       className='fw-medium text-truncate'
@@ -64,26 +60,6 @@ const IngredientRankingCard = ({ title, data, icon }) => {
                     售出 {item.count} 份
                   </span>
                 </div>
-
-                {/* 進度條 */}
-                {/* <div className='progress' style={{ height: '4px' }}>
-                  <div
-                    className='progress-bar'
-                    role='progressbar'
-                    style={{
-                      width: `${((item.count / maxCount) * 100).toFixed(1)}%`,
-                      backgroundColor:
-                        index === 0
-                          ? '#ffc107'
-                          : index === 1
-                            ? '#6c757d'
-                            : '#94B38A',
-                    }}
-                    aria-valuenow={item.count}
-                    aria-valuemin='0'
-                    aria-valuemax={maxCount}
-                  ></div>
-                </div> */}
               </div>
             ))}
           </div>
