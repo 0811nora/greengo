@@ -7,6 +7,8 @@ import { ConfirmModal } from '../components/common/Modal';
 import { useNavigate } from 'react-router-dom';
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import DonutPFC from '../components/custom-comp/PFC_Chart';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal, selectIsLogin } from '../store/slices/userSlice';
 
 const Payment = () => {
   const { orderId } = useParams();
@@ -18,6 +20,13 @@ const Payment = () => {
   const navigate = useNavigate();
   const [showRecipeModal, setShowRecipeModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const isLogin = useSelector(selectIsLogin);
+  const dispatch = useDispatch();
+  if (!isLogin) {
+    navigate('/');
+    dispatch(openModal());
+    notify('warning', `請重新登入`);
+  }
 
   // const handleClose = () => {
   //   alert('關閉modal');
@@ -192,8 +201,7 @@ const Payment = () => {
                   >
                     <span>
                       {product.product.title} x {product.qty}
-                      {(product.product.category === 'fixed' ||
-                        product.product.category === 'custom') && (
+                      {
                         <button
                           className="btn btn-sm btn-outline-orange-300 ms-2 py-0 px-2 mb-1"
                           style={{ fontSize: '0.75rem', borderRadius: '20px' }}
@@ -202,7 +210,7 @@ const Payment = () => {
                           <i className="bi bi-info-circle me-1"></i>
                           明細
                         </button>
-                      )}
+                      }
                     </span>
 
                     <span className="me-md-4 text-nowrap">
@@ -476,7 +484,6 @@ const RecipeModal = ({ product, onClose }) => {
                       border-5 border-gray-100 mb-4"
             >
               <i className="bi bi-postcard-heart me-2"></i>內容物明細
-              <span>{}</span>
             </h4>
             {isCustom ? (
               // 自選 Poke 的渲染邏輯
@@ -617,29 +624,38 @@ const RecipeModal = ({ product, onClose }) => {
                   <>
                     <ul className="px-2">
                       <li className="mb-3">
-                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                          基底
-                        </span>
+                        {product?.product.category !== 'other' ? (
+                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                            基底
+                          </span>
+                        ) : (
+                          ''
+                        )}
+
                         <span>{product?.product.ingredients.base}</span>
                       </li>
-                      <li className="mb-3">
-                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                          主食
-                        </span>
-                        <span>{product?.product.ingredients.main}</span>
-                      </li>
-                      <li className="mb-3">
-                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                          醬料
-                        </span>
-                        <span>{product?.product.ingredients.source}</span>
-                      </li>
-                      <li className="mb-5">
-                        <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                          配菜
-                        </span>
-                        <span>{product?.product.ingredients.side}</span>
-                      </li>
+                      {product?.product.category !== 'other' && (
+                        <>
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              主食
+                            </span>
+                            <span>{product?.product.ingredients.main}</span>
+                          </li>
+                          <li className="mb-3">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              醬料
+                            </span>
+                            <span>{product?.product.ingredients.source}</span>
+                          </li>
+                          <li className="mb-5">
+                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
+                              配菜
+                            </span>
+                            <span>{product?.product.ingredients.side}</span>
+                          </li>
+                        </>
+                      )}
                     </ul>
                   </>
                 )}
