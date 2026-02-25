@@ -3,11 +3,22 @@ import { getCart, postOrder } from '../api/ApiClient';
 import { useNavigate } from 'react-router-dom';
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { renderRefresh } from './../store/slices/cartSlice';
+import Loader from '../components/common/Loading';
+import { selectIsLogin } from '../store/slices/userSlice';
+import { notify } from '../components/Notify';
 
 const Checkout = () => {
   const [cartData, setCartData] = useState([]);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const isLogin = useSelector(selectIsLogin);
+  if (!isLogin) {
+    navigate('/cart');
+    notify('warning', `請先登入，再繼續完成選購`);
+  }
   const getCarts = async () => {
     try {
       const res = await getCart();
@@ -52,17 +63,18 @@ const Checkout = () => {
   const [couponMsg, setCouponMsg] = useState('');
 
   // 計算金額
-  const { baseSubtotal, totalAddons } = cartData.reduce(
+  const { baseSubtotal, totalAddons, cartItemsQty } = cartData.reduce(
     (acc, item) => {
       const itemBasePrice = item.product.price;
       const itemExtraPrice = item.customizations?.extra_price;
 
       acc.baseSubtotal += itemBasePrice * item.qty;
       acc.totalAddons += itemExtraPrice * item.qty;
+      acc.cartItemsQty += item.qty;
 
       return acc;
     },
-    { baseSubtotal: 0, totalAddons: 0 }, // 初始值
+    { baseSubtotal: 0, totalAddons: 0, cartItemsQty: 0 }, // 初始值
   );
 
   const finalTotal = baseSubtotal + totalAddons - discount;
@@ -112,21 +124,34 @@ const Checkout = () => {
         address: 'Taipei',
       },
     };
-    // console.log(predata);
+    setIsLoading(true);
     try {
       const response = await postOrder(predata);
       const newOrderId = response.data.orderId;
       getCarts();
+      dispatch(renderRefresh());
       navigate(`/payment/${newOrderId}`);
     } catch (error) {
       alert('取得失敗: ' + error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="checkout-page cart-container container-xl">
       <PageSwitch>
-        <h1 className="page-title">訂單資訊</h1>
+        <Loader mode={'mask'} show={isLoading} text={'正在送出訂單..'} />
+        <div className="d-flex mb-7">
+          <button
+            type="button"
+            className="btn btn-sm btn-primary-100 text-gray-500 rounded-pill me-4"
+            onClick={() => navigate('/cart')}
+          >
+            <i class="bi bi-caret-left-fill me-1"></i>上一步
+          </button>
+          <h1 className="fs-4 fw-semibold">訂單資訊</h1>
+        </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row g-5">
@@ -236,7 +261,7 @@ const Checkout = () => {
                           })}
                         />
                         <div className="payment-card w-100">
-                          <i className="bi bi-credit-card-2-front"></i>
+                          <i className="bi bi-credit-card-2-front payment-icon"></i>
                           <div>
                             <div className="fw-bold">信用卡 / 金融卡</div>
                             <small className="text-muted">
@@ -260,7 +285,7 @@ const Checkout = () => {
                           })}
                         />
                         <div className="payment-card w-100">
-                          <i className="bi bi-phone"></i>
+                          <i className="bi bi-phone payment-icon"></i>
                           <div>
                             <div className="fw-bold">電子支付</div>
                             <small className="text-muted">
@@ -284,7 +309,7 @@ const Checkout = () => {
                           })}
                         />
                         <div className="payment-card w-100">
-                          <i className="bi bi-cash-coin"></i>
+                          <i className="bi bi-cash-coin payment-icon"></i>
                           <div>
                             <div className="fw-bold"> 臨櫃現金</div>
                             <small className="text-muted">臨櫃付款</small>
@@ -311,8 +336,8 @@ const Checkout = () => {
               <div className="order-summary-card p-4">
                 <h4 className="d-flex justify-content-between align-items-center mb-3">
                   <span className="text-primary">購物車清單</span>
-                  <span className="badge bg-orange-300 rounded-pill fw-normal pt-3 px-4">
-                    {cartData.length}
+                  <span className="badge bg-orange-300 rounded-pill fw-normal pt-2 px-3">
+                    {cartItemsQty}
                   </span>
                 </h4>
 
@@ -364,14 +389,14 @@ const Checkout = () => {
 
                 {couponMsg && (
                   <div
-                    className={`alert alert-${couponMsg.type} py-1 px-2 mb-3 small`}
+                    className={`alert alert-${couponMsg.type} py-1 px-2 mt-3 small`}
                   >
                     {couponMsg.text}
                   </div>
                 )}
 
                 {/* 金額計算 */}
-                <div className="d-flex justify-content-between mb-2">
+                <div className="d-flex justify-content-between mb-2 mt-6">
                   <span>小計</span>
                   <span>
                     <i class="bi bi-currency-dollar" />{' '}
