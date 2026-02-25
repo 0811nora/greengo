@@ -22,7 +22,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 			} catch (error) {
 				console.log(error.response);
 				setIsDataLoading(false);
-				notify('error', '資料讀取失敗，請重新整理', 'top-right');
+				notify('error', '資料讀取失敗，請重新整理', 'bottom-center');
 			}
 		};
 		getProductDetail();
@@ -49,12 +49,12 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 	// 		const res = await postAddToCart(data);
 	// 		console.log(res.data);
 	// 		setIsAddCartLoading(false);
-	// 		notify('success', '加入購物車成功', 'top-right');
+	// 		notify('success', '加入購物車成功', 'bottom-center');
 	// 		handleCloseDetail();
 	// 	} catch (error) {
 	// 		console.log(error);
 	// 		setIsAddCartLoading(false);
-	// 		notify('error', '加入購物車失敗', 'top-right');
+	// 		notify('error', '加入購物車失敗', 'bottom-center');
 	// 	}
 	// };
 
@@ -77,8 +77,8 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 						<Loader mode={'mask'} show={isDataLoading} text={'查看產品內容..'} />
 					) : (
 						<div className="container">
-							<div className="row">
-								<div className="col-5  position-relative">
+							<div className="d-flex flex-lg-row flex-column ">
+								<div className="col-lg-5 col-12 position-relative">
 									{/* img */}
 									<div className="py-7 position-sticky top-0">
 										<div className="img d-flex justify-content-center ">
@@ -86,7 +86,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 										</div>
 									</div>
 								</div>
-								<div className="col-7 ps-8">
+								<div className="col-lg-7 col-12 ps-lg-8">
 									{/* info */}
 									<div className=" info d-flex flex-column gap-5">
 										{/* title, tag */}
@@ -114,7 +114,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 										</div>
 										{/* description */}
 										<div className="d-flex flex-column gap-2">
-											<p>{`${productDetail?.grams}克 / 碗`}</p>
+											<p>{`${productDetail?.grams}克 / ${productDetail?.product_type === 'drinks' ? '杯' : '碗'}`}</p>
 											<p className="description">{productDetail?.description}</p>
 										</div>
 										{/* price */}
@@ -149,8 +149,8 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 										</div>
 									</div>
 									{/* nutrition */}
-									<div className="nutrition d-flex justify-content-between align-items-bottom">
-										<div>
+									<div className="nutrition d-flex flex-sm-row flex-column justify-content-between align-items-bottom">
+										<div className="nutrition-content">
 											<h6 className="mb-5">營養素資訊</h6>
 											<div className="d-flex flex-column gap-3">
 												<p>
@@ -171,7 +171,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 												</p>
 											</div>
 										</div>
-										<div className="nutrition-chart">
+										<div className="nutrition-chart mt-5 mt-sm-0 flex-fill">
 											<DonutPFC
 												protein={productDetail?.nutrition.protein}
 												fat={productDetail?.nutrition.fat}
@@ -239,8 +239,8 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 					)}
 				</Modal.Body>
 
-				<Modal.Footer className="d-flex align-items-center gap-3">
-					<div className="num-control d-flex align-items-center justify-content-between gap-4">
+				<Modal.Footer className="d-flex flex-sm-row flex-column align-items-center justify-content-between gap-3">
+					<div className="num-control d-flex align-items-center justify-content-between gap-4 ">
 						<button className={`minus ${num <= 1 ? 'disable' : ''}`} onClick={handleMinusNum}>
 							<i className="bi bi-dash"></i>
 						</button>
@@ -259,7 +259,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 					>
 						<p>
 							{`加入 ${num} 份商品至購物車`}
-							<span className="fw-semibold ms-4">{`NT$ ${productDetail?.price * num}`}</span>
+							<span className="fw-semibold ms-4">{`NT$ ${(productDetail?.price * num).toLocaleString()}`}</span>
 							<Loader mode="button" show={isAddCartLoading} className={'ms-2'} />
 						</p>
 					</button>
