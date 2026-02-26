@@ -53,27 +53,17 @@ export const calculateStatistics = (orders) => {
 
     // 計算總訂單數（包含未付款）
     stats.orderCount.total += 1;
-    // 判斷訂單類型（根據訂單中的商品）
+    // 統計商品實際數量
     const products = order.products || {};
-    let hasFixed = false;
-    let hasCustom = false;
     Object.values(products).forEach((item) => {
       const productType = item.product?.product_type;
+      const qty = item.qty || 0;
       if (productType === 'set') {
-        hasFixed = true;
+        stats.orderCount.fixed += qty;
       } else if (productType === 'combo') {
-        hasCustom = true;
+        stats.orderCount.custom += qty;
       }
     });
-
-    // 固定套餐
-    if (hasFixed) {
-      stats.orderCount.fixed += 1;
-    }
-    // 自由配
-    if (hasCustom) {
-      stats.orderCount.custom += 1;
-    }
   });
 
   // 計算平均客單價（已付款訂單）
