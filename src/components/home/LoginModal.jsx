@@ -99,7 +99,7 @@ const LoginModal = () => {
         >
           <div className='header__modal-img d-none d-lg-flex'>
             <img
-              src={`${import.meta.env.BASE_URL}img/items/header-login-bg.png`}
+              src={`${import.meta.env.BASE_URL}img/items/header-login-bg.webp`}
               alt=''
             />
           </div>
@@ -217,22 +217,24 @@ const LoginModal = () => {
                         忘記密碼？
                       </button>
                     </div>
-                    <button
-                      type='submit'
-                      className='home__btn-primary w-100 rounded-pill py-2'
-                    >
-                      登入
-                    </button>
-                    <p className='text-center fs-sm text-gray-400 mt-3 mb-0 d-flex justify-content-center align-items-center'>
-                      還沒有帳號？
+                    <div className='d-flex flex-column justify-content-center align-items-center'>
                       <button
-                        type='button'
-                        className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
-                        onClick={() => handleTabSwitch('register')}
+                        type='submit'
+                        className='home__btn-primary w-100 rounded-pill py-2'
                       >
-                        立即註冊
+                        登入
                       </button>
-                    </p>
+                      <p className='text-center fs-sm text-gray-400 mt-3 mb-0 d-flex justify-content-center align-items-center'>
+                        還沒有帳號？
+                        <button
+                          type='button'
+                          className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
+                          onClick={() => handleTabSwitch('register')}
+                        >
+                          立即註冊
+                        </button>
+                      </p>
+                    </div>
                   </form>
                 )}
 
@@ -325,22 +327,24 @@ const LoginModal = () => {
                         </div>
                       )}
                     </div>
-                    <button
-                      type='submit'
-                      className='home__btn-primary rounded-pill py-2'
-                    >
-                      註冊
-                    </button>
-                    <p className='text-center fs-sm text-gray-400 mt-3 mb-0 d-flex justify-content-center align-items-center'>
-                      已有帳號？
+                    <div className='d-flex flex-column justify-content-center align-items-center'>
                       <button
-                        type='button'
-                        className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
-                        onClick={() => handleTabSwitch('login')}
+                        type='submit'
+                        className='home__btn-primary rounded-pill py-2'
                       >
-                        立即登入
+                        註冊
                       </button>
-                    </p>
+                      <p className='text-center fs-sm text-gray-400 mt-3 mb-0 d-flex justify-content-center align-items-center'>
+                        已有帳號？
+                        <button
+                          type='button'
+                          className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
+                          onClick={() => handleTabSwitch('login')}
+                        >
+                          立即登入
+                        </button>
+                      </p>
+                    </div>
                   </form>
                 )}
               </div>
