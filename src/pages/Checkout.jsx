@@ -14,18 +14,22 @@ const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [isCartLoading, setCartIsLoading] = useState(false);
   const isLogin = useSelector(selectIsLogin);
   if (!isLogin) {
     navigate('/cart');
     notify('warning', `請先登入，再繼續完成選購`);
   }
   const getCarts = async () => {
+    setCartIsLoading(true);
     try {
       const res = await getCart();
       setCartData(res.data.data.carts);
       console.log(res.data.data.carts);
     } catch (error) {
-      alert('取得失敗: ' + error.response.data.message);
+      notify(error, '取得失敗: ' + error.response.data.message);
+    } finally {
+      setCartIsLoading(false);
     }
   };
 
@@ -333,14 +337,18 @@ const Checkout = () => {
 
             {/* 右側：訂單摘要 (Sticky Sidebar) */}
             <div className="col-md-5 col-lg-4">
-              <div className="order-summary-card p-4">
-                <h4 className="d-flex justify-content-between align-items-center mb-3">
-                  <span className="text-primary">購物車清單</span>
+              <div className="order-summary-card p-6">
+                <h4 className="d-flex justify-content-between align-items-center">
+                  <span className="text-primary py-3">購物車明細</span>
                   <span className="badge bg-orange-300 rounded-pill fw-normal pt-2 px-3">
                     {cartItemsQty}
                   </span>
                 </h4>
-
+                <Loader
+                  mode="button"
+                  show={isCartLoading}
+                  className={'mx-auto mt-3 text-gray-300 d-block'}
+                />
                 {/* 商品列表 */}
                 <ul className="list-group list-group-flush mb-3 px-2">
                   {cartData.map((item) => (

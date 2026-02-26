@@ -126,7 +126,7 @@ const Payment = () => {
   };
 
   return (
-    <div className="container payment-page cart-container ">
+    <div className="container payment-page cart-container">
       <PageSwitch>
         {/* 頁面標題 */}
         <div className="row mb-4">
@@ -144,7 +144,7 @@ const Payment = () => {
             {/* 1. 訂單識別與門市資訊 */}
             <div className="card payment-card-layout p-7 shadow-sm border-0 mb-4">
               <div className="card-header bg-white py-3 border-0">
-                <h5 className="mb-0 fw-bold border-start border-4 border-primary ps-3">
+                <h5 className="mb-0 fw-bold border-start border-4 border-primary ps-3 ls-md">
                   訂單資訊
                 </h5>
               </div>
@@ -152,16 +152,18 @@ const Payment = () => {
                 <div className="row g-3">
                   <div className="col-md-6">
                     <label className="text-muted small">訂單編號</label>
-                    <div className="fw-semibold">{orderData.id}</div>
+                    <div className="fw-semibold ls-md">{orderData.id}</div>
                   </div>
                   <div className="col-md-6">
                     <label className="text-muted small">下單時間</label>
-                    <div>{formatTimestamp(orderData.create_at)}</div>
+                    <div className="fw-semibold ls-md">
+                      {formatTimestamp(orderData.create_at)}
+                    </div>
                   </div>
-                  <hr />
-                  <div className="col-md-4">
+                  <hr className="border-gray-200" />
+                  <div className="col-md-4 mt-0">
                     <label className="text-muted small">取餐門市</label>
-                    <div className="fw-semibold">
+                    <div className="fw-semibold ls-md">
                       <i className="bi bi-shop me-1"></i>
                       GreenGo - 總店
                     </div>
@@ -169,16 +171,16 @@ const Payment = () => {
                       台北市中正區幸福路3號
                     </div>
                   </div>
-                  <div className="col-md-4">
+                  <div className="col-md-4 mt-0">
                     <label className="text-muted small">預計取餐時間</label>
-                    <div className="fw-semibold fs-5 text-orange-500">
+                    <div className="fw-semibold fs-6 text-orange-500 ls-md">
                       <i className="bi bi-clock-history me-1"></i>
                       {formatTimestamp(orderData.create_at + 1800)}
                     </div>
                   </div>
-                  <div className="col-md-4 ps-md-8">
+                  <div className="col-md-4  mt-0 ps-md-8">
                     <label className="text-muted small">取餐號碼</label>
-                    <div className="fw-semibold fs-5 text-success">
+                    <div className="fw-semibold fs-6 text-success ls-md">
                       {orderData?.user?.order_number}
                     </div>
                   </div>
@@ -189,7 +191,7 @@ const Payment = () => {
             {/* 2. 購買餐點明細 */}
             <div className="card payment-card-layout p-7 shadow-sm border-0 mb-4">
               <div className="card-header border-0 bg-white py-3 mb-3">
-                <h5 className="mb-0 fw-bold border-start border-4 border-primary ps-3">
+                <h5 className="mb-0 fw-bold border-start border-4 border-primary ps-3 ls-md">
                   餐點明細
                 </h5>
               </div>
@@ -197,7 +199,7 @@ const Payment = () => {
                 {orderProducts.map((product, index) => (
                   <div
                     key={index}
-                    className="d-flex justify-content-between mb-1 fs-lg-6 fw-medium border-bottom border-gray-200 pb-4 mb-4 mb-lg-7"
+                    className="d-flex justify-content-between mb-1 fs-lg-6 fw-medium border-bottom border-gray-100 pb-4 mb-4 mb-lg-7 mx-4"
                   >
                     <span>
                       {product.product.title} x {product.qty}
@@ -226,7 +228,7 @@ const Payment = () => {
             {/* 3. 取餐人與付款方式 */}
             <div className="card payment-card-layout p-7 shadow-sm border-0 mb-4">
               <div className="card-header bg-white py-3 border-0">
-                <h5 className="mb-0 fw-bold border-start border-4 border-primary ps-3">
+                <h5 className="mb-0 fw-bold border-start border-4 border-primary ps-3 ls-md">
                   訂購人與付款
                 </h5>
               </div>
@@ -235,24 +237,24 @@ const Payment = () => {
                   <div className="col-md-6 mb-3 mb-md-0">
                     <h6 className="text-muted small mb-2">訂購人資料</h6>
                     <ul className="list-unstyled mb-0">
-                      <li className="mb-1">
+                      <li className="mb-1 ls-sm">
                         <i className="bi bi-person me-3 text-orange-500"></i>
                         {orderData?.user?.name}
                       </li>
-                      <li className="mb-1">
+                      <li className="mb-1 ls-sm">
                         <i className="bi bi-envelope me-3 text-orange-500"></i>
                         {orderData?.user?.email}
                       </li>
-                      <li>
+                      <li className="ls-sm">
                         <i className="bi bi-telephone me-3 text-orange-500"></i>
                         {orderData?.user?.tel}
                       </li>
                     </ul>
                   </div>
                   <div className="col-md-6">
-                    <h6 className="text-muted small mb-2">付款方式</h6>
-                    <div className="alert alert-light border-0 d-flex align-items-center mb-0">
-                      <div className="fw-medium text-dark ft-zh">
+                    <h6 className="text-muted small mb-3">付款方式</h6>
+                    <div className="p-3 rounded-2 border border-orange-200 d-flex align-items-center">
+                      <div className="fw-medium text-dark ft-zh ls-sm">
                         {renderPaymentMethod(orderData?.user?.payment_method)}
                       </div>
                     </div>
@@ -264,9 +266,7 @@ const Payment = () => {
           {/* ========================= */}
           <aside className="cart-summary col-lg-4">
             <div className="summary-card">
-              <h4 className="text-primary pt-3 border-bottom border-gray-100 pb-3 mb-4">
-                付款金額
-              </h4>
+              <h4 className="text-primary py-3 mb-4">付款金額</h4>
 
               <div className="d-flex justify-content-between mb-2">
                 <span>小計</span>
@@ -287,7 +287,7 @@ const Payment = () => {
               )}
 
               {orderData.user.discount > 0 && (
-                <div className="d-flex justify-content-between mb-2">
+                <div className="d-flex justify-content-between mb-2 text-success">
                   <span>折扣</span>
                   <span>
                     - <i class="bi bi-currency-dollar"></i>
@@ -310,7 +310,7 @@ const Payment = () => {
                 </p>
               ) : (
                 <button
-                  className="btn checkout-btn"
+                  className="btn checkout-btn ls-md"
                   onClick={handlePayment}
                   disabled={orderData.is_paid || isProcessing}
                 >
@@ -632,7 +632,9 @@ const RecipeModal = ({ product, onClose }) => {
                           ''
                         )}
 
-                        <span>{product?.product.ingredients.base}</span>
+                        <span className="text-brown-300">
+                          {product?.product.ingredients.base}
+                        </span>
                       </li>
                       {product?.product.category !== 'other' && (
                         <>
@@ -640,19 +642,25 @@ const RecipeModal = ({ product, onClose }) => {
                             <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                               主食
                             </span>
-                            <span>{product?.product.ingredients.main}</span>
+                            <span className="text-brown-300">
+                              {product?.product.ingredients.main}
+                            </span>
                           </li>
                           <li className="mb-3">
                             <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                               醬料
                             </span>
-                            <span>{product?.product.ingredients.source}</span>
+                            <span className="text-brown-300">
+                              {product?.product.ingredients.source}
+                            </span>
                           </li>
                           <li className="mb-5">
                             <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                               配菜
                             </span>
-                            <span>{product?.product.ingredients.side}</span>
+                            <span className="text-brown-300">
+                              {product?.product.ingredients.side}
+                            </span>
                           </li>
                         </>
                       )}
