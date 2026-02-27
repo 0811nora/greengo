@@ -81,7 +81,7 @@ const Cart = () => {
       <Loader mode={'mask'} show={isLoading} text={'購物車讀取中..'} />
       <PageSwitch>
         <h1 className="page-title">
-          <i class="bi bi-basket3 me-2"></i>購物車
+          <i className="bi bi-basket3 me-2"></i>購物車
         </h1>
         <div className="row g-5">
           {/* 左側：商品列表 */}
@@ -618,7 +618,7 @@ const CartSummary = ({ baseSubtotal, totalAddons, finalTotal }) => {
   const handleNextCart = () => {
     if (!isLogin) {
       dispatch(openModal());
-      notify('warning', `請先登入，再繼續完成選購`);
+      notify('info', `請先登入，再繼續完成選購`);
     } else {
       navigate('/checkout');
     }

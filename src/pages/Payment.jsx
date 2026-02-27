@@ -22,11 +22,15 @@ const Payment = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const isLogin = useSelector(selectIsLogin);
   const dispatch = useDispatch();
-  if (!isLogin) {
-    navigate('/');
-    dispatch(openModal());
-    notify('warning', `請重新登入`);
-  }
+  useEffect(() => {
+    if (!isLogin) {
+      navigate('/');
+      dispatch(openModal());
+      notify('warning', '請重新登入');
+    }
+  }, [isLogin, navigate, dispatch]);
+
+  if (!isLogin) return null;
 
   // const handleClose = () => {
   //   alert('關閉modal');
@@ -39,9 +43,9 @@ const Payment = () => {
       const response = await getOrder(orderId);
       setOrderData(response.data.order);
       setProducts(Object.values(response.data.order.products));
-      console.log(response.data.order);
+      // console.log(response.data.order);
     } catch (error) {
-      notify('error', `取得失敗:${error}`);
+      notify('error', `取得失敗:${error.response.data.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -63,11 +67,10 @@ const Payment = () => {
   const handlePayment = async () => {
     setIsProcessing(true);
     try {
-      console.log('呼叫付款 API，訂單 ID:', orderId);
       await postPay(orderId);
       setIsShowModal(true);
     } catch (error) {
-      console.error('付款失敗', error);
+      notify('error', `付款失敗:${error.response.data.message}`);
     } finally {
       setIsProcessing(false);
     }
@@ -103,10 +106,8 @@ const Payment = () => {
 
   const handleViewRecipe = (e, product) => {
     e.stopPropagation();
-
     setSelectedProduct(product);
     setShowRecipeModal(true);
-    console.log('打開配方:', product.product.title);
   };
 
   const formatTimestamp = (timestamp) => {
@@ -161,7 +162,7 @@ const Payment = () => {
                     </div>
                   </div>
                   <hr className="border-gray-200" />
-                  <div className="col-md-4 mt-0">
+                  <div className="col-md-4 mt-0 mb-3 mb-md-0">
                     <label className="text-muted small">取餐門市</label>
                     <div className="fw-semibold ls-md">
                       <i className="bi bi-shop me-1"></i>
@@ -171,7 +172,7 @@ const Payment = () => {
                       台北市中正區幸福路3號
                     </div>
                   </div>
-                  <div className="col-md-4 mt-0">
+                  <div className="col-md-4 mt-0 mb-3 mb-md-0">
                     <label className="text-muted small">預計取餐時間</label>
                     <div className="fw-semibold fs-6 text-orange-500 ls-md">
                       <i className="bi bi-clock-history me-1"></i>
@@ -271,7 +272,7 @@ const Payment = () => {
               <div className="d-flex justify-content-between mb-2">
                 <span>小計</span>
                 <span>
-                  <i class="bi bi-currency-dollar"></i>
+                  <i className="bi bi-currency-dollar"></i>
                   {orderData?.total}
                 </span>
               </div>
@@ -280,7 +281,7 @@ const Payment = () => {
                 <div className="d-flex justify-content-between mb-2">
                   <span>加購</span>
                   <span>
-                    + <i class="bi bi-currency-dollar"></i>
+                    + <i className="bi bi-currency-dollar"></i>
                     {orderData?.user?.addons_total}
                   </span>
                 </div>
@@ -290,7 +291,7 @@ const Payment = () => {
                 <div className="d-flex justify-content-between mb-2 text-success">
                   <span>折扣</span>
                   <span>
-                    - <i class="bi bi-currency-dollar"></i>
+                    - <i className="bi bi-currency-dollar"></i>
                     {orderData?.user?.discount}
                   </span>
                 </div>
@@ -299,13 +300,13 @@ const Payment = () => {
               <div className="d-flex justify-content-between my-3 pt-3 border-top border-gray-100">
                 <span className="fs-5 fw-medium">總計</span>
                 <span className="fs-5 fw-medium text-primary">
-                  <i class="bi bi-currency-dollar"></i>
+                  <i className="bi bi-currency-dollar"></i>
                   {orderData?.user?.final_total}
                 </span>
               </div>
               {/* 付款按鈕 */}
               {orderData?.user?.payment_method === 'cash' ? (
-                <p className="bg-orange-100 rounded-3 p-1 mx-auto text-center">
+                <p className="bg-yellow-300 rounded-3 p-3 mx-auto my-6 text-center ls-sm">
                   請至櫃台告知取餐號碼並完成付款
                 </p>
               ) : (
@@ -354,14 +355,14 @@ const Payment = () => {
           text_title={'已完成付款'}
           text_cancel={
             <>
-              <i class="bi bi-house-door-fill me-1"></i>
+              <i className="bi bi-house-door-fill me-1"></i>
               回到首頁
             </>
           }
           cancelModal={() => navigate('/')}
           text_confirm={
             <>
-              <i class="bi bi-list-task me-1"></i>
+              <i className="bi bi-list-task me-1"></i>
               確認訂單資訊
             </>
           }
@@ -448,7 +449,7 @@ const RecipeModal = ({ product, onClose }) => {
               className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
                       border-5 border-gray-100 mb-2"
             >
-              <i class="bi bi-coin me-2"></i>費用明細
+              <i className="bi bi-coin me-2"></i>費用明細
             </h4>
             <div
               className="text-brown-300 mb-6 px-2"
