@@ -11,15 +11,18 @@ const CheckoutModal = ({ show, closeModal, orderDetail, backToLast, getApiOrders
 	const orderProductsArry = Object.values(orderDetail?.products ?? {});
 
 	// 小計金額
-	const subtotal = orderProductsArry.reduce((accu, curr) => accu + curr?.final_total, 0);
+	const subtotal = orderDetail.user.base_total;
 
 	// 加購金額
-	const addTotal = orderProductsArry.reduce((accu, curr) => accu + (curr?.customizations.extra_price ?? 0), 0);
+	const addTotal = orderDetail.user.addons_total;
 
 	// 總計金額
-	const finalTotal = subtotal + addTotal;
+	const finalTotal = orderDetail.user.final_total;
 
-	// 超做付款行為，戳付款API
+	// 折扣金額
+	const discount = orderDetail.user.discount || 0;
+
+	// 操作付款行為，戳付款API
 	const handlePostPay = async () => {
 		if (!paymentState) {
 			notify('error', '請選擇付款方式', 'top-right');
@@ -151,6 +154,13 @@ const CheckoutModal = ({ show, closeModal, orderDetail, backToLast, getApiOrders
 							<p>
 								<i className="bi bi-currency-dollar"></i>
 								{formatPrice(addTotal)}
+							</p>
+						</div>
+						<div className="d-flex justify-content-between">
+							<p>折扣</p>
+							<p>
+								- <i className="bi bi-currency-dollar"></i>
+								{formatPrice(discount)}
 							</p>
 						</div>
 						<hr />
