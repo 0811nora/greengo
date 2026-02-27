@@ -103,7 +103,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 											</div>
 										</div>
 										{/* tab */}
-										<div className="tab d-flex gap-2">
+										<div className="tab d-flex  flex-sm-row flex-column gap-2">
 											{renderUITab(productDetail?.tab_collection, productDetail?.product_type)?.map(
 												(item, index) => (
 													<span className="tabPill" key={index}>
@@ -259,7 +259,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 					>
 						<p>
 							{`加入 ${num} 份商品至購物車`}
-							<span className="fw-semibold ms-4">{`NT$ ${(productDetail?.price * num).toLocaleString()}`}</span>
+							<span className="fw-semibold ms-sm-4">{`NT$ ${(productDetail?.price * num).toLocaleString()}`}</span>
 							<Loader mode="button" show={isAddCartLoading} className={'ms-2'} />
 						</p>
 					</button>
