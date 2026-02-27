@@ -53,13 +53,15 @@ const Member = () => {
       <Loader mode={'page'} show={isLoading} />
       <PageSwitch>
         <div className="container">
-          <h1 className="fs-1 text-center fw-bold mb-8">會員中心</h1>
-
+          <h1 className="fs-1 text-center fw-bold mb-8 ls-md ts-white">
+            會員中心
+          </h1>
           {/* Tab 切換 */}
-          <ul className="nav nav-tabs justify-content-center mb-9">
+
+          <ul className="nav nav-underline justify-content-center mb-9">
             <li className="nav-item">
               <button
-                className={`nav-link me-7 ${activeTab === 'orders' ? 'active' : ''}`}
+                className={`nav-link tab-navLink ts-white me-7 ${activeTab === 'orders' ? 'active' : ''}`}
                 onClick={() => setActiveTab('orders')}
               >
                 <i className="bi bi-clipboard-fill me-2"></i>
@@ -68,7 +70,7 @@ const Member = () => {
             </li>
             <li className="nav-item">
               <button
-                className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`}
+                className={`nav-link tab-navLink ts-white ${activeTab === 'profile' ? 'active' : ''}`}
                 onClick={() => setActiveTab('profile')}
               >
                 <i className="bi bi-person-lines-fill me-2"></i>個人資料
@@ -172,9 +174,9 @@ const OrderCard = ({ data }) => {
     ready: '可取餐',
   };
   const ORDER_STATES_COLOR_MAP = {
-    done: 'text-primary',
-    new: 'text-error',
-    ready: 'text-orange-500',
+    done: 'text-gray-400',
+    new: 'text-gray-400',
+    ready: 'text-orange-400',
   };
   const ORDER_STATES_ICON_MAP = {
     done: 'bi-check-circle-fill',
@@ -217,52 +219,57 @@ const OrderCard = ({ data }) => {
               style={{ maxWidth: 60 }}
               className="position-absolute top-0 end-0 translate-middle mt-9 d-sm-none"
             />
-            <span className="fw-semibold fs-6">
+            <span className="fw-semibold ls-sm fs-6">
               {formatTimestamp(data.create_at)}
             </span>
           </div>
 
           <div className="row align-items-center flex-wrap mb-xl-6">
             <div className="col-xxl-2 mb-5 mb-xxl-0">
-              <span className="bg-yellow-200 fw-medium rounded-pill px-3 py-1 me-2">
+              <span className="fs-sm bg-primary-100 text-primary-300 fw-medium rounded-pill px-4 py-2 me-2">
                 取餐號碼
               </span>
               <div className="d-inline">
                 <i className="bi bi-hash "></i>
-                <span className="fw-semibold text-orange-500">
+                <span className="fw-semibold ls-sm">
                   {data.user.order_number}
                 </span>
               </div>
             </div>
-            <div className="col-xxl-3 mb-5 mb-xxl-0">
-              <span className="bg-yellow-200 fw-medium rounded-pill px-3 py-1 me-2">
+            <div className="col-xxl-4 mb-5 mb-xxl-0">
+              <span className="fs-sm bg-primary-100 text-primary-300 fw-medium rounded-pill px-4 py-2 me-2">
                 預計取餐時間
               </span>
-              <div className="d-inline">
+              <div className="d-inline text-nowrap">
                 <i className="bi bi-clock-history me-1"></i>
-                <span className="fw-semibold">
+                <span className="fw-semibold ls-sm">
                   {formatTimestamp(data.create_at + 1800)}
                 </span>
               </div>
             </div>
-            <div className="col-xxl-2 mb-4 mb-xxl-0">
-              <span className="bg-yellow-200 fw-medium rounded-pill px-3 py-1 me-2">
+            <div className="col-xxl-2 mb-5 mb-xxl-0 fw-medium">
+              <span className="fs-sm bg-primary-100 text-primary-300 rounded-pill px-4 py-2 me-2">
                 總金額
               </span>
-              {data?.user?.final_total?.toLocaleString() || '計算中'} 元
+              <span className="fw-semibold">
+                {data?.user?.final_total?.toLocaleString() || '計算中'} 元
+              </span>
             </div>
             <div
-              className={`col-xxl-3 mb-4 mb-xxl-0 ${ORDER_STATES_COLOR_MAP[data.user.order_status]}`}
+              className={`col-10 col-xxl-3 mb-4 mb-xxl-0 fw-medium ${ORDER_STATES_COLOR_MAP[data.user.order_status]}`}
             >
-              <span className="bg-yellow-200 text-dark fw-medium rounded-pill px-3 py-1 me-2">
+              <span className="fs-sm bg-primary-100 text-primary-300 fw-medium rounded-pill px-4 py-2 me-2">
                 訂單狀態
               </span>
-              {ORDER_STATES_MAP[data.user.order_status]}
+              <span className="">
+                {ORDER_STATES_MAP[data.user.order_status]}
+              </span>
+
               <i
                 className={`bi ${ORDER_STATES_ICON_MAP[data.user.order_status]} ms-1`}
               ></i>
             </div>
-            <div className="col-2 col-md-1 ms-auto">
+            <div className="col-2 col-md-1 col-md-1 ms-auto">
               <i
                 className={`bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down text-primary'} ms-auto fs-5`}
               ></i>
@@ -274,21 +281,20 @@ const OrderCard = ({ data }) => {
 
         <div className="order-detail-box mt-3 rounded-2">
           <div className="row mb-6 text-start">
-            <div className="col-xl-4 fs-sm fs-lg-md pb-2 mb-2 mb-xl-0">
-              <span className="bg-orange-100 rounded-pill px-3 py-1 me-2">
+            <div className="col-xl-4 fw-medium fs-sm fs-lg-md pb-2 mb-2 mb-xl-0">
+              <span className="fs-sm bg-gray-200 text-gray-500 rounded-pill px-4 py-2 me-2">
                 訂單編號
               </span>
               {data.id}
             </div>
-            <div className="col-lg-4 fs-sm fs-lg-md pb-2 mb-2 mb-lg-0">
-              <span className="bg-orange-100 rounded-pill px-3 py-1 me-2">
+            <div className="col-lg-4 fw-medium fs-sm fs-lg-md pb-2 mb-2 mb-lg-0">
+              <span className="fs-sm bg-gray-200 text-gray-500 rounded-pill px-4 py-2 me-2">
                 支付方式
               </span>
-
               {PAYMENT_METHOD_MAP[data.user.payment_method] || '其他支付'}
             </div>
-            <div className="col-lg-4 fs-sm fs-lg-md">
-              <span className="bg-orange-100 rounded-pill px-3 py-1 me-2">
+            <div className="col-lg-4 fw-medium fs-sm fs-lg-md">
+              <span className="fs-sm bg-gray-200 text-gray-500 rounded-pill px-4 py-2 me-2">
                 支付狀態
               </span>
 
@@ -308,8 +314,8 @@ const OrderCard = ({ data }) => {
             ref={listRef}
             className="overflow-y-auto mb-4"
             style={{ maxHeight: 300, WebkitOverflowScrolling: 'touch' }}
-            onClick={(e) => e.stopPropagation()} // 防止點擊事件往上傳遞
-            onTouchMove={(e) => e.stopPropagation()} // 防止滑動事件干擾上層
+            onClick={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
           >
             {isScrollable && (
               <div className="text-center text-gray-300 small mb-6 rounded-3">
@@ -367,9 +373,9 @@ const OrderCard = ({ data }) => {
                 {data?.user?.discount?.toLocaleString() || '計算中'}
               </span>
             </div>
-            <div className="d-flex justify-content-between fw-medium fs-6 text-primary">
+            <div className="d-flex justify-content-between fw-medium fs-6">
               <span>總金額</span>
-              <span className="text-orange-600">
+              <span className="text-orange-500">
                 <i className="bi bi-currency-dollar"></i>
                 {data?.user?.final_total?.toLocaleString() || '計算中'}
               </span>
@@ -390,9 +396,9 @@ const OrderCard = ({ data }) => {
 // 個人資料子組件
 const ProfileSection = () => {
   const [formData, setFormData] = useState({
-    name: '王小明',
-    phone: '0912-345-678',
-    email: 'ming@example.com',
+    name: '陳雅涵',
+    phone: '0912-335-688',
+    email: 'hang@greengomail.com',
     address: '台北市信義區信義路五段7號',
   });
 
