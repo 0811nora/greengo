@@ -14,18 +14,28 @@ const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [isCartLoading, setCartIsLoading] = useState(false);
   const isLogin = useSelector(selectIsLogin);
-  if (!isLogin) {
-    navigate('/cart');
-    notify('warning', `請先登入，再繼續完成選購`);
-  }
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigate('/cart');
+      notify('warning', `請先登入，再繼續完成選購`);
+    }
+  }, [isLogin, navigate, dispatch]);
+
+  if (!isLogin) return null;
+
   const getCarts = async () => {
+    setCartIsLoading(true);
     try {
       const res = await getCart();
       setCartData(res.data.data.carts);
-      console.log(res.data.data.carts);
+      // console.log(res.data.data.carts);
     } catch (error) {
-      alert('取得失敗: ' + error.response.data.message);
+      notify(error, '取得失敗: ' + error.response.data.message);
+    } finally {
+      setCartIsLoading(false);
     }
   };
 
@@ -47,15 +57,15 @@ const Checkout = () => {
   });
 
   // 表單狀態
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    tel: '',
-    address: 'Taipei',
-    addons_total: 0,
-    final_total: 0,
-    payment_method: 'credit_card',
-  });
+  // const [formData, setFormData] = useState({
+  //   name: '',
+  //   email: '',
+  //   tel: '',
+  //   address: 'Taipei',
+  //   addons_total: 0,
+  //   final_total: 0,
+  //   payment_method: 'credit_card',
+  // });
 
   // 優惠券狀態
   const [couponCode, setCouponCode] = useState('');
@@ -148,7 +158,7 @@ const Checkout = () => {
             className="btn btn-sm btn-primary-100 text-gray-500 rounded-pill me-4"
             onClick={() => navigate('/cart')}
           >
-            <i class="bi bi-caret-left-fill me-1"></i>上一步
+            <i className="bi bi-caret-left-fill me-1"></i>上一步
           </button>
           <h1 className="fs-4 fw-semibold">訂單資訊</h1>
         </div>
@@ -333,14 +343,18 @@ const Checkout = () => {
 
             {/* 右側：訂單摘要 (Sticky Sidebar) */}
             <div className="col-md-5 col-lg-4">
-              <div className="order-summary-card p-4">
-                <h4 className="d-flex justify-content-between align-items-center mb-3">
-                  <span className="text-primary">購物車清單</span>
+              <div className="order-summary-card p-6">
+                <h4 className="d-flex justify-content-between align-items-center">
+                  <span className="text-primary py-3">購物車明細</span>
                   <span className="badge bg-orange-300 rounded-pill fw-normal pt-2 px-3">
                     {cartItemsQty}
                   </span>
                 </h4>
-
+                <Loader
+                  mode="button"
+                  show={isCartLoading}
+                  className={'mx-auto mt-3 text-gray-300 d-block'}
+                />
                 {/* 商品列表 */}
                 <ul className="list-group list-group-flush mb-3 px-2">
                   {cartData.map((item) => (
@@ -362,7 +376,7 @@ const Checkout = () => {
                         </div>
                       </div>
                       <span className="text-muted">
-                        <i class="bi bi-currency-dollar" />
+                        <i className="bi bi-currency-dollar" />
                         {(
                           item.customizations?.custom_total * item.qty
                         ).toLocaleString()}
@@ -399,27 +413,27 @@ const Checkout = () => {
                 <div className="d-flex justify-content-between mb-2 mt-6">
                   <span>小計</span>
                   <span>
-                    <i class="bi bi-currency-dollar" />{' '}
+                    <i className="bi bi-currency-dollar" />{' '}
                     {baseSubtotal.toLocaleString()}
                   </span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
                   <span>加購</span>
                   <span>
-                    <i class="bi bi-currency-dollar" />{' '}
+                    <i className="bi bi-currency-dollar" />{' '}
                     {totalAddons.toLocaleString()}
                   </span>
                 </div>
                 <div className="d-flex justify-content-between mb-2 text-success">
                   <span>折扣</span>
                   <span>
-                    -<i class="bi bi-currency-dollar" /> {discount}
+                    -<i className="bi bi-currency-dollar" /> {discount}
                   </span>
                 </div>
                 <div className="d-flex justify-content-between mt-3 pt-3 border-top border-gray-100">
                   <span className="fs-5 fw-medium">總計</span>
                   <span className="fs-5 fw-medium text-primary">
-                    <i class="bi bi-currency-dollar" />{' '}
+                    <i className="bi bi-currency-dollar" />{' '}
                     {finalTotal.toLocaleString()}
                   </span>
                 </div>

@@ -78,9 +78,11 @@ const Cart = () => {
 
   return (
     <div className="cart-container container-xl">
-      <Loader mode={'mask'} show={isLoading} text={'資料處理中..'} />
+      <Loader mode={'mask'} show={isLoading} text={'購物車讀取中..'} />
       <PageSwitch>
-        <h1 className="page-title">您的購物車</h1>
+        <h1 className="page-title">
+          <i className="bi bi-basket3 me-2"></i>購物車
+        </h1>
         <div className="row g-5">
           {/* 左側：商品列表 */}
           <section className="col-lg-8">
@@ -215,7 +217,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
               <span className="me-5">原價</span>
               <span>
                 <i className="bi bi-currency-dollar"></i>
-                {item?.customizations?.plan_info?.base_price}
+                {item?.customizations?.plan_info?.base_price?.toLocaleString()}
               </span>
             </p>
             {hasAddonsContent && (
@@ -223,7 +225,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
                 <span className="me-5">加購</span>
                 <span>
                   <i className="bi bi-currency-dollar"></i>
-                  {item?.customizations?.extra_price}
+                  {item?.customizations?.extra_price?.toLocaleString()}
                 </span>
               </p>
             )}
@@ -232,7 +234,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
               <span className="me-5">單品合計</span>
               <span>
                 <i className="bi bi-currency-dollar"></i>
-                {unitPrice}
+                {unitPrice?.toLocaleString()}
               </span>
             </p>
           </div>
@@ -434,25 +436,33 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
                           <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                             基底
                           </span>
-                          <span>{item.product.ingredients.base}</span>
+                          <span className="text-brown-300">
+                            {item.product.ingredients.base}
+                          </span>
                         </li>
                         <li className="mb-3">
                           <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                             主食
                           </span>
-                          <span>{item.product.ingredients.main}</span>
+                          <span className="text-brown-300">
+                            {item.product.ingredients.main}
+                          </span>
                         </li>
                         <li className="mb-3">
                           <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                             醬料
                           </span>
-                          <span>{item.product.ingredients.source}</span>
+                          <span className="text-brown-300">
+                            {item.product.ingredients.source}
+                          </span>
                         </li>
                         <li className="mb-5">
                           <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                             配菜
                           </span>
-                          <span>{item.product.ingredients.side}</span>
+                          <span className="text-brown-300">
+                            {item.product.ingredients.side}
+                          </span>
                         </li>
                       </ul>
                     </>
@@ -559,15 +569,15 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
               </h4>
               <ul className="px-2">
                 <li className="mb-3">
-                  <span>{item.product.ingredients.base}</span>
+                  <span className="text-brown-300">
+                    {item.product.ingredients.base}
+                  </span>
                 </li>
               </ul>
             </div>
           )}
 
-          <div
-            className={`detail-column nutrition-info mb-3 ${!isPoke ? 'full-width' : ''}`}
-          >
+          <div className={`detail-column nutrition-info mb-3 `}>
             <h4
               className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
                       border-5 border-gray-100 mb-4"
@@ -608,7 +618,7 @@ const CartSummary = ({ baseSubtotal, totalAddons, finalTotal }) => {
   const handleNextCart = () => {
     if (!isLogin) {
       dispatch(openModal());
-      notify('warning', `請先登入，再繼續完成選購`);
+      notify('info', `請先登入，再繼續完成選購`);
     } else {
       navigate('/checkout');
     }
@@ -616,9 +626,7 @@ const CartSummary = ({ baseSubtotal, totalAddons, finalTotal }) => {
   return (
     <aside className="cart-summary col-lg-4">
       <div className="summary-card">
-        <h4 className="text-primary pt-3 border-bottom border-gray-100 pb-3 mb-4">
-          費用總覽
-        </h4>
+        <h4 className="text-primary py-3 mb-4">費用總覽</h4>
 
         <div className="d-flex justify-content-between mb-2">
           <span>小計</span>
