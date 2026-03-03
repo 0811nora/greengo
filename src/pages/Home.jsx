@@ -119,7 +119,7 @@ export default function Home() {
             <div className='row'>
               <div className='col-lg-4 my-auto'>
                 <ContentCard
-                  hasBorder
+                  hasBorde
                   subTitle='YOUR INSPIRATION'
                   title='綠果專欄'
                   description={
