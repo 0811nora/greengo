@@ -43,7 +43,6 @@ const Member = () => {
   // };
 
   useEffect(() => {
-    // 加上一個標記，確認元件還在畫面上
     let isMounted = true;
 
     const fetchOrders = async (targetPage) => {
@@ -84,8 +83,8 @@ const Member = () => {
           <h1 className="fs-1 text-center fw-bold mb-8 ls-md ts-white">
             會員中心
           </h1>
-          {/* Tab 切換 */}
 
+          {/* Tab 切換 */}
           <ul className="nav nav-underline justify-content-center mb-9">
             <li className="nav-item">
               <button
