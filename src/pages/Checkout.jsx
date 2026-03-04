@@ -9,6 +9,14 @@ import Loader from '../components/common/Loading';
 import { selectIsLogin } from '../store/slices/userSlice';
 import { notify } from '../components/Notify';
 
+// 隨機取餐號產生器
+const generatePickupNumber = () => {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+  const randomNumber = Math.floor(100 + Math.random() * 900); // 產生 100-999
+  return `${randomLetter}${randomNumber}`; // 結果範例: T832, A105
+};
+
 const Checkout = () => {
   const [cartData, setCartData] = useState([]);
   const navigate = useNavigate();
@@ -24,8 +32,6 @@ const Checkout = () => {
     }
   }, [isLogin, navigate, dispatch]);
 
-  if (!isLogin) return null;
-
   const getCarts = async () => {
     setCartIsLoading(true);
     try {
@@ -40,8 +46,10 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    getCarts();
-  }, []);
+    if (isLogin) {
+      getCarts();
+    }
+  }, [isLogin]);
 
   const {
     register,
@@ -55,17 +63,6 @@ const Checkout = () => {
       payment_method: '',
     },
   });
-
-  // 表單狀態
-  // const [formData, setFormData] = useState({
-  //   name: '',
-  //   email: '',
-  //   tel: '',
-  //   address: 'Taipei',
-  //   addons_total: 0,
-  //   final_total: 0,
-  //   payment_method: 'credit_card',
-  // });
 
   // 優惠券狀態
   const [couponCode, setCouponCode] = useState('');
@@ -89,12 +86,6 @@ const Checkout = () => {
 
   const finalTotal = baseSubtotal + totalAddons - discount;
 
-  // 處理輸入變更
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
   // 處理優惠券
   const applyCoupon = () => {
     if (couponCode.toUpperCase() === 'SAVE100') {
@@ -104,14 +95,6 @@ const Checkout = () => {
       setDiscount(0);
       setCouponMsg({ type: 'danger', text: '無效的優惠碼' });
     }
-  };
-
-  // 隨機取餐號產生器
-  const generatePickupNumber = () => {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const randomLetter = letters[Math.floor(Math.random() * letters.length)];
-    const randomNumber = Math.floor(100 + Math.random() * 900); // 產生 100-999
-    return `${randomLetter}${randomNumber}`; // 結果範例: T832, A105
   };
 
   // 處理送出訂單
@@ -147,6 +130,8 @@ const Checkout = () => {
       setIsLoading(false);
     }
   };
+
+  if (!isLogin) return null;
 
   return (
     <div className="checkout-page cart-container container-xl">

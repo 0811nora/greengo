@@ -22,6 +22,7 @@ const Payment = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const isLogin = useSelector(selectIsLogin);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!isLogin) {
       navigate('/');
@@ -30,38 +31,24 @@ const Payment = () => {
     }
   }, [isLogin, navigate, dispatch]);
 
-  if (!isLogin) return null;
-
-  // const handleClose = () => {
-  //   alert('關閉modal');
-  //   setIsShowModal(false);
-  // };
-
-  const getPayOrder = async () => {
-    setIsLoading(true);
-    try {
-      const response = await getOrder(orderId);
-      setOrderData(response.data.order);
-      setProducts(Object.values(response.data.order.products));
-      // console.log(response.data.order);
-    } catch (error) {
-      notify('error', `取得失敗:${error.response.data.message}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getPayOrder();
-  }, [orderId]);
-
-  if (!orderData) {
-    return (
-      <div className="d-flex justify-content-center my-10 py-10">
-        <Loader mode={'page'} show={isLoading} text={'資料處理中..'} />
-      </div>
-    );
-  }
+    const getPayOrder = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getOrder(orderId);
+        setOrderData(response.data.order);
+        setProducts(Object.values(response.data.order.products));
+        // console.log(response.data.order);
+      } catch (error) {
+        notify('error', `取得失敗:${error.response.data.message}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    if (isLogin && orderId) {
+      getPayOrder();
+    }
+  }, [orderId, isLogin]);
 
   // 處理付款按鈕點擊
   const handlePayment = async () => {
@@ -125,6 +112,16 @@ const Payment = () => {
       })
       .replace(/,/g, '');
   };
+
+  if (!isLogin) return null;
+
+  if (!orderData) {
+    return (
+      <div className="d-flex justify-content-center my-10 py-10">
+        <Loader mode={'page'} show={isLoading} text={'資料處理中..'} />
+      </div>
+    );
+  }
 
   return (
     <div className="container payment-page cart-container">

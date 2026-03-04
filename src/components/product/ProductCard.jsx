@@ -2,7 +2,7 @@ import { renderUITab } from '../../utils/productUiRender';
 import { renderUITag } from '../../utils/productUiRender';
 import Loader from '../../components/common/Loading';
 
-const ProductCard = ({ product, category, handleOpenDetail, isAddCartLoading, handleAddCart }) => {
+const ProductCard = ({ product, category, handleOpenDetail }) => {
 	return (
 		<div className="col-xxl-3 col-lg-4  col-sm-6 col-12" key={product.id}>
 			<div className="d-flex flex-lg-column card mb-6" onClick={() => handleOpenDetail(product.id)}>
