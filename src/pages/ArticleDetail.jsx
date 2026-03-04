@@ -196,7 +196,7 @@ function ArticleDetail() {
                   to={`/article`}
                   className='home__btn-primary text-decoration-none mx-auto mt-5'
                 >
-                  探索更多文章<i className='bi bi-chevron-right'></i>
+                  探索更多文章
                 </Link>
               </div>
             </div>
