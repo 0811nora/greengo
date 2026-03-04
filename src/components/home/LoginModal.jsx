@@ -7,7 +7,6 @@ import {
 } from '../../store/slices/userSlice';
 import { useForm } from 'react-hook-form';
 import { notify } from '../Notify';
-import Loader from '../common/Loading';
 
 const LoginModal = () => {
   const {
@@ -47,7 +46,6 @@ const LoginModal = () => {
   // 登入或註冊
   const [activeTab, setActiveTab] = useState('login');
   // const [isRegisterMode, setIsRegisterMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   // 登入
   const onLoginSubmit = (data) => {
@@ -88,7 +86,6 @@ const LoginModal = () => {
 
   return (
     <>
-      <Loader mode={'mask'} show={isLoading} />
       <div
         className='header__modal-overlay d-flex justify-content-center align-items-center'
         onClick={handleBackdropClick}
@@ -99,8 +96,9 @@ const LoginModal = () => {
         >
           <div className='header__modal-img d-none d-lg-flex'>
             <img
+              loading='lazy'
               src={`${import.meta.env.BASE_URL}img/items/header-login-bg.webp`}
-              alt=''
+              alt='login-bg'
             />
           </div>
           <div
@@ -119,12 +117,14 @@ const LoginModal = () => {
                 <button
                   className={`header__tab ${activeTab === 'login' ? 'active' : ''}`}
                   onClick={() => handleTabSwitch('login')}
+                  aria-label='登入'
                 >
                   登入
                 </button>
                 <button
                   className={`header__tab ${activeTab === 'register' ? 'active' : ''}`}
                   onClick={() => handleTabSwitch('register')}
+                  aria-label='註冊'
                 >
                   註冊
                 </button>
@@ -200,7 +200,7 @@ const LoginModal = () => {
                           {...registerLogin('rememberMe')}
                         />
                         <label
-                          className='form-check-label text-muted small'
+                          className='form-check-label text-gray-400 fs-sm'
                           htmlFor='rememberMe'
                         >
                           記住我
@@ -208,11 +208,12 @@ const LoginModal = () => {
                       </div>
                       <button
                         type='button'
-                        className='btn btn-link p-0 text-muted small text-decoration-none'
+                        className='btn btn-link p-0 text-gray-400 fs-sm text-decoration-none'
                         onClick={() => (
                           notify('success', '還沒做這功能QQ'),
                           console.log('忘記密碼')
                         )}
+                        aria-label='忘記密碼嗎？'
                       >
                         忘記密碼？
                       </button>
@@ -221,6 +222,7 @@ const LoginModal = () => {
                       <button
                         type='submit'
                         className='home__btn-primary w-100 rounded-pill py-2'
+                        aria-label='提交登入'
                       >
                         登入
                       </button>
@@ -230,6 +232,7 @@ const LoginModal = () => {
                           type='button'
                           className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
                           onClick={() => handleTabSwitch('register')}
+                          aria-label='前往註冊'
                         >
                           立即註冊
                         </button>
@@ -244,7 +247,7 @@ const LoginModal = () => {
                     <div className='mb-3'>
                       <label
                         htmlFor='registerEmail'
-                        className='form-label fw-semibold'
+                        className='form-label fw-semibold text-gray-400'
                       >
                         電子信箱
                       </label>
@@ -273,7 +276,7 @@ const LoginModal = () => {
                     <div className='mb-3'>
                       <label
                         htmlFor='registerPassword'
-                        className='form-label fw-semibold'
+                        className='form-label fw-semibold text-gray-400'
                       >
                         密碼
                       </label>
@@ -302,7 +305,7 @@ const LoginModal = () => {
                     <div className='mb-3'>
                       <label
                         htmlFor='registerConfirmPassword'
-                        className='form-label fw-semibold'
+                        className='form-label fw-semibold text-gray-400'
                       >
                         確認密碼
                       </label>
@@ -331,6 +334,7 @@ const LoginModal = () => {
                       <button
                         type='submit'
                         className='home__btn-primary rounded-pill py-2'
+                        aria-label='提交註冊'
                       >
                         註冊
                       </button>
@@ -340,6 +344,7 @@ const LoginModal = () => {
                           type='button'
                           className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
                           onClick={() => handleTabSwitch('login')}
+                          aria-label='前往登入'
                         >
                           立即登入
                         </button>

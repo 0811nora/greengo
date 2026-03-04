@@ -9,7 +9,7 @@ import { notify } from '../components/Notify';
 import { useNavigate } from 'react-router-dom';
 
 const Member = () => {
-  const [activeTab, setActiveTab] = useState('orders'); // orders | profile
+  const [activeTab, setActiveTab] = useState('orders');
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -27,41 +27,68 @@ const Member = () => {
   }, [isLogin, navigate, dispatch]);
 
   // 取得訂單列表
-  const fetchOrders = async (targetPage) => {
-    setIsLoading(true);
-    try {
-      const res = await getOrders(targetPage);
-      console.log(res.data);
-      setOrders(res.data.orders || []);
-      setTotalPages(res.data.pagination.total_pages || 1);
-      window.scrollTo(0, 0);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      alert('取得失敗: ' + (error.response?.data?.message || '未知錯誤'));
-    }
-  };
+  // const fetchOrders = async (targetPage) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await getOrders(targetPage);
+  //     console.log(res.data);
+  //     setOrders(res.data.orders || []);
+  //     setTotalPages(res.data.pagination.total_pages || 1);
+  //     window.scrollTo(0, 0);
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     alert('取得失敗: ' + (error.response?.data?.message || '未知錯誤'));
+  //   }
+  // };
 
   useEffect(() => {
+    let isMounted = true;
+
+    const fetchOrders = async (targetPage) => {
+      setTimeout(() => {
+        if (isMounted) setIsLoading(true);
+      }, 0);
+
+      try {
+        const res = await getOrders(targetPage);
+        if (isMounted) {
+          setOrders(res.data.orders || []);
+          setTotalPages(res.data.pagination.total_pages || 1);
+          window.scrollTo(0, 0);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setIsLoading(false);
+          alert('取得失敗: ' + (error.response?.data?.message || '未知錯誤'));
+        }
+      }
+    };
+
     if (activeTab === 'orders') {
       fetchOrders(page);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [page, activeTab]);
 
   return (
     <div className="member-center-container">
-      <Loader mode={'page'} show={isLoading} />
+      <Loader mode={'mask'} show={isLoading} text={'讀取中..'} />
       <PageSwitch>
         <div className="container">
           <h1 className="fs-1 text-center fw-bold mb-8 ls-md ts-white">
             會員中心
           </h1>
-          {/* Tab 切換 */}
 
+          {/* Tab 切換 */}
           <ul className="nav nav-underline justify-content-center mb-9">
             <li className="nav-item">
               <button
-                className={`nav-link tab-navLink ts-white me-7 ${activeTab === 'orders' ? 'active' : ''}`}
+                className={`nav-link tab-navLink fs-5 fs-md-4 ts-white me-3 me-md-7 ${activeTab === 'orders' ? 'active' : ''}`}
                 onClick={() => setActiveTab('orders')}
               >
                 <i className="bi bi-clipboard-fill me-2"></i>
@@ -70,7 +97,7 @@ const Member = () => {
             </li>
             <li className="nav-item">
               <button
-                className={`nav-link tab-navLink ts-white ${activeTab === 'profile' ? 'active' : ''}`}
+                className={`nav-link tab-navLink fs-5 ts-white ${activeTab === 'profile' ? 'active' : ''}`}
                 onClick={() => setActiveTab('profile')}
               >
                 <i className="bi bi-person-lines-fill me-2"></i>個人資料

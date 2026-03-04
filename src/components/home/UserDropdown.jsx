@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   logout,
   openModal,
+  closeModal,
   openUserDropdown,
   closeUserDropdown,
   toggleUserDropdown,
@@ -69,6 +70,8 @@ const UserDropdown = () => {
     } else {
       // 手機版：直接到會員中心
       navigate('/member');
+      dispatch(closeUserDropdown());
+      dispatch(closeModal());
     }
   };
 
@@ -141,7 +144,10 @@ const UserDropdown = () => {
         type='button'
         className='btn btn-link p-0 text-decoration-none d-lg-none'
         onClick={handleIconClick}
-        onMouseLeave={handleMouseLeave}
+        onMouseLeave={(e) => {
+          e.stopPropagation();
+          handleMouseLeave;
+        }}
       >
         <i className='bi bi-person-circle fs-4'></i>
       </button>
