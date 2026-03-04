@@ -9,7 +9,7 @@ import { notify } from '../components/Notify';
 import { useNavigate } from 'react-router-dom';
 
 const Member = () => {
-  const [activeTab, setActiveTab] = useState('orders'); // orders | profile
+  const [activeTab, setActiveTab] = useState('orders');
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -61,7 +61,7 @@ const Member = () => {
           <ul className="nav nav-underline justify-content-center mb-9">
             <li className="nav-item">
               <button
-                className={`nav-link tab-navLink ts-white me-7 ${activeTab === 'orders' ? 'active' : ''}`}
+                className={`nav-link tab-navLink fs-5 fs-md-4 ts-white me-3 me-md-7 ${activeTab === 'orders' ? 'active' : ''}`}
                 onClick={() => setActiveTab('orders')}
               >
                 <i className="bi bi-clipboard-fill me-2"></i>
@@ -70,7 +70,7 @@ const Member = () => {
             </li>
             <li className="nav-item">
               <button
-                className={`nav-link tab-navLink ts-white ${activeTab === 'profile' ? 'active' : ''}`}
+                className={`nav-link tab-navLink fs-5 ts-white ${activeTab === 'profile' ? 'active' : ''}`}
                 onClick={() => setActiveTab('profile')}
               >
                 <i className="bi bi-person-lines-fill me-2"></i>個人資料
