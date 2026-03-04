@@ -142,7 +142,7 @@ export default function Home() {
                   {/* 主文章 */}
                   <div className='col-lg-7'>
                     <h4 className='py-5 align-items-start'>
-                      <i className='bi bi-fire me-1'></i>Fresh Pick
+                      <i className='bi bi-fire text-error mx-1'></i>Fresh Pick
                     </h4>
                     {mainArticle && (
                       <Link
@@ -222,53 +222,61 @@ export default function Home() {
                   {/* 文章卡片*/}
                   <div className='col-lg-5'>
                     <h4 className='py-5 align-items-start'>
-                      <i className='bi bi-bookmark-star me-1'></i>Editor's Picks
+                      <i className='bi bi-bookmark-star text-brown-300 mx-1'></i>
+                      Editor's Picks
                     </h4>
-
                     {subArticles.map((article) => (
                       <div
                         key={article.id}
-                        className='pickUp-card border-start border-1 border-brown-100 rounded-4 overflow-hidden px-4 py-2 mb-5'
+                        className='pickUp-card border-start border-1 border-brown-100 rounded-4 overflow-hidden px-6 py-4 px-md-4 py-md-2 mb-5'
                       >
-                        <div className='py-3 d-flex flex-column'>
+                        <div className='d-flex flex-column align-items-start w-100'>
                           <Link
                             to={`/article/${article.id}`}
                             className='text-decoration-none'
                           >
-                            <h6 className='fw-bold mb-4'>{article.title}</h6>
+                            <h6 className='fw-bold mb-2'>{article.title}</h6>
                           </Link>
-                          <div className='d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100'>
-                            <p className='text-brown-300 d-block mb-0'>
-                              {formatDate(article.create_at)}‧
-                              {article.tag?.map((tag, index) => (
-                                <span
-                                  key={index}
-                                  className='badge bg-accent text-gray-600'
-                                >
-                                  #{tag}
-                                </span>
-                              ))}
-                            </p>
-                            <Link
-                              to={`/article/${article.id}`}
-                              className='home__btn-link text-decoration-none text-center'
-                            >
-                              <span className='hover-underline'>閱讀全文</span>
-                              <svg
-                                id='arrow-horizontal'
-                                xmlns='http://www.w3.org/2000/svg'
-                                width='30'
-                                height='8'
-                                viewBox='0 0 46 16'
-                                fill='currentColor'
+                          <div className='d-flex justify-content-between align-items-center w-100'>
+                            <div className='d-flex align-items-center gap-1 flex-wrap'>
+                              <p className='text-brown-300 d-block mb-0'>
+                                {formatDate(article.create_at)}‧
+                              </p>
+                              <div>
+                                {article.tag?.map((tag, index) => (
+                                  <span
+                                    key={index}
+                                    className='badge bg-accent text-gray-600'
+                                  >
+                                    #{tag}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                            <div className='d-flex justify-content-end'>
+                              <Link
+                                to={`/article/${article.id}`}
+                                className='home__btn-link text-decoration-none'
                               >
-                                <path
-                                  id='Path_10'
-                                  d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
-                                  transform='translate(30)'
-                                ></path>
-                              </svg>
-                            </Link>
+                                <span className='hover-underline'>
+                                  閱讀全文
+                                </span>
+                                <svg
+                                  id='arrow-horizontal'
+                                  xmlns='http://www.w3.org/2000/svg'
+                                  width='30'
+                                  height='8'
+                                  viewBox='0 0 46 16'
+                                  fill='currentColor'
+                                >
+                                  <path
+                                    id='Path_10'
+                                    d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
+                                    transform='translate(30)'
+                                  ></path>
+                                </svg>
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </div>
