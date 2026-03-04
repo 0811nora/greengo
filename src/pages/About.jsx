@@ -741,7 +741,7 @@ export default function About() {
 
                 </div>
 
-                <div className="fifth-section">
+                <div className="fifth-section" id="faq-section">
 
                     <div className="bottomHalfImg d-flex align-items-end">
                         <img src={`${import.meta.env.BASE_URL}img/about/about_bowl.png`} alt="bowl" />

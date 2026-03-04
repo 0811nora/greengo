@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { renderRefresh } from '../../store/slices/cartSlice';
 
 // API
-import { postAddToCart } from '../../api/ApiClient';
+import { postAddToCart, getSingleProduct } from '../../api/ApiClient';
 
 // swiper
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
@@ -24,10 +24,32 @@ const BestSellerSwiper = () => {
   // 加入購物車
   const addCartBtn = async (id = '', qty = 1) => {
     try {
+      // 先取得產品資訊
+      const productRes = await getSingleProduct(id);
+      const productData = productRes.data.product;
+      // 算金額
+      const totalPrice = productData.price * qty;
+      // 傳送購物車資料(包含 customizations)
       const cartData = {
         product_id: id,
         qty: qty,
+        total: totalPrice,
+        customizations: {
+          custom_total: totalPrice,
+          extra_price: 0,
+          plan_info: {
+            base_price: productData.price,
+            plan_type: productData.product_type || 'set',
+          },
+          total_nutrition: {
+            calories: productData.nutrition.calories,
+            carbs: productData.nutrition.carbs,
+            fat: productData.nutrition.fat,
+            protein: productData.nutrition.protein,
+          },
+        },
       };
+
       const res = await postAddToCart(cartData);
       console.log('加入購物車資料:', res.data);
       notify('success', '成功加入購物車！');
@@ -42,11 +64,11 @@ const BestSellerSwiper = () => {
       <Swiper
         className='fixed-swiper'
         modules={[Navigation, A11y]}
-        spaceBetween={24}
-        slidesPerView={1}
+        spaceBetween={12}
+        slidesPerView={1.5}
         navigation
         breakpoints={{
-          576: { slidesPerView: 1 },
+          576: { slidesPerView: 2.2 },
           768: { slidesPerView: 2 },
           992: { slidesPerView: 3 },
           1296: { slidesPerView: 4 },

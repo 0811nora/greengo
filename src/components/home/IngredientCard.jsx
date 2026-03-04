@@ -17,7 +17,7 @@ const IngredientCard = ({ item }) => {
       <div className='progress-container'>
         <div className='circle-content'>
           <span className='label'>{item.nur}</span>
-          <span className='value'>{item.protein}</span>
+          <span className='value'>{item.gram}</span>
         </div>
         {/* 圓圈 */}
         <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>

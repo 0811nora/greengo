@@ -31,7 +31,7 @@ export default function AdminPages() {
 			// a. 驗證是否有token，沒有直接回登入頁
 			if (!greenCookie) {
 				navigate('/admin/login');
-				notify('error', '登入錯誤，請先輸入帳號密碼');
+				// notify('error', '登入錯誤，請先輸入帳號密碼');
 				return;
 			}
 

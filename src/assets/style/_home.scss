@@ -355,7 +355,7 @@ li {
   --swiper-navigation-size: 80px;
   padding: 16px 50px !important;
   @media (max-width: 768px) {
-    padding: 16px 20px !important;
+    padding: 16px 8px !important;
   }
 }
 .fixed-swiper .swiper-button-prev,
@@ -373,6 +373,9 @@ li {
     0 2px 4px 0 rgba(0, 0, 0, 0.3),
     inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   z-index: 50;
+  @media (max-width: 767px) {
+    display: none !important;
+  }
 }
 .fixed-swiper .swiper-button-prev {
   left: -26px;
@@ -380,6 +383,7 @@ li {
 .fixed-swiper .swiper-button-next {
   right: -26px;
 }
+
 // 固定菜單卡片
 .home__fixed-card {
   width: 100%;

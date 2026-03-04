@@ -29,12 +29,12 @@ export default function AdminOrder_today() {
 			const totalPages = res.data.pagination.total_pages;
 
 			// 以訂單建立時間，局限在今日時間
-			// const allPagesOrders = resOrds.filter(
-			// 	order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
-			// );
+			const allPagesOrders = resOrds.filter(
+				order => order.create_at * 1000 >= todayStart && order.create_at * 1000 <= todayEnd,
+			);
 
 			// 以訂單建立時間，局限在今日以前
-			const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
+			// const allPagesOrders = resOrds.filter(order => order.create_at * 1000 < todayStart);
 
 			// 如果第一頁沒有今日時間，就return
 			if (allPagesOrders.length === 0) {
@@ -286,7 +286,7 @@ export default function AdminOrder_today() {
 													<td>{order.user.name}</td>
 													<td>{order.user.tel}</td>
 
-													<td>{`$${formatPrice(order.total)}`}</td>
+													<td>{`$${formatPrice(order.user.final_total)}`}</td>
 
 													<td>{renderTagStatus(order.user.order_status)}</td>
 													<td>{renderTagStatus(order.user.payment_status)}</td>

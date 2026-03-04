@@ -64,8 +64,8 @@ export const Ingredients = [
     id: 'salmon',
     name: '鮭魚',
     nur: '蛋白質',
-    protein: '26g',
-    percentage: 0.65,
+    gram: '26 g',
+    percentage: 0.85,
     color: '#ffa43b',
     pos: 'pos-btm-left',
     img: `${import.meta.env.BASE_URL}img/items/salmon.png`,
@@ -74,21 +74,21 @@ export const Ingredients = [
   {
     id: 'tomato',
     name: '番茄',
-    nur: '膳食纖維',
-    protein: '0.8g',
-    percentage: 0.06,
-    color: '#6FA9BB',
+    nur: '維生素C',
+    gram: '0.8 g',
+    percentage: 0.25,
+    color: '#C54F2D',
     pos: 'pos-top-mid',
     img: `${import.meta.env.BASE_URL}img/items/tomato.png`,
   },
-  // 熱量：約 11 kcal/碳水化合物：約 2.5 g/膳食纖維：約 0.8 g
+  // 熱量：約 11 kcal/碳水化合物：約 2.5 g/膳食纖維：約 0.8 g/維生素C：約 0.8 g
   {
     id: 'pumpkin',
     name: '南瓜',
-    nur: '膳食纖維',
-    protein: '2g',
-    percentage: 0.17,
-    color: '#6FA9BB',
+    nur: '熱量',
+    gram: '45 kcal',
+    percentage: 0.06,
+    color: '#f7da4b',
     pos: 'pos-top-mid-left',
     img: `${import.meta.env.BASE_URL}img/items/pumpkin.png`,
   },
@@ -96,10 +96,10 @@ export const Ingredients = [
   {
     id: 'broccoli',
     name: '花椰菜',
-    nur: '蛋白質',
-    protein: '2.5g',
+    nur: '膳食纖維',
+    gram: '2.2 g',
     percentage: 0.06,
-    color: '#ffa43b',
+    color: '#81C784',
     pos: 'pos-top-right',
     img: `${import.meta.env.BASE_URL}img/items/broccoli.png`,
   },
@@ -108,9 +108,9 @@ export const Ingredients = [
     id: 'cucumber',
     name: '小黃瓜',
     nur: '碳水',
-    protein: '2g',
+    gram: '2 g',
     percentage: 0.02,
-    color: '#C54F2D',
+    color: '#6FA9BB',
     pos: 'pos-btm-right',
     img: `${import.meta.env.BASE_URL}img/items/cucumber.png`,
   },
@@ -151,7 +151,7 @@ export const StepCards = [
 ];
 
 // 餐點卡片區
-// 模擬資料，待接 API
+// 模擬資料，因為無法確認實際熱門產品(功能未上架)
 export const FixedMeals = [
   {
     id: '-Ol1k7ZvEvYKdnM5LjO5',

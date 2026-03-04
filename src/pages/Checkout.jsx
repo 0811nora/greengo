@@ -3,24 +3,45 @@ import { getCart, postOrder } from '../api/ApiClient';
 import { useNavigate } from 'react-router-dom';
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { renderRefresh } from './../store/slices/cartSlice';
+import Loader from '../components/common/Loading';
+import { selectIsLogin } from '../store/slices/userSlice';
+import { notify } from '../components/Notify';
 
 const Checkout = () => {
   const [cartData, setCartData] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCartLoading, setCartIsLoading] = useState(false);
+  const isLogin = useSelector(selectIsLogin);
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigate('/cart');
+      notify('warning', `請先登入，再繼續完成選購`);
+    }
+  }, [isLogin, navigate, dispatch]);
 
   const getCarts = async () => {
+    setCartIsLoading(true);
     try {
       const res = await getCart();
       setCartData(res.data.data.carts);
-      console.log(res.data.data.carts);
+      // console.log(res.data.data.carts);
     } catch (error) {
-      alert('取得失敗: ' + error.response.data.message);
+      notify(error, '取得失敗: ' + error.response.data.message);
+    } finally {
+      setCartIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getCarts();
-  }, []);
+    if (isLogin) {
+      getCarts();
+    }
+  }, [isLogin]);
 
   const {
     register,
@@ -35,43 +56,27 @@ const Checkout = () => {
     },
   });
 
-  // 表單狀態
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    tel: '',
-    address: 'Taipei',
-    addons_total: 0,
-    final_total: 0,
-    payment_method: 'credit_card',
-  });
-
   // 優惠券狀態
   const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
   const [couponMsg, setCouponMsg] = useState('');
 
   // 計算金額
-  const { baseSubtotal, totalAddons } = cartData.reduce(
+  const { baseSubtotal, totalAddons, cartItemsQty } = cartData.reduce(
     (acc, item) => {
       const itemBasePrice = item.product.price;
       const itemExtraPrice = item.customizations?.extra_price;
 
       acc.baseSubtotal += itemBasePrice * item.qty;
       acc.totalAddons += itemExtraPrice * item.qty;
+      acc.cartItemsQty += item.qty;
 
       return acc;
     },
-    { baseSubtotal: 0, totalAddons: 0 }, // 初始值
+    { baseSubtotal: 0, totalAddons: 0, cartItemsQty: 0 }, // 初始值
   );
 
   const finalTotal = baseSubtotal + totalAddons - discount;
-
-  // 處理輸入變更
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
 
   // 處理優惠券
   const applyCoupon = () => {
@@ -112,21 +117,36 @@ const Checkout = () => {
         address: 'Taipei',
       },
     };
-    // console.log(predata);
+    setIsLoading(true);
     try {
       const response = await postOrder(predata);
       const newOrderId = response.data.orderId;
       getCarts();
+      dispatch(renderRefresh());
       navigate(`/payment/${newOrderId}`);
     } catch (error) {
       alert('取得失敗: ' + error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (!isLogin) return null;
 
   return (
     <div className="checkout-page cart-container container-xl">
       <PageSwitch>
-        <h1 className="page-title">訂單資訊</h1>
+        <Loader mode={'mask'} show={isLoading} text={'正在送出訂單..'} />
+        <div className="d-flex mb-7">
+          <button
+            type="button"
+            className="btn btn-sm btn-primary-100 text-gray-500 rounded-pill me-4"
+            onClick={() => navigate('/cart')}
+          >
+            <i className="bi bi-caret-left-fill me-1"></i>上一步
+          </button>
+          <h1 className="fs-4 fw-semibold">訂單資訊</h1>
+        </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row g-5">
@@ -236,7 +256,7 @@ const Checkout = () => {
                           })}
                         />
                         <div className="payment-card w-100">
-                          <i className="bi bi-credit-card-2-front"></i>
+                          <i className="bi bi-credit-card-2-front payment-icon"></i>
                           <div>
                             <div className="fw-bold">信用卡 / 金融卡</div>
                             <small className="text-muted">
@@ -260,7 +280,7 @@ const Checkout = () => {
                           })}
                         />
                         <div className="payment-card w-100">
-                          <i className="bi bi-phone"></i>
+                          <i className="bi bi-phone payment-icon"></i>
                           <div>
                             <div className="fw-bold">電子支付</div>
                             <small className="text-muted">
@@ -284,7 +304,7 @@ const Checkout = () => {
                           })}
                         />
                         <div className="payment-card w-100">
-                          <i className="bi bi-cash-coin"></i>
+                          <i className="bi bi-cash-coin payment-icon"></i>
                           <div>
                             <div className="fw-bold"> 臨櫃現金</div>
                             <small className="text-muted">臨櫃付款</small>
@@ -308,14 +328,18 @@ const Checkout = () => {
 
             {/* 右側：訂單摘要 (Sticky Sidebar) */}
             <div className="col-md-5 col-lg-4">
-              <div className="order-summary-card p-4">
-                <h4 className="d-flex justify-content-between align-items-center mb-3">
-                  <span className="text-primary">購物車清單</span>
-                  <span className="badge bg-orange-300 rounded-pill fw-normal pt-3 px-4">
-                    {cartData.length}
+              <div className="order-summary-card p-6">
+                <h4 className="d-flex justify-content-between align-items-center">
+                  <span className="text-primary py-3">購物車明細</span>
+                  <span className="badge bg-orange-300 rounded-pill fw-normal pt-2 px-3">
+                    {cartItemsQty}
                   </span>
                 </h4>
-
+                <Loader
+                  mode="button"
+                  show={isCartLoading}
+                  className={'mx-auto mt-3 text-gray-300 d-block'}
+                />
                 {/* 商品列表 */}
                 <ul className="list-group list-group-flush mb-3 px-2">
                   {cartData.map((item) => (
@@ -337,7 +361,7 @@ const Checkout = () => {
                         </div>
                       </div>
                       <span className="text-muted">
-                        <i class="bi bi-currency-dollar" />
+                        <i className="bi bi-currency-dollar" />
                         {(
                           item.customizations?.custom_total * item.qty
                         ).toLocaleString()}
@@ -364,37 +388,37 @@ const Checkout = () => {
 
                 {couponMsg && (
                   <div
-                    className={`alert alert-${couponMsg.type} py-1 px-2 mb-3 small`}
+                    className={`alert alert-${couponMsg.type} py-1 px-2 mt-3 small`}
                   >
                     {couponMsg.text}
                   </div>
                 )}
 
                 {/* 金額計算 */}
-                <div className="d-flex justify-content-between mb-2">
+                <div className="d-flex justify-content-between mb-2 mt-6">
                   <span>小計</span>
                   <span>
-                    <i class="bi bi-currency-dollar" />{' '}
+                    <i className="bi bi-currency-dollar" />{' '}
                     {baseSubtotal.toLocaleString()}
                   </span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
                   <span>加購</span>
                   <span>
-                    <i class="bi bi-currency-dollar" />{' '}
+                    <i className="bi bi-currency-dollar" />{' '}
                     {totalAddons.toLocaleString()}
                   </span>
                 </div>
                 <div className="d-flex justify-content-between mb-2 text-success">
                   <span>折扣</span>
                   <span>
-                    -<i class="bi bi-currency-dollar" /> {discount}
+                    -<i className="bi bi-currency-dollar" /> {discount}
                   </span>
                 </div>
                 <div className="d-flex justify-content-between mt-3 pt-3 border-top border-gray-100">
                   <span className="fs-5 fw-medium">總計</span>
                   <span className="fs-5 fw-medium text-primary">
-                    <i class="bi bi-currency-dollar" />{' '}
+                    <i className="bi bi-currency-dollar" />{' '}
                     {finalTotal.toLocaleString()}
                   </span>
                 </div>

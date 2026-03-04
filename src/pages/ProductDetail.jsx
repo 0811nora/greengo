@@ -5,6 +5,7 @@ import { getSingleProduct } from '../api/ApiClient';
 import { renderUITab, renderUITag } from '../utils/productUiRender';
 import DonutPFC from '../components/custom-comp/PFC_Chart';
 import Loader from '../components/common/Loading';
+import { notify } from '../components/Notify';
 
 const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) => {
 	const { id } = useParams();
@@ -103,7 +104,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 											</div>
 										</div>
 										{/* tab */}
-										<div className="tab d-flex gap-2">
+										<div className="tab d-flex  flex-sm-row flex-column gap-2">
 											{renderUITab(productDetail?.tab_collection, productDetail?.product_type)?.map(
 												(item, index) => (
 													<span className="tabPill" key={index}>
@@ -171,7 +172,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 												</p>
 											</div>
 										</div>
-										<div className="nutrition-chart mt-5 mt-sm-0">
+										<div className="nutrition-chart mt-5 mt-sm-0 flex-fill">
 											<DonutPFC
 												protein={productDetail?.nutrition.protein}
 												fat={productDetail?.nutrition.fat}
@@ -180,59 +181,6 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 											/>
 										</div>
 									</div>
-									{/* addon */}
-									{/* <div className="addon py-7">
-									<h6 className="mb-4">加購配料（皆另外包裝）</h6>
-								
-									<div>
-										<Accordion defaultActiveKey="0" flush>
-											<Accordion.Item eventKey="0">
-												<Accordion.Header>加購額外基底</Accordion.Header>
-												<Accordion.Body className="d-flex flex-column gap-4">
-													{apiItemData
-														.filter(item => item.product_type === 'base')
-														.map(item => (
-															<Form.Group className="d-flex align-items-center" key={item.id}>
-																<Form.Label
-																	htmlFor={item.title}
-																	className="d-flex align-items-center gap-4 me-auto"
-																>
-																	<img src={item.imageUrl} alt={item.title} />
-																	<div>
-																		<p>{item.title}</p>
-																		<span>{`${item.grams}g / ${item.nutrition.calories}Kcal ｜P ${item.nutrition.protein}｜F ${item.nutrition.fat}｜C ${item.nutrition.carbs}`}</span>
-																	</div>
-																</Form.Label>
-
-																<div className="d-flex align-items-center">
-																	<Form.Label htmlFor={item.title}>{`+ $${item.price}`}</Form.Label>
-																	<Form.Check type="checkbox" id={item.title} />
-																</div>
-															</Form.Group>
-														))}
-												</Accordion.Body>
-											</Accordion.Item>
-											<Accordion.Item eventKey="1">
-												<Accordion.Header>加購額外主食​ (蛋白質)</Accordion.Header>
-												<Accordion.Body>
-													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-												</Accordion.Body>
-											</Accordion.Item>
-											<Accordion.Item eventKey="2">
-												<Accordion.Header>加購額外醬​汁</Accordion.Header>
-												<Accordion.Body>
-													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-												</Accordion.Body>
-											</Accordion.Item>
-											<Accordion.Item eventKey="3">
-												<Accordion.Header>加購額外​配料​</Accordion.Header>
-												<Accordion.Body>
-													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-												</Accordion.Body>
-											</Accordion.Item>
-										</Accordion>
-									</div>
-								</div> */}
 								</div>
 							</div>
 						</div>
@@ -259,7 +207,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 					>
 						<p>
 							{`加入 ${num} 份商品至購物車`}
-							<span className="fw-semibold ms-4">{`NT$ ${(productDetail?.price * num).toLocaleString()}`}</span>
+							<span className="fw-semibold ms-sm-4">{`NT$ ${(productDetail?.price * num).toLocaleString()}`}</span>
 							<Loader mode="button" show={isAddCartLoading} className={'ms-2'} />
 						</p>
 					</button>

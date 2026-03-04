@@ -12,7 +12,7 @@ const admNavbarData = {
 	navLink_needAdmMode: [
 		{ title: '商品管理', route: 'products' },
 		{ title: '文章管理', route: 'blog' },
-		{ title: '報表統整', route: 'report' },
+		{ title: '營運報表', route: 'report' },
 	],
 };
 
