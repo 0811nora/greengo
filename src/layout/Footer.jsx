@@ -89,10 +89,10 @@ export default function Footer() {
                 <ul className='list-unstyled'>
                   <li className='mb-2'>{FooterData.contact.address}</li>
                   <li className='ft-en mb-2'>{FooterData.contact.phone}</li>
-                  <li className='ft-en fs-md-sm fs-lg-md mb-2'>
+                  <li className='ft-en mb-2'>
                     <a
                       href={`mailto:${FooterData.contact.email}`}
-                      className='text-white text-decoration-none hover-underline fs-sm fs-lg-md'
+                      className='text-white text-decoration-none hover-underline footer__mail-link'
                     >
                       {FooterData.contact.email}
                     </a>

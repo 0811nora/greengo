@@ -57,11 +57,12 @@ const StepCard = () => {
         ))}
       </div>
       <div className='step-pagination'>
-        {StepCards.map((_, index) => (
+        {StepCards.map((item, index) => (
           <button
             key={index}
             className={`pagination ${index === activeIndex ? 'active' : ''}`}
             onClick={() => handleClick(index)}
+            aria-label={item.step_title}
           />
         ))}
       </div>

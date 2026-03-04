@@ -139,7 +139,7 @@ function ArticleDetail() {
               </div>
               <div className='col-lg-3 px-4 py-6 articleDetail__pickUp'>
                 <h3 className='py-5'>
-                  <i className='bi bi-arrow-bar-right me-1'></i>PICK UP
+                  <i className='bi bi-link-45deg me-1'></i>Related Picks
                 </h3>
                 {pickUpArticle.map((item) => (
                   <div
@@ -168,7 +168,21 @@ function ArticleDetail() {
                         to={`/article/${item.id}`}
                         className='home__btn-link text-decoration-none ms-auto'
                       >
-                        閱讀全文<i className='bi bi-chevron-right'></i>
+                        <span className='hover-underline'>閱讀全文</span>
+                        <svg
+                          id='arrow-horizontal'
+                          xmlns='http://www.w3.org/2000/svg'
+                          width='30'
+                          height='8'
+                          viewBox='0 0 46 16'
+                          fill='currentColor'
+                        >
+                          <path
+                            id='Path_10'
+                            d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
+                            transform='translate(30)'
+                          ></path>
+                        </svg>
                       </Link>
                     </div>
                   </div>

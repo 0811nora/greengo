@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation} from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import CartDropdown from '../components/home/CartDropdown';
 import LoginModal from '../components/home/LoginModal';
 import UserDropdown from '../components/home/UserDropdown';
-import { logout, selectIsLogin } from '../store/slices/userSlice';
+import {
+  logout,
+  selectIsLogin,
+  closeModal,
+  closeUserDropdown,
+} from '../store/slices/userSlice';
 
 const NavbarData = {
   brand: {
@@ -23,6 +28,8 @@ const NavbarData = {
   ],
   mobileLinks: { title: '購物車', url: '/cart' },
 };
+
+
 
 export default function Header() {
   // mobile menu setting
@@ -52,6 +59,14 @@ export default function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isMobileMenuOpen]);
+
+  // 處理手機板登入跳轉問題
+const location = useLocation();
+useEffect(() => {
+  closeMenu(); 
+  dispatch(closeModal());
+  dispatch(closeUserDropdown());
+}, [location.pathname, dispatch]);
 
   return (
     <>
@@ -100,7 +115,7 @@ export default function Header() {
               >
                 <div className='mobile-container__header'>
                   <NavLink
-                    className='header__brand ft-en fw-semibold text-decoration-none'
+                    className='header__brand fw-semibold text-decoration-none'
                     to={NavbarData.brand.url}
                     onClick={closeMenu}
                   >
@@ -111,6 +126,7 @@ export default function Header() {
                     <Link
                       className='btn btn-outline-gray-400 rounded-pill border-none'
                       to={NavbarData.mobileLinks.url}
+                      onClick={closeMenu}
                     >
                       <i className='bi bi-cart'></i>
                     </Link>
@@ -158,8 +174,8 @@ export default function Header() {
                         className='btn btn-outline-danger w-100 rounded-pill mt-3'
                         onClick={() => {
                           dispatch(logout());
-                          closeMenu();
                           navigate('/');
+                          closeMenu();
                         }}
                       >
                         <i className='bi bi-box-arrow-right me-2'></i>
