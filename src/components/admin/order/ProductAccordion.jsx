@@ -95,7 +95,7 @@ const ProductAccordion = ({ handlePlanBuckle, orderDetail, formatPrice, included
 						</Accordion.Body>
 					</Accordion.Item>
 				) : (
-					<div className="accordion-item satic d-flex justify-content-between">
+					<div className="accordion-item satic d-flex justify-content-between" key={index}>
 						{orderProduct.product.title}
 						<div>
 							<span className="me-2">{`x ${orderProduct.qty}`}</span>
