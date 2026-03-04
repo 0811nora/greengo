@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react';
-import {
-  getCart,
-  putCartItem,
-  deleteCartItem,
-  deleteAllCart,
-} from '../api/ApiClient';
+import { getCart, putCartItem, deleteCartItem } from '../api/ApiClient';
 import { notify } from './../components/Notify';
 import { ConfirmModal } from '../components/common/Modal';
 import Loader from '../components/common/Loading';
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import DonutPFC from '../components/custom-comp/PFC_Chart';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // header 購物車
 import { useDispatch, useSelector } from 'react-redux';
 import { renderRefresh } from './../store/slices/cartSlice';
@@ -28,7 +23,7 @@ const Cart = () => {
       setIsLoading(true);
       const res = await getCart();
       setCartItems(res.data.data.carts);
-      console.log(res.data.data.carts);
+      // console.log(res.data.data.carts);
     } catch (error) {
       notify('error', `取得失敗:${error.response.data.message}`);
     } finally {
@@ -47,7 +42,7 @@ const Cart = () => {
     };
     setIsLoading(true);
     try {
-      const res = await putCartItem(id, data);
+      await putCartItem(id, data);
       getCarts();
       notify('success', `調整成功`);
       dispatch(renderRefresh());
@@ -175,7 +170,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
   const handleRemoveItem = async (id) => {
     setIsLoading(true);
     try {
-      const res = await deleteCartItem(id);
+      await deleteCartItem(id);
       setIsShowModal(false);
       getCarts();
       notify('success', `刪除成功`);
