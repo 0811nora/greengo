@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // API
@@ -39,7 +39,7 @@ const CartDropdown = () => {
   const [deleteTargetId, setDeleteTargetId] = useState(null);
 
   // 取得購物車商品
-  const getAllCart = async () => {
+  const getAllCart = useCallback(async () => {
     dispatch(setLoading(true));
     try {
       const res = await getCart();
@@ -50,7 +50,7 @@ const CartDropdown = () => {
     } finally {
       dispatch(setLoading(false));
     }
-  };
+  }, [dispatch]);
   // 刪除購物車商品
   // 確認刪除 modal
   const handleOpenDeleteModal = (id) => {
@@ -78,7 +78,7 @@ const CartDropdown = () => {
   };
   useEffect(() => {
     getAllCart();
-  }, [needsRefresh]);
+  }, [getAllCart, needsRefresh]);
 
   // 處理 dropdown 狀態
   useEffect(() => {
@@ -93,7 +93,7 @@ const CartDropdown = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, dispatch]);
 
   // 避免滑鼠離開 icon dropdown 就消失
   const handleMouseEnter = () => {

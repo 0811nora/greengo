@@ -6,7 +6,7 @@ const FooterBrand = ({ brand, socialMedia }) => {
   return (
     <div>
       <Link className='nav-link mb-4' to='/'>
-        <div className='font-en-logo fs-2 display-md-3 text-primary-100'>
+        <div className='font-en-logo fs-2 display-lg-3 text-primary-100'>
           {brand.name}
         </div>
       </Link>

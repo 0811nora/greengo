@@ -28,7 +28,7 @@ const LoginModal = () => {
     register: registerRegister,
     handleSubmit: handleSubmitRegister,
     formState: { errors: registerErrors },
-    watch: watchRegister,
+    getValues,
     reset: resetRegister,
   } = useForm(
     { mode: 'onSubmit' },
@@ -320,7 +320,7 @@ const LoginModal = () => {
                         {...registerRegister('confirmPassword', {
                           required: '請再次輸入密碼',
                           validate: (value) =>
-                            value === watchRegister('password') ||
+                            value === getValues('password') ||
                             '密碼與確認密碼不相同',
                         })}
                       />
