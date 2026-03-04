@@ -355,12 +355,6 @@
   }
 }
 
-// footer
-footer i {
-  padding: 4px;
-  font-size: 32px;
-}
-
 // cart + login
 .header__dropdown {
   background:
@@ -563,4 +557,17 @@ footer i {
 }
 .bg-transparent {
   background-color: transparent;
+}
+
+// footer
+footer i {
+  padding: 4px;
+  font-size: 32px;
+}
+.footer__mail-link {
+  font-size: 18px;
+  word-break: break-all;
+  @media (max-width: 992px) {
+    font-size: 14px;
+  }
 }
