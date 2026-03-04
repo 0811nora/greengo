@@ -8,8 +8,6 @@ import { notify } from '../../Notify';
 const CheckoutModal = ({ show, closeModal, orderDetail, backToLast, getApiOrders, formatPrice }) => {
 	const [paymentState, setPaymentState] = useState(null); // null, cash, credit_card, e_payment
 
-	const orderProductsArry = Object.values(orderDetail?.products ?? {});
-
 	// 小計金額
 	const subtotal = orderDetail.user.base_total;
 

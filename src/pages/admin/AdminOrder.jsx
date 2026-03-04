@@ -1,10 +1,6 @@
-import axios from 'axios';
-import { useEffect } from 'react';
-import { Outlet, useNavigate, NavLink, useOutletContext } from 'react-router-dom';
+import { Outlet, NavLink, useOutletContext } from 'react-router-dom';
 
 export default function AdminOrder() {
-	const navigate = useNavigate();
-
 	// 透過 hook 將 Outlet 的 props 傳入，再解構使用
 	const { admMode, handleNavMode } = useOutletContext();
 

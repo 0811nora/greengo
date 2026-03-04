@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { delAdmSingleOrder, getAdmOrders, putAdmSingleOrder } from '../../api/ApiAdmin';
 import EmptyDataHint from '../../components/admin/order/EmptyDataHint';
 import Loading from '../../components/admin/order/Loading';
@@ -6,6 +6,11 @@ import OrderDetail from '../../components/admin/order/AdminOrderDetail';
 import { notify } from '../../components/Notify';
 import { ConfirmModal } from '../../components/common/Modal';
 import CheckoutModal from '../../components/admin/order/CheckoutModal';
+
+// 建立今日訂單時間的範圍
+const todayTime = new Date();
+const todayStart = new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate()).getTime();
+const todayEnd = todayStart + (24 * 60 * 60 * 1000 - 1);
 
 export default function AdminOrder_today() {
 	const [todayOrders, setTodayOrders] = useState([]);
@@ -15,13 +20,8 @@ export default function AdminOrder_today() {
 	const [isDataLoading, setIsDataLoading] = useState(true);
 	const [orderDetail, setOrderDetail] = useState(null);
 
-	// 建立今日訂單時間的範圍
-	const todayTime = new Date();
-	const todayStart = new Date(todayTime.getFullYear(), todayTime.getMonth(), todayTime.getDate()).getTime();
-	const todayEnd = todayStart + (24 * 60 * 60 * 1000 - 1);
-
 	// 取得原始訂單資料API
-	const getApiOrders = async () => {
+	const getApiOrders = useCallback(async () => {
 		try {
 			const res = await getAdmOrders(1);
 			let resOrds = res.data.orders;
@@ -66,9 +66,11 @@ export default function AdminOrder_today() {
 			console.log(error.response);
 			setIsDataLoading(false);
 		}
-	};
+	}, []);
+
 	useEffect(() => {
 		getApiOrders();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// filter blocks：即時顯示相關訂單數
@@ -184,6 +186,7 @@ export default function AdminOrder_today() {
 
 		try {
 			const res = await putAdmSingleOrder(id, data);
+			console.log(res.data);
 			getApiOrders();
 			notify('success', '餐點已領取', 'top-right');
 			handleCloseDetail();

@@ -17,7 +17,6 @@ export default function AdminPages() {
 	const [pagePath, setpagePath] = useState(''); // navLink 指定的路由
 	const loginModalRef = useRef(null);
 	const logoutModalRef = useRef(null);
-	const [isLoading, setIsLoading] = useState(true);
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ export default function AdminPages() {
 
 	useEffect(() => {
 		const checkLogin = async () => {
-			const greenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+			const greenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)greenToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
 
 			// a. 驗證是否有token，沒有直接回登入頁
 			if (!greenCookie) {
@@ -39,6 +38,7 @@ export default function AdminPages() {
 			try {
 				axios.defaults.headers.common['Authorization'] = greenCookie;
 				const res = await admUserCheck();
+				console.log(res.data);
 				if (location.pathname === '/admin') {
 					navigate('/admin/order/today', { replace: true });
 				}
