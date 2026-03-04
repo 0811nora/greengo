@@ -27,30 +27,58 @@ const Member = () => {
   }, [isLogin, navigate, dispatch]);
 
   // 取得訂單列表
-  const fetchOrders = async (targetPage) => {
-    setIsLoading(true);
-    try {
-      const res = await getOrders(targetPage);
-      console.log(res.data);
-      setOrders(res.data.orders || []);
-      setTotalPages(res.data.pagination.total_pages || 1);
-      window.scrollTo(0, 0);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      alert('取得失敗: ' + (error.response?.data?.message || '未知錯誤'));
-    }
-  };
+  // const fetchOrders = async (targetPage) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await getOrders(targetPage);
+  //     console.log(res.data);
+  //     setOrders(res.data.orders || []);
+  //     setTotalPages(res.data.pagination.total_pages || 1);
+  //     window.scrollTo(0, 0);
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     alert('取得失敗: ' + (error.response?.data?.message || '未知錯誤'));
+  //   }
+  // };
 
   useEffect(() => {
+    // 加上一個標記，確認元件還在畫面上
+    let isMounted = true;
+
+    const fetchOrders = async (targetPage) => {
+      setTimeout(() => {
+        if (isMounted) setIsLoading(true);
+      }, 0);
+
+      try {
+        const res = await getOrders(targetPage);
+        if (isMounted) {
+          setOrders(res.data.orders || []);
+          setTotalPages(res.data.pagination.total_pages || 1);
+          window.scrollTo(0, 0);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setIsLoading(false);
+          alert('取得失敗: ' + (error.response?.data?.message || '未知錯誤'));
+        }
+      }
+    };
+
     if (activeTab === 'orders') {
       fetchOrders(page);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [page, activeTab]);
 
   return (
     <div className="member-center-container">
-      <Loader mode={'page'} show={isLoading} />
+      <Loader mode={'mask'} show={isLoading} text={'讀取中..'} />
       <PageSwitch>
         <div className="container">
           <h1 className="fs-1 text-center fw-bold mb-8 ls-md ts-white">
