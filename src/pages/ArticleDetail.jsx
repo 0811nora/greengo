@@ -137,53 +137,58 @@ function ArticleDetail() {
                 {/* {article.content} -> 只能顯示最原始的文章(包含標籤) */}
                 {/* dangerouslySetInnerHTML -> 才能顯示文章樣式 */}
               </div>
-              <div className='col-lg-3 px-4 py-6 articleDetail__pickUp'>
-                <h3 className='py-5'>
+              <div className='col-lg-3 px-4 py-6 articleDetail__pickUp d-flex flex-column'>
+                <h4 className='fs-lg py-5'>
                   <i className='bi bi-link-45deg me-1'></i>Related Picks
-                </h3>
+                </h4>
                 {pickUpArticle.map((item) => (
-                  <div
-                    key={item.id}
-                    className='pickUp-card rounded-4 overflow-hidden px-4 py-2 mb-5'
-                  >
-                    <div className='py-3 d-flex flex-column'>
+                  <div key={item.id} className='pickUp-card rounded-4 mb-5'>
+                    <div className='d-flex flex-column align-items-start w-100'>
                       <Link
                         to={`/article/${item.id}`}
                         className='text-decoration-none'
                       >
-                        <h6 className='fw-bold'>{item.title}</h6>
+                        <h6 className='fw-bold mb-2'>{item.title}</h6>
                       </Link>
-                      <p className='mb-2'>
-                        {formatDate(item.create_at)} ‧{' '}
-                        {item.tag?.map((tag, index) => (
-                          <span
-                            key={index}
-                            className='ms-2 badge bg-accent text-gray-600'
+                      <div className='d-flex justify-content-between align-items-center w-100'>
+                        <div className='d-flex align-items-center gap-1 flex-wrap'>
+                          <p className='fs-sm mb-0'>
+                            {formatDate(item.create_at)}
+                          </p>
+                          <div>
+                            {item.tag?.map((tag, index) => (
+                              <span
+                                key={index}
+                                className='badge bg-accent text-gray-600'
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className='d-flex justify-content-end'>
+                          <Link
+                            to={`/article/${item.id}`}
+                            className='home__btn-link text-decoration-none'
                           >
-                            #{tag}
-                          </span>
-                        ))}
-                      </p>
-                      <Link
-                        to={`/article/${item.id}`}
-                        className='home__btn-link text-decoration-none ms-auto'
-                      >
-                        <span className='hover-underline'>閱讀全文</span>
-                        <svg
-                          id='arrow-horizontal'
-                          xmlns='http://www.w3.org/2000/svg'
-                          width='30'
-                          height='8'
-                          viewBox='0 0 46 16'
-                          fill='currentColor'
-                        >
-                          <path
-                            id='Path_10'
-                            d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
-                            transform='translate(30)'
-                          ></path>
-                        </svg>
-                      </Link>
+                            <span className='hover-underline'>閱讀全文</span>
+                            <svg
+                              id='arrow-horizontal'
+                              xmlns='http://www.w3.org/2000/svg'
+                              width='30'
+                              height='8'
+                              viewBox='0 0 46 16'
+                              fill='currentColor'
+                            >
+                              <path
+                                id='Path_10'
+                                d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
+                                transform='translate(30)'
+                              ></path>
+                            </svg>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
