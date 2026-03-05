@@ -22,7 +22,6 @@ import AdminLogin from '../pages/admin/AdminLogin.jsx';
 import AdminProducts from '../pages/admin/AdminProducts.jsx';
 import AdminOrder_today from '../pages/admin/AdminOrder_today.jsx';
 import AdminOrder_history from '../pages/admin/AdminOrder_history.jsx';
-import { Product2 } from '../pages/Product2.jsx';
 import ProductDetail from '../pages/ProductDetail.jsx';
 import AdminUpload from '../pages/admin/AdminUpload.jsx';
 
@@ -34,7 +33,6 @@ const routes = [
       { index: true, element: <Home /> },
       { path: 'product', element: <Product /> },
       { path: 'product/:id', element: <Product /> },
-      { path: 'product2', element: <Product2 /> },
       { path: 'about', element: <About /> },
       { path: 'custom', element: <Custom /> },
       { path: 'article', element: <Article /> },

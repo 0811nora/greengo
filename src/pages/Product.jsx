@@ -85,14 +85,15 @@ export default function Product() {
 	const dispatch = useDispatch();
 
 	// 如果media小於768px，則大block消失，小block出現
-	const md_media = window.matchMedia('(max-width: 768px)');
-	const filterBlockShowInMedia = () => {
-		if (md_media.matches) {
-			setIsBlockDisappear(true);
-		} else {
-			setIsBlockDisappear(false);
-		}
-	};
+	// （目前先不用JS控制，改成透過css的media screen來顯示判斷寬度顯示大小filter block)
+	// const md_media = window.matchMedia('(max-width: 768px)');
+	// const filterBlockShowInMedia = () => {
+	// 	if (md_media.matches) {
+	// 		setIsBlockDisappear(true);
+	// 	} else {
+	// 		setIsBlockDisappear(false);
+	// 	}
+	// };
 
 	// 打開右下小 filter block
 	const openSmallFilterBlock = () => {
@@ -113,6 +114,7 @@ export default function Product() {
 	// filter block 如果滾動滑鼠消失在視窗中時
 	const filterBlockRef = useRef(null);
 	const checkIsBlockDisappear = () => {
+		if (!filterBlockRef.current) return;
 		const blockRange = filterBlockRef.current.getBoundingClientRect();
 
 		if (blockRange.bottom < 0) {
@@ -124,31 +126,30 @@ export default function Product() {
 		}
 	};
 
-	// 獲取產品資料(戳API)
-	const getProducts = async () => {
-		try {
-			const res = await getAllProducts();
-			const productData = res.data.products.filter(
-				product => product.category !== 'item' && product.category !== 'custom',
-			);
-			setApiProdutsData(productData);
-			setIsDataLoading(false);
-		} catch (error) {
-			console.log(error.response);
-			setIsDataLoading(false);
-		}
-	};
-
 	// 初始化的行為
 	useEffect(() => {
+		// 獲取產品資料(戳API)
+		const getProducts = async () => {
+			try {
+				const res = await getAllProducts();
+				const productData = res.data.products.filter(
+					product => product.category !== 'item' && product.category !== 'custom',
+				);
+				setApiProdutsData(productData);
+				setIsDataLoading(false);
+			} catch (error) {
+				console.log(error.response);
+				setIsDataLoading(false);
+			}
+		};
 		getProducts();
 		window.addEventListener('scroll', checkIsBlockDisappear);
-		md_media.addEventListener('change', filterBlockShowInMedia);
-		filterBlockShowInMedia();
+		// md_media.addEventListener('change', filterBlockShowInMedia);
+		// filterBlockShowInMedia();
 
 		return () => {
 			window.removeEventListener('scroll', checkIsBlockDisappear);
-			md_media.removeEventListener('change', filterBlockShowInMedia);
+			// md_media.removeEventListener('change', filterBlockShowInMedia);
 		};
 	}, []);
 
@@ -254,6 +255,7 @@ export default function Product() {
 		};
 		try {
 			const res = await postAddToCart(data);
+			console.log(res.data);
 			setIsAddCartLoading(false);
 			notify('success', '加入購物車成功', 'bottom-center');
 			dispatch(renderRefresh()); // <-- header購物車redux

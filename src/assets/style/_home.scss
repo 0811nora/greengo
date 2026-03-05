@@ -29,7 +29,7 @@ li {
     margin-top: 108px;
     height: calc(80vh - 108px);
   }
-  @media (max-width: 768px) {
+  @media (max-width: 576px) {
     margin-top: 108px;
     height: calc(100vh - 108px);
   }
@@ -126,6 +126,7 @@ li {
   margin: 0 auto;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
   container-type: inline-size; // 把碗設定為蔬菜插圖的容器
+
   // @media (max-width: 768px) {
   //   min-width: 300px;
   // }
@@ -163,25 +164,6 @@ li {
 }
 
 // Smart Nutrition
-// 過去的困擾 動畫
-.sub-card {
-  width: 80%;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
-
-  &.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  // delay 一下
-  &:nth-child(2) {
-    transition-delay: 0.2s;
-  }
-  &:nth-child(3) {
-    transition-delay: 0.4s;
-  }
-}
 .home__btn-link {
   border: none;
   background: none;

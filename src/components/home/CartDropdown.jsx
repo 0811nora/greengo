@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // API
@@ -39,7 +39,7 @@ const CartDropdown = () => {
   const [deleteTargetId, setDeleteTargetId] = useState(null);
 
   // 取得購物車商品
-  const getAllCart = async () => {
+  const getAllCart = useCallback(async () => {
     dispatch(setLoading(true));
     try {
       const res = await getCart();
@@ -50,7 +50,7 @@ const CartDropdown = () => {
     } finally {
       dispatch(setLoading(false));
     }
-  };
+  }, [dispatch]);
   // 刪除購物車商品
   // 確認刪除 modal
   const handleOpenDeleteModal = (id) => {
@@ -78,7 +78,7 @@ const CartDropdown = () => {
   };
   useEffect(() => {
     getAllCart();
-  }, [needsRefresh]);
+  }, [getAllCart, needsRefresh]);
 
   // 處理 dropdown 狀態
   useEffect(() => {
@@ -93,7 +93,7 @@ const CartDropdown = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, dispatch]);
 
   // 避免滑鼠離開 icon dropdown 就消失
   const handleMouseEnter = () => {
@@ -131,8 +131,9 @@ const CartDropdown = () => {
         type='button'
         className='header__cartBtn position-relative text-decoration-none'
         onClick={() => dispatch(toggleCart())}
+        aria-label='查看購物車'
       >
-        <i className='bi bi-cart fs-5'></i>
+        <i className='bi bi-cart fs-5' aria-hidden='true'></i>
         {/* badge */}
         {totalItems > 0 && (
           <span className='badge bg-error rounded-pill position-absolute top-0 start-100 translate-middle'>
@@ -174,7 +175,10 @@ const CartDropdown = () => {
             ) : cartItems.length === 0 ? (
               // 購物車為空
               <div className='text-center py-4'>
-                <i className='bi bi-cart-x fs-1 text-gray-500 mb-2 d-block'></i>
+                <i
+                  className='bi bi-cart-x fs-1 text-gray-500 mb-2 d-block'
+                  aria-hidden='true'
+                ></i>
                 <p className='text-gray-500 mb-0'>購物車空空如也喔！</p>
               </div>
             ) : (
@@ -212,8 +216,12 @@ const CartDropdown = () => {
                             type='button'
                             className='header__cart-deletebtn p-0 text-gray-300'
                             onClick={() => handleOpenDeleteModal(item.id)}
+                            aria-label='刪除商品'
                           >
-                            <i className='bi bi-trash header__cart-deletebtn'></i>
+                            <i
+                              className='bi bi-trash header__cart-deletebtn'
+                              aria-hidden='true'
+                            ></i>
                           </button>
                         </div>
                       </div>

@@ -1,9 +1,10 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState, useCallback} from "react";
 import { getArticles, } from "../api/ApiClient"
 import { Link } from "react-router-dom";
 import Loader from "../components/common/Loading";
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import InfiniteScroll from 'react-infinite-scroll-component';
+
 
 
 
@@ -29,37 +30,32 @@ export default function Article() {
   };
 
 
-  const articleData = async(targetPage = 1) => {
 
-    if(!hasMore){
-      setIsLoading(true); 
-    }
 
-    try{
+  const articleData = useCallback(async (targetPage = 1) => {
+
+    try {
       const res = await getArticles(targetPage);
-
-      const { articles , pagination } = res.data
+      const { articles, pagination } = res.data;
 
       setArticleList((prev) => 
-        pagination.current_page === 1 
-          ? articles 
-          : [...prev,...articles]
-      )
+        pagination.current_page === 1 ? articles : [...prev, ...articles]
+      );
 
-      setPage(pagination.current_page)
-      setHasMore(pagination.has_next)
-      setIsLoading(false);
-
-    }catch(err){
-      console.log(err)
+      setPage(pagination.current_page);
+      setHasMore(pagination.has_next);
+    } catch (err) {
+      console.error(err);
+    } finally {
       setIsLoading(false);
     }
-  }
+  }, []); 
 
-  // 取得文章列表
-  useEffect(()=>{
-    articleData(1);
-  },[])
+// 取得文章列表
+useEffect(() => {
+  setIsLoading(true); 
+  articleData(1);
+}, [articleData]);
 
   useEffect(() => {
       window.scrollTo(0, 0);

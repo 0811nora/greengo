@@ -6,9 +6,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import SmallModal from "../../components/admin/SmallModal";
 import Pagination from 'react-bootstrap/Pagination';
 import Loader from "../../components/common/Loading";
-
-
-
+import { notify } from "../../components/Notify";
 
 export default function AdminBlog() {
     
@@ -24,12 +22,8 @@ export default function AdminBlog() {
     const [ modalText , setModalText ] = useState("");
     const [ page , setPage ] = useState({});
     const [ isLoading , setIsLoading ] = useState(false);
-
-    const [ isShowModal , setIsShowModal ] = useState(false);
-
     const [ filterTargetType , setFilterTargetType ] =  useState("全部");
     const [ filterContent, setFilterContent ] = useState("全部");
-    
     const availableTags = ["新手入門", "飲食營養", "增肌減脂", "訓練健身", "健康生活"];
 
 
@@ -246,14 +240,14 @@ export default function AdminBlog() {
     //新增文章
     const addNewArticle = async() => {
         try{
-            const res = await postAdminAddArticle(singleDetail)
+            await postAdminAddArticle(singleDetail)
             setIsOpenModal(false);
             setIsEdit(false);
             getArticle();
             detailModal.current.hide();
 
         }catch(err){
-            console.log(err);
+            notify('error',err.response.data.message[0])
         }
     }
 
@@ -262,7 +256,7 @@ export default function AdminBlog() {
     const sendEditedArticle = async() => {
         const { id } = singleDetail;
         try{
-            const res = await putAdmEditArticle(id,singleDetail);
+            await putAdmEditArticle(id,singleDetail);
             setDetailStorage(singleDetail);
             setIsOpenModal(false);
             setIsEdit(false);
@@ -278,7 +272,7 @@ export default function AdminBlog() {
     const deleteArticle =  async () => {
         const { id } = singleDetail;
         try{
-            const res = await delAdmSingleArticle(id);
+            await delAdmSingleArticle(id);
             setIsOpenModal(false);
             detailModal.current.hide();
             getArticle();
@@ -298,10 +292,7 @@ export default function AdminBlog() {
         return `${year}/${month}/${day} ${hours}:${minutes}`;
     }
 
-    
-    const handleClose = () => {
-        setIsOpenModal(false);
-    };
+
     
 
 
@@ -313,26 +304,26 @@ export default function AdminBlog() {
             <h1 className="fs-4 p-3 fw-bold mb-6">文章列表</h1>
 
             <div >
-                <div class="row g-4 align-items-center mb-6">
-                    <div class="col-3 m-0">
+                <div className="row g-4 align-items-center mb-6">
+                    <div className="col-3 m-0">
                         <small className="ps-2">分類</small>
-                        <select class="form-select py-2" aria-label="Default select example"
+                        <select className="form-select py-2" aria-label="Default select example"
                             value={filterTargetType}
                             onChange={(e)=> handleMainTypeChange(e.target.value)}>
-                            <option selected>全部</option>
+                            <option >全部</option>
                             {filterType.map((item) => (
-                                <option value={item}>{item}</option>
+                                <option key={item} value={item}>{item}</option>
                             ))}
                             
                         </select>
                     </div>
-                    <div class="col-3 m-0">
+                    <div className="col-3 m-0">
                     <small className="ps-2">選項</small>
-                    <select class="form-select py-2" aria-label="Default select example"
+                    <select className="form-select py-2" aria-label="Default select example"
                         disabled={filterTargetType === "全部"}
                         value={filterContent}
                         onChange={(e) => setFilterContent(e.target.value)}>
-                        <option selected>全部</option>
+                        <option >全部</option>
                         {filterValue().map((item) => (
                             <option value={item}>{item}</option>
                         ))}
