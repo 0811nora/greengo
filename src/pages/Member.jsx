@@ -1,15 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
-import { getOrders } from '../api/ApiClient';
-import Loader from '../components/common/Loading';
-import { PageSwitch } from '../components/common/AnimationWrapper';
-import DonutPFC from '../components/custom-comp/PFC_Chart';
-import { useDispatch, useSelector } from 'react-redux';
-import { openModal, selectIsLogin } from '../store/slices/userSlice';
-import { notify } from '../components/Notify';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from "react";
+import { getOrders } from "../api/ApiClient";
+import Loader from "../components/common/Loading";
+import { PageSwitch } from "../components/common/AnimationWrapper";
+import DonutPFC from "../components/custom-comp/PFC_Chart";
+import { useDispatch, useSelector } from "react-redux";
+import { openModal, selectIsLogin } from "../store/slices/userSlice";
+import { notify } from "../components/Notify";
+import { useNavigate } from "react-router-dom";
 
 const Member = () => {
-	const [activeTab, setActiveTab] = useState('orders');
+	const [activeTab, setActiveTab] = useState("orders");
 	const [orders, setOrders] = useState([]);
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
@@ -20,8 +20,8 @@ const Member = () => {
 
 	useEffect(() => {
 		if (!isLogin) {
-			notify('info', '請先登入');
-			navigate('/');
+			notify("info", "請先登入");
+			navigate("/");
 			dispatch(openModal());
 		}
 	}, [isLogin, navigate, dispatch]);
@@ -61,12 +61,12 @@ const Member = () => {
 			} catch (error) {
 				if (isMounted) {
 					setIsLoading(false);
-					alert('取得失敗: ' + (error.response?.data?.message || '未知錯誤'));
+					alert("取得失敗: " + (error.response?.data?.message || "未知錯誤"));
 				}
 			}
 		};
 
-		if (activeTab === 'orders') {
+		if (activeTab === "orders") {
 			fetchOrders(page);
 		}
 
@@ -77,7 +77,11 @@ const Member = () => {
 
 	return (
 		<div className="member-center-container">
-			<Loader mode={'mask'} show={isLoading} text={'讀取中..'} />
+			<Loader
+				mode={"mask"}
+				show={isLoading}
+				text={"讀取中.."}
+			/>
 			<PageSwitch>
 				<div className="container">
 					<h1 className="fs-1 text-center fw-bold mb-8 ls-md ts-white">
@@ -88,8 +92,8 @@ const Member = () => {
 					<ul className="nav nav-underline justify-content-center mb-9">
 						<li className="nav-item">
 							<button
-								className={`nav-link tab-navLink fs-5 fs-md-4 ts-white me-3 me-md-7 ${activeTab === 'orders' ? 'active' : ''}`}
-								onClick={() => setActiveTab('orders')}
+								className={`nav-link tab-navLink fs-5 fs-md-4 ts-white me-3 me-md-7 ${activeTab === "orders" ? "active" : ""}`}
+								onClick={() => setActiveTab("orders")}
 							>
 								<i className="bi bi-clipboard-fill me-2"></i>
 								訂單紀錄
@@ -97,8 +101,8 @@ const Member = () => {
 						</li>
 						<li className="nav-item">
 							<button
-								className={`nav-link tab-navLink fs-5 ts-white ${activeTab === 'profile' ? 'active' : ''}`}
-								onClick={() => setActiveTab('profile')}
+								className={`nav-link tab-navLink fs-5 ts-white ${activeTab === "profile" ? "active" : ""}`}
+								onClick={() => setActiveTab("profile")}
 							>
 								<i className="bi bi-person-lines-fill me-2"></i>個人資料
 							</button>
@@ -106,16 +110,19 @@ const Member = () => {
 					</ul>
 
 					{/* 內容區塊 */}
-					{activeTab === 'orders' ? (
+					{activeTab === "orders" ? (
 						<div className="order-list-section">
 							{orders.map((item) => (
-								<OrderCard key={item.id} data={item} />
+								<OrderCard
+									key={item.id}
+									data={item}
+								/>
 							))}
 
 							{/* 頁碼切換 */}
 							<nav className="mt-4">
 								<ul className="pagination justify-content-center">
-									<li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
+									<li className={`page-item ${page === 1 ? "disabled" : ""}`}>
 										<button
 											className="page-link"
 											onClick={() => page > 1 && setPage(page - 1)}
@@ -128,7 +135,7 @@ const Member = () => {
 									{[...Array(totalPages)].map((_, i) => (
 										<li
 											key={i}
-											className={`page-item ${page === i + 1 ? 'active' : ''}`}
+											className={`page-item ${page === i + 1 ? "active" : ""}`}
 										>
 											<button
 												className="page-link"
@@ -140,7 +147,7 @@ const Member = () => {
 									))}
 
 									<li
-										className={`page-item ${page === totalPages ? 'disabled' : ''}`}
+										className={`page-item ${page === totalPages ? "disabled" : ""}`}
 									>
 										<button
 											className="page-link"
@@ -161,19 +168,19 @@ const Member = () => {
 	);
 };
 const formatTimestamp = (timestamp) => {
-	if (!timestamp) return '';
+	if (!timestamp) return "";
 
 	const date = new Date(timestamp * 1000);
 	return date
-		.toLocaleString('zh-TW', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
+		.toLocaleString("zh-TW", {
+			year: "numeric",
+			month: "2-digit",
+			day: "2-digit",
+			hour: "2-digit",
+			minute: "2-digit",
 			hour12: false,
 		})
-		.replace(/,/g, '');
+		.replace(/,/g, "");
 };
 
 // 訂單卡片子組件
@@ -185,30 +192,30 @@ const OrderCard = ({ data }) => {
 	const listRef = useRef(null);
 
 	const PAYMENT_STATUS_MAP = {
-		paid: '已付款',
-		unpaid: '尚未付款',
+		paid: "已付款",
+		unpaid: "尚未付款",
 	};
 
 	const PAYMENT_METHOD_MAP = {
-		credit_card: '信用卡',
-		cash: '臨櫃現金',
-		e_payment: '電子支付',
+		credit_card: "信用卡",
+		cash: "臨櫃現金",
+		e_payment: "電子支付",
 	};
 
 	const ORDER_STATES_MAP = {
-		done: '訂單已完成',
-		new: '餐點準備中',
-		ready: '可取餐',
+		done: "訂單已完成",
+		new: "餐點準備中",
+		ready: "可取餐",
 	};
 	const ORDER_STATES_COLOR_MAP = {
-		done: 'text-gray-400',
-		new: 'text-gray-400',
-		ready: 'text-orange-400',
+		done: "text-gray-400",
+		new: "text-gray-400",
+		ready: "text-orange-400",
 	};
 	const ORDER_STATES_ICON_MAP = {
-		done: 'bi-check-circle-fill',
-		new: 'bi-cup-hot-fill',
-		ready: 'bi-exclamation-circle-fill',
+		done: "bi-check-circle-fill",
+		new: "bi-cup-hot-fill",
+		ready: "bi-exclamation-circle-fill",
 	};
 
 	const handleViewRecipe = (e, product) => {
@@ -230,9 +237,12 @@ const OrderCard = ({ data }) => {
 	return (
 		<>
 			<div
-				className={`order-card rounded-3 px-5 py-6 p-md-7 mb-6 position-relative ${isOpen ? 'details-open' : ''}`}
+				className={`order-card rounded-3 px-5 py-6 p-md-7 mb-6 position-relative ${isOpen ? "details-open" : ""}`}
 			>
-				<div onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer' }}>
+				<div
+					onClick={() => setIsOpen(!isOpen)}
+					style={{ cursor: "pointer" }}
+				>
 					<div className="d-flex align-items-center mb-5 card-header-info">
 						<img
 							src={`${import.meta.env.BASE_URL}img/member/food-${imageIndex}.png`}
@@ -279,7 +289,7 @@ const OrderCard = ({ data }) => {
 								總金額
 							</span>
 							<span className="fw-semibold">
-								{data?.user?.final_total?.toLocaleString() || '計算中'} 元
+								{data?.user?.final_total?.toLocaleString() || "計算中"} 元
 							</span>
 						</div>
 						<div
@@ -298,7 +308,7 @@ const OrderCard = ({ data }) => {
 						</div>
 						<div className="col-2 col-md-1 col-md-1 ms-auto">
 							<i
-								className={`bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down text-primary'} ms-auto fs-5`}
+								className={`bi ${isOpen ? "bi-chevron-up" : "bi-chevron-down text-primary"} ms-auto fs-5`}
 							></i>
 						</div>
 					</div>
@@ -318,7 +328,7 @@ const OrderCard = ({ data }) => {
 							<span className="fs-sm bg-gray-200 text-gray-500 rounded-pill px-4 py-2 me-2">
 								支付方式
 							</span>
-							{PAYMENT_METHOD_MAP[data.user.payment_method] || '其他支付'}
+							{PAYMENT_METHOD_MAP[data.user.payment_method] || "其他支付"}
 						</div>
 						<div className="col-lg-4 fw-medium fs-sm fs-lg-md">
 							<span className="fs-sm bg-gray-200 text-gray-500 rounded-pill px-4 py-2 me-2">
@@ -327,12 +337,12 @@ const OrderCard = ({ data }) => {
 
 							<span
 								className={
-									data.user.payment_status === 'paid'
-										? 'text-primary'
-										: 'text-warning'
+									data.user.payment_status === "paid"
+										? "text-primary"
+										: "text-warning"
 								}
 							>
-								{PAYMENT_STATUS_MAP[data.user.payment_status] || '確認中'}
+								{PAYMENT_STATUS_MAP[data.user.payment_status] || "確認中"}
 							</span>
 						</div>
 					</div>
@@ -340,7 +350,7 @@ const OrderCard = ({ data }) => {
 					<div
 						ref={listRef}
 						className="overflow-y-auto mb-4"
-						style={{ maxHeight: 300, WebkitOverflowScrolling: 'touch' }}
+						style={{ maxHeight: 300, WebkitOverflowScrolling: "touch" }}
 						onClick={(e) => e.stopPropagation()}
 						onTouchMove={(e) => e.stopPropagation()}
 					>
@@ -360,7 +370,7 @@ const OrderCard = ({ data }) => {
 									{product.product.title} x {product.qty}
 									<button
 										className="btn btn-sm btn-outline-orange-300 ms-2 py-0 px-2 mb-1"
-										style={{ fontSize: '0.75rem', borderRadius: '20px' }}
+										style={{ fontSize: "0.75rem", borderRadius: "20px" }}
 										onClick={(e) => handleViewRecipe(e, product)}
 									>
 										<i className="bi bi-info-circle me-1"></i>
@@ -372,39 +382,42 @@ const OrderCard = ({ data }) => {
 									<i className="bi bi-currency-dollar"></i>
 									{(
 										product.customizations?.custom_total * product.qty
-									).toLocaleString() || '計算中'}
+									).toLocaleString() || "計算中"}
 								</span>
 							</div>
 						))}
 					</div>
 
-					<div className="ms-auto me-md-4 " style={{ maxWidth: 260 }}>
+					<div
+						className="ms-auto me-md-4 "
+						style={{ maxWidth: 260 }}
+					>
 						<div className="d-flex justify-content-between mb-4">
 							<span className="ms-6">小計</span>
 							<span>
 								<i className="bi bi-currency-dollar"></i>
-								{data?.user?.base_total?.toLocaleString() || '計算中'}
+								{data?.user?.base_total?.toLocaleString() || "計算中"}
 							</span>
 						</div>
 						<div className="d-flex justify-content-between mb-4">
 							<span className="ms-6">加購</span>
 							<span>
 								<i className="bi bi-currency-dollar"></i>
-								{data?.user?.addons_total?.toLocaleString() || '計算中'}
+								{data?.user?.addons_total?.toLocaleString() || "計算中"}
 							</span>
 						</div>
 						<div className="d-flex justify-content-between mb-4">
 							<span className="ms-6">折扣</span>
 							<span>
 								-<i className="bi bi-currency-dollar"></i>
-								{data?.user?.discount?.toLocaleString() || '計算中'}
+								{data?.user?.discount?.toLocaleString() || "計算中"}
 							</span>
 						</div>
 						<div className="d-flex justify-content-between fw-medium fs-6">
 							<span>總金額</span>
 							<span className="text-orange-500">
 								<i className="bi bi-currency-dollar"></i>
-								{data?.user?.final_total?.toLocaleString() || '計算中'}
+								{data?.user?.final_total?.toLocaleString() || "計算中"}
 							</span>
 						</div>
 					</div>
@@ -423,10 +436,10 @@ const OrderCard = ({ data }) => {
 // 個人資料子組件
 const ProfileSection = () => {
 	const [formData, setFormData] = useState({
-		name: '陳雅涵',
-		phone: '0912-335-688',
-		email: 'hang@greengomail.com',
-		address: '台北市信義區信義路五段7號',
+		name: "陳雅涵",
+		phone: "0912-335-688",
+		email: "hang@greengomail.com",
+		address: "台北市信義區信義路五段7號",
 	});
 
 	const [isEditing, setIsEditing] = useState(false);
@@ -442,9 +455,9 @@ const ProfileSection = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		console.log('更新資料:', formData);
+		console.log("更新資料:", formData);
 		setIsEditing(false);
-		alert('資料已更新！');
+		alert("資料已更新！");
 	};
 	return (
 		<div className="user-profile-container container">
@@ -652,7 +665,10 @@ const ProfileSection = () => {
 											>
 												取消
 											</button>
-											<button type="submit" className="btn btn-primary px-4">
+											<button
+												type="submit"
+												className="btn btn-primary px-4"
+											>
 												<i className="bi bi-check-lg me-2"></i>
 												儲存變更
 											</button>
@@ -671,9 +687,9 @@ const ProfileSection = () => {
 // 明細
 const RecipeModal = ({ product, onClose }) => {
 	if (!product) return null;
-	const isCustom = product.product.category === 'custom';
+	const isCustom = product.product.category === "custom";
 
-	const renderCustomItems = (items, mode = 'addon') => {
+	const renderCustomItems = (items, mode = "addon") => {
 		if (!items || items.length === 0) return null;
 
 		return items.map((subItem, index) => {
@@ -681,10 +697,10 @@ const RecipeModal = ({ product, onClose }) => {
 
 			let displayPrice = 0;
 
-			if (mode === 'included_protein') {
+			if (mode === "included_protein") {
 				const priceDiff = Math.max(0, unitPrice - 30);
 				displayPrice = priceDiff * subItem.qty;
-			} else if (mode === 'included_general') {
+			} else if (mode === "included_general") {
 				displayPrice = 0;
 			} else {
 				displayPrice = unitPrice * subItem.qty;
@@ -694,7 +710,7 @@ const RecipeModal = ({ product, onClose }) => {
 				<span
 					className="text-brown-300"
 					key={index}
-					style={{ marginRight: '8px' }}
+					style={{ marginRight: "8px" }}
 				>
 					{subItem.title}
 
@@ -702,7 +718,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 					{displayPrice > 0 && ` (+${displayPrice})`}
 
-					{index < items.length - 1 && '、'}
+					{index < items.length - 1 && "、"}
 				</span>
 			);
 		});
@@ -722,7 +738,7 @@ const RecipeModal = ({ product, onClose }) => {
 	return (
 		<div
 			className="modal show d-block"
-			style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+			style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
 		>
 			<div className="modal-dialog modal-dialog-centered">
 				<div className="modal-content">
@@ -743,7 +759,7 @@ const RecipeModal = ({ product, onClose }) => {
 						</h4>
 						<div
 							className="text-brown-300 mb-6 px-2"
-							style={{ maxWidth: '220px' }}
+							style={{ maxWidth: "220px" }}
 						>
 							<p className="d-flex justify-content-between mb-1">
 								<span className="me-5">原價</span>
@@ -787,7 +803,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 										{renderCustomItems(
 											product?.customizations.included.base,
-											'included_general',
+											"included_general",
 										)}
 									</li>
 
@@ -798,7 +814,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 										{renderCustomItems(
 											product?.customizations?.included?.protein,
-											'included_protein',
+											"included_protein",
 										)}
 									</li>
 
@@ -809,7 +825,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 										{renderCustomItems(
 											product?.customizations?.included?.sauce,
-											'included_general',
+											"included_general",
 										)}
 									</li>
 
@@ -820,7 +836,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 										{renderCustomItems(
 											product?.customizations.included.side,
-											'included_general',
+											"included_general",
 										)}
 									</li>
 								</ul>
@@ -843,7 +859,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations.addon.base,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -855,7 +871,7 @@ const RecipeModal = ({ product, onClose }) => {
 													</span>
 													{renderCustomItems(
 														product?.customizations?.addon?.protein,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -868,7 +884,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations?.addon?.sauce,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -880,7 +896,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations?.addon?.side,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -891,7 +907,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations?.addon?.drinks,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -901,7 +917,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations?.addon?.soup,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -915,17 +931,17 @@ const RecipeModal = ({ product, onClose }) => {
 									<>
 										<ul className="px-2">
 											<li className="mb-3">
-												{product?.product.category !== 'other' ? (
+												{product?.product.category !== "other" ? (
 													<span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
 														基底
 													</span>
 												) : (
-													''
+													""
 												)}
 
 												<span>{product?.product.ingredients.base}</span>
 											</li>
-											{product?.product.category !== 'other' && (
+											{product?.product.category !== "other" && (
 												<>
 													<li className="mb-3">
 														<span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
@@ -970,7 +986,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations.addon.base,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -982,7 +998,7 @@ const RecipeModal = ({ product, onClose }) => {
 													</span>
 													{renderCustomItems(
 														product?.customizations?.addon?.protein,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -995,7 +1011,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations.addon.sauce,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -1007,7 +1023,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations.addon.side,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -1020,7 +1036,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations.addon.drinks,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
@@ -1032,7 +1048,7 @@ const RecipeModal = ({ product, onClose }) => {
 
 													{renderCustomItems(
 														product?.customizations.addon.soup,
-														'addon',
+														"addon",
 													)}
 												</li>
 											)}
