@@ -62,18 +62,18 @@ const UserDropdown = () => {
   };
 
   // 手機版 dropdown
-  const handleIconClick = () => {
-    // 先判斷螢幕寬度
-    if (window.innerWidth >= 992) {
-      // 桌機版：切換 dropdown
-      dispatch(toggleUserDropdown());
-    } else {
-      // 手機版：直接到會員中心
-      navigate('/member');
-      dispatch(closeUserDropdown());
-      dispatch(closeModal());
-    }
-  };
+  // const handleIconClick = () => {
+  //   // 先判斷螢幕寬度
+  //   if (window.innerWidth >= 992) {
+  //     // 桌機版：切換 dropdown
+  //     dispatch(toggleUserDropdown());
+  //   } else {
+  //     // 手機版：直接到會員中心
+  //     navigate('/member');
+  //     dispatch(closeUserDropdown());
+  //     dispatch(closeModal());
+  //   }
+  // };
 
   // 未登入
   if (!isLogin) {
@@ -100,8 +100,16 @@ const UserDropdown = () => {
           type='button'
           className=' p-0 text-decoration-none header__defaultBtn'
           onClick={() => dispatch(toggleUserDropdown())}
+          aria-label='展開選單'
         >
-          <i className='bi bi-person-circle fs-4'></i>
+          <img
+            className='rounded-5'
+            width={'32px'}
+            height={'32px'}
+            src={`${import.meta.env.BASE_URL}img/items/profilePic.png`}
+            alt='會員頭貼'
+          />
+          {/* <i className='bi bi-person-circle fs-4' aria-hidden='true'></i> */}
         </button>
         {/*  桌機版 dropdown */}
         {isOpen && (
@@ -115,14 +123,21 @@ const UserDropdown = () => {
           >
             <button
               type='button'
-              className='btn btn-link w-100 text-start text-decoration-none text-gray-600 px-3 py-2'
+              className='btn btn-link w-100 text-start text-decoration-none text-gray-600 px-3 py-2 d-flex align-items-center'
               onMouseDown={(e) => {
                 e.stopPropagation(); // 阻止冒泡事件
                 navigate('/member');
                 dispatch(closeUserDropdown());
               }}
             >
-              <i className='bi bi-person me-2'></i>
+              <img
+                className='rounded-5 me-1'
+                width={'28px'}
+                height={'28px'}
+                src={`${import.meta.env.BASE_URL}img/items/profilePic.png`}
+                alt=''
+              />
+              {/* <i className='bi bi-person me-2' aria-hidden='true'></i> */}
               會員中心
             </button>
             <button
@@ -133,7 +148,7 @@ const UserDropdown = () => {
                 handleLogout();
               }}
             >
-              <i className='bi bi-box-arrow-right me-2'></i>
+              <i className='bi bi-box-arrow-right mx-2' aria-hidden='true'></i>
               登出
             </button>
           </div>
@@ -142,14 +157,22 @@ const UserDropdown = () => {
       {/* 手機版 dropdown */}
       <button
         type='button'
-        className='btn btn-link p-0 text-decoration-none d-lg-none'
-        onClick={handleIconClick}
-        onMouseLeave={(e) => {
-          e.stopPropagation();
-          handleMouseLeave;
+        className='btn btn-link p-0 ps-2 d-flex align-items-center text-decoration-none d-lg-none'
+        onClick={() => {
+          navigate('/member');
+          dispatch(closeUserDropdown());
+          dispatch(closeModal());
         }}
       >
-        <i className='bi bi-person-circle fs-4'></i>
+        <img
+          className='rounded-5 me-1'
+          width={'28px'}
+          height={'28px'}
+          src={`${import.meta.env.BASE_URL}img/items/profilePic.png`}
+          alt=''
+        />
+        <span className='ms-1 text-gray-400'>會員中心</span>
+        {/* <i className='bi bi-person-circle fs-4' aria-hidden='true'></i> */}
       </button>
     </>
   );

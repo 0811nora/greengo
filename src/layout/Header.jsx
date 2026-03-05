@@ -88,6 +88,9 @@ export default function Header() {
                       className={({ isActive }) =>
                         `header__link ${isActive ? 'header__link--active' : ''}`
                       }
+                      aria-current={({ isActive }) =>
+                        isActive ? 'page' : undefined
+                      }
                     >
                       <span className='header__link-text'>{link.title}</span>
                     </NavLink>
@@ -120,24 +123,26 @@ export default function Header() {
                   >
                     {NavbarData.brand.title}
                   </NavLink>
-
                   <div className='d-flex align-items-center gap-2'>
                     <Link
                       className='btn btn-outline-gray-400 rounded-pill border-none'
                       to={NavbarData.mobileLinks.url}
                       onClick={closeMenu}
+                      aria-label='前往購物車'
                     >
-                      <i className='bi bi-cart'></i>
+                      <i className='bi bi-cart' aria-hidden='true'></i>
                     </Link>
                     <button
                       type='button'
                       className='btn btn-outline-gray-400 rounded-pill border-none'
                       onClick={toggleMenu}
+                      aria-label={isMobileMenuOpen ? '關閉選單' : '開啟選單'}
                     >
                       <i
                         className={`bi ${
                           isMobileMenuOpen ? 'bi-x-lg' : 'bi-list'
                         }`}
+                        aria-hidden='true'
                       ></i>
                     </button>
                   </div>
@@ -160,6 +165,9 @@ export default function Header() {
                           }`
                         }
                         onClick={closeMenu}
+                        aria-current={({ isActive }) =>
+                          isActive ? 'page' : undefined
+                        }
                       >
                         {link.title}
                       </NavLink>
@@ -177,7 +185,10 @@ export default function Header() {
                           closeMenu();
                         }}
                       >
-                        <i className='bi bi-box-arrow-right me-2'></i>
+                        <i
+                          className='bi bi-box-arrow-right me-2'
+                          aria-hidden='true'
+                        ></i>
                         登出
                       </button>
                     )}
