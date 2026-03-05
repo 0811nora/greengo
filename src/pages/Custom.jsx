@@ -13,7 +13,7 @@ import { ConfirmModal } from '../components/common/Modal';
 
 import ClickOutsideHandler from "../components/common/ClickOutsideHandler";
 
-import ItemCard from "../components/Custom-comp/ItemCard";
+import ItemCard from "../components/custom-comp/ItemCard";
 import HighlightLine from "../components/custom-comp/HighlightLine";
 import Stepper from "../components/custom-comp/Stepper";
 import PickTypeCard from "../components/custom-comp/PickTypeCard";
@@ -437,7 +437,7 @@ export default function Custom() {
             }
 
 
-            const addCartRes = await postAddToCart(finalData);
+            await postAddToCart(finalData);
             dispatch(renderRefresh());
             setStepState(4);
             window.scrollTo(0, 0);
