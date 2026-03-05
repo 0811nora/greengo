@@ -1,5 +1,5 @@
-import { NavLink, Link, useLocation} from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,8 +28,6 @@ const NavbarData = {
   ],
   mobileLinks: { title: '購物車', url: '/cart' },
 };
-
-
 
 export default function Header() {
   // mobile menu setting
@@ -60,13 +58,14 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
-  // 處理手機板登入跳轉問題
-const location = useLocation();
-useEffect(() => {
-  closeMenu(); 
-  dispatch(closeModal());
-  dispatch(closeUserDropdown());
-}, [location.pathname, dispatch]);
+  // 處理手機板登入跳轉問題（註：為了監聽變化去重置狀態而寫）
+  const location = useLocation();
+  useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    closeMenu();
+    dispatch(closeModal());
+    dispatch(closeUserDropdown());
+  }, [location.pathname, dispatch]);
 
   return (
     <>
@@ -88,6 +87,9 @@ useEffect(() => {
                       to={link.url}
                       className={({ isActive }) =>
                         `header__link ${isActive ? 'header__link--active' : ''}`
+                      }
+                      aria-current={({ isActive }) =>
+                        isActive ? 'page' : undefined
                       }
                     >
                       <span className='header__link-text'>{link.title}</span>
@@ -121,24 +123,26 @@ useEffect(() => {
                   >
                     {NavbarData.brand.title}
                   </NavLink>
-
                   <div className='d-flex align-items-center gap-2'>
                     <Link
                       className='btn btn-outline-gray-400 rounded-pill border-none'
                       to={NavbarData.mobileLinks.url}
                       onClick={closeMenu}
+                      aria-label='前往購物車'
                     >
-                      <i className='bi bi-cart'></i>
+                      <i className='bi bi-cart' aria-hidden='true'></i>
                     </Link>
                     <button
                       type='button'
                       className='btn btn-outline-gray-400 rounded-pill border-none'
                       onClick={toggleMenu}
+                      aria-label={isMobileMenuOpen ? '關閉選單' : '開啟選單'}
                     >
                       <i
                         className={`bi ${
                           isMobileMenuOpen ? 'bi-x-lg' : 'bi-list'
                         }`}
+                        aria-hidden='true'
                       ></i>
                     </button>
                   </div>
@@ -161,6 +165,9 @@ useEffect(() => {
                           }`
                         }
                         onClick={closeMenu}
+                        aria-current={({ isActive }) =>
+                          isActive ? 'page' : undefined
+                        }
                       >
                         {link.title}
                       </NavLink>
@@ -178,7 +185,10 @@ useEffect(() => {
                           closeMenu();
                         }}
                       >
-                        <i className='bi bi-box-arrow-right me-2'></i>
+                        <i
+                          className='bi bi-box-arrow-right me-2'
+                          aria-hidden='true'
+                        ></i>
                         登出
                       </button>
                     )}

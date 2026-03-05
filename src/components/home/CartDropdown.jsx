@@ -131,8 +131,9 @@ const CartDropdown = () => {
         type='button'
         className='header__cartBtn position-relative text-decoration-none'
         onClick={() => dispatch(toggleCart())}
+        aria-label='查看購物車'
       >
-        <i className='bi bi-cart fs-5'></i>
+        <i className='bi bi-cart fs-5' aria-hidden='true'></i>
         {/* badge */}
         {totalItems > 0 && (
           <span className='badge bg-error rounded-pill position-absolute top-0 start-100 translate-middle'>
@@ -174,7 +175,10 @@ const CartDropdown = () => {
             ) : cartItems.length === 0 ? (
               // 購物車為空
               <div className='text-center py-4'>
-                <i className='bi bi-cart-x fs-1 text-gray-500 mb-2 d-block'></i>
+                <i
+                  className='bi bi-cart-x fs-1 text-gray-500 mb-2 d-block'
+                  aria-hidden='true'
+                ></i>
                 <p className='text-gray-500 mb-0'>購物車空空如也喔！</p>
               </div>
             ) : (
@@ -212,8 +216,12 @@ const CartDropdown = () => {
                             type='button'
                             className='header__cart-deletebtn p-0 text-gray-300'
                             onClick={() => handleOpenDeleteModal(item.id)}
+                            aria-label='刪除商品'
                           >
-                            <i className='bi bi-trash header__cart-deletebtn'></i>
+                            <i
+                              className='bi bi-trash header__cart-deletebtn'
+                              aria-hidden='true'
+                            ></i>
                           </button>
                         </div>
                       </div>

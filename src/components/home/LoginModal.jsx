@@ -93,6 +93,8 @@ const LoginModal = () => {
         <div
           className='header__modal-container d-flex align-items-stretch gap-0'
           style={{ width: '100%' }}
+          role='dialog'
+          aria-modal='true'
         >
           <div className='header__modal-img d-none d-lg-flex'>
             <img
@@ -117,14 +119,12 @@ const LoginModal = () => {
                 <button
                   className={`header__tab ${activeTab === 'login' ? 'active' : ''}`}
                   onClick={() => handleTabSwitch('login')}
-                  aria-label='登入'
                 >
                   登入
                 </button>
                 <button
                   className={`header__tab ${activeTab === 'register' ? 'active' : ''}`}
                   onClick={() => handleTabSwitch('register')}
-                  aria-label='註冊'
                 >
                   註冊
                 </button>
@@ -213,7 +213,6 @@ const LoginModal = () => {
                           notify('success', '還沒做這功能QQ'),
                           console.log('忘記密碼')
                         )}
-                        aria-label='忘記密碼嗎？'
                       >
                         忘記密碼？
                       </button>
@@ -222,7 +221,6 @@ const LoginModal = () => {
                       <button
                         type='submit'
                         className='home__btn-primary w-100 rounded-pill py-2'
-                        aria-label='提交登入'
                       >
                         登入
                       </button>
@@ -232,7 +230,6 @@ const LoginModal = () => {
                           type='button'
                           className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
                           onClick={() => handleTabSwitch('register')}
-                          aria-label='前往註冊'
                         >
                           立即註冊
                         </button>
@@ -334,7 +331,6 @@ const LoginModal = () => {
                       <button
                         type='submit'
                         className='home__btn-primary rounded-pill py-2'
-                        aria-label='提交註冊'
                       >
                         註冊
                       </button>
@@ -344,7 +340,6 @@ const LoginModal = () => {
                           type='button'
                           className='home__btn-link fs-sm p-0 text-decoration-none ms-1'
                           onClick={() => handleTabSwitch('login')}
-                          aria-label='前往登入'
                         >
                           立即登入
                         </button>

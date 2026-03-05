@@ -1,22 +1,10 @@
 // import { useState, useEffect, useRef } from 'react';
-import { PageLinks, TroubleCards } from '../../../data/homeData';
+import { PageLinks } from '../../../data/homeData';
 import FadeIn from '../FadeIn';
 import FeatureCard from '../FeatureCard';
 import ContentCard from '../ContentCard';
 
 const NutritionSection = () => {
-  // const [isVisible, setIsVisible] = useState(false);
-  // const sectionRef = useRef(null);
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (window.scrollY > 500) {
-  //       setIsVisible(true);
-  //     }
-  //   };
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, []);
-
   return (
     <>
       {/* Nutrition */}

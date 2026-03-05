@@ -9,7 +9,7 @@ const HeroSection = () => {
       <section className='container-fluid position-relative overflow-hidden bg-primary-100 px-0'>
         {/* 文字區 */}
         <div className='home__hero-section py-8 py-md-10 my-md-10 text-center'>
-          <h1 className='fs-2 display-md-1 fw-bold text-center mb-7'>
+          <h1 className='fs-2 display-md-1 fw-bold mt-10 mt-xxl-6 text-center mb-7'>
             生活<span className='comma'>，</span>
             <br />從<span className='text-primary'>好好吃飯</span>
             開始
@@ -31,12 +31,7 @@ const HeroSection = () => {
             key={decor.id}
             className={`position-absolute ${decor.posY} ${decor.posX} translate-middle`}
           >
-            <img
-              loading='lazy'
-              className='hero__decor'
-              src={decor.src}
-              alt={decor.alt}
-            />
+            <img className='hero__decor' src={decor.src} alt={decor.alt} />
             <div className='bowl-shadow'></div>
           </div>
         ))}
@@ -54,7 +49,6 @@ const HeroSection = () => {
           {VeggieItems.map((item) => (
             <img
               key={item.name}
-              loading='lazy'
               src={`${import.meta.env.BASE_URL}img/items/${item.name}.png`}
               className='veggie'
               alt={item.name}
@@ -66,7 +60,10 @@ const HeroSection = () => {
             />
           ))}
         </div>
-        <div className='position-absolute bottom-0 left-0 w-100'>
+        <div
+          className='position-absolute left-0 w-100'
+          style={{ bottom: '-1px' }}
+        >
           {' '}
           <svg
             id='visual'
