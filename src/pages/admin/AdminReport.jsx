@@ -10,6 +10,7 @@ import StatCard from '../../components/admin/report/StatCard';
 import SalesTrendChart from '../../components/admin/report/SalesTrendChart';
 import PaymentPieChart from '../../components/admin/report/PaymentPieChart';
 import TopRankingCard from '../../components/admin/report/TopRankingCard';
+import IngredientRankingCard from '../../components/admin/report/Ingredientrankingcard';
 
 const AdminReport = () => {
   // 選擇時間（預設今日）
@@ -22,10 +23,12 @@ const AdminReport = () => {
   const { orders: allOrders, loading, error } = useAllOrders();
   // 根據被選擇的時間範圍處理資料
   const reportData = useReportData(allOrders, rangeType, startTime, endTime);
+
   // 處理時間切換
   const handleRangeChange = (newRangeType) => {
     setRangeType(newRangeType);
   };
+
   // 處理自訂範圍
   const handleCustomRangeChange = (range) => {
     setCustomRange(range);
@@ -54,16 +57,19 @@ const AdminReport = () => {
       </div>
     );
   }
-
   // 解構 useReportData 資料
   const {
     statistics,
     paymentMethod,
     salesTrend,
     topFixed,
-    topCustom,
+    // topCustom,
     topOthers,
     filterOrders,
+    topBases,
+    topProteins,
+    topSides,
+    topSauces,
   } = reportData;
 
   // 測試 API 抓訂單用，先不要刪
@@ -81,10 +87,20 @@ const AdminReport = () => {
   console.log('-----篩選後訂單數:-----', filterOrders.length);
   console.log('-----銷售趨勢資料:-----', salesTrend);
   console.log('-----支付方式分布:-----', paymentMethod);
+  // console.log('-----自由配類型統計:-----', customTypeStats);
+  console.log('-----配料排行:-----', {
+    topBases,
+    topProteins,
+    topSides,
+    topSauces,
+  });
 
   // 計算今日未付款訂單（會跳提示）
+  // +同時檢查 is_paid 跟 payment_status
   const unpaidTodayOrders = filterOrders.filter(
-    (order) => !order.is_paid && rangeType === DATE_RANGE_TYPES.TODAY,
+    (order) =>
+      !(order.is_paid === true || order.user?.payment_status === 'paid') &&
+      rangeType === DATE_RANGE_TYPES.TODAY,
   );
   const unpaidTodayAmount = unpaidTodayOrders.reduce(
     (sum, order) => sum + (order.total || 0),
@@ -94,14 +110,12 @@ const AdminReport = () => {
   return (
     <div className='container' style={{ paddingTop: '120px' }}>
       <h2 className='mb-4'>營運報表</h2>
-
       {/* 時間選擇區 */}
       <DateRange
         activeRange={rangeType}
         onRangeChange={handleRangeChange}
         onCustomRangeChange={handleCustomRangeChange}
       />
-
       {/* 自訂的提示區 */}
       {rangeType === DATE_RANGE_TYPES.CUSTOM && customRange && (
         <div className='alert alert-primary mb-4' role='alert'>
@@ -112,7 +126,6 @@ const AdminReport = () => {
           （共 {customRange.endDate.diff(customRange.startDate, 'day') + 1} 天）
         </div>
       )}
-
       {/* 統計卡片區 */}
       <div className='row mb-4'>
         <StatCard
@@ -133,12 +146,6 @@ const AdminReport = () => {
           subtitle={`未付款: ${statistics.orderCount.total - statistics.paidOrderCount}`}
           icon='bi bi-check-circle'
         />
-        <StatCard
-          title='平均客單價'
-          value={`NT$ ${statistics.averageOrderValue.toLocaleString()}`}
-          subtitle='每筆訂單平均金額'
-          icon='bi bi-graph-up'
-        />
       </div>
 
       {/* 今日未付款的提示（ TODAY + unpaidTodayOrders ） */}
@@ -147,7 +154,7 @@ const AdminReport = () => {
           <i className='bi bi-info-circle me-2'></i>
           <span>提示：</span>
           今日尚有 {unpaidTodayOrders.length} 筆未付款訂單（金額：NT${' '}
-          {unpaidTodayAmount.toLocaleString()}）， 未計入營業額統計。
+          {unpaidTodayAmount.toLocaleString()}），未計入營業額統計。
         </div>
       )}
 
@@ -164,16 +171,26 @@ const AdminReport = () => {
       </div>
 
       {/* 排行區 */}
-      <div className='row'>
+      <div className='row mb-4'>
         <div className='col-12 mb-3'>
-          <h4>熱銷排行榜</h4>
+          <h4>熱銷排行</h4>
         </div>
         <TopRankingCard title='固定套餐 Top 5' data={topFixed} />
-        <TopRankingCard title='自由配 Top 5' data={topCustom} />
+        {/* <TopRankingCard title='自由配 Top 5' data={topCustom} /> */}
         <TopRankingCard title='其他附餐 Top 5' data={topOthers} />
+      </div>
+
+      {/* 自由配各項統計區 */}
+      <div className='row pb-5 pb-md-7'>
+        <div className='col-12 mb-3'>
+          <h4>自由配熱銷排行</h4>
+        </div>
+        <IngredientRankingCard title='基底 Top 3' data={topBases} />
+        <IngredientRankingCard title='蛋白質 Top 5' data={topProteins} />
+        <IngredientRankingCard title='配菜 Top 5' data={topSides} />
+        <IngredientRankingCard title='醬料 Top 3' data={topSauces} />
       </div>
     </div>
   );
 };
-
 export default AdminReport;

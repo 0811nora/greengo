@@ -5,6 +5,7 @@ import { getSingleProduct } from '../api/ApiClient';
 import { renderUITab, renderUITag } from '../utils/productUiRender';
 import DonutPFC from '../components/custom-comp/PFC_Chart';
 import Loader from '../components/common/Loading';
+import { notify } from '../components/Notify';
 
 const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) => {
 	const { id } = useParams();
@@ -22,7 +23,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 			} catch (error) {
 				console.log(error.response);
 				setIsDataLoading(false);
-				notify('error', '資料讀取失敗，請重新整理', 'top-right');
+				notify('error', '資料讀取失敗，請重新整理', 'bottom-center');
 			}
 		};
 		getProductDetail();
@@ -49,12 +50,12 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 	// 		const res = await postAddToCart(data);
 	// 		console.log(res.data);
 	// 		setIsAddCartLoading(false);
-	// 		notify('success', '加入購物車成功', 'top-right');
+	// 		notify('success', '加入購物車成功', 'bottom-center');
 	// 		handleCloseDetail();
 	// 	} catch (error) {
 	// 		console.log(error);
 	// 		setIsAddCartLoading(false);
-	// 		notify('error', '加入購物車失敗', 'top-right');
+	// 		notify('error', '加入購物車失敗', 'bottom-center');
 	// 	}
 	// };
 
@@ -77,8 +78,8 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 						<Loader mode={'mask'} show={isDataLoading} text={'查看產品內容..'} />
 					) : (
 						<div className="container">
-							<div className="row">
-								<div className="col-5  position-relative">
+							<div className="d-flex flex-lg-row flex-column ">
+								<div className="col-lg-5 col-12 position-relative">
 									{/* img */}
 									<div className="py-7 position-sticky top-0">
 										<div className="img d-flex justify-content-center ">
@@ -86,7 +87,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 										</div>
 									</div>
 								</div>
-								<div className="col-7 ps-8">
+								<div className="col-lg-7 col-12 ps-lg-8">
 									{/* info */}
 									<div className=" info d-flex flex-column gap-5">
 										{/* title, tag */}
@@ -103,7 +104,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 											</div>
 										</div>
 										{/* tab */}
-										<div className="tab d-flex gap-2">
+										<div className="tab d-flex  flex-sm-row flex-column gap-2">
 											{renderUITab(productDetail?.tab_collection, productDetail?.product_type)?.map(
 												(item, index) => (
 													<span className="tabPill" key={index}>
@@ -114,7 +115,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 										</div>
 										{/* description */}
 										<div className="d-flex flex-column gap-2">
-											<p>{`${productDetail?.grams}克 / 碗`}</p>
+											<p>{`${productDetail?.grams}克 / ${productDetail?.product_type === 'drinks' ? '杯' : '碗'}`}</p>
 											<p className="description">{productDetail?.description}</p>
 										</div>
 										{/* price */}
@@ -149,8 +150,8 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 										</div>
 									</div>
 									{/* nutrition */}
-									<div className="nutrition d-flex justify-content-between align-items-bottom">
-										<div>
+									<div className="nutrition d-flex flex-sm-row flex-column justify-content-between align-items-bottom">
+										<div className="nutrition-content">
 											<h6 className="mb-5">營養素資訊</h6>
 											<div className="d-flex flex-column gap-3">
 												<p>
@@ -171,7 +172,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 												</p>
 											</div>
 										</div>
-										<div className="nutrition-chart">
+										<div className="nutrition-chart mt-5 mt-sm-0 flex-fill">
 											<DonutPFC
 												protein={productDetail?.nutrition.protein}
 												fat={productDetail?.nutrition.fat}
@@ -180,67 +181,14 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 											/>
 										</div>
 									</div>
-									{/* addon */}
-									{/* <div className="addon py-7">
-									<h6 className="mb-4">加購配料（皆另外包裝）</h6>
-								
-									<div>
-										<Accordion defaultActiveKey="0" flush>
-											<Accordion.Item eventKey="0">
-												<Accordion.Header>加購額外基底</Accordion.Header>
-												<Accordion.Body className="d-flex flex-column gap-4">
-													{apiItemData
-														.filter(item => item.product_type === 'base')
-														.map(item => (
-															<Form.Group className="d-flex align-items-center" key={item.id}>
-																<Form.Label
-																	htmlFor={item.title}
-																	className="d-flex align-items-center gap-4 me-auto"
-																>
-																	<img src={item.imageUrl} alt={item.title} />
-																	<div>
-																		<p>{item.title}</p>
-																		<span>{`${item.grams}g / ${item.nutrition.calories}Kcal ｜P ${item.nutrition.protein}｜F ${item.nutrition.fat}｜C ${item.nutrition.carbs}`}</span>
-																	</div>
-																</Form.Label>
-
-																<div className="d-flex align-items-center">
-																	<Form.Label htmlFor={item.title}>{`+ $${item.price}`}</Form.Label>
-																	<Form.Check type="checkbox" id={item.title} />
-																</div>
-															</Form.Group>
-														))}
-												</Accordion.Body>
-											</Accordion.Item>
-											<Accordion.Item eventKey="1">
-												<Accordion.Header>加購額外主食​ (蛋白質)</Accordion.Header>
-												<Accordion.Body>
-													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-												</Accordion.Body>
-											</Accordion.Item>
-											<Accordion.Item eventKey="2">
-												<Accordion.Header>加購額外醬​汁</Accordion.Header>
-												<Accordion.Body>
-													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-												</Accordion.Body>
-											</Accordion.Item>
-											<Accordion.Item eventKey="3">
-												<Accordion.Header>加購額外​配料​</Accordion.Header>
-												<Accordion.Body>
-													<Form.Check type="checkbox" id="addon-1" label="Check this switch" />
-												</Accordion.Body>
-											</Accordion.Item>
-										</Accordion>
-									</div>
-								</div> */}
 								</div>
 							</div>
 						</div>
 					)}
 				</Modal.Body>
 
-				<Modal.Footer className="d-flex align-items-center gap-3">
-					<div className="num-control d-flex align-items-center justify-content-between gap-4">
+				<Modal.Footer className="d-flex flex-sm-row flex-column align-items-center justify-content-between gap-3">
+					<div className="num-control d-flex align-items-center justify-content-between gap-4 ">
 						<button className={`minus ${num <= 1 ? 'disable' : ''}`} onClick={handleMinusNum}>
 							<i className="bi bi-dash"></i>
 						</button>
@@ -259,7 +207,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 					>
 						<p>
 							{`加入 ${num} 份商品至購物車`}
-							<span className="fw-semibold ms-4">{`NT$ ${productDetail?.price * num}`}</span>
+							<span className="fw-semibold ms-sm-4">{`NT$ ${(productDetail?.price * num).toLocaleString()}`}</span>
 							<Loader mode="button" show={isAddCartLoading} className={'ms-2'} />
 						</p>
 					</button>

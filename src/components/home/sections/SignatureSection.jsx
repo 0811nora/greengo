@@ -33,19 +33,17 @@ const SignatureSection = () => {
               <div className='order-1 order-lg-2 col-lg-6'>
                 <ContentCard
                   subTitle='SIGNATURE BOWLS'
-                  title={
-                    <>
-                      綠果 <br /> 精選系列
-                    </>
-                  }
+                  title={<>綠果精選系列</>}
                   description={
                     <>
-                      綠果堅持由營養團隊精心設計的黃金比例組合，
+                      綠果堅持由營養團隊精心設計的黃金比例組合。
                       <br />
                       無須思考，打開就能享用一份零失誤的健康。
                     </>
                   }
                   buttonText='查看精選菜單'
+                  bgColor='transparent'
+                  textPosition='text-center'
                   to={PageLinks.productLink.url}
                 />
               </div>
@@ -56,7 +54,7 @@ const SignatureSection = () => {
         {/* 熱門商品 + swiper 套件*/}
         <FadeIn delay={0.3}>
           {' '}
-          <div className='container-fluid home__swiper bg-yellow-100 pt-5 pb-8 pb-md-10 px-8 rounded-5'>
+          <div className='container-fluid home__swiper bg-yellow-100 pt-5 pb-8 pb-md-10 px-5 px-md-8 rounded-5'>
             <div className='text-center mb-2 mb-md-5'>
               <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2 mb-md-5'>
                 BEST SELLER

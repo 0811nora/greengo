@@ -1,11 +1,13 @@
 import { NavLink, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-// import { useCart } from '../context/CartContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-// header cart
+// header cart + login
 import CartDropdown from '../components/home/CartDropdown';
 import LoginModal from '../components/home/LoginModal';
 import UserDropdown from '../components/home/UserDropdown';
+import { logout, selectIsLogin } from '../store/slices/userSlice';
 
 const NavbarData = {
   brand: {
@@ -32,6 +34,9 @@ export default function Header() {
   const closeMenu = () => {
     setIsMobileMenuOpen(false);
   };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLogin = useSelector(selectIsLogin);
 
   // 點外面就關閉選單
   useEffect(() => {
@@ -47,9 +52,6 @@ export default function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isMobileMenuOpen]);
-
-  // cart
-  // const { cartData, getAllCart } = useCart();
 
   return (
     <>
@@ -86,9 +88,6 @@ export default function Header() {
               >
                 <CartDropdown />
                 <UserDropdown />
-                {/* <button className='btn btn-outline-primary-300 rounded-pill'>
-                  登入 / 註冊
-                </button> */}
               </div>
             </div>
 
@@ -154,9 +153,19 @@ export default function Header() {
 
                   <div className='mobile-container__footer'>
                     <UserDropdown />
-                    {/* <button className='btn btn-outline-primary-300 w-100 rounded-pill'>
-                      登入 / 註冊
-                    </button> */}
+                    {isLogin && (
+                      <button
+                        className='btn btn-outline-danger w-100 rounded-pill mt-3'
+                        onClick={() => {
+                          dispatch(logout());
+                          closeMenu();
+                          navigate('/');
+                        }}
+                      >
+                        <i className='bi bi-box-arrow-right me-2'></i>
+                        登出
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

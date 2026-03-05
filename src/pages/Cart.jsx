@@ -1,32 +1,29 @@
 import { useEffect, useState } from 'react';
-import {
-  getCart,
-  putCartItem,
-  deleteCartItem,
-  deleteAllCart,
-} from '../api/ApiClient';
+import { getCart, putCartItem, deleteCartItem } from '../api/ApiClient';
 import { notify } from './../components/Notify';
 import { ConfirmModal } from '../components/common/Modal';
 import Loader from '../components/common/Loading';
 import { PageSwitch } from '../components/common/AnimationWrapper';
 import DonutPFC from '../components/custom-comp/PFC_Chart';
-
-import { NavLink, useNavigate } from 'react-router-dom';
-import { p } from 'framer-motion/client';
+import { useNavigate } from 'react-router-dom';
+// header 購物車
+import { useDispatch, useSelector } from 'react-redux';
+import { renderRefresh } from './../store/slices/cartSlice';
+import { selectIsLogin, openModal } from './../store/slices/userSlice';
 
 // 主組件：購物車頁面
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const getCarts = async () => {
     try {
       setIsLoading(true);
       const res = await getCart();
       setCartItems(res.data.data.carts);
-      console.log(res.data.data.carts);
+      // console.log(res.data.data.carts);
     } catch (error) {
       notify('error', `取得失敗:${error.response.data.message}`);
     } finally {
@@ -45,9 +42,10 @@ const Cart = () => {
     };
     setIsLoading(true);
     try {
-      const res = await putCartItem(id, data);
+      await putCartItem(id, data);
       getCarts();
       notify('success', `調整成功`);
+      dispatch(renderRefresh());
     } catch (error) {
       notify('error', `調整失敗:${error.response.data.message}`);
     } finally {
@@ -75,9 +73,11 @@ const Cart = () => {
 
   return (
     <div className="cart-container container-xl">
-      <Loader mode={'mask'} show={isLoading} text={'資料處理中..'} />
+      <Loader mode={'mask'} show={isLoading} text={'購物車讀取中..'} />
       <PageSwitch>
-        <h1 className="page-title">您的購物車</h1>
+        <h1 className="page-title">
+          <i className="bi bi-basket3 me-2"></i>購物車
+        </h1>
         <div className="row g-5">
           {/* 左側：商品列表 */}
           <section className="col-lg-8">
@@ -121,6 +121,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
   const itemTotalPrice = unitPrice * item.qty;
   const nutritionInfo = item.customizations?.total_nutrition;
   const addon = item?.customizations?.addon;
+  const dispatch = useDispatch();
 
   const renderCustomItems = (items, mode = 'addon') => {
     if (!items || items.length === 0) return null;
@@ -169,10 +170,11 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
   const handleRemoveItem = async (id) => {
     setIsLoading(true);
     try {
-      const res = await deleteCartItem(id);
+      await deleteCartItem(id);
       setIsShowModal(false);
       getCarts();
       notify('success', `刪除成功`);
+      dispatch(renderRefresh());
     } catch (error) {
       notify('error', `刪除失敗:${error.response.data.message}`);
     } finally {
@@ -210,7 +212,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
               <span className="me-5">原價</span>
               <span>
                 <i className="bi bi-currency-dollar"></i>
-                {item?.customizations?.plan_info?.base_price}
+                {item?.customizations?.plan_info?.base_price?.toLocaleString()}
               </span>
             </p>
             {hasAddonsContent && (
@@ -218,7 +220,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
                 <span className="me-5">加購</span>
                 <span>
                   <i className="bi bi-currency-dollar"></i>
-                  {item?.customizations?.extra_price}
+                  {item?.customizations?.extra_price?.toLocaleString()}
                 </span>
               </p>
             )}
@@ -227,7 +229,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
               <span className="me-5">單品合計</span>
               <span>
                 <i className="bi bi-currency-dollar"></i>
-                {unitPrice}
+                {unitPrice?.toLocaleString()}
               </span>
             </p>
           </div>
@@ -237,7 +239,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
             style={{ fontSize: '0.75rem' }}
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isPoke ? '查看明細與營養素' : '查看營養素'}
+            查看明細與營養素
             <i
               className={`ms-1 bi ${isOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`}
             ></i>
@@ -278,7 +280,7 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
 
       <div className="item-details-panel">
         <div className="details-grid">
-          {isPoke && (
+          {isPoke ? (
             <div className="detail-column content-list">
               <h4
                 className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
@@ -429,25 +431,33 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
                           <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                             基底
                           </span>
-                          <span>{item.product.ingredients.base}</span>
+                          <span className="text-brown-300">
+                            {item.product.ingredients.base}
+                          </span>
                         </li>
                         <li className="mb-3">
                           <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                             主食
                           </span>
-                          <span>{item.product.ingredients.main}</span>
+                          <span className="text-brown-300">
+                            {item.product.ingredients.main}
+                          </span>
                         </li>
                         <li className="mb-3">
                           <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                             醬料
                           </span>
-                          <span>{item.product.ingredients.source}</span>
+                          <span className="text-brown-300">
+                            {item.product.ingredients.source}
+                          </span>
                         </li>
                         <li className="mb-5">
                           <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
                             配菜
                           </span>
-                          <span>{item.product.ingredients.side}</span>
+                          <span className="text-brown-300">
+                            {item.product.ingredients.side}
+                          </span>
                         </li>
                       </ul>
                     </>
@@ -544,11 +554,25 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
                 </>
               )}
             </div>
+          ) : (
+            <div className="detail-column content-list">
+              <h4
+                className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
+                      border-5 border-gray-100 mb-4"
+              >
+                <i className="bi bi-postcard-heart me-2"></i>內容物明細
+              </h4>
+              <ul className="px-2">
+                <li className="mb-3">
+                  <span className="text-brown-300">
+                    {item.product.ingredients.base}
+                  </span>
+                </li>
+              </ul>
+            </div>
           )}
 
-          <div
-            className={`detail-column nutrition-info mb-3 ${!isPoke ? 'full-width' : ''}`}
-          >
+          <div className={`detail-column nutrition-info mb-3 `}>
             <h4
               className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
                       border-5 border-gray-100 mb-4"
@@ -561,30 +585,6 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
               carbs={nutritionInfo?.carbs}
               calories={nutritionInfo?.calories}
             />
-            {/* {nutritionInfo && (
-              <div className="nutri-badges">
-                <div className="badge">
-                  <span className="label">熱量</span>
-                  <span className="value">{nutritionInfo.calories}</span>
-                  <span className="unit">Kcal</span>
-                </div>
-                <div className="badge">
-                  <span className="label">蛋白</span>
-                  <span className="value">{nutritionInfo.protein}</span>
-                  <span className="unit">g</span>
-                </div>
-                <div className="badge">
-                  <span className="label">脂肪</span>
-                  <span className="value">{nutritionInfo.fat}</span>
-                  <span className="unit">g</span>
-                </div>
-                <div className="badge">
-                  <span className="label">碳水</span>
-                  <span className="value">{nutritionInfo.carbs}</span>
-                  <span className="unit">g</span>
-                </div>
-              </div>
-            )} */}
           </div>
         </div>
       </div>
@@ -608,12 +608,20 @@ const CartItem = ({ item, onUpdateQuantity, getCarts }) => {
 
 const CartSummary = ({ baseSubtotal, totalAddons, finalTotal }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLogin = useSelector(selectIsLogin);
+  const handleNextCart = () => {
+    if (!isLogin) {
+      dispatch(openModal());
+      notify('info', `請先登入，再繼續完成選購`);
+    } else {
+      navigate('/checkout');
+    }
+  };
   return (
     <aside className="cart-summary col-lg-4">
       <div className="summary-card">
-        <h4 className="text-primary pt-3 border-bottom border-gray-100 pb-3 mb-4">
-          費用總覽
-        </h4>
+        <h4 className="text-primary py-3 mb-4">費用總覽</h4>
 
         <div className="d-flex justify-content-between mb-2">
           <span>小計</span>
@@ -642,7 +650,7 @@ const CartSummary = ({ baseSubtotal, totalAddons, finalTotal }) => {
           type="button"
           className="btn checkout-btn"
           disabled={baseSubtotal <= 0}
-          onClick={() => navigate('/checkout')}
+          onClick={handleNextCart}
         >
           下一步
         </button>

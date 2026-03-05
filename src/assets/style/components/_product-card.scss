@@ -31,6 +31,13 @@
 		object-position: 25% 25%;
 		transition: all 0.2s ease-in-out;
 	}
+	.soup-img {
+		width: 100%;
+		aspect-ratio: 3/2;
+		object-fit: cover;
+		object-position: 25% 25%;
+		transition: all 0.2s ease-in-out;
+	}
 }
 .product-page .card .tabPill-position-absolute {
 	top: 10px;
@@ -102,6 +109,11 @@
 
 	.img img {
 		transform: scale(1.1);
+	}
+	.addBtn {
+		transform: rotate(-45deg) scale(1.1);
+		color: $primary-200;
+		border: 1px solid $primary-200;
 	}
 }
 

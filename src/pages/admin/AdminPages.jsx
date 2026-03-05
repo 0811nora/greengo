@@ -31,7 +31,7 @@ export default function AdminPages() {
 			// a. 驗證是否有token，沒有直接回登入頁
 			if (!greenCookie) {
 				navigate('/admin/login');
-				notify('error', '登入錯誤，請先輸入帳號密碼');
+				// notify('error', '登入錯誤，請先輸入帳號密碼');
 				return;
 			}
 
@@ -100,7 +100,7 @@ export default function AdminPages() {
 		if (admPassword === '0000') {
 			handlePasswordSuccess();
 		} else {
-			alert('登入失敗');
+			notify('error', '登入失敗', 'bottom-center');
 		}
 		setAdmPassword('');
 	}
@@ -108,12 +108,12 @@ export default function AdminPages() {
 		setAdmMode(true);
 		closeLoginModal();
 		navigate(pagePath);
-		alert('登入成功');
+		notify('success', '登入成功', 'bottom-center');
 	}
 	function logoutMode() {
 		setAdmMode(false);
 		closeLogoutModal();
-		console.log('登出成功');
+		notify('success', '登出成功', 'bottom-center');
 	}
 
 	return (

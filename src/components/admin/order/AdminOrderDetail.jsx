@@ -149,25 +149,26 @@ const OrderDetail = ({
 	];
 
 	//自由配各套餐的食材扣打
-	const ingredient_Buckle = {
-		protein: 30,
-	};
-	//自由配各套餐的食材扣打規則
-	const plan_Buckle = {
-		light: {
-			protein: ingredient_Buckle.protein,
-		},
-		balanced: {
-			protein: ingredient_Buckle.protein * 2,
-		},
-		highProtein: {
-			protein: ingredient_Buckle.protein * 3,
-		},
-	};
+	// const ingredient_Buckle = {
+	// 	protein: 30,
+	// };
+	//自由配各套餐的食材扣打規則(不用管plan_type)
+	// const plan_Buckle = {
+	// 	light: {
+	// 		protein: ingredient_Buckle.protein,
+	// 	},
+	// 	balanced: {
+	// 		protein: ingredient_Buckle.protein * 2,
+	// 	},
+	// 	highProtein: {
+	// 		protein: ingredient_Buckle.protein * 3,
+	// 	},
+	// };
 	// 自由配套餐扣打判斷(蛋白質超過扣打,出現補差額金額)
 	const handlePlanBuckle = (orderProduct, item) => {
-		const plan_type = orderProduct.customizations.plan_info.plan_type;
-		const proteinBuckle = plan_Buckle?.[plan_type].protein;
+		// const plan_type = orderProduct.customizations.plan_info.plan_type;
+		// const proteinBuckle = plan_Buckle?.[plan_type].protein;
+		const proteinBuckle = 30;
 		const extraPrice = item.price - proteinBuckle;
 		let visible = true;
 
@@ -175,7 +176,7 @@ const OrderDetail = ({
 
 		return (
 			<span className={`price ms-auto ${visible ? '' : 'hidden'}`}>
-				+<i className="bi bi-currency-dollar" />
+				<i className="bi bi-currency-dollar" />
 				{formatPrice(extraPrice)}
 			</span>
 		);
@@ -185,13 +186,16 @@ const OrderDetail = ({
 	const orderProductsArry = Object.values(orderDetail?.products ?? {});
 
 	// 小計金額
-	const subtotal = orderProductsArry.reduce((accu, curr) => accu + curr?.final_total, 0);
+	const subtotal = orderDetail.user.base_total;
 
 	// 加購金額
-	const addTotal = orderProductsArry.reduce((accu, curr) => accu + (curr?.customizations.extra_price ?? 0), 0);
+	const addTotal = orderDetail.user.addons_total;
 
 	// 總計金額
-	const finalTotal = subtotal + addTotal;
+	const finalTotal = orderDetail.user.final_total;
+
+	// 折扣金額
+	const discount = orderDetail.user.discount || 0;
 
 	// 訂單內容下拉選單元件accordion
 	const ProductAccordion = () => {
@@ -230,8 +234,8 @@ const OrderDetail = ({
 								<div>
 									<span className="qty me-2 ms-auto">{`x ${item.qty}`}</span>
 									<span className="price ms-auto">
-										+<i className="bi bi-currency-dollar" />
-										{formatPrice(item.price)}
+										<i className="bi bi-currency-dollar" />
+										{(item.price * item.qty).toLocaleString()}
 									</span>
 								</div>
 							</div>
@@ -254,7 +258,7 @@ const OrderDetail = ({
 								<span className="me-2 ms-auto">{`x ${orderProduct.qty}`}</span>
 								<span className="fw-bold price">
 									<i className="bi bi-currency-dollar" />
-									{formatPrice(orderProduct.customizations.custom_total)}
+									{formatPrice(orderProduct.customizations.custom_total * orderProduct.qty)}
 								</span>
 							</Accordion.Header>
 							<Accordion.Body>
@@ -290,7 +294,7 @@ const OrderDetail = ({
 								<span className="me-2">{`x ${orderProduct.qty}`}</span>
 								<span className="fw-bold price">
 									<i className="bi bi-currency-dollar" />
-									{orderProduct.customizations.custom_total}
+									{`${(orderProduct.customizations.custom_total * orderProduct.qty).toLocaleString()}`}
 								</span>
 							</div>
 						</div>
@@ -385,6 +389,13 @@ const OrderDetail = ({
 												<span>
 													<i className="bi bi-currency-dollar"></i>
 													{formatPrice(addTotal)}
+												</span>
+											</p>
+											<p>
+												<span>折扣</span>
+												<span>
+													- <i className="bi bi-currency-dollar"></i>
+													{formatPrice(discount)}
 												</span>
 											</p>
 											<p className="total-price">
