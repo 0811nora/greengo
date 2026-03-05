@@ -119,7 +119,7 @@ export default function Home() {
             <div className='row'>
               <div className='col-lg-4 my-auto'>
                 <ContentCard
-                  hasBorder
+                  hasBorde
                   subTitle='YOUR INSPIRATION'
                   title='綠果專欄'
                   description={
@@ -129,18 +129,21 @@ export default function Home() {
                       成為你往後飲食的靈感
                     </>
                   }
-                  buttonText='看看我們的文章'
+                  buttonText='探索更多文章'
                   bgColor='transparent'
                   textPosition='text-center'
-                  contentPadding='py-7 px-5 mt-5 mb-8'
+                  contentPadding='py-7 px-5 mt-5 mb-8 '
                   to={PageLinks.articleLink.url}
                 />
               </div>
               {/* 文章區 */}
-              <div className='col-lg-8'>
-                <div className='row g-4 d-flex align-items-center'>
+              <div className='col-lg-8 rounded-4 bg-white shadow'>
+                <div className='row g-4 d-flex px-3 px-md-5 py-3 py-md-6 rounded-3'>
                   {/* 主文章 */}
-                  <div className='col-md-7 mt-0'>
+                  <div className='col-lg-7'>
+                    <h4 className='py-5 align-items-start'>
+                      <i className='bi bi-fire text-error mx-1'></i>Fresh Pick
+                    </h4>
                     {mainArticle && (
                       <Link
                         to={`/article/${mainArticle.id}`}
@@ -166,11 +169,10 @@ export default function Home() {
                             </>
                           )}
                           <div className='card-body px-6 py-4 d-flex flex-column align-items-start'>
-                            <h5 className='card-title fw-bold mb-3 text-gray-600'>
+                            <h5 className='card-title fw-bold mb-5 text-gray-600'>
                               {mainArticle.title}
                             </h5>
-
-                            <p className='card-text text-brown-300'>
+                            <p className='card-text text-brown-300 mb-5 '>
                               {/* 限制文章顯示字數 */}
                               {mainArticle.description
                                 ? mainArticle.description.length > 50
@@ -179,8 +181,8 @@ export default function Home() {
                                   : mainArticle.description
                                 : '暫無內容'}
                             </p>
-                            <div className='mt-8 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100'>
-                              <p className='text-brown-300 d-block mb-2'>
+                            <div className='d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100'>
+                              <p className='text-brown-300 d-block mb-0'>
                                 {formatDate(mainArticle.create_at)} ‧
                                 {mainArticle.author} ‧
                                 {mainArticle.tag?.map((tag, index) => (
@@ -217,75 +219,80 @@ export default function Home() {
                       </Link>
                     )}
                   </div>
-
                   {/* 文章卡片*/}
-                  <div className='col-md-5'>
-                    <div className='card border-0 shadow rounded-4 p-5 h-100'>
-                      {subArticles.map((article) => (
-                        <div key={article.id} className='py-3 border-bottom'>
+                  <div className='col-lg-5'>
+                    <h4 className='py-5 align-items-start'>
+                      <i className='bi bi-bookmark-star text-brown-300 mx-1'></i>
+                      Editor's Picks
+                    </h4>
+                    {subArticles.map((article) => (
+                      <div
+                        key={article.id}
+                        className='pickUp-card border-start border-1 border-brown-100 rounded-4 overflow-hidden px-6 py-4 px-md-4 py-md-2 mb-5'
+                      >
+                        <div className='d-flex flex-column align-items-start w-100'>
                           <Link
                             to={`/article/${article.id}`}
                             className='text-decoration-none'
                           >
-                            <div className='home__article-link'>
-                              <h6 className='mb-4 fw-bold text-gray-600'>
-                                {article.title}
-                              </h6>
-                              <div className='mt-auto d-flex flex-column'>
-                                <span>
-                                  {article.tag?.map((tag, index) => (
-                                    <span
-                                      key={index}
-                                      className='badge bg-accent text-gray-600 mb-2'
-                                    >
-                                      #{tag}
-                                    </span>
-                                  ))}
-                                </span>
-                                <p className='mb-2 text-brown-300 d-flex justify-content-between flex-nowrap'>
-                                  {formatDate(article.create_at)}
-
-                                  <button
-                                    type='button'
-                                    className='home__btn-link text-end'
+                            <h6 className='fw-bold mb-2'>{article.title}</h6>
+                          </Link>
+                          <div className='d-flex justify-content-between align-items-center w-100'>
+                            <div className='d-flex align-items-center gap-1 flex-wrap'>
+                              <p className='text-brown-300 d-block mb-0'>
+                                {formatDate(article.create_at)}‧
+                              </p>
+                              <div>
+                                {article.tag?.map((tag, index) => (
+                                  <span
+                                    key={index}
+                                    className='badge bg-accent text-gray-600'
                                   >
-                                    <span className='hover-underline'>
-                                      閱讀全文
-                                    </span>
-                                    <svg
-                                      id='arrow-horizontal'
-                                      xmlns='http://www.w3.org/2000/svg'
-                                      width='30'
-                                      height='8'
-                                      viewBox='0 0 46 16'
-                                      fill='currentColor'
-                                    >
-                                      <path
-                                        id='Path_10'
-                                        d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
-                                        transform='translate(30)'
-                                      ></path>
-                                    </svg>
-                                  </button>
-                                </p>
+                                    #{tag}
+                                  </span>
+                                ))}
                               </div>
                             </div>
-                          </Link>
+                            <div className='d-flex justify-content-end'>
+                              <Link
+                                to={`/article/${article.id}`}
+                                className='home__btn-link text-decoration-none'
+                              >
+                                <span className='hover-underline'>
+                                  閱讀全文
+                                </span>
+                                <svg
+                                  id='arrow-horizontal'
+                                  xmlns='http://www.w3.org/2000/svg'
+                                  width='30'
+                                  height='8'
+                                  viewBox='0 0 46 16'
+                                  fill='currentColor'
+                                >
+                                  <path
+                                    id='Path_10'
+                                    d='M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z'
+                                    transform='translate(30)'
+                                  ></path>
+                                </svg>
+                              </Link>
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                      {/* 如果沒有文章 */}
-                      {subArticles.length === 0 && (
-                        <div className='py-3'>目前沒有更多文章</div>
-                      )}
-                      <div className='mt-auto pt-3 text-center'>
-                        <Link
-                          to='/articles'
-                          className='home__btn-primary text-decoration-none rounded-pill d-inline-block px-4 py-2 my-4'
-                        >
-                          探索更多
-                        </Link>
                       </div>
-                    </div>
+                    ))}
+                    {/* 如果沒有文章 */}
+                    {subArticles.length === 0 && (
+                      <div className='py-3'>目前沒有更多文章</div>
+                    )}
+                    {/* <div className='mt-auto pt-3 text-center'>
+                      <Link
+                        to='/articles'
+                        className='home__btn-primary text-decoration-none rounded-pill d-inline-block px-4 py-2 my-4'
+                      >
+                        探索更多
+                      </Link>
+                    </div> */}
                   </div>
                 </div>
               </div>

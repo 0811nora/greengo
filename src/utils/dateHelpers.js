@@ -23,43 +23,48 @@ export const getDateRange = (rangeType, customRange = null) => {
   const now = dayjs();
 
   switch (rangeType) {
-    case DATE_RANGE_TYPES.TODAY:
+    case DATE_RANGE_TYPES.TODAY: {
       // 今日 00:00:00 ~ 23:59:59
       return {
         startTime: now.startOf('day').unix(),
         endTime: now.endOf('day').unix(),
       };
+    }
 
-    case DATE_RANGE_TYPES.YESTERDAY:
+    case DATE_RANGE_TYPES.YESTERDAY: {
       // 昨日 00:00:00 ~ 23:59:59
       const yesterday = now.subtract(1, 'day');
       return {
         startTime: yesterday.startOf('day').unix(),
         endTime: yesterday.endOf('day').unix(),
       };
+    }
 
-    case DATE_RANGE_TYPES.THIS_WEEK:
+    case DATE_RANGE_TYPES.THIS_WEEK: {
       // 每週一 00:00:00 ~ 現在
       return {
         startTime: now.startOf('isoWeek').unix(),
         endTime: now.endOf('isoWeek').unix(),
       };
+    }
 
-    case DATE_RANGE_TYPES.THIS_MONTH:
+    case DATE_RANGE_TYPES.THIS_MONTH: {
       // 每月1  00:00:00 ~ 現在
       return {
         startTime: now.startOf('month').unix(),
         endTime: now.endOf('month').unix(),
       };
+    }
 
-    case DATE_RANGE_TYPES.THIS_YEAR:
+    case DATE_RANGE_TYPES.THIS_YEAR: {
       // 今年1/1 00:00:00 ~ 現在
       return {
         startTime: now.startOf('year').unix(),
         endTime: now.endOf('year').unix(),
       };
+    }
 
-    case DATE_RANGE_TYPES.CUSTOM:
+    case DATE_RANGE_TYPES.CUSTOM: {
       // 自訂範圍
       if (customRange && customRange.startDate && customRange.endDate) {
         return {
@@ -72,6 +77,7 @@ export const getDateRange = (rangeType, customRange = null) => {
         startTime: now.startOf('day').unix(),
         endTime: now.endOf('day').unix(),
       };
+    }
 
     default:
       return {
@@ -101,7 +107,7 @@ export const generateTimeLabels = (rangeType, startTime, endTime) => {
       }
       break;
 
-    case DATE_RANGE_TYPES.THIS_WEEK:
+    case DATE_RANGE_TYPES.THIS_WEEK: {
       // 週 - 從週一開始
       let current = start;
       while (current.isBefore(end) || current.isSame(end, 'day')) {
@@ -109,8 +115,9 @@ export const generateTimeLabels = (rangeType, startTime, endTime) => {
         current = current.add(1, 'day');
       }
       break;
+    }
 
-    case DATE_RANGE_TYPES.THIS_MONTH:
+    case DATE_RANGE_TYPES.THIS_MONTH: {
       // 月份
       let day = start;
       while (day.isBefore(end) || day.isSame(end, 'day')) {
@@ -118,8 +125,9 @@ export const generateTimeLabels = (rangeType, startTime, endTime) => {
         day = day.add(1, 'day');
       }
       break;
+    }
 
-    case DATE_RANGE_TYPES.THIS_YEAR:
+    case DATE_RANGE_TYPES.THIS_YEAR: {
       // 本年度
       let month = start;
       while (month.isBefore(end) || month.isSame(end, 'month')) {
@@ -127,8 +135,9 @@ export const generateTimeLabels = (rangeType, startTime, endTime) => {
         month = month.add(1, 'month');
       }
       break;
+    }
 
-    case DATE_RANGE_TYPES.CUSTOM:
+    case DATE_RANGE_TYPES.CUSTOM: {
       // 自訂範圍 - 根據天數決定顯示方式
       const daysSet = end.diff(start, 'day') + 1;
       if (daysSet <= 1) {
@@ -165,6 +174,8 @@ export const generateTimeLabels = (rangeType, startTime, endTime) => {
         }
       }
       break;
+    }
+
     default:
       break;
   }
@@ -198,7 +209,7 @@ export const getTimeLabelIndex = (
       // 回傳月份格式 "M月"
       return orderTime.format('M月');
 
-    case DATE_RANGE_TYPES.CUSTOM:
+    case DATE_RANGE_TYPES.CUSTOM: {
       // 自訂範圍：根據天數決定
       const daysSet = end.diff(start, 'day') + 1;
       if (daysSet <= 1) {
@@ -213,6 +224,7 @@ export const getTimeLabelIndex = (
         const formatStr = isCrossYear ? 'YYYY/MM' : 'M月';
         return orderTime.format(formatStr);
       }
+    }
 
     default:
       return '';

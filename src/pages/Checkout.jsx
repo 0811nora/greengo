@@ -9,6 +9,14 @@ import Loader from '../components/common/Loading';
 import { selectIsLogin } from '../store/slices/userSlice';
 import { notify } from '../components/Notify';
 
+// 隨機取餐號產生器
+const generatePickupNumber = () => {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+  const randomNumber = Math.floor(100 + Math.random() * 900); // 產生 100-999
+  return `${randomLetter}${randomNumber}`; // 結果範例: T832, A105
+};
+
 const Checkout = () => {
   const [cartData, setCartData] = useState([]);
   const navigate = useNavigate();
@@ -87,14 +95,6 @@ const Checkout = () => {
       setDiscount(0);
       setCouponMsg({ type: 'danger', text: '無效的優惠碼' });
     }
-  };
-
-  // 隨機取餐號產生器
-  const generatePickupNumber = () => {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const randomLetter = letters[Math.floor(Math.random() * letters.length)];
-    const randomNumber = Math.floor(100 + Math.random() * 900); // 產生 100-999
-    return `${randomLetter}${randomNumber}`; // 結果範例: T832, A105
   };
 
   // 處理送出訂單
