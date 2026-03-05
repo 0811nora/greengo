@@ -36,28 +36,6 @@ export const VeggieItems = [
   { name: 'bellPepper', angle: '30deg', delay: '-8s', dur: '25s' },
 ];
 
-// Nutrition Section 痛點區
-export const TroubleCards = [
-  {
-    id: 1,
-    text: '「不是不想吃健康，而是怕一個不小心，就吃錯、算錯、白努力。」',
-    align: 'ms-auto',
-    tailSide: 'right', // 對話框右
-  },
-  {
-    id: 2,
-    text: '「一般的健康餐只有固定的營養標示，但我今天多加了一份肉、少吃一點飯，熱量到底變多少？對正在飲控的我來說，真的很難計算...」',
-    align: 'me-auto',
-    tailSide: 'left', // 對話框左
-  },
-  {
-    id: 3,
-    text: '「每次打開外送平台，看著一堆標榜『健康』的餐盒，卻發現成分寫得模模糊糊：少了幾克蛋白？多了一匙醬料？到底差多少熱量完全不知道。為什麼好好吃一餐這麼困難呢？」',
-    align: 'ms-auto',
-    tailSide: 'right',
-  },
-];
-
 // Signature Section 配菜區
 export const Ingredients = [
   {

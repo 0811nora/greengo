@@ -1,4 +1,4 @@
-import { NavLink, Link, useLocation} from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -29,8 +29,6 @@ const NavbarData = {
   mobileLinks: { title: '購物車', url: '/cart' },
 };
 
-
-
 export default function Header() {
   // mobile menu setting
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -60,13 +58,13 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
-  // 處理手機板登入跳轉問題
-const location = useLocation();
-useEffect(() => {
-  closeMenu(); 
-  dispatch(closeModal());
-  dispatch(closeUserDropdown());
-}, [location.pathname, dispatch]);
+  // 處理手機板登入跳轉問題（註：為了監聽變化去重置狀態而寫）
+  const location = useLocation();
+  useEffect(() => {
+    closeMenu();
+    dispatch(closeModal());
+    dispatch(closeUserDropdown());
+  }, [location.pathname, dispatch]);
 
   return (
     <>
