@@ -9,39 +9,40 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination, A11y } from 'swiper/modules';
 
 
+const itemImages = [
+    { url: `${import.meta.env.BASE_URL}img/items/beet.png`, scale: 0.2 },
+    { url: `${import.meta.env.BASE_URL}img/items/bellPepper.png`, scale: 0.2 },
+    { url: `${import.meta.env.BASE_URL}img/items/bitterMelon.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/broccoli.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/cabbage.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/carrot.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/corn.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/cucumber.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/eggplant.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/potato.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/pumpkin.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/radish.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/salmon.png`, scale: 0.03 },
+    { url: `${import.meta.env.BASE_URL}img/items/scallion.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/spinach.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/items/tomato.png`, scale: 0.3 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-1.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-2.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-3.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-4.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-5.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-6.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-7.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-8.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-9.png`, scale: 0.1 },
+    { url: `${import.meta.env.BASE_URL}img/member/food-10.png`, scale: 0.1 },
+];
+
 
 export default function About() {
     const MatterStepOne = () => {
         const boxRef = useRef(null);
         const canvasRef = useRef(null);
-        const itemImages = [
-            { url: `${import.meta.env.BASE_URL}img/items/beet.png`, scale: 0.2 },
-            { url: `${import.meta.env.BASE_URL}img/items/bellPepper.png`, scale: 0.2 },
-            { url: `${import.meta.env.BASE_URL}img/items/bitterMelon.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/broccoli.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/cabbage.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/carrot.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/corn.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/cucumber.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/eggplant.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/potato.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/pumpkin.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/radish.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/salmon.png`, scale: 0.03 },
-            { url: `${import.meta.env.BASE_URL}img/items/scallion.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/spinach.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/items/tomato.png`, scale: 0.3 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-1.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-2.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-3.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-4.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-5.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-6.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-7.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-8.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-9.png`, scale: 0.1 },
-            { url: `${import.meta.env.BASE_URL}img/member/food-10.png`, scale: 0.1 },
-        ];
 
         useEffect(() => {
             const { Engine, Render, Runner, Bodies, Composite, Events, Body, MouseConstraint, Mouse } = Matter;
