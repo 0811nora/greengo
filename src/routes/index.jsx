@@ -9,7 +9,7 @@ import Cart from '../pages/Cart.jsx';
 import Checkout from '../pages/Checkout.jsx';
 import Payment from '../pages/Payment.jsx';
 import ArticleDetail from '../pages/ArticleDetail.jsx';
-import Member from '../pages/Member115.jsx';
+import Member from '../pages/Member.jsx';
 import Privacy from '../pages/Privacy.jsx';
 import Terms from '../pages/Terms.jsx';
 
