@@ -2,12 +2,11 @@ import axios from 'axios';
 import { notify } from '../../components/Notify';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { admSignin, admUserCheck } from '../../api/ApiAdmin';
+import { admSignin } from '../../api/ApiAdmin';
 
 export default function AdminLogin() {
   const [accountLogin, setAccountLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
-  // const [greenGoToken, setGreenGoToken] = useState("");
   const navigate = useNavigate();
 
   const Login = async () => {
@@ -17,8 +16,6 @@ export default function AdminLogin() {
     };
     try {
       const res = await admSignin(userInfo);
-      // console.log(res);
-      // setGreenGoToken(res.data.token);
       const { token, expired } = res.data;
 
       document.cookie = `greenToken=${token}; expires=${new Date(expired)}; path=/`;
@@ -28,42 +25,15 @@ export default function AdminLogin() {
     } catch (error) {
       console.error(error);
       notify('error', '登入失敗');
-
-      //alert(`登入失敗：${error.message}`);
     }
   };
 
-  // mini改的地方：----------------->
-  // login不驗證token是否可用，只判斷有沒有token，所以把驗證的程式碼註解，
-  // 將有token後的路由改成'/admin/order/today'
   useEffect(() => {
-    const greenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+    const greenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)greenToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
     if (greenCookie) {
       navigate('/admin/order/today');
     }
   }, [navigate]);
-
-  // useEffect(() => {
-  //   const greenCookie = document.cookie.replace(
-  //     /(?:(?:^|.*;\s*)greenToken\s*\=\s*([^;]*).*$)|^.*$/,
-  //     "$1",
-  //   );
-  //   axios.defaults.headers.common["Authorization"] = greenCookie;
-  //   const checkLogin = async () => {
-  //     try {
-  //       const res = await admUserCheck();
-  //       console.log(res.data);
-  //       navigate("/admin/order/today");
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   };
-  //   if (greenCookie) {
-  //     checkLogin();
-  //   }
-  // }, [navigate]);
-
-  //--------------------------------------->
 
   const getAccount = e => {
     setAccountLogin(e.target.value);
