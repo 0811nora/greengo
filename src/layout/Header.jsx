@@ -1,5 +1,5 @@
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -60,7 +60,8 @@ export default function Header() {
 
   // 處理手機板登入跳轉問題（註：為了監聽變化去重置狀態而寫）
   const location = useLocation();
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     closeMenu();
     dispatch(closeModal());
     dispatch(closeUserDropdown());
