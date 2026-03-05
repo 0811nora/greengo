@@ -1,6 +1,6 @@
 
 
-export default  function NoraModal ({isOpenModal,setIsOpenModal,handleComfirmBtn,modalText}){
+export default  function SmallModal ({isOpenModal,setIsOpenModal,handleComfirmBtn,modalText}){
     return(<>
 
     {isOpenModal && 

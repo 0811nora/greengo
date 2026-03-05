@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 
+const MotionDiv = motion.div;
+
 export const PageSwitch = ({ children, nodeKey }) => {
     return (
         <AnimatePresence mode="wait">
-            <motion.div
+            <MotionDiv
                 key={nodeKey}
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}  
@@ -12,7 +14,7 @@ export const PageSwitch = ({ children, nodeKey }) => {
                 style={{ width: '100%', height: '98%', display: 'flex', flexDirection: 'column' }}
             >
                 {children}
-            </motion.div>
+            </MotionDiv>
         </AnimatePresence>
     );
 };
