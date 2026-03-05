@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PageLinks, TroubleCards } from '../../data/homeData';
+// import { PageLinks } from '../../data/homeData';
 
 const FeatureCard = ({
   to,

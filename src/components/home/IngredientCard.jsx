@@ -5,9 +5,10 @@ const IngredientCard = ({ item }) => {
   const size = 70;
   const strokeWidth = 4;
   const radius = (size - strokeWidth) / 2;
+  const MotionDiv = motion.div;
 
   return (
-    <motion.div
+    <MotionDiv
       className={`ingredient-card ${item.pos}`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 0.8, y: 0 }}
@@ -44,7 +45,7 @@ const IngredientCard = ({ item }) => {
           />
         </svg>
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };
 export default IngredientCard;
