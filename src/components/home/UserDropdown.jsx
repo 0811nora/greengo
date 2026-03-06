@@ -31,7 +31,7 @@ const UserDropdown = () => {
     if (isOpen) {
       setTimeout(() => {
         document.addEventListener('mousedown', handleClickOutside);
-      }, 100);
+      }, 10);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, dispatch]);
@@ -45,7 +45,7 @@ const UserDropdown = () => {
   const handleMouseLeave = () => {
     closeTimer.current = setTimeout(() => {
       dispatch(closeUserDropdown());
-    }, 300);
+    }, 100);
   };
 
   // timer cleanup
@@ -60,20 +60,6 @@ const UserDropdown = () => {
     dispatch(logout());
     navigate('/');
   };
-
-  // 手機版 dropdown
-  // const handleIconClick = () => {
-  //   // 先判斷螢幕寬度
-  //   if (window.innerWidth >= 992) {
-  //     // 桌機版：切換 dropdown
-  //     dispatch(toggleUserDropdown());
-  //   } else {
-  //     // 手機版：直接到會員中心
-  //     navigate('/member');
-  //     dispatch(closeUserDropdown());
-  //     dispatch(closeModal());
-  //   }
-  // };
 
   // 未登入
   if (!isLogin) {
@@ -106,7 +92,7 @@ const UserDropdown = () => {
             className='rounded-5'
             width={'32px'}
             height={'32px'}
-            src={`${import.meta.env.BASE_URL}img/items/profilePic.png`}
+            src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
             alt='會員頭貼'
           />
           {/* <i className='bi bi-person-circle fs-4' aria-hidden='true'></i> */}
@@ -134,7 +120,7 @@ const UserDropdown = () => {
                 className='rounded-5 me-1'
                 width={'28px'}
                 height={'28px'}
-                src={`${import.meta.env.BASE_URL}img/items/profilePic.png`}
+                src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
                 alt=''
               />
               {/* <i className='bi bi-person me-2' aria-hidden='true'></i> */}
@@ -168,7 +154,7 @@ const UserDropdown = () => {
           className='rounded-5 me-1'
           width={'28px'}
           height={'28px'}
-          src={`${import.meta.env.BASE_URL}img/items/profilePic.png`}
+          src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
           alt=''
         />
         <span className='ms-1 text-gray-400'>會員中心</span>

@@ -104,7 +104,7 @@ const CartDropdown = () => {
     if (isShowModal) return;
     closeTimer.current = setTimeout(() => {
       dispatch(closeCart());
-    }, 300);
+    }, 10);
   };
   // timer cleanup
   useEffect(() => {
