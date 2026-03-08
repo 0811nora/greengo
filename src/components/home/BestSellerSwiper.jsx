@@ -95,8 +95,9 @@ const BestSellerSwiper = () => {
                         e.preventDefault();
                         addCartBtn(product.id, 1);
                       }}
+                      aria-label='加入購物車'
                     >
-                      <i className='bi bi-bag'></i>
+                      <i className='bi bi-bag' aria-hidden='true'></i>
                     </button>
                     <img
                       src={product.img}
@@ -106,12 +107,12 @@ const BestSellerSwiper = () => {
                   </div>
                   <div className='card-body py-3 px-5'>
                     <div className='d-flex justify-content-between align-items-center text-gray-600 mb-1'>
-                      <h5
+                      <p
                         className='fs-6 fs-md-5 fw-bold mb-0'
                         title={product.name}
                       >
                         {product.name}
-                      </h5>
+                      </p>
                       <span className='fs-6 fs-md-5 fw-bold'>
                         ${product.price}
                       </span>

@@ -22,7 +22,7 @@ const FeatureCard = ({
           </div>
           <div className='col-md-6 mb-5 mb-md-0'>
             <div className='badge tag-item p-2 mb-3'>
-              {tagText} <i className={`bi ${tagIcon}`}></i>
+              {tagText} <i className={`bi ${tagIcon}`} aria-hidden='true'></i>
             </div>
             <h2 className='fs-4 text-gray-600 my-4'>{title}</h2>
             <p className='text-gray-400 mb-4'>{description}</p>

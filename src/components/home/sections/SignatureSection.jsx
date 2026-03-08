@@ -56,10 +56,14 @@ const SignatureSection = () => {
           {' '}
           <div className='container-fluid home__swiper bg-yellow-100 pt-5 pb-8 pb-md-10 px-5 px-md-8 rounded-5'>
             <div className='text-center mb-2 mb-md-5'>
-              <h4 className='text-gray-200 fs-6 fs-md-4 fw-semibold mb-2 mb-md-5'>
-                BEST SELLER
-              </h4>
-              <h2 className='fs-3 fs-md-1 fw-bold mb-2 mb-md-5'>熱銷排行</h2>
+              <ContentCard
+                hasBorde
+                subTitle='BEST SELLER'
+                title='熱銷排行'
+                bgColor='transparent'
+                textPosition='text-center'
+                contentPadding='py-0 mt-0 mb-0'
+              />
             </div>
             <div className='row'>
               <BestSellerSwiper />
@@ -67,6 +71,21 @@ const SignatureSection = () => {
           </div>
         </FadeIn>
       </section>
+      <svg
+        id='visual'
+        viewBox='0 0 1920 120'
+        width='100%'
+        xmlns='http://www.w3.org/2000/svg'
+        xmlnsXlink='http://www.w3.org/1999/xlink'
+        version='1.1'
+      >
+        <path
+          d='M0 30L35.5 35.3C71 40.7 142 51.3 213.2 47.8C284.3 44.3 355.7 26.7 426.8 22.3C498 18 569 27 640 36.2C711 45.3 782 54.7 853.2 54.8C924.3 55 995.7 46 1066.8 38.8C1138 31.7 1209 26.3 1280 29C1351 31.7 1422 42.3 1493.2 49C1564.3 55.7 1635.7 58.3 1706.8 58.5C1778 58.7 1849 56.3 1884.5 55.2L1920 54L1920 0L1884.5 0C1849 0 1778 0 1706.8 0C1635.7 0 1564.3 0 1493.2 0C1422 0 1351 0 1280 0C1209 0 1138 0 1066.8 0C995.7 0 924.3 0 853.2 0C782 0 711 0 640 0C569 0 498 0 426.8 0C355.7 0 284.3 0 213.2 0C142 0 71 0 35.5 0L0 0Z'
+          fill='#ecf3ed'
+          strokeLinecap='round'
+          strokeLinejoin='miter'
+        ></path>
+      </svg>
     </>
   );
 };

@@ -37,7 +37,7 @@ const StepCard = () => {
             <div className='shadow'></div>
             <div className='label'>
               <div className='icon'>
-                <i className={item.icon}></i>
+                <i className={item.icon} aria-hidden='true'></i>
               </div>
               <div className='info'>
                 <div className='fw-bold fs-6'>{item.step_title}</div>
