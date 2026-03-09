@@ -31,7 +31,7 @@ const itemImages = [
 ];
 
 
-export default function Dropdown() {
+export default function DropVeg() {
 
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
