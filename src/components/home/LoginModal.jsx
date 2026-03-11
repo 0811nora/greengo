@@ -9,6 +9,20 @@ import { useForm } from 'react-hook-form';
 import { notify } from '../Notify';
 
 const LoginModal = () => {
+  // show password (分成登入/註冊/註冊確認)
+  const [showPassword, setShowPassword] = useState({
+    login: false, // 登入
+    register: false, // 註冊
+    confirm: false, // 註冊確認
+  });
+
+  const passwordVisibility = (key) => {
+    setShowPassword((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
   const {
     register: registerLogin,
     handleSubmit: handleSubmitLogin,
@@ -24,6 +38,7 @@ const LoginModal = () => {
       },
     },
   );
+
   const {
     register: registerRegister,
     handleSubmit: handleSubmitRegister,
@@ -40,9 +55,9 @@ const LoginModal = () => {
       },
     },
   );
-
   const dispatch = useDispatch();
   const isModalOpen = useSelector(selectIsModalOpen);
+
   // 登入或註冊
   const [activeTab, setActiveTab] = useState('login');
   // const [isRegisterMode, setIsRegisterMode] = useState(false);
@@ -68,7 +83,10 @@ const LoginModal = () => {
     // setIsRegisterMode(false);
     resetLogin();
     resetRegister();
+    // 重設密碼顯示狀態
+    setShowPassword({ login: false, register: false, confirm: false });
   };
+
   const handleTabSwitch = (tab) => {
     setActiveTab(tab);
     // setIsRegisterMode(!isRegisterMode);
@@ -162,17 +180,30 @@ const LoginModal = () => {
                         </div>
                       )}
                     </div>
-                    <div className='mb-3'>
-                      <label
-                        htmlFor='loginPassword'
-                        className='form-label fw-semibold text-gray-400'
-                      >
-                        密碼
-                      </label>
+                    <div className='mb-3 position-relative'>
+                      <div className='d-flex justify-content-between align-items-center'>
+                        <label
+                          htmlFor='loginPassword'
+                          className='form-label fw-semibold text-gray-400'
+                        >
+                          密碼
+                        </label>
+                        <button
+                          type='button'
+                          onClick={() => passwordVisibility('login')}
+                          className='home__btn-link mb-2'
+                        >
+                          {showPassword.login ? (
+                            <span className=''>隱藏密碼</span>
+                          ) : (
+                            <span className=''>顯示密碼</span>
+                          )}
+                        </button>
+                      </div>
                       <input
                         id='loginPassword'
                         name='loginPassword'
-                        type='password'
+                        type={showPassword.login ? 'text' : 'password'}
                         className={`form-control rounded-3 ${
                           loginErrors.password ? 'is-invalid' : ''
                         }`}
@@ -270,17 +301,30 @@ const LoginModal = () => {
                         </div>
                       )}
                     </div>
-                    <div className='mb-3'>
-                      <label
-                        htmlFor='registerPassword'
-                        className='form-label fw-semibold text-gray-400'
-                      >
-                        密碼
-                      </label>
+                    <div className='mb-3 position-relative'>
+                      <div className='d-flex justify-content-between align-items-center'>
+                        <label
+                          htmlFor='registerPassword'
+                          className='form-label fw-semibold text-gray-400'
+                        >
+                          密碼
+                        </label>
+                        <button
+                          type='button'
+                          onClick={() => passwordVisibility('register')}
+                          className='home__btn-link mb-2'
+                        >
+                          {showPassword.register ? (
+                            <span className=''>隱藏密碼</span>
+                          ) : (
+                            <span className=''>顯示密碼</span>
+                          )}
+                        </button>
+                      </div>
                       <input
                         id='registerPassword'
                         name='registerPassword'
-                        type='password'
+                        type={showPassword.register ? 'text' : 'password'}
                         className={`form-control rounded-3 ${
                           registerErrors.password ? 'is-invalid' : ''
                         }`}
@@ -293,6 +337,7 @@ const LoginModal = () => {
                           },
                         })}
                       />
+
                       {registerErrors.password && (
                         <div className='invalid-feedback'>
                           {registerErrors.password.message}
@@ -300,16 +345,29 @@ const LoginModal = () => {
                       )}
                     </div>
                     <div className='mb-3'>
-                      <label
-                        htmlFor='registerConfirmPassword'
-                        className='form-label fw-semibold text-gray-400'
-                      >
-                        確認密碼
-                      </label>
+                      <div className='d-flex justify-content-between align-items-center'>
+                        <label
+                          htmlFor='registerConfirmPassword'
+                          className='form-label fw-semibold text-gray-400'
+                        >
+                          確認密碼
+                        </label>
+                        <button
+                          type='button'
+                          onClick={() => passwordVisibility('confirm')}
+                          className='home__btn-link mb-2'
+                        >
+                          {showPassword.confirm ? (
+                            <span className=''>隱藏密碼</span>
+                          ) : (
+                            <span className=''>顯示密碼</span>
+                          )}
+                        </button>
+                      </div>
                       <input
                         id='registerConfirmPassword'
                         name='registerConfirmPassword'
-                        type='password'
+                        type={showPassword.confirm ? 'text' : 'password'}
                         className={`form-control rounded-3 ${
                           registerErrors.confirmPassword ? 'is-invalid' : ''
                         }`}
@@ -321,6 +379,7 @@ const LoginModal = () => {
                             '密碼與確認密碼不相同',
                         })}
                       />
+
                       {registerErrors.confirmPassword && (
                         <div className='invalid-feedback'>
                           {registerErrors.confirmPassword.message}
