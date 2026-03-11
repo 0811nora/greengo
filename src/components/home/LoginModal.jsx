@@ -63,15 +63,13 @@ const LoginModal = () => {
   // const [isRegisterMode, setIsRegisterMode] = useState(false);
 
   // 登入
-  const onLoginSubmit = (data) => {
-    console.log('登入：', data);
+  const onLoginSubmit = () => {
     dispatch(login());
     resetAndClose();
   };
 
   // 註冊
-  const onRegisterSubmit = (data) => {
-    console.log('註冊：', data);
+  const onRegisterSubmit = () => {
     dispatch(login());
     resetAndClose();
   };
@@ -135,12 +133,14 @@ const LoginModal = () => {
               {/* 登入或註冊 */}
               <div className='header__modal-tabs d-flex justify-content-center'>
                 <button
+                  type='button'
                   className={`header__tab ${activeTab === 'login' ? 'active' : ''}`}
                   onClick={() => handleTabSwitch('login')}
                 >
                   登入
                 </button>
                 <button
+                  type='button'
                   className={`header__tab ${activeTab === 'register' ? 'active' : ''}`}
                   onClick={() => handleTabSwitch('register')}
                 >
@@ -240,10 +240,7 @@ const LoginModal = () => {
                       <button
                         type='button'
                         className='btn btn-link p-0 text-gray-400 fs-sm text-decoration-none'
-                        onClick={() => (
-                          notify('success', '還沒做這功能QQ'),
-                          console.log('忘記密碼')
-                        )}
+                        onClick={() => notify('success', '還沒做這功能QQ')}
                       >
                         忘記密碼？
                       </button>

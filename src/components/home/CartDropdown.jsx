@@ -44,9 +44,12 @@ const CartDropdown = () => {
     try {
       const res = await getCart();
       dispatch(setCartData(res.data.data));
-    } catch (err) {
+    } catch (error) {
       dispatch(setError('取得購物車失敗'));
-      console.log('取得購物車失敗', err);
+      notify(
+        'error',
+        error.response?.data?.message || '取得購物車失敗，請稍後再試',
+      );
     } finally {
       dispatch(setLoading(false));
     }
@@ -68,9 +71,8 @@ const CartDropdown = () => {
       await deleteCartItem(deleteTargetId);
       await getAllCart();
       notify('success', '已移除商品');
-    } catch (err) {
-      notify('error', '移除失敗，請稍後再試');
-      console.log('刪除失敗', err);
+    } catch (error) {
+      notify('error', error.response?.data?.message || '移除失敗，請稍後再試');
     } finally {
       dispatch(setLoading(false));
       handleClose();
@@ -104,7 +106,7 @@ const CartDropdown = () => {
     if (isShowModal) return;
     closeTimer.current = setTimeout(() => {
       dispatch(closeCart());
-    }, 10);
+    }, 500);
   };
   // timer cleanup
   useEffect(() => {

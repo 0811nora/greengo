@@ -60,6 +60,7 @@ const StepCard = () => {
         {StepCards.map((item, index) => (
           <button
             key={index}
+            type='button'
             className={`pagination ${index === activeIndex ? 'active' : ''}`}
             onClick={() => handleClick(index)}
             aria-label={item.step_title}

@@ -65,6 +65,7 @@ const UserDropdown = () => {
   if (!isLogin) {
     return (
       <button
+        type='button'
         className='btn btn-outline-primary-300 rounded-pill w-100'
         onClick={() => dispatch(openModal())}
       >
@@ -95,7 +96,6 @@ const UserDropdown = () => {
             src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
             alt='會員頭貼'
           />
-          {/* <i className='bi bi-person-circle fs-4' aria-hidden='true'></i> */}
         </button>
         {/*  桌機版 dropdown */}
         {isOpen && (
@@ -123,7 +123,6 @@ const UserDropdown = () => {
                 src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
                 alt=''
               />
-              {/* <i className='bi bi-person me-2' aria-hidden='true'></i> */}
               會員中心
             </button>
             <button
@@ -158,7 +157,6 @@ const UserDropdown = () => {
           alt=''
         />
         <span className='ms-1 text-gray-400'>會員中心</span>
-        {/* <i className='bi bi-person-circle fs-4' aria-hidden='true'></i> */}
       </button>
     </>
   );
