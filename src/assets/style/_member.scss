@@ -95,15 +95,15 @@
     &.details-open {
       .order-detail-box {
         max-height: 620px;
-        padding: 36px;
+        padding: 16px;
         margin-top: 16px;
         border-radius: 12px;
       }
     }
-    @media (max-width: 768px) {
+    @include media-breakpoint-up(md) {
       &.details-open {
         .order-detail-box {
-          padding: 16px;
+          padding: 36px;
         }
       }
     }
@@ -125,12 +125,6 @@
     }
   }
 
-  @media (min-width: 768px) {
-    .border-md-end {
-      border-right: 1px solid;
-    }
-  }
-
   //profile
 
   .user-profile-container {
@@ -141,21 +135,6 @@
         box-shadow 0.2s ease;
       overflow: hidden;
 
-      // 頭像區域樣式
-      .avatar-placeholder {
-        font-size: 5rem; // 控制 icon 大小
-        color: lighten($primary, 20%);
-        line-height: 1;
-
-        i {
-          background: #f8f9fa;
-          border-radius: 50%;
-          padding: 10px;
-          border: 2px solid #e9ecef;
-        }
-      }
-
-      // Input Group 優化
       .input-group-text {
         border: 1px solid #ced4da;
         border-right: none;
@@ -166,19 +145,17 @@
         border-left: none;
 
         &:focus {
-          border-color: #ced4da; // 移除預設藍色邊框，改用陰影
+          border-color: #ced4da;
           box-shadow: none;
-          border-left: 1px solid #ced4da; // focus 時補回左邊框
+          border-left: 1px solid #ced4da;
         }
 
-        // 當 input 被 disabled 時的樣式優化
         &:disabled {
           background-color: rgb(255, 255, 255);
           border-color: #e9ecef;
         }
       }
 
-      // 如果 input disabled，前面的 icon 也要變色
       .form-control:disabled ~ .input-group-text,
       .input-group:has(.form-control:disabled) .input-group-text {
         background-color: #f8f9fa;
@@ -211,9 +188,6 @@
     width: 65px;
     height: 65px;
     object-fit: contain;
-
-    /* 🔥 關鍵修正：加上這一行！ 🔥 */
-    /* 0 代表「不壓縮」，保持原圖大小 */
     flex-shrink: 0;
 
     animation: float-up-down 3s ease-in-out infinite;
