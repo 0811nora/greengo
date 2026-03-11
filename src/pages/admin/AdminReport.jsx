@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import useAllOrders from '../../hooks/useAllOrders';
 import useReportData from '../../hooks/useReportData';
 import { DATE_RANGE_TYPES, getDateRange } from '../../utils/dateHelpers';
@@ -71,29 +71,6 @@ const AdminReport = () => {
     topSides,
     topSauces,
   } = reportData;
-
-  // 測試 API 抓訂單用，先不要刪
-  console.log('-----時間範圍:-----', rangeType);
-  console.log(
-    '-----起始時間:-----',
-    startTime,
-    dayjs.unix(startTime).format('YYYY/MM/DD HH:mm'),
-  );
-  console.log(
-    '-----結束時間:-----',
-    endTime,
-    dayjs.unix(endTime).format('YYYY/MM/DD HH:mm'),
-  );
-  console.log('-----篩選後訂單數:-----', filterOrders.length);
-  console.log('-----銷售趨勢資料:-----', salesTrend);
-  console.log('-----支付方式分布:-----', paymentMethod);
-  // console.log('-----自由配類型統計:-----', customTypeStats);
-  console.log('-----配料排行:-----', {
-    topBases,
-    topProteins,
-    topSides,
-    topSauces,
-  });
 
   // 計算今日未付款訂單（會跳提示）
   // +同時檢查 is_paid 跟 payment_status

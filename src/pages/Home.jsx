@@ -34,7 +34,6 @@ export default function Home() {
       setIsLoading(true);
       try {
         const res = await getArticles(page);
-        // console.log('文章 API 資料：', res.data.articles);
         const allArticles = res.data.articles;
         const sortedArticles = [...allArticles].sort(
           (a, b) => b.create_at - a.create_at,
@@ -44,8 +43,7 @@ export default function Home() {
           setSubArticles(sortedArticles.slice(1, 4));
         }
         setIsLoading(false);
-      } catch (err) {
-        console.log(err);
+      } catch {
         setIsLoading(false);
       } finally {
         setIsLoading(false);

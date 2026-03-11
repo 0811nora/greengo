@@ -70,7 +70,12 @@ const FooterContact = ({ contactData }) => {
           {contactData.address}
         </li>
         <li className='fs-md fs-md-6 text-primary-100 mb-2 mb-md-4'>
-          {contactData.phone}
+          <a
+            href={`tel:${contactData.phone}`}
+            className='text-primary-100 text-decoration-none hover-underline'
+          >
+            {contactData.phone}
+          </a>
         </li>
         <li className='fs-md fs-md-6 ft-en mb-2 mb-md-4'>
           <a

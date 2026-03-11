@@ -38,7 +38,7 @@ const HeroSection = () => {
         {/* 中央碗 */}
         <div className='hero__decorations position-absolute top-100 start-50 translate-middle pt-10'>
           <img
-            fetchpriority='high'
+            fetchPriority='high'
             src={`${import.meta.env.BASE_URL}img/items/bowl-3.webp`}
             className='position-relative'
             alt='bowl-3'
