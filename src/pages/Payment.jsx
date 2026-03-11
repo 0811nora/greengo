@@ -6,9 +6,9 @@ import { notify } from './../components/Notify';
 import { ConfirmModal } from '../components/common/Modal';
 import { useNavigate } from 'react-router-dom';
 import { PageSwitch } from '../components/common/AnimationWrapper';
-import DonutPFC from '../components/custom-comp/PFC_Chart';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal, selectIsLogin } from '../store/slices/userSlice';
+import RecipeModal from '../components/cart/RecipeModal';
 
 const Payment = () => {
   const { orderId } = useParams();
@@ -270,7 +270,7 @@ const Payment = () => {
                 <span>小計</span>
                 <span>
                   <i className="bi bi-currency-dollar"></i>
-                  {orderData?.total}
+                  {orderData?.total.toLocaleString()}
                 </span>
               </div>
 
@@ -279,7 +279,7 @@ const Payment = () => {
                   <span>加購</span>
                   <span>
                     + <i className="bi bi-currency-dollar"></i>
-                    {orderData?.user?.addons_total}
+                    {orderData?.user?.addons_total.toLocaleString()}
                   </span>
                 </div>
               )}
@@ -289,7 +289,7 @@ const Payment = () => {
                   <span>折扣</span>
                   <span>
                     - <i className="bi bi-currency-dollar"></i>
-                    {orderData?.user?.discount}
+                    {orderData?.user?.discount.toLocaleString()}
                   </span>
                 </div>
               )}
@@ -298,7 +298,7 @@ const Payment = () => {
                 <span className="fs-5 fw-medium">總計</span>
                 <span className="fs-5 fw-medium text-primary">
                   <i className="bi bi-currency-dollar"></i>
-                  {orderData?.user?.final_total}
+                  {orderData?.user?.final_total.toLocaleString()}
                 </span>
               </div>
               {/* 付款按鈕 */}
@@ -372,414 +372,6 @@ const Payment = () => {
           />
         )}
       </PageSwitch>
-    </div>
-  );
-};
-
-const RecipeModal = ({ product, onClose }) => {
-  if (!product) return null;
-  const isCustom = product.product.category === 'custom';
-
-  const renderCustomItems = (items, mode = 'addon') => {
-    if (!items || items.length === 0) return null;
-
-    return items.map((subItem, index) => {
-      const unitPrice = subItem.price || 0;
-
-      let displayPrice = 0;
-
-      if (mode === 'included_protein') {
-        const priceDiff = Math.max(0, unitPrice - 30);
-        displayPrice = priceDiff * subItem.qty;
-      } else if (mode === 'included_general') {
-        displayPrice = 0;
-      } else {
-        displayPrice = unitPrice * subItem.qty;
-      }
-
-      return (
-        <span
-          className="text-brown-300"
-          key={index}
-          style={{ marginRight: '8px' }}
-        >
-          {subItem.title}
-
-          {subItem.qty > 1 && ` X${subItem.qty}`}
-
-          {displayPrice > 0 && ` (+${displayPrice})`}
-
-          {index < items.length - 1 && '、'}
-        </span>
-      );
-    });
-  };
-
-  const addon = product.customizations?.addon;
-
-  const hasAddonsContent =
-    addon &&
-    (addon.base?.length > 0 ||
-      addon.protein?.length > 0 ||
-      addon.sauce?.length > 0 ||
-      addon.side?.length > 0 ||
-      addon.drinks?.length > 0 ||
-      addon.soup?.length > 0);
-
-  return (
-    <div
-      className="modal show d-block"
-      style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
-    >
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-header bg-orange-100 border-bottom-0 p-5">
-            <h5 className="modal-title fs-6">{product.product.title} 明細</h5>
-            <button
-              type="button"
-              className="btn-close"
-              onClick={onClose}
-            ></button>
-          </div>
-          <div className="modal-body p-6 text-gray-300 fs-sm">
-            <h4
-              className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
-                      border-5 border-gray-100 mb-2"
-            >
-              <i className="bi bi-coin me-2"></i>費用明細
-            </h4>
-            <div
-              className="text-brown-300 mb-6 px-2"
-              style={{ maxWidth: '220px' }}
-            >
-              <p className="d-flex justify-content-between mb-1">
-                <span className="me-5">原價</span>
-                <span>
-                  <i className="bi bi-currency-dollar"></i>
-                  {product?.customizations?.plan_info?.base_price}
-                </span>
-              </p>
-              {hasAddonsContent && (
-                <p className="d-flex justify-content-between mb-1">
-                  <span className="me-5">加購</span>
-                  <span>
-                    <i className="bi bi-currency-dollar"></i>
-                    {product?.customizations?.extra_price}
-                  </span>
-                </p>
-              )}
-
-              <p className="d-flex justify-content-between">
-                <span className="me-5">單品合計</span>
-                <span>
-                  <i className="bi bi-currency-dollar"></i>
-                  {product?.customizations?.custom_total}
-                </span>
-              </p>
-            </div>
-            <h4
-              className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
-                      border-5 border-gray-100 mb-4"
-            >
-              <i className="bi bi-postcard-heart me-2"></i>內容物明細
-            </h4>
-            {isCustom ? (
-              // 自選 Poke 的渲染邏輯
-              <>
-                <ul className="px-2">
-                  <li className="mb-3">
-                    <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                      基底
-                    </span>
-
-                    {renderCustomItems(
-                      product?.customizations.included.base,
-                      'included_general',
-                    )}
-                  </li>
-
-                  <li className="mb-3">
-                    <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                      主食
-                    </span>
-
-                    {renderCustomItems(
-                      product?.customizations?.included?.protein,
-                      'included_protein',
-                    )}
-                  </li>
-
-                  <li className="mb-3">
-                    <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                      醬料
-                    </span>
-
-                    {renderCustomItems(
-                      product?.customizations?.included?.sauce,
-                      'included_general',
-                    )}
-                  </li>
-
-                  <li className="mb-3">
-                    <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                      配菜
-                    </span>
-
-                    {renderCustomItems(
-                      product?.customizations.included.side,
-                      'included_general',
-                    )}
-                  </li>
-                </ul>
-                {/* 加購區 (Addons) */}
-
-                {hasAddonsContent && (
-                  <>
-                    <h4
-                      className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
-                      border-5 border-gray-100 mb-4 mt-5"
-                    >
-                      <i className="bi bi-plus-circle-fill me-2"></i> 加購明細
-                    </h4>
-                    <ul className="px-2">
-                      {addon.base?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            基底
-                          </span>
-
-                          {renderCustomItems(
-                            product?.customizations.addon.base,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-
-                      {addon.protein?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            主食
-                          </span>
-                          {renderCustomItems(
-                            product?.customizations?.addon?.protein,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-
-                      {addon.sauce?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            醬料
-                          </span>
-
-                          {renderCustomItems(
-                            product?.customizations?.addon?.sauce,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-                      {addon?.side?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            配菜
-                          </span>
-
-                          {renderCustomItems(
-                            product?.customizations?.addon?.side,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-
-                      {addon?.drinks?.length > 0 && (
-                        <li className="mb-3">
-                          <span>飲品：</span>
-
-                          {renderCustomItems(
-                            product?.customizations?.addon?.drinks,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-                      {addon?.soup?.length > 0 && (
-                        <li className="mb-3">
-                          <span>湯品：</span>
-
-                          {renderCustomItems(
-                            product?.customizations?.addon?.soup,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-                    </ul>
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                {product?.product.ingredients && (
-                  <>
-                    <ul className="px-2">
-                      <li className="mb-3">
-                        {product?.product.category !== 'other' ? (
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            基底
-                          </span>
-                        ) : (
-                          ''
-                        )}
-
-                        <span className="text-brown-300">
-                          {product?.product.ingredients.base}
-                        </span>
-                      </li>
-                      {product?.product.category !== 'other' && (
-                        <>
-                          <li className="mb-3">
-                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                              主食
-                            </span>
-                            <span className="text-brown-300">
-                              {product?.product.ingredients.main}
-                            </span>
-                          </li>
-                          <li className="mb-3">
-                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                              醬料
-                            </span>
-                            <span className="text-brown-300">
-                              {product?.product.ingredients.source}
-                            </span>
-                          </li>
-                          <li className="mb-5">
-                            <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                              配菜
-                            </span>
-                            <span className="text-brown-300">
-                              {product?.product.ingredients.side}
-                            </span>
-                          </li>
-                        </>
-                      )}
-                    </ul>
-                  </>
-                )}
-
-                {/* 加購區 (Addons) */}
-
-                {hasAddonsContent && (
-                  <>
-                    <h4
-                      className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
-                      border-5 border-gray-100 mb-4"
-                    >
-                      <i className="bi bi-postcard-heart me-2"></i> 加購明細
-                    </h4>
-                    <ul className="px-2">
-                      {addon.base?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            基底
-                          </span>
-
-                          {renderCustomItems(
-                            product?.customizations.addon.base,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-
-                      {addon.protein?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            主食
-                          </span>
-                          {renderCustomItems(
-                            product?.customizations?.addon?.protein,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-
-                      {addon.sauce?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            醬料
-                          </span>
-
-                          {renderCustomItems(
-                            product?.customizations.addon.sauce,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-                      {addon?.side?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            配菜
-                          </span>
-
-                          {renderCustomItems(
-                            product?.customizations.addon.side,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-
-                      {addon.drinks?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            飲品
-                          </span>
-
-                          {renderCustomItems(
-                            product?.customizations.addon.drinks,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-                      {addon.soup?.length > 0 && (
-                        <li className="mb-3">
-                          <span className="bg-primary-100 px-2 py-1 rounded-4 me-2">
-                            湯品
-                          </span>
-
-                          {renderCustomItems(
-                            product?.customizations.addon.soup,
-                            'addon',
-                          )}
-                        </li>
-                      )}
-                    </ul>
-                  </>
-                )}
-              </>
-            )}
-            <h4
-              className="fs-sm text-brown-300 mb-2 d-flex align-items-center px-1 pb-1 border-bottom
-                      border-5 border-gray-100 mb-4 mt-5"
-            >
-              <i className="bi bi-pie-chart-fill me-2"></i> 單品營養素資訊
-            </h4>
-            <DonutPFC
-              protein={product?.customizations?.total_nutrition?.protein}
-              fat={product?.customizations?.total_nutrition?.fat}
-              carbs={product?.customizations?.total_nutrition?.carbs}
-              calories={product?.customizations?.total_nutrition?.calories}
-            />
-          </div>
-          <div className="modal-footer border-gray-50">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={onClose}
-            >
-              關閉
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { renderRefresh } from './../store/slices/cartSlice';
 import Loader from '../components/common/Loading';
 import { selectIsLogin } from '../store/slices/userSlice';
 import { notify } from '../components/Notify';
+import { useCartTotals } from '../hooks/useCartTotals';
 
 // 隨機取餐號產生器
 const generatePickupNumber = () => {
@@ -67,24 +68,13 @@ const Checkout = () => {
   // 優惠券狀態
   const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
-  const [couponMsg, setCouponMsg] = useState('');
+  const [couponMsg, setCouponMsg] = useState(null);
 
   // 計算金額
-  const { baseSubtotal, totalAddons, cartItemsQty } = cartData.reduce(
-    (acc, item) => {
-      const itemBasePrice = item.product.price;
-      const itemExtraPrice = item.customizations?.extra_price;
-
-      acc.baseSubtotal += itemBasePrice * item.qty;
-      acc.totalAddons += itemExtraPrice * item.qty;
-      acc.cartItemsQty += item.qty;
-
-      return acc;
-    },
-    { baseSubtotal: 0, totalAddons: 0, cartItemsQty: 0 }, // 初始值
+  const { baseSubtotal, totalAddons, cartItemsQty, finalTotal } = useCartTotals(
+    cartData,
+    discount,
   );
-
-  const finalTotal = baseSubtotal + totalAddons - discount;
 
   // 處理優惠券
   const applyCoupon = () => {
