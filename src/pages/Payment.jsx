@@ -205,6 +205,7 @@ const Payment = () => {
                         <button
                           className="btn btn-sm btn-outline-orange-300 ms-2 py-0 px-2 mb-1"
                           style={{ fontSize: '0.75rem', borderRadius: '20px' }}
+                          type="button"
                           onClick={(e) => handleViewRecipe(e, product)}
                         >
                           <i className="bi bi-info-circle me-1"></i>
@@ -308,6 +309,7 @@ const Payment = () => {
                 </p>
               ) : (
                 <button
+                  type="button"
                   className="btn checkout-btn ls-md"
                   onClick={handlePayment}
                   disabled={orderData.is_paid || isProcessing}

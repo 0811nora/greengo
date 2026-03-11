@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteCartItem, putCartItem } from '../../api/ApiClient';
 import { notify } from '../Notify';
@@ -6,11 +6,14 @@ import { renderRefresh } from '../../store/slices/cartSlice';
 import Loader from '../common/Loading';
 import { ConfirmModal } from '../common/Modal';
 import CartItemDetails from './CartItemDetails';
+import debounce from 'lodash/debounce';
 
 // 購物車品項
 const CartItem = ({ item, getCarts }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [localQty, setLocalQty] = useState(item?.qty);
+  const qtyRef = useRef(item?.qty);
 
   const unitPrice = item?.customizations?.custom_total;
   const itemTotalPrice = unitPrice * item?.qty;
@@ -27,22 +30,33 @@ const CartItem = ({ item, getCarts }) => {
       addon.drinks?.length > 0 ||
       addon.soup?.length > 0);
 
-  const handleCartItem = async (id, qty) => {
-    const data = {
-      product_id: id,
-      qty: qty,
-    };
-    setIsLoading(true);
-    try {
-      await putCartItem(id, data);
-      getCarts();
-      notify('success', `調整成功`);
-      dispatch(renderRefresh());
-    } catch (error) {
-      notify('error', `調整失敗:${error.response.data.message}`);
-    } finally {
-      setIsLoading(false);
-    }
+  useEffect(() => {
+    qtyRef.current = item?.qty;
+    setLocalQty(item?.qty);
+  }, [item?.qty]);
+
+  const updateCartApi = useCallback(
+    async (id, qty) => {
+      try {
+        await putCartItem(id, { product_id: item.product_id, qty });
+        getCarts();
+        dispatch(renderRefresh());
+      } catch (error) {
+        notify('error', `調整失敗:${error.response.data.message}`);
+        setLocalQty(qtyRef.current);
+      }
+    },
+    [item.product_id, getCarts, dispatch],
+  );
+
+  const debouncedUpdateCart = useMemo(
+    () => debounce((id, qty) => updateCartApi(id, qty), 500),
+    [updateCartApi],
+  );
+  const handleQtyChange = (newQty) => {
+    if (newQty < 1) return;
+    setLocalQty(newQty);
+    debouncedUpdateCart(item.id, newQty);
   };
 
   const handleRemoveItem = async (id) => {
@@ -127,16 +141,16 @@ const CartItem = ({ item, getCarts }) => {
           <button
             type="button"
             className="qty-btn minus"
-            onClick={() => handleCartItem(item?.id, item?.qty - 1)}
-            disabled={item?.qty <= 1}
+            onClick={() => handleQtyChange(localQty - 1)}
+            disabled={localQty <= 1}
           >
             <i className="bi bi-dash"></i>
           </button>
-          <input type="number" value={item?.qty} readOnly />
+          <input type="number" value={localQty} readOnly />
           <button
             type="button"
             className="qty-btn plus"
-            onClick={() => handleCartItem(item?.id, item?.qty + 1)}
+            onClick={() => handleQtyChange(localQty + 1)}
           >
             <i className="bi bi-plus"></i>
           </button>
