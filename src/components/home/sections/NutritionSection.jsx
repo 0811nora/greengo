@@ -58,7 +58,7 @@ const NutritionSection = () => {
               </div>
               <div className='col-md-6 mb-4 mb-md-0'>
                 <FeatureCard
-                  to={PageLinks.productLink.url}
+                  to={PageLinks.customLink.url}
                   imgSrc={`${import.meta.env.BASE_URL}img/items/bowl-4.png`}
                   bubbleClass='bg-bubble2'
                   tagText='由你自由配'
