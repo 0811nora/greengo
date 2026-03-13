@@ -79,7 +79,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 					) : (
 						<div className="container">
 							<div className="d-flex flex-lg-row flex-column ">
-								<div className="col-lg-5 col-12 position-relative">
+								<div className="col-lg-5 position-relative">
 									{/* img */}
 									<div className="py-7 position-sticky top-0">
 										<div className="img d-flex justify-content-center ">
@@ -87,7 +87,7 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 										</div>
 									</div>
 								</div>
-								<div className="col-lg-7 col-12 ps-lg-8">
+								<div className="col-lg-7 ps-lg-8">
 									{/* info */}
 									<div className=" info d-flex flex-column gap-5">
 										{/* title, tag */}
@@ -189,16 +189,17 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 
 				<Modal.Footer className="d-flex flex-sm-row flex-column align-items-center justify-content-between gap-3">
 					<div className="num-control d-flex align-items-center justify-content-between gap-4 ">
-						<button className={`minus ${num <= 1 ? 'disable' : ''}`} onClick={handleMinusNum}>
+						<button type="button" className={`minus ${num <= 1 ? 'disable' : ''}`} onClick={handleMinusNum}>
 							<i className="bi bi-dash"></i>
 						</button>
 						<span className="fw-semibold text-center">{num}</span>
-						<button className={`add ${num >= 20 ? 'disable' : ''} `} onClick={handleAddNum}>
+						<button type="button" className={`add ${num >= 20 ? 'disable' : ''} `} onClick={handleAddNum}>
 							<i className="bi bi-plus"></i>
 						</button>
 					</div>
 
 					<button
+						type="button"
 						className="addCart flex-fill"
 						onClick={() => {
 							handleAddCart(productDetail.id, num, productDetail);

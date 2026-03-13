@@ -2,7 +2,7 @@ import * as bootstrap from 'bootstrap';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import AdminHeader from '../../layout/AdminHeader';
-import { AdmModal_confirm, AdmModal_password } from '../../component/AdmModal';
+import { AdmModal_confirm, AdmModal_password } from '../../components/admin/AdmModal';
 import { ADM_MODE_LOGOUT } from '../../config/confirmModal';
 import axios from 'axios';
 import { admUserCheck } from '../../api/ApiAdmin';
@@ -37,8 +37,7 @@ export default function AdminPages() {
 			// b. 驗證token是否合法
 			try {
 				axios.defaults.headers.common['Authorization'] = greenCookie;
-				const res = await admUserCheck();
-				console.log(res.data);
+				await admUserCheck();
 				if (location.pathname === '/admin') {
 					navigate('/admin/order/today', { replace: true });
 				}
@@ -52,12 +51,12 @@ export default function AdminPages() {
 			} catch (error) {
 				console.log(error.message);
 				notify('error', '登入錯誤，請先輸入帳號密碼');
-				navigate('/admin/login');
+				navigate('/admin/login', { replace: true });
 			}
 		};
 
 		checkLogin();
-	}, [location.pathname]);
+	}, []); //原本是判斷網址變就戳api（location.pathname），現在是一開始才戳
 
 	function handleNavMode(path) {
 		if (!admMode) {

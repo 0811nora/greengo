@@ -169,7 +169,8 @@
 		transform: scale(1.01);
 	}
 }
-@media (max-width: 768px) {
+
+@include media-breakpoint-up(md) {
 	.product-detail .addCart {
 		width: 100%;
 		span {
