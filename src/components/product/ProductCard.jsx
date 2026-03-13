@@ -1,10 +1,9 @@
 import { renderUITab } from '../../utils/productUiRender';
 import { renderUITag } from '../../utils/productUiRender';
-import Loader from '../../components/common/Loading';
 
 const ProductCard = ({ product, category, handleOpenDetail }) => {
 	return (
-		<div className="col-xxl-3 col-lg-4  col-sm-6 col-12" key={product.id}>
+		<div className="col-xxl-3 col-lg-4  col-sm-6" key={product.id}>
 			<div className="d-flex flex-lg-column card mb-6" onClick={() => handleOpenDetail(product.id)}>
 				{/* 圖片 */}
 				<div className="img position-relative">
@@ -55,15 +54,16 @@ const ProductCard = ({ product, category, handleOpenDetail }) => {
 						<i className="bi bi-arrow-right-short fs-4"></i>
 					</div>
 					{/* <button
-						className="addBtn position-absolute"
-						onClick={e => {
-							e.stopPropagation();
-							handleAddCart(product.id, 1, e);
-						}}
-					>
-						{isAddCartLoading || <i className="bi bi-plus fs-4"></i>}
-						<Loader mode="button" show={isAddCartLoading} className={'ms-2 text-primary-200'} />
-					</button> */}
+            type="button"
+            className="addBtn position-absolute"
+            onClick={e => {
+              e.stopPropagation();
+              handleAddCart(product.id, 1, e);
+            }}
+          >
+            {isAddCartLoading || <i className="bi bi-plus fs-4"></i>}
+            <Loader mode="button" show={isAddCartLoading} className={'ms-2 text-primary-200'} />
+          </button> */}
 				</div>
 			</div>
 		</div>

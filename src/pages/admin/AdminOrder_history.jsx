@@ -19,7 +19,6 @@ export default function AdminOrder_today() {
 	const getApiOrders = useCallback(async page => {
 		try {
 			const res = await getAdmOrders(page);
-			console.log(res.data);
 			setIsDataLoading(false);
 			setAllOrders(res.data.orders);
 			setOrderPagination(res.data.pagination);
@@ -38,7 +37,10 @@ export default function AdminOrder_today() {
 		const paginationArray = [...Array(totalPages).keys()];
 		return paginationArray.map((item, index) => (
 			<li className="page-item" key={index}>
-				<button className={`page-link ${orderPagination.current_page === item + 1 ? 'bg-primary text-white' : ''}`}>
+				<button
+					type="button"
+					className={`page-link ${orderPagination.current_page === item + 1 ? 'bg-primary text-white' : ''}`}
+				>
 					{item + 1}
 				</button>
 			</li>
@@ -92,8 +94,7 @@ export default function AdminOrder_today() {
 	const handleDeleteSingleOrder = async id => {
 		// setIsDataLoading(true);
 		try {
-			const res = await delAdmSingleOrder(id);
-			console.log(res.data);
+			await delAdmSingleOrder(id);
 			getApiOrders();
 			// setIsDataLoading(false);
 			notify('success', '刪除當筆訂單成功', 'bottom-center');
@@ -132,8 +133,7 @@ export default function AdminOrder_today() {
 		const data = { ...specificOrder, user: { ...specificOrder.user, order_status: 'done' } };
 
 		try {
-			const res = await putAdmSingleOrder(id, data);
-			console.log(res.data);
+			await putAdmSingleOrder(id, data);
 			getApiOrders();
 			notify('success', '餐點已領取', 'top-right');
 			handleCloseDetail();
@@ -147,7 +147,6 @@ export default function AdminOrder_today() {
 	const OpenCheckoutPage = order => {
 		setModalType('checkout');
 		setSpecificOrder(order);
-		console.log(order);
 	};
 
 	// 價格有千分位逗號
@@ -199,10 +198,14 @@ export default function AdminOrder_today() {
 													<td>{renderTagStatus(order.user.order_status)}</td>
 													<td>{renderTagStatus(order.user.payment_status)}</td>
 													<td>
-														<button className="btn" onClick={() => handleOpenDetail(order)}>
+														<button type="button" className="btn" onClick={() => handleOpenDetail(order)}>
 															<i className="bi bi-eye-fill"></i>
 														</button>
-														<button className="btn" onClick={() => handleDeleteSingleOrder(order.id)}>
+														<button
+															type="button"
+															className="btn"
+															onClick={() => handleDeleteSingleOrder(order.id)}
+														>
 															<i className="bi bi-trash-fill"></i>
 														</button>
 													</td>
@@ -217,6 +220,7 @@ export default function AdminOrder_today() {
 							<ul className="pagination d-flex justify-content-center">
 								<li className="page-item">
 									<button
+										type="button"
 										className="page-link"
 										aria-label="Previous"
 										onClick={() => handleChangePages('prev')}
@@ -226,7 +230,12 @@ export default function AdminOrder_today() {
 								</li>
 								{renderPagination()}
 								<li className="page-item">
-									<button className="page-link" aria-label="Next" onClick={() => handleChangePages('next')}>
+									<button
+										type="button"
+										className="page-link"
+										aria-label="Next"
+										onClick={() => handleChangePages('next')}
+									>
 										<span aria-hidden="true">後一頁</span>
 									</button>
 								</li>

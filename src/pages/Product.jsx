@@ -254,8 +254,7 @@ export default function Product() {
 			...customizationsData,
 		};
 		try {
-			const res = await postAddToCart(data);
-			console.log(res.data);
+			await postAddToCart(data);
 			setIsAddCartLoading(false);
 			notify('success', '加入購物車成功', 'bottom-center');
 			dispatch(renderRefresh()); // <-- header購物車redux
@@ -281,16 +280,12 @@ export default function Product() {
 				<div className="container d-flex flex-column justify-content-between align-items-center">
 					<div className="d-flex flex-column align-items-center animate__animated animate__fadeInDown">
 						<h1 className="mb-6">Green Go 精選菜單</h1>
-						<div className="d-flex flex-column flex-md-row">
+						<div className="d-flex flex-column flex-lg-row">
 							<h5 className="m-1">當季最新鮮、營養最到位，</h5>
 							<h5 className="m-1">每一口都是 GreenGo 的健康提案</h5>
 						</div>
 					</div>
 				</div>
-				{/* 向下箭頭 */}
-				{/* <div className="z-1">
-					<i className="bi bi-arrow-down mt-4 text-white"></i>
-				</div> */}
 			</header>
 
 			{/* 菜單錨點 */}
@@ -338,26 +333,6 @@ export default function Product() {
 						前往客製化點餐
 					</button>
 				</div>
-
-				{/* <div className="d-flex flex-md-row flex-column">
-						<div className="col-md-5 col-12">
-							<div className="img">
-								<img
-									src="https://images.unsplash.com/photo-1551218372-a8789b81b253?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-									alt="CTA-custom"
-								/>
-							</div>
-						</div>
-						<div className="col-md-7 col-12">
-							<div className="content d-flex flex-column justify-content-center align-items-center">
-								<h2 className="mb-4 fs-xl-2 fs-3">沒遇到理想的那「碗」嗎？</h2>
-								<h6 className="mb-8">到自選菜單，自由搭配出你的理想滋味吧！</h6>
-								<button type="button" className="home__btn-primary " onClick={() => navigate('/custom')}>
-									前往客製化點餐
-								</button>
-							</div>
-						</div>
-					</div> */}
 			</section>
 
 			{/* 飲料 */}

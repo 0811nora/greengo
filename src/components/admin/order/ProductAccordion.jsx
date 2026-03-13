@@ -2,7 +2,6 @@ import { Accordion } from 'react-bootstrap';
 import { Fragment } from 'react';
 
 const ProductAccordion = ({ handlePlanBuckle, orderDetail, formatPrice, included_fields, addon_fields }) => {
-	console.log(orderDetail);
 	// 訂單裡的商品列表(物件包物件)
 	const orderProductsArry = Object.values(orderDetail?.products ?? {});
 
