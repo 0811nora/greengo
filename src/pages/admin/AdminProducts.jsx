@@ -232,6 +232,7 @@ export default function AdminProducts() {
               <div className="nav-item d-flex mx-auto rounded-pill adm__glassbg p-2">
                 {itemSubTabs.map((tab) => (
                   <button
+                    type="button"
                     key={tab.value}
                     className={`nav-link rounded-pill mx-2 ${subTab === tab.value ? 'active' : ''}`}
                     onClick={() => setSubTab(tab.value)}
@@ -524,6 +525,7 @@ export default function AdminProducts() {
             <ul className="nav nav-pills">
               <li className="nav-item">
                 <button
+                  type="button"
                   className={`nav-link mx-2 ${currentTab === 'fixed' ? 'active' : ''}`}
                   onClick={() => handleTabChange('fixed')}
                 >
@@ -540,6 +542,7 @@ export default function AdminProducts() {
               </li>
               <li className="nav-item">
                 <button
+                  type="button"
                   className={`nav-link mx-2 ${currentTab === 'other' ? 'active' : ''}`}
                   onClick={() => handleTabChange('other')}
                 >

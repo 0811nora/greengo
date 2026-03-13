@@ -191,7 +191,7 @@ export default function AdmProductModal({
           <h5 className="adm-product-modal-title">
             <span>{mode === 'add' ? '新增產品' : '編輯產品'}</span>
           </h5>
-          <button className="close-x" onClick={onClose}>
+          <button type="button" className="close-x" onClick={onClose}>
             &times;
           </button>
         </div>

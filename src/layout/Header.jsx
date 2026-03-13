@@ -178,6 +178,7 @@ export default function Header() {
                     <UserDropdown />
                     {isLogin && (
                       <button
+                        type='button'
                         className='btn btn-outline-danger w-100 rounded-pill mt-3'
                         onClick={() => {
                           dispatch(logout());

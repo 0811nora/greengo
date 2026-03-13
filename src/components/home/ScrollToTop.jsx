@@ -17,7 +17,6 @@ const ScrollToTop = () => {
     // pathname 換頁時執行，如果是從 product 前往 id 頁則不觸發
     if (!isToDetail) {
       window.scrollTo(0, 0);
-      // console.log('現在位置：', pathname);
     }
 
     // 最後再更新舊路徑的紀錄
