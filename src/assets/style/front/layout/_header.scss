@@ -416,6 +416,26 @@
   }
 }
 
+// header userDropdown
+.header__userDropdown-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: start;
+  color: $primary-300;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  &:hover {
+    background: rgba(77, 113, 53, 0.4);
+    box-shadow:
+      inset 2px 1px 1px 0 rgba(255, 255, 255, 0.5),
+      inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
+    color: $white;
+  }
+}
+
 // header login modal
 .header__modal-overlay {
   position: fixed;
@@ -456,8 +476,8 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
   border-radius: 24px;
   width: 100%;
-  max-width: 600px;
-  height: 450px;
+  max-width: 700px;
+  height: 600px;
   overflow-y: auto;
   animation: slideIn 0.3s ease-out;
   &:hover {
@@ -523,9 +543,9 @@
     opacity: 1;
   }
 }
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .header__modal-container {
-    width: 95%;
+    width: 90%;
     margin: 16px;
   }
   .header__modal-body {

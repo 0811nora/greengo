@@ -11,6 +11,9 @@ import ScrollToTop from './components/home/ScrollToTop.jsx'; // 頁面切換時 
 import { Provider } from 'react-redux';
 import store from './store';
 
+// 處理登入狀太
+import useAuthInit from './hooks/useAuthInit.js';
+
 const token = document.cookie
   .split('; ')
   .find((row) => row.startsWith('greenToken'))
@@ -19,16 +22,25 @@ if (token) {
   axios.defaults.headers.common['Authorization'] = token;
 }
 
+const AppContent = () => {
+  useAuthInit();
+  return (
+    <>
+      <ScrollToTop />
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+    </>
+  );
+};
+
 function App() {
   return (
     <>
       <Provider store={store}>
-        <ScrollToTop />
-        <Header />
-        <main>
-          <Outlet />
-        </main>
-        <Footer />
+        <AppContent />
       </Provider>
     </>
   );

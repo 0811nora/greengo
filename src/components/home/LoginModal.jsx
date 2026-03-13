@@ -8,6 +8,8 @@ import {
 import { useForm } from 'react-hook-form';
 import { notify } from '../Notify';
 
+import { loginUser, registerUser } from '../../service/authService';
+
 const LoginModal = () => {
   // show password (分成登入/註冊/註冊確認)
   const [showPassword, setShowPassword] = useState({
@@ -62,23 +64,70 @@ const LoginModal = () => {
   const [activeTab, setActiveTab] = useState('login');
   // const [isRegisterMode, setIsRegisterMode] = useState(false);
 
+  // 處理 firebase
+  const [isLoading, setIsLoading] = useState(false);
+  const [firebaseError, setFirebaseError] = useState('');
+  // 切換 tab 或關 modal 時清空錯誤訊息
+  const clearFirebaseError = () => setFirebaseError('');
+
   // 登入
-  const onLoginSubmit = () => {
-    dispatch(login());
-    resetAndClose();
+  const onLoginSubmit = async (data) => {
+    setIsLoading(true);
+    clearFirebaseError();
+    try {
+      const result = await loginUser({
+        email: data.email,
+        password: data.password,
+      });
+      if (result.success) {
+        dispatch(
+          login({
+            uid: result.data.user.uid,
+            email: result.data.user.email,
+            displayName: result.data.profile?.displayName ?? null,
+            phone: result.data.profile?.phone ?? null,
+            photoURL: result.data.profile?.photoURL ?? null,
+          }),
+        );
+        resetAndClose();
+      } else {
+        setFirebaseError(result.error);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // 註冊
-  const onRegisterSubmit = () => {
-    dispatch(login());
-    resetAndClose();
+  const onRegisterSubmit = async (data) => {
+    setIsLoading(true);
+    clearFirebaseError();
+    try {
+      const result = await registerUser(data);
+      if (result.success) {
+        // 成功
+        dispatch(
+          login({
+            uid: result.data.uid,
+            email: result.data.email,
+            displayName: data.displayName,
+            phone: data.phone,
+            photoURL: null,
+          }),
+        );
+        resetAndClose();
+      } else {
+        // 如果失敗
+        setFirebaseError(result.error);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
-
   // 關 modal 或切換 tab 後清空
   const resetAndClose = () => {
     dispatch(closeModal());
     setActiveTab('login');
-    // setIsRegisterMode(false);
     resetLogin();
     resetRegister();
     // 重設密碼顯示狀態
@@ -87,9 +136,9 @@ const LoginModal = () => {
 
   const handleTabSwitch = (tab) => {
     setActiveTab(tab);
-    // setIsRegisterMode(!isRegisterMode);
     resetLogin();
     resetRegister();
+    clearFirebaseError();
   };
 
   // 點背景關 modal
@@ -245,12 +294,20 @@ const LoginModal = () => {
                         忘記密碼？
                       </button>
                     </div>
+
+                    {firebaseError && (
+                      <div className='text-white bg-warning rounded-1 py-2 text-center fs-sm mb-3'>
+                        {firebaseError}
+                      </div>
+                    )}
+
                     <div className='d-flex flex-column justify-content-center align-items-center'>
                       <button
                         type='submit'
                         className='home__btn-primary w-100 rounded-pill py-2'
+                        disabled={isLoading}
                       >
-                        登入
+                        {isLoading ? '登入中...' : '登入'}
                       </button>
                       <p className='text-center fs-sm text-gray-400 mt-3 mb-0 d-flex justify-content-center align-items-center'>
                         還沒有帳號？
@@ -269,6 +326,61 @@ const LoginModal = () => {
                 {/* 註冊 */}
                 {activeTab === 'register' && (
                   <form onSubmit={handleSubmitRegister(onRegisterSubmit)}>
+                    {/* 名字 */}
+                    <div className='mb-3'>
+                      <label
+                        htmlFor='registerDisplayName'
+                        className='form-label fw-semibold text-gray-400'
+                      >
+                        顯示名稱
+                      </label>
+                      <input
+                        id='registerDisplayName'
+                        type='text'
+                        className={`form-control rounded-3 ${registerErrors.displayName ? 'is-invalid' : ''}`}
+                        placeholder='請輸入您的名稱'
+                        {...registerRegister('displayName', {
+                          required: '請輸入顯示名稱',
+                          minLength: {
+                            value: 2,
+                            message: '名稱至少需要 2 個字元',
+                          },
+                        })}
+                      />
+                      {registerErrors.displayName && (
+                        <div className='invalid-feedback'>
+                          {registerErrors.displayName.message}
+                        </div>
+                      )}
+                    </div>
+                    {/* 手機 */}
+                    <div className='mb-3'>
+                      <label
+                        htmlFor='registerPhone'
+                        className='form-label fw-semibold text-gray-400'
+                      >
+                        連絡電話
+                      </label>
+                      <input
+                        id='registerPhone'
+                        type='tel'
+                        className={`form-control rounded-3 ${registerErrors.phone ? 'is-invalid' : ''}`}
+                        placeholder='請輸入手機號碼'
+                        {...registerRegister('phone', {
+                          required: '請輸入手機號碼',
+                          pattern: {
+                            value: /^09\d{8}$/,
+                            message: '手機格式不正確（範例：0912345678）',
+                          },
+                        })}
+                      />
+                      {registerErrors.phone && (
+                        <div className='invalid-feedback'>
+                          {registerErrors.phone.message}
+                        </div>
+                      )}
+                    </div>
+
                     <div className='mb-3'>
                       <label
                         htmlFor='registerEmail'
@@ -298,7 +410,7 @@ const LoginModal = () => {
                         </div>
                       )}
                     </div>
-                    <div className='mb-3 position-relative'>
+                    <div className='mb-3'>
                       <div className='d-flex justify-content-between align-items-center'>
                         <label
                           htmlFor='registerPassword'
@@ -383,12 +495,20 @@ const LoginModal = () => {
                         </div>
                       )}
                     </div>
+
+                    {firebaseError && (
+                      <div className='text-white bg-warning rounded-1 py-2 text-center fs-sm mb-3'>
+                        {firebaseError}
+                      </div>
+                    )}
+
                     <div className='d-flex flex-column justify-content-center align-items-center'>
                       <button
                         type='submit'
                         className='home__btn-primary rounded-pill py-2'
+                        disabled={isLoading}
                       >
-                        註冊
+                        {isLoading ? '註冊資料處理中...' : '註冊'}
                       </button>
                       <p className='text-center fs-sm text-gray-400 mt-3 mb-0 d-flex justify-content-center align-items-center'>
                         已有帳號？

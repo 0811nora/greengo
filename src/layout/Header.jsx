@@ -1,6 +1,6 @@
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 // header cart + login
@@ -8,11 +8,12 @@ import CartDropdown from '../components/home/CartDropdown';
 import LoginModal from '../components/home/LoginModal';
 import UserDropdown from '../components/home/UserDropdown';
 import {
-  logout,
-  selectIsLogin,
+  // logout,
+  // selectIsLogin,
   closeModal,
   closeUserDropdown,
 } from '../store/slices/userSlice';
+import useAuth from '../hooks/useAuth';
 
 const NavbarData = {
   brand: {
@@ -41,7 +42,7 @@ export default function Header() {
   };
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLogin = useSelector(selectIsLogin);
+  const { isLogin, logout } = useAuth();
 
   // 點外面就關閉選單
   useEffect(() => {
@@ -179,15 +180,15 @@ export default function Header() {
                     {isLogin && (
                       <button
                         type='button'
-                        className='btn btn-outline-danger w-100 rounded-pill mt-3'
-                        onClick={() => {
-                          dispatch(logout());
+                        className='header__userDropdown-btn text-error mt-3'
+                        onClick={async () => {
+                          await logout();
                           navigate('/');
                           closeMenu();
                         }}
                       >
                         <i
-                          className='bi bi-box-arrow-right me-2'
+                          className='bi bi-box-arrow-right mx-2'
                           aria-hidden='true'
                         ></i>
                         登出

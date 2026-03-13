@@ -18,6 +18,7 @@
 		"bootstrap": "^5.3.8",
 		"classnames": "^2.5.1",
 		"dayjs": "^1.11.19",
+		"firebase": "^12.10.0",
 		"framer-motion": "^12.30.0",
 		"gh-pages": "^6.3.0",
 		"lodash": "^4.17.23",
