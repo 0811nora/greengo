@@ -15,17 +15,17 @@ export { apiUrl, apiPath };
 
 // [POST] 管理者登入
 export const admSignin = (data) =>{
-    return axios.post(`${apiUrl}/admin/signin`,data);
+  return axios.post(`${apiUrl}/admin/signin`,data);
 }
 
 // [POST] - 驗證管理者登入狀態
 export const admUserCheck = () =>{
-    return axios.post(`${apiUrl}/api/user/check`,{});
+  return axios.post(`${apiUrl}/api/user/check`,{});
 }
 
 // [POST] - 管理者登出
 export const admUserLogout = () =>{
-    return axios.post(`${apiUrl}/logout`,{});
+  return axios.post(`${apiUrl}/logout`,{});
 }
 
 
@@ -37,37 +37,37 @@ export const admUserLogout = () =>{
 
 // [GET] - 取得所有產品列表
 export const getAdmProducts = () =>{
-    return axios.get(`${apiUrl}/api/${apiPath}/admin/products/all`);
+  return axios.get(`${apiUrl}/api/${apiPath}/admin/products/all`);
 };
 
 
 // [GET] - 取得單一類別產品列表
 export const getAdmProductsCategory = (category, page = 1) => {
-    return axios.get(`${apiUrl}/api/${apiPath}/admin/products`, {
-        params: {
-            category, 
-            page,    
-        }
-    });
+  return axios.get(`${apiUrl}/api/${apiPath}/admin/products`, {
+    params: {
+      category, 
+      page,    
+    }
+  });
 };
 
 // [POST] - 新增單一產品
 export const postAdmNewProduct = (content) =>{
-    return axios.post(`${apiUrl}/api/${apiPath}/admin/product`, {
-        data: content
-    });
+  return axios.post(`${apiUrl}/api/${apiPath}/admin/product`, {
+    data: content
+  });
 };
 
 // [PUT] - 修改單一產品
 export const putAdmSingleProduct = (id,content) =>{
-    return axios.put(`${apiUrl}/api/${apiPath}/admin/product/${id}`, {
-        data: content
-    });
+  return axios.put(`${apiUrl}/api/${apiPath}/admin/product/${id}`, {
+    data: content
+  });
 };
 
 // [DELETE] - 刪除單一產品
 export const delAdmSingleProduct = (id) =>{
-    return axios.delete(`${apiUrl}/api/${apiPath}/admin/product/${id}`);
+  return axios.delete(`${apiUrl}/api/${apiPath}/admin/product/${id}`);
 };
 
 
@@ -80,26 +80,26 @@ export const delAdmSingleProduct = (id) =>{
 
 // [GET] - 取得所有訂單列表
 export const getAdmOrders = (page = 1) => {
-    return axios.get(`${apiUrl}/api/${apiPath}/admin/orders`, {
-        params: {page}
-    });
+  return axios.get(`${apiUrl}/api/${apiPath}/admin/orders`, {
+    params: {page}
+  });
 };
 
 // [PUT] - 修改單一訂單
 export const putAdmSingleOrder = (id, content) => {
-    return axios.put(`${apiUrl}/api/${apiPath}/admin/order/${id}`, {
-        data: content
-    });
+  return axios.put(`${apiUrl}/api/${apiPath}/admin/order/${id}`, {
+    data: content
+  });
 };
 
 // [DELETE] - 刪除單一訂單
 export const delAdmSingleOrder = (id) => {
-    return axios.delete(`${apiUrl}/api/${apiPath}/admin/order/${id}`);
+  return axios.delete(`${apiUrl}/api/${apiPath}/admin/order/${id}`);
 };
 
 // [DELETE] - 刪除全部訂單
 export const delAdmAllOrders = () => {
-    return axios.delete(`${apiUrl}/api/${apiPath}/admin/orders/all`);
+  return axios.delete(`${apiUrl}/api/${apiPath}/admin/orders/all`);
 };
 
 
@@ -112,28 +112,28 @@ export const delAdmAllOrders = () => {
 
 // [GET] - 取得優惠券列表
 export const getAdminCoupons = (page = 1) => {
-    return axios.get(`${apiUrl}/api/${apiPath}/admin/coupons`, {
-        params: {page}
-    });
+  return axios.get(`${apiUrl}/api/${apiPath}/admin/coupons`, {
+    params: {page}
+  });
 };
 
 // [POST] - 新增單一優惠券
 export const postAdmNewCoupon = (content) => {
-    return axios.post(`${apiUrl}/api/${apiPath}/admin/coupon`, {
-        data: content
-    });
+  return axios.post(`${apiUrl}/api/${apiPath}/admin/coupon`, {
+    data: content
+  });
 };
 
 // [PUT] - 修改單一優惠券
 export const putAdmSingleCoupon = (id, content) => {
-    return axios.put(`${apiUrl}/api/${apiPath}/admin/coupon/${id}`, {
-        data: content
-    });
+  return axios.put(`${apiUrl}/api/${apiPath}/admin/coupon/${id}`, {
+    data: content
+  });
 };
 
 // [DELETE] - 刪除單一優惠券
 export const delAdmSingleCoupon = (id) => {
-    return axios.delete(`${apiUrl}/api/${apiPath}/admin/coupon/${id}`);
+  return axios.delete(`${apiUrl}/api/${apiPath}/admin/coupon/${id}`);
 };
 
 
@@ -141,7 +141,7 @@ export const delAdmSingleCoupon = (id) => {
 
 // ********** [ 上傳圖片 ] **********
 export const upload = (content) =>{
-    return axios.post(`${apiUrl}/api/${apiPath}/admin/upload`, content);
+  return axios.post(`${apiUrl}/api/${apiPath}/admin/upload`, content);
 };
 
 
@@ -150,37 +150,37 @@ export const upload = (content) =>{
 
 // [GET] - 後台取得所有文章列表
 export const getAdmArticles = (page = 1) =>{
-    return axios.get(`${apiUrl}/api/${apiPath}/admin/articles`,{
-        params: {
-            page
-        },
-    });
+  return axios.get(`${apiUrl}/api/${apiPath}/admin/articles`,{
+    params: {
+      page
+    },
+  });
 }
 
 
 
 // [GET] - 後台取得單一文章
 export const getAdmSingleArticle = (id) =>{
-    return axios.get(`${apiUrl}/api/${apiPath}/admin/article/${id}`);
+  return axios.get(`${apiUrl}/api/${apiPath}/admin/article/${id}`);
 }
 
 
 
 // [POST] - 新增文章
 export const postAdminAddArticle = (content) => {
-    return axios.post(`${apiUrl}/api/${apiPath}/admin/article`, {
-        data: content
-    });
+  return axios.post(`${apiUrl}/api/${apiPath}/admin/article`, {
+      data: content
+  });
 };
 
 // [PUT] - 修改文章
 export const putAdmEditArticle = (id, content) => {
-    return axios.put(`${apiUrl}/api/${apiPath}/admin/article/${id}`, {
-        data: content
-    });
+  return axios.put(`${apiUrl}/api/${apiPath}/admin/article/${id}`, {
+      data: content
+  });
 };
 
 // [DELETE] - 刪除文章
 export const delAdmSingleArticle = (id) => {
-    return axios.delete(`${apiUrl}/api/${apiPath}/admin/article/${id}`);
+  return axios.delete(`${apiUrl}/api/${apiPath}/admin/article/${id}`);
 };

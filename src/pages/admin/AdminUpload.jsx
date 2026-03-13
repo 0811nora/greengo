@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { upload } from '../../api/ApiAdmin';
 import Loader from '../../components/common/Loading';
+import { notify } from '../../components/Notify';
 
 
 
@@ -20,8 +21,8 @@ const AdminUpload = () => {
             const newUrl = res.data.imageUrl;
             setUploadUrl(newUrl);
             setCopied(false); 
-        } catch (err) {
-            console.log('上傳錯誤', err);
+        } catch {
+            notify("error", "上傳錯誤", "bottom-center");
         } finally {
             setIsUploading(false); 
         }
