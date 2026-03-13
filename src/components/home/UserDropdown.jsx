@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   logout,
   openModal,
+  closeModal,
   openUserDropdown,
   closeUserDropdown,
   toggleUserDropdown,
@@ -30,7 +31,7 @@ const UserDropdown = () => {
     if (isOpen) {
       setTimeout(() => {
         document.addEventListener('mousedown', handleClickOutside);
-      }, 100);
+      }, 10);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, dispatch]);
@@ -44,7 +45,7 @@ const UserDropdown = () => {
   const handleMouseLeave = () => {
     closeTimer.current = setTimeout(() => {
       dispatch(closeUserDropdown());
-    }, 300);
+    }, 100);
   };
 
   // timer cleanup
@@ -60,22 +61,11 @@ const UserDropdown = () => {
     navigate('/');
   };
 
-  // 手機版 dropdown
-  const handleIconClick = () => {
-    // 先判斷螢幕寬度
-    if (window.innerWidth >= 992) {
-      // 桌機版：切換 dropdown
-      dispatch(toggleUserDropdown());
-    } else {
-      // 手機版：直接到會員中心
-      navigate('/member');
-    }
-  };
-
   // 未登入
   if (!isLogin) {
     return (
       <button
+        type='button'
         className='btn btn-outline-primary-300 rounded-pill w-100'
         onClick={() => dispatch(openModal())}
       >
@@ -97,8 +87,15 @@ const UserDropdown = () => {
           type='button'
           className=' p-0 text-decoration-none header__defaultBtn'
           onClick={() => dispatch(toggleUserDropdown())}
+          aria-label='展開選單'
         >
-          <i className='bi bi-person-circle fs-4'></i>
+          <img
+            className='rounded-5'
+            width={'32px'}
+            height={'32px'}
+            src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
+            alt='會員頭貼'
+          />
         </button>
         {/*  桌機版 dropdown */}
         {isOpen && (
@@ -112,14 +109,20 @@ const UserDropdown = () => {
           >
             <button
               type='button'
-              className='btn btn-link w-100 text-start text-decoration-none text-gray-600 px-3 py-2'
+              className='btn btn-link w-100 text-start text-decoration-none text-gray-600 px-3 py-2 d-flex align-items-center'
               onMouseDown={(e) => {
                 e.stopPropagation(); // 阻止冒泡事件
                 navigate('/member');
                 dispatch(closeUserDropdown());
               }}
             >
-              <i className='bi bi-person me-2'></i>
+              <img
+                className='rounded-5 me-1'
+                width={'28px'}
+                height={'28px'}
+                src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
+                alt=''
+              />
               會員中心
             </button>
             <button
@@ -130,7 +133,7 @@ const UserDropdown = () => {
                 handleLogout();
               }}
             >
-              <i className='bi bi-box-arrow-right me-2'></i>
+              <i className='bi bi-box-arrow-right mx-2' aria-hidden='true'></i>
               登出
             </button>
           </div>
@@ -139,11 +142,21 @@ const UserDropdown = () => {
       {/* 手機版 dropdown */}
       <button
         type='button'
-        className='btn btn-link p-0 text-decoration-none d-lg-none'
-        onClick={handleIconClick}
-        onMouseLeave={handleMouseLeave}
+        className='btn btn-link p-0 ps-2 d-flex align-items-center text-decoration-none d-lg-none'
+        onClick={() => {
+          navigate('/member');
+          dispatch(closeUserDropdown());
+          dispatch(closeModal());
+        }}
       >
-        <i className='bi bi-person-circle fs-4'></i>
+        <img
+          className='rounded-5 me-1'
+          width={'28px'}
+          height={'28px'}
+          src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
+          alt=''
+        />
+        <span className='ms-1 text-gray-400'>會員中心</span>
       </button>
     </>
   );

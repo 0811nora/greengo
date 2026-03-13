@@ -18,20 +18,20 @@
 
     .item-main {
       display: grid;
-      grid-template-columns: 100px 1fr auto auto 40px;
-      align-items: center;
-      gap: 20px;
+      grid-template-columns: 80px 1fr;
+      gap: 15px;
       padding: 20px;
+      align-items: center;
 
-      @media (max-width: 600px) {
-        grid-template-columns: 80px 1fr;
-        gap: 15px;
+      @include media-breakpoint-up(sm) {
+        grid-template-columns: 100px 1fr auto auto 40px;
+        gap: 20px;
       }
     }
 
     .item-image {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       border-radius: 8px;
       overflow: hidden;
 
@@ -41,13 +41,15 @@
         object-fit: cover;
       }
 
-      @media (max-width: 600px) {
-        width: 80px;
-        height: 80px;
+      @include media-breakpoint-up(sm) {
+        width: 100px;
+        height: 100px;
       }
     }
 
     .item-info {
+      grid-column: 2 / 3;
+
       .unit-price {
         color: $brown-300;
         font-size: 14px;
@@ -69,8 +71,8 @@
         }
       }
 
-      @media (max-width: 600px) {
-        grid-column: 2 / 3;
+      @include media-breakpoint-up(sm) {
+        grid-column: auto;
       }
     }
 
@@ -79,6 +81,9 @@
       align-items: center;
       border: 1px solid #e0e0e0;
       border-radius: 8px;
+      grid-column: 1 / 3;
+      justify-self: start;
+      margin-top: 10px;
 
       .qty-btn {
         background: none;
@@ -87,9 +92,15 @@
         height: 30px;
         cursor: pointer;
         color: $gray-300;
+        transition: all 0.3s ease;
 
-        &:hover {
+        &:not(:disabled):hover {
           background-color: #f0f0f0;
+        }
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+          background-color: #eee;
         }
       }
 
@@ -98,17 +109,17 @@
         text-align: center;
         border: none;
         font-size: 14px;
-        -moz-appearance: textfield;
+        appearance: textfield;
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
           -webkit-appearance: none;
         }
       }
 
-      @media (max-width: 600px) {
-        grid-column: 1 / 3;
-        justify-self: start;
-        margin-top: 10px;
+      @include media-breakpoint-up(sm) {
+        grid-column: auto;
+        justify-self: auto;
+        margin-top: 0px;
       }
     }
 
@@ -116,11 +127,14 @@
       font-weight: bold;
       font-size: 18px;
       color: $dark;
+      grid-column: 1 / 3;
+      justify-self: end;
+      margin-top: -60px;
 
-      @media (max-width: 600px) {
-        grid-column: 1 / 3;
-        justify-self: end;
-        margin-top: -40px;
+      @include media-breakpoint-up(sm) {
+        grid-column: auto;
+        justify-self: auto;
+        margin-top: 0px;
       }
     }
 
@@ -131,15 +145,18 @@
       cursor: pointer;
       font-size: 18px;
       transition: color 0.2s;
+      position: absolute;
+      top: 15px;
+      right: 15px;
 
       &:hover {
         color: #e74c3c;
       }
 
-      @media (max-width: 600px) {
-        position: absolute;
-        top: 15px;
-        right: 15px;
+      @include media-breakpoint-up(sm) {
+        position: static;
+        top: auto;
+        right: auto;
       }
     }
 
@@ -162,11 +179,11 @@
     .details-grid {
       padding: 20px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 30px;
+      grid-template-columns: 1fr;
 
-      @media (max-width: 768px) {
-        grid-template-columns: 1fr;
+      @include media-breakpoint-up(md) {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
@@ -338,7 +355,7 @@
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-    @media (min-width: 768px) {
+    @include media-breakpoint-up(md) {
       position: sticky;
       top: 20px;
     }

@@ -1,5 +1,5 @@
-import { NavLink, Link } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import CartDropdown from '../components/home/CartDropdown';
 import LoginModal from '../components/home/LoginModal';
 import UserDropdown from '../components/home/UserDropdown';
-import { logout, selectIsLogin } from '../store/slices/userSlice';
+import {
+  logout,
+  selectIsLogin,
+  closeModal,
+  closeUserDropdown,
+} from '../store/slices/userSlice';
 
 const NavbarData = {
   brand: {
@@ -53,6 +58,15 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
+  // 處理手機板登入跳轉問題（註：為了監聽變化去重置狀態而寫）
+  const location = useLocation();
+  useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    closeMenu();
+    dispatch(closeModal());
+    dispatch(closeUserDropdown());
+  }, [location.pathname, dispatch]);
+
   return (
     <>
       <header className='front__header' ref={headerRef}>
@@ -73,6 +87,9 @@ export default function Header() {
                       to={link.url}
                       className={({ isActive }) =>
                         `header__link ${isActive ? 'header__link--active' : ''}`
+                      }
+                      aria-current={({ isActive }) =>
+                        isActive ? 'page' : undefined
                       }
                     >
                       <span className='header__link-text'>{link.title}</span>
@@ -100,29 +117,32 @@ export default function Header() {
               >
                 <div className='mobile-container__header'>
                   <NavLink
-                    className='header__brand ft-en fw-semibold text-decoration-none'
+                    className='header__brand fw-semibold text-decoration-none'
                     to={NavbarData.brand.url}
                     onClick={closeMenu}
                   >
                     {NavbarData.brand.title}
                   </NavLink>
-
                   <div className='d-flex align-items-center gap-2'>
                     <Link
                       className='btn btn-outline-gray-400 rounded-pill border-none'
                       to={NavbarData.mobileLinks.url}
+                      onClick={closeMenu}
+                      aria-label='前往購物車'
                     >
-                      <i className='bi bi-cart'></i>
+                      <i className='bi bi-cart' aria-hidden='true'></i>
                     </Link>
                     <button
                       type='button'
                       className='btn btn-outline-gray-400 rounded-pill border-none'
                       onClick={toggleMenu}
+                      aria-label={isMobileMenuOpen ? '關閉選單' : '開啟選單'}
                     >
                       <i
                         className={`bi ${
                           isMobileMenuOpen ? 'bi-x-lg' : 'bi-list'
                         }`}
+                        aria-hidden='true'
                       ></i>
                     </button>
                   </div>
@@ -145,6 +165,9 @@ export default function Header() {
                           }`
                         }
                         onClick={closeMenu}
+                        aria-current={({ isActive }) =>
+                          isActive ? 'page' : undefined
+                        }
                       >
                         {link.title}
                       </NavLink>
@@ -155,14 +178,18 @@ export default function Header() {
                     <UserDropdown />
                     {isLogin && (
                       <button
+                        type='button'
                         className='btn btn-outline-danger w-100 rounded-pill mt-3'
                         onClick={() => {
                           dispatch(logout());
-                          closeMenu();
                           navigate('/');
+                          closeMenu();
                         }}
                       >
-                        <i className='bi bi-box-arrow-right me-2'></i>
+                        <i
+                          className='bi bi-box-arrow-right me-2'
+                          aria-hidden='true'
+                        ></i>
                         登出
                       </button>
                     )}

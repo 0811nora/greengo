@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
+import { HashLink } from 'react-router-hash-link'; // 連接關於我們頁的常見問題 section
 import { FooterData } from '../data/footerData';
 
 const FooterBrand = ({ brand, socialMedia }) => {
   return (
     <div>
       <Link className='nav-link mb-4' to='/'>
-        <div className='font-en-logo fs-2 display-md-3 text-primary-100'>
+        <div className='font-en-logo fs-2 display-lg-3 text-primary-100'>
           {brand.name}
         </div>
       </Link>
@@ -21,13 +21,75 @@ const FooterBrand = ({ brand, socialMedia }) => {
       <ul className='d-flex gap-4 list-unstyled mb-7 mb-md-0'>
         {socialMedia.map((item) => (
           <li key={item.name}>
-            <a href={item.url} className='text-white'>
-              <i className={`bi ${item.icon}`}></i>
+            <a
+              href={item.url}
+              className='text-white'
+              aria-label={`前往綠果的 ${item.name}`}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <i className={`bi ${item.icon}`} aria-hidden='true'></i>
             </a>
           </li>
         ))}
       </ul>
     </div>
+  );
+};
+
+const FooterLinks = ({ linkData }) => {
+  return (
+    <>
+      <h4 className='fs-5 fs-md-4 lh-sm mb-3 mb-md-4'>{linkData.title}</h4>
+      <ul>
+        {linkData.links.map((item, index) => (
+          <li className='fs-md fs-md-6 fw-medium mb-2 mb-md-4' key={index}>
+            {item.url.includes('#') ? (
+              // 判斷是不是前往常見問題區塊(hashlink)，不是則用 link
+              <HashLink smooth className='nav-link' to={item.url}>
+                <div className='text-primary-100'>{item.title}</div>
+              </HashLink>
+            ) : (
+              <Link className='nav-link' to={item.url}>
+                <div className='text-primary-100'>{item.title}</div>
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
+const FooterContact = ({ contactData }) => {
+  return (
+    <>
+      <h4 className='fs-5 fs-md-4 lh-sm mb-3 mb-md-4'>{contactData.title}</h4>
+      <ul className='list-unstyled'>
+        <li className='fs-md fs-md-6 text-primary-100 mb-2 mb-md-4'>
+          {contactData.address}
+        </li>
+        <li className='fs-md fs-md-6 text-primary-100 mb-2 mb-md-4'>
+          <a
+            href={`tel:${contactData.phone}`}
+            className='text-primary-100 text-decoration-none hover-underline'
+          >
+            {contactData.phone}
+          </a>
+        </li>
+        <li className='fs-md fs-md-6 ft-en mb-2 mb-md-4'>
+          <a
+            href={`mailto:${contactData.email}`}
+            className='text-primary-100 text-decoration-none hover-underline footer__mail-link'
+          >
+            {contactData.email}
+          </a>
+        </li>
+        <li className='fs-md fs-md-6 text-primary-100 ft-en mb-2 mb-md-4'>
+          {contactData.hours}
+        </li>
+      </ul>
+    </>
   );
 };
 
@@ -47,65 +109,22 @@ export default function Footer() {
             <div className='row'>
               {/* 探索區 */}
               <div className='col-md-4'>
-                <h4 className='fs-6 fs-md-4 lh-sm mb-3 mb-md-4'>
-                  {FooterData.explore.title}
-                </h4>
-                <ul className='list-unstyled'>
-                  {FooterData.explore.links.map((link, index) => (
-                    <li className='fs-6 fw-medium mb-3 mb-md-4' key={index}>
-                      <Link className='nav-link' to={link.url}>
-                        <div className='text-primary-100'>{link.title}</div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <FooterLinks linkData={FooterData.explore} />
               </div>
               {/* 條款政策區 */}
               <div className='col-md-4'>
-                <h4 className='fs-6 fs-md-4 lh-sm mb-3 mb-md-4'>
-                  {FooterData.policy.title}
-                </h4>
-                <ul className='list-unstyled'>
-                  {FooterData.policy.links.map((link, index) => (
-                    <li className='fs-6 fw-medium mb-3 mb-md-4' key={index}>
-                      {link.url.includes('#') ? (
-                        <HashLink smooth className='nav-link' to={link.url}>
-                          <div className='text-primary-100'>{link.title}</div>
-                        </HashLink>
-                      ) : (
-                        <Link className='nav-link' to={link.url}>
-                          <div className='text-primary-100'>{link.title}</div>
-                        </Link>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                <FooterLinks linkData={FooterData.policy} />
               </div>
               {/* 聯絡我們 */}
               <div className='col-md-4'>
-                <h4 className='fs-6 fs-md-4 lh-sm mb-3 mb-md-4'>
-                  {FooterData.contact.title}
-                </h4>
-                <ul className='list-unstyled'>
-                  <li className='mb-2'>{FooterData.contact.address}</li>
-                  <li className='ft-en mb-2'>{FooterData.contact.phone}</li>
-                  <li className='ft-en fs-md-sm fs-lg-md mb-2'>
-                    <a
-                      href={`mailto:${FooterData.contact.email}`}
-                      className='text-white text-decoration-none hover-underline fs-sm fs-lg-md'
-                    >
-                      {FooterData.contact.email}
-                    </a>
-                  </li>
-                  <li className='ft-en'>{FooterData.contact.hours}</li>
-                </ul>
+                <FooterContact contactData={FooterData.contact} />
               </div>
             </div>
           </div>
         </div>
         <p className='text-white text-center d-flex justify-content-md-center align-items-center'>
-          <i className='bi bi-c-circle me-1 fs-md'></i>2025 GreenGo All rights
-          reserved.
+          <i className='bi bi-c-circle me-1 fs-md' aria-hidden='true'></i>2025
+          GreenGo All rights reserved.
         </p>
       </div>
     </footer>

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { delAdmSingleOrder, getAdmOrders, putAdmSingleOrder } from '../../api/ApiAdmin';
 import EmptyDataHint from '../../components/admin/order/EmptyDataHint';
 import Loading from '../../components/admin/order/Loading';
@@ -11,13 +11,12 @@ export default function AdminOrder_today() {
 	const [allOrders, setAllOrders] = useState([]);
 	const [orderPagination, setOrderPagination] = useState(null);
 	const [specificOrder, setSpecificOrder] = useState(null);
-	const [filterType, setFilterType] = useState('all');
 	const [modalType, setModalType] = useState(null); // null, detail, pickup, checkout
 	const [isDataLoading, setIsDataLoading] = useState(true);
 	const [orderDetail, setOrderDetail] = useState(null);
 
 	// 取得原始訂單資料API
-	const getApiOrders = async page => {
+	const getApiOrders = useCallback(async page => {
 		try {
 			const res = await getAdmOrders(page);
 			console.log(res.data);
@@ -28,9 +27,10 @@ export default function AdminOrder_today() {
 			console.log(error.response);
 			setIsDataLoading(false);
 		}
-	};
+	}, []);
 	useEffect(() => {
 		getApiOrders();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const renderPagination = () => {
@@ -56,36 +56,6 @@ export default function AdminOrder_today() {
 			return;
 		}
 	};
-
-	// filter blocks：UI 渲染資料預備
-	const filterBlocks_fields = [
-		{
-			category: 'all',
-			title: '今日所有訂單數',
-			icon: 'bi bi-archive',
-		},
-		{
-			category: 'ready',
-			title: '可取餐數',
-			icon: 'bi bi-check-circle',
-		},
-		{
-			category: 'unpaid',
-			title: '未付款數',
-			icon: 'bi bi-credit-card-2-back',
-		},
-		{
-			category: 'done',
-			title: '已完成數',
-			icon: 'bi bi-ban',
-		},
-	];
-
-	// 透過狀態篩選，決定訂單列表的tag渲染
-	const displayOrders = allOrders.filter(order => {
-		if (filterType === 'all') return true;
-		return filterType === order.user.order_status || filterType === order.user.payment_status;
-	});
 
 	// 時間戳轉換
 	const changeTimeStamp_date = timeStamp => {
@@ -163,6 +133,7 @@ export default function AdminOrder_today() {
 
 		try {
 			const res = await putAdmSingleOrder(id, data);
+			console.log(res.data);
 			getApiOrders();
 			notify('success', '餐點已領取', 'top-right');
 			handleCloseDetail();

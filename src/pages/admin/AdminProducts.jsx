@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import AdmMainButton from '../../components/admin/common/AdmMainButton';
+import { useState, useEffect, useCallback } from 'react';
 import AdmButton from '../../components/admin/common/AdmButton';
 import AdmProductModal from '../../components/admin/products/AdmProductModal';
 import { notify } from '../../components/Notify';
@@ -42,7 +41,7 @@ export default function AdminProducts() {
   };
   const [newProductData, setNewProductData] = useState(initialPokeProductState);
   const [modalMode, setModalMode] = useState('');
-  const [preImageUrl, setPreImageUrl] = useState(null);
+
   const [currentTab, setCurrentTab] = useState('fixed');
   const [subTab, setSubTab] = useState('all');
   const [pokeModalOpen, setPokeModalOpen] = useState(false);
@@ -68,48 +67,23 @@ export default function AdminProducts() {
     drinks: 'bg-secondary-subtle text-secondary',
   };
 
-  const handleInputChange = (e, stateType) => {
-    const { name, value, type, checked, dataset } = e.target;
-    const setter = stateType === 'auth' ? setFormData : setNewProductData;
-    const group = dataset.group;
-
-    if (name === 'imageUrl') {
-      setPreImageUrl(value);
-    }
-
-    let newValue = value;
-
-    if (type === 'checkbox' && !Array.isArray(value)) {
-      newValue = name === 'is_enabled' ? (checked ? 1 : 0) : checked;
-    } else if (type === 'number') {
-      newValue = value === '' ? 0 : Number(value);
-    }
-
-    setter((prevData) => {
-      if (group) {
-        return {
-          ...prevData,
-          [group]: { ...prevData[group], [name]: newValue },
-        };
-      }
-      return { ...prevData, [name]: newValue };
-    });
-  };
-
   //取得資料
-  const getProducts = async () => {
+  const getProducts = useCallback(async () => {
     try {
       const res = await getAdmProducts();
-      // console.log('取得產品：', res.data.products);
       setProductData(Object.values(res.data.products));
     } catch (error) {
       notify('error', `取得產品失敗:${error.response.data.message}`);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    getProducts();
-  }, []);
+    const loadData = async () => {
+      await getProducts();
+    };
+
+    loadData();
+  }, [getProducts]);
 
   //依據Tab分類
   const filteredData = productData.filter((product) => {
@@ -258,6 +232,7 @@ export default function AdminProducts() {
               <div className="nav-item d-flex mx-auto rounded-pill adm__glassbg p-2">
                 {itemSubTabs.map((tab) => (
                   <button
+                    type="button"
                     key={tab.value}
                     className={`nav-link rounded-pill mx-2 ${subTab === tab.value ? 'active' : ''}`}
                     onClick={() => setSubTab(tab.value)}
@@ -486,13 +461,10 @@ export default function AdminProducts() {
   const toggleModal = (currentTab) => {
     if (currentTab === 'fixed') {
       setPokeModalOpen(!pokeModalOpen);
-      setPreImageUrl('');
     } else if (currentTab === 'item') {
       setItemModalOpen(!itemModalOpen);
-      setPreImageUrl('');
     } else {
       setOtherModalOpen(!otherModalOpen);
-      setPreImageUrl('');
     }
   };
 
@@ -516,7 +488,7 @@ export default function AdminProducts() {
     }
 
     try {
-      const res = await apiCall;
+      await apiCall;
       const message = modalMode === 'add' ? '新增成功' : '修改成功';
       notify('success', message);
       toggleModal(currentTab);
@@ -553,6 +525,7 @@ export default function AdminProducts() {
             <ul className="nav nav-pills">
               <li className="nav-item">
                 <button
+                  type="button"
                   className={`nav-link mx-2 ${currentTab === 'fixed' ? 'active' : ''}`}
                   onClick={() => handleTabChange('fixed')}
                 >
@@ -569,6 +542,7 @@ export default function AdminProducts() {
               </li>
               <li className="nav-item">
                 <button
+                  type="button"
                   className={`nav-link mx-2 ${currentTab === 'other' ? 'active' : ''}`}
                   onClick={() => handleTabChange('other')}
                 >
@@ -591,7 +565,6 @@ export default function AdminProducts() {
           isOpen={pokeModalOpen || itemModalOpen || otherModalOpen}
           mode={modalMode}
           data={newProductData}
-          onChange={handleInputChange}
           onClose={() => toggleModal(currentTab)}
           onConfirm={handleUpdateProduct}
         />

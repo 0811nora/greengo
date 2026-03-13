@@ -1,14 +1,16 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 const HomeButton = ({
   to, // router
   isNavLink = false, // 判斷是不是 NavLink
-  type = 'primary', // 有無背景
+  type = 'button', // 類型
+  buttonType = 'primary', // 有無背景
   className = '', // 其他樣式
   children, // 文字內容
   ...rest // 接收其他內容，例如 onClick, type="submit"...
 }) => {
-  const baseStyle = type === 'primary' ? 'home__btn-primary' : 'home__btn-link';
+  const baseStyle =
+    buttonType === 'primary' ? 'home__btn-primary' : 'home__btn-link';
   const combinedStyle = `${baseStyle} ${className}`.trim();
 
   // NavLink 款 + active
@@ -35,7 +37,7 @@ const HomeButton = ({
   }
   // 基本款
   return (
-    <button className={combinedStyle} {...rest}>
+    <button type={type} className={combinedStyle} {...rest}>
       {children}
     </button>
   );

@@ -42,21 +42,19 @@ const BestSellerSwiper = () => {
             plan_type: productData.product_type || 'set',
           },
           total_nutrition: {
-            calories: productData.nutrition.calories,
-            carbs: productData.nutrition.carbs,
-            fat: productData.nutrition.fat,
-            protein: productData.nutrition.protein,
+            calories: productData.nutrition.calories || 0,
+            carbs: productData.nutrition.carbs || 0,
+            fat: productData.nutrition.fat || 0,
+            protein: productData.nutrition.protein || 0,
           },
         },
       };
 
-      const res = await postAddToCart(cartData);
-      console.log('加入購物車資料:', res.data);
+      await postAddToCart(cartData);
       notify('success', '成功加入購物車！');
       dispatch(renderRefresh());
     } catch (error) {
-      notify('error', '加入失敗');
-      console.log(error, error.data);
+      notify('error', error.response?.data?.message || '加入失敗');
     }
   };
   return (
@@ -95,8 +93,9 @@ const BestSellerSwiper = () => {
                         e.preventDefault();
                         addCartBtn(product.id, 1);
                       }}
+                      aria-label='加入購物車'
                     >
-                      <i className='bi bi-bag'></i>
+                      <i className='bi bi-bag' aria-hidden='true'></i>
                     </button>
                     <img
                       src={product.img}
@@ -106,12 +105,12 @@ const BestSellerSwiper = () => {
                   </div>
                   <div className='card-body py-3 px-5'>
                     <div className='d-flex justify-content-between align-items-center text-gray-600 mb-1'>
-                      <h5
+                      <p
                         className='fs-6 fs-md-5 fw-bold mb-0'
                         title={product.name}
                       >
                         {product.name}
-                      </h5>
+                      </p>
                       <span className='fs-6 fs-md-5 fw-bold'>
                         ${product.price}
                       </span>
