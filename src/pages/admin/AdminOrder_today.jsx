@@ -25,7 +25,6 @@ export default function AdminOrder_today() {
 		try {
 			const res = await getAdmOrders(1);
 			let resOrds = res.data.orders;
-			console.log(res.data);
 			const totalPages = res.data.pagination.total_pages;
 
 			// 以訂單建立時間，局限在今日時間
@@ -145,8 +144,7 @@ export default function AdminOrder_today() {
 	const handleDeleteSingleOrder = async id => {
 		// setIsDataLoading(true);
 		try {
-			const res = await delAdmSingleOrder(id);
-			console.log(res.data);
+			await delAdmSingleOrder(id);
 			getApiOrders();
 			// setIsDataLoading(false);
 			notify('success', '刪除當筆訂單成功', 'bottom-center');
@@ -185,8 +183,7 @@ export default function AdminOrder_today() {
 		const data = { ...specificOrder, user: { ...specificOrder.user, order_status: 'done' } };
 
 		try {
-			const res = await putAdmSingleOrder(id, data);
-			console.log(res.data);
+			await putAdmSingleOrder(id, data);
 			getApiOrders();
 			notify('success', '餐點已領取', 'top-right');
 			handleCloseDetail();
@@ -200,7 +197,6 @@ export default function AdminOrder_today() {
 	const OpenCheckoutPage = order => {
 		setModalType('checkout');
 		setSpecificOrder(order);
-		console.log(order);
 	};
 
 	// 價格有千分位逗號
@@ -219,6 +215,7 @@ export default function AdminOrder_today() {
 							{filterBlocks_fields.map(block => (
 								<div className="col-3" key={block.category}>
 									<button
+										type="button"
 										className={`adm__glassbg w-100 filter__block ${filterType === block.category ? 'focus ' : ''}`}
 										onClick={() => {
 											setFilterType(block.category);
@@ -294,10 +291,14 @@ export default function AdminOrder_today() {
 													<td>{renderTagStatus(order.user.order_status)}</td>
 													<td>{renderTagStatus(order.user.payment_status)}</td>
 													<td>
-														<button className="btn" onClick={() => handleOpenDetail(order)}>
+														<button type="button" className="btn" onClick={() => handleOpenDetail(order)}>
 															<i className="bi bi-eye-fill"></i>
 														</button>
-														<button className="btn" onClick={() => handleDeleteSingleOrder(order.id)}>
+														<button
+															type="button"
+															className="btn"
+															onClick={() => handleDeleteSingleOrder(order.id)}
+														>
 															<i className="bi bi-trash-fill"></i>
 														</button>
 													</td>

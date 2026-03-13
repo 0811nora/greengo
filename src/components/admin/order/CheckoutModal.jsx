@@ -27,9 +27,9 @@ const CheckoutModal = ({ show, closeModal, orderDetail, backToLast, getApiOrders
 			return;
 		}
 		try {
-			const payRes = await postPay(orderDetail.id); // 先付錢
+			await postPay(orderDetail.id); // 先付錢
 
-			const patmentData = {
+			const paymentData = {
 				...orderDetail,
 				user: {
 					...orderDetail.user,
@@ -38,10 +38,7 @@ const CheckoutModal = ({ show, closeModal, orderDetail, backToLast, getApiOrders
 					payment_status: 'paid',
 				},
 			};
-			const editRes = await putAdmSingleOrder(orderDetail.id, patmentData); // 再修改訂單的交易狀態
-
-			console.log(editRes.data);
-			console.log(payRes.data);
+			await putAdmSingleOrder(orderDetail.id, paymentData); // 再修改訂單的交易狀態
 			notify('success', '結帳成功', 'top-right');
 			closeModal();
 			getApiOrders();

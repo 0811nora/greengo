@@ -55,15 +55,15 @@ const ProductCard = ({ product, category, handleOpenDetail }) => {
 					</div>
 					{/* <button
             type="button"
-						className="addBtn position-absolute"
-						onClick={e => {
-							e.stopPropagation();
-							handleAddCart(product.id, 1, e);
-						}}
-					>
-						{isAddCartLoading || <i className="bi bi-plus fs-4"></i>}
-						<Loader mode="button" show={isAddCartLoading} className={'ms-2 text-primary-200'} />
-					</button> */}
+            className="addBtn position-absolute"
+            onClick={e => {
+              e.stopPropagation();
+              handleAddCart(product.id, 1, e);
+            }}
+          >
+            {isAddCartLoading || <i className="bi bi-plus fs-4"></i>}
+            <Loader mode="button" show={isAddCartLoading} className={'ms-2 text-primary-200'} />
+          </button> */}
 				</div>
 			</div>
 		</div>
