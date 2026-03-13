@@ -44,6 +44,7 @@ const MenuSection = ({
 					{data[category].tab.map((tabItem, index) => (
 						<li className="nav-item" key={index}>
 							<button
+								type="button"
 								className={`nav-link tab-navLink ${filterState[category].tab === tabItem.value ? 'active' : ''}`}
 								value={tabItem.value}
 								onClick={e => toggleTabFilter(category, e.target.value)}
