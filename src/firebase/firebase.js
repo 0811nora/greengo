@@ -5,12 +5,12 @@ import { getFirestore } from 'firebase/firestore';
 
 // firebase console 給的資料
 const firebaseConfig = {
-  apiKey: 'AIzaSyCjbOqakD2gXjACGi_O9n0LvXgnuvWOThM',
-  authDomain: 'greengo-practice.firebaseapp.com',
-  projectId: 'greengo-practice',
-  storageBucket: 'greengo-practice.firebasestorage.app',
-  appId: '1:834748771254:web:18d1d6b770a29931376f17',
-  messagingSenderId: '834748771254',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
   measurementId: 'G-TGXDEDXCKC', // 這是 google 分析用的，忘記取消分析了先留著
 };
 
