@@ -34,12 +34,14 @@ function ConfirmModal({
         <button
           className={`modal__button ${style}__modal__btn-secondary flex-fill`}
           onClick={cancelModal}
+          type="button"
         >
           {text_cancel}
         </button>
         <button
           className={`modal__button ${style}__modal__btn-primary flex-fill`}
           onClick={confirmModal}
+          type="button"
         >
           {text_confirm}
         </button>
