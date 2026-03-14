@@ -1,5 +1,6 @@
 import QA_item from './QaItem';
 import { QA_member, QA_take, QA_order, QA_payment } from './qaData';
+import { Link } from 'react-router-dom';
 
 export default function FAQSection() {
   return (
@@ -28,7 +29,7 @@ export default function FAQSection() {
           )}
         </div>
         <div className='d-flex justify-content-center py-9'>
-          <a className='home__btn-primary' href='#/product'>前往點餐</a>
+          <Link className='home__btn-primary' to='/product'>前往點餐</Link>
         </div>
       </div>
     </>

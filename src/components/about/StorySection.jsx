@@ -84,7 +84,7 @@ export default function StorySection() {
             <div className='pb-6 pe-8'>因此，GreenGo 想陪你把「行動」變成「成果」。
               <p>讓你看得懂食物、自在做選擇，為自己的身體負責。</p>
             </div>
-            <div className=''>
+            <div>
               當你選擇透明、選擇可控、選擇對身體友善，
               <div>最終收穫的，就是屬於你的健康與自在 ——
                 <p>那就是我們所說的「綠果」。</p>
