@@ -14,7 +14,6 @@ import Privacy from '../pages/Privacy.jsx';
 import Terms from '../pages/Terms.jsx';
 
 import AdminPages from '../pages/admin/AdminPages.jsx';
-import AdminHome from '../pages/admin/AdminHome.jsx';
 import AdminBlog from '../pages/admin/AdminBlog.jsx';
 import AdminOrder from '../pages/admin/AdminOrder.jsx';
 import AdminReport from '../pages/admin/AdminReport.jsx';
