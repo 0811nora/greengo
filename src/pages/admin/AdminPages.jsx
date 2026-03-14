@@ -7,6 +7,7 @@ import { ADM_MODE_LOGOUT } from '../../config/confirmModal';
 import axios from 'axios';
 import { admUserCheck } from '../../api/ApiAdmin';
 import { notify } from '../../components/Notify';
+import Loading from '../../components/admin/order/Loading';
 
 let loginModal;
 let logoutModal;
@@ -15,6 +16,7 @@ export default function AdminPages() {
 	const [admMode, setAdmMode] = useState(false); // 管理員模式
 	const [admPassword, setAdmPassword] = useState(''); // 管理員密碼
 	const [pagePath, setpagePath] = useState(''); // navLink 指定的路由
+	const [isLoading, setIsLoading] = useState(false);
 	const loginModalRef = useRef(null);
 	const logoutModalRef = useRef(null);
 	const location = useLocation();
@@ -30,16 +32,17 @@ export default function AdminPages() {
 			// a. 驗證是否有token，沒有直接回登入頁
 			if (!greenCookie) {
 				navigate('/admin/login');
-				// notify('error', '登入錯誤，請先輸入帳號密碼');
 				return;
 			}
 
 			// b. 驗證token是否合法
 			try {
 				axios.defaults.headers.common['Authorization'] = greenCookie;
-				await admUserCheck();
-				if (location.pathname === '/admin') {
-					navigate('/admin/order/today', { replace: true });
+				const res = await admUserCheck();
+				if (res.data.success) {
+					setIsLoading(false);
+				} else {
+					navigate('/admin/login', { replace: true });
 				}
 
 				// c. 驗證是否有管理員模式
@@ -56,7 +59,7 @@ export default function AdminPages() {
 		};
 
 		checkLogin();
-	}, []); //原本是判斷網址變就戳api（location.pathname），現在是一開始才戳
+	}, [location.pathname]);
 
 	function handleNavMode(path) {
 		if (!admMode) {
@@ -115,7 +118,9 @@ export default function AdminPages() {
 		notify('success', '登出成功', 'bottom-center');
 	}
 
-	return (
+	return isLoading ? (
+		<Loading />
+	) : (
 		<main className="adm-theme adm__bg-gray ">
 			<div className="container">
 				<AdminHeader admMode={admMode} handleToggleMode={handleToggleMode} handleNavMode={handleNavMode} />
