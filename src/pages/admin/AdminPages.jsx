@@ -56,10 +56,6 @@ export default function AdminPages() {
 		checkLogin();
 	}, [navigate]);
 
-
-
-
-
 	function handleNavMode(path) {
 		if (!admMode) {
 			openLoginModal();
