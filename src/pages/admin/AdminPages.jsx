@@ -8,6 +8,7 @@ import axios from 'axios';
 import { admUserCheck, admUserLogout } from '../../api/ApiAdmin';
 import { notify } from '../../components/Notify';
 import Loading from '../../components/admin/order/Loading';
+import { useLocation } from 'react-router-dom';
 
 let loginModal;
 let logoutModal;
@@ -19,21 +20,25 @@ export default function AdminPages() {
 	const [isLoading, setIsLoading] = useState(false);
 	const loginModalRef = useRef(null);
 	const logoutModalRef = useRef(null);
-	// const location = useLocation();
+	const location = useLocation();
 	const navigate = useNavigate();
 
 	// 把管理員模式設定傳到order頁
 	const contextValue = { admMode, handleNavMode };
 
+
+	useEffect(() => {
+		const greenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)greenToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
+
+		if (!greenCookie) {
+			navigate('/admin/login');
+			return;
+		}
+	}, [navigate, location.pathname]);
+
 	useEffect(() => {
 		const checkLogin = async () => {
 			const greenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)greenToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-			// a. 驗證是否有token，沒有直接回登入頁
-			if (!greenCookie) {
-				navigate('/admin/login');
-				return;
-			}
-			// b. 驗證token是否合法
 			try {
 				axios.defaults.headers.common['Authorization'] = greenCookie;
 				const res = await admUserCheck();
@@ -48,9 +53,12 @@ export default function AdminPages() {
 				navigate('/admin/login', { replace: true });
 			}
 		};
-
 		checkLogin();
 	}, [navigate]);
+
+
+
+
 
 	function handleNavMode(path) {
 		if (!admMode) {
