@@ -1,5 +1,5 @@
 import * as bootstrap from 'bootstrap';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import AdminHeader from '../../layout/AdminHeader';
 import { AdmModal_confirm, AdmModal_password } from '../../components/admin/AdmModal';
@@ -7,6 +7,7 @@ import { ADM_MODE_LOGOUT } from '../../config/confirmModal';
 import axios from 'axios';
 import { admUserCheck, admUserLogout } from '../../api/ApiAdmin';
 import { notify } from '../../components/Notify';
+import Loading from '../../components/admin/order/Loading';
 
 let loginModal;
 let logoutModal;
@@ -15,6 +16,7 @@ export default function AdminPages() {
 	const [admMode, setAdmMode] = useState(false); // 管理員模式
 	const [admPassword, setAdmPassword] = useState(''); // 管理員密碼
 	const [pagePath, setpagePath] = useState(''); // navLink 指定的路由
+	const [isLoading, setIsLoading] = useState(false);
 	const loginModalRef = useRef(null);
 	const logoutModalRef = useRef(null);
 	// const location = useLocation();
@@ -34,7 +36,12 @@ export default function AdminPages() {
 			// b. 驗證token是否合法
 			try {
 				axios.defaults.headers.common['Authorization'] = greenCookie;
-				await admUserCheck();
+				const res = await admUserCheck();
+				if (res.data.success) {
+					setIsLoading(false);
+				} else {
+					navigate('/admin/login', { replace: true });
+				}
 			} catch (error) {
 				console.log(error.message);
 				notify('error', '登入錯誤，請先輸入帳號密碼');
@@ -43,7 +50,7 @@ export default function AdminPages() {
 		};
 
 		checkLogin();
-	}, [navigate]); //原本是判斷網址變就戳api（location.pathname），現在是一開始才戳
+	}, [navigate]);
 
 	function handleNavMode(path) {
 		if (!admMode) {
@@ -118,7 +125,9 @@ export default function AdminPages() {
 		}
 	}
 
-	return (
+	return isLoading ? (
+		<Loading />
+	) : (
 		<main className="adm-theme adm__bg-gray ">
 			<div className="container">
 				<AdminHeader admMode={admMode} handleToggleMode={handleToggleMode} handleNavMode={handleNavMode} admSignout={admSignout} />

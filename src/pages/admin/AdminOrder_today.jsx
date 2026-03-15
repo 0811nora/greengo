@@ -254,60 +254,66 @@ export default function AdminOrder_today() {
                   </button>
                 </div>
               </div> */}
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col">訂單時間</th>
-                    <th scope="col">取餐號</th>
-                    <th scope="col">訂購者</th>
-                    <th scope="col">電話</th>
-                    <th scope="col">金額</th>
+              {isDataLoading ? (
+                <Loading />
+              ) : (
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">訂單時間</th>
+                      <th scope="col">取餐號</th>
+                      <th scope="col">訂購者</th>
+                      <th scope="col">電話</th>
+                      <th scope="col">金額</th>
 
-                    <th scope="col">訂單狀態</th>
-                    <th scope="col">交易狀態</th>
-                    <th scope="col">操作</th>
-                  </tr>
-                </thead>
+                      <th scope="col">訂單狀態</th>
+                      <th scope="col">交易狀態</th>
+                      <th scope="col">操作</th>
+                    </tr>
+                  </thead>
 
-                <tbody>
-                  {isDataLoading ? (
-                    <Loading />
-                  ) : displayOrders.length === 0 ? (
-                    <EmptyDataHint />
-                  ) : (
-                    displayOrders.map(order => {
-                      return (
-                        <tr key={order.id}>
-                          <td>
-                            <span className="date">{changeTimeStamp_date(order.create_at)}</span>
-                            <span className="time">{changeTimeStamp_time(order.create_at)}</span>
-                          </td>
-                          <td>{order.user.order_number}</td>
-                          <td>{order.user.name}</td>
-                          <td>{order.user.tel}</td>
+                  <tbody>
+                    {displayOrders.length === 0 ? (
+                      <EmptyDataHint />
+                    ) : (
+                      displayOrders.map(order => {
+                        return (
+                          <tr key={order.id}>
+                            <td>
+                              <span className="date">{changeTimeStamp_date(order.create_at)}</span>
+                              <span className="time">{changeTimeStamp_time(order.create_at)}</span>
+                            </td>
+                            <td>{order.user.order_number}</td>
+                            <td>{order.user.name}</td>
+                            <td>{order.user.tel}</td>
 
-                          <td>{`$${formatPrice(order.user.final_total)}`}</td>
+                            <td>{`$${formatPrice(order.user.final_total)}`}</td>
 
-                          <td>{renderTagStatus(order.user.order_status)}</td>
-                          <td>{renderTagStatus(order.user.payment_status)}</td>
-                          <td>
-                            <button type="button" className="btn" onClick={() => handleOpenDetail(order)}>
-                              <i className="bi bi-eye-fill"></i>
-                            </button>
-                            <button
-                              type="button"
-                              className="btn"
-                              onClick={() => handleDeleteSingleOrder(order.id)}
-                            >
-                              <i className="bi bi-trash-fill"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
+                            <td>{renderTagStatus(order.user.order_status)}</td>
+                            <td>{renderTagStatus(order.user.payment_status)}</td>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn"
+                                onClick={() => handleOpenDetail(order)}
+                              >
+                                <i className="bi bi-eye-fill"></i>
+                              </button>
+                              <button
+                                type="button"
+                                className="btn"
+                                onClick={() => handleDeleteSingleOrder(order.id)}
+                              >
+                                <i className="bi bi-trash-fill"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         </div>
