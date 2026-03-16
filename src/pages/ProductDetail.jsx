@@ -187,8 +187,8 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 					)}
 				</Modal.Body>
 
-				<Modal.Footer className="d-flex flex-sm-row flex-column align-items-center justify-content-between gap-3">
-					<div className="num-control d-flex align-items-center justify-content-between gap-4 ">
+				<Modal.Footer className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-3">
+					<div className="num-control d-flex align-items-center justify-content-between gap-4">
 						<button type="button" className={`minus ${num <= 1 ? 'disable' : ''}`} onClick={handleMinusNum}>
 							<i className="bi bi-dash"></i>
 						</button>
@@ -200,17 +200,19 @@ const ProductDetail = ({ handleCloseDetail, isAddCartLoading, handleAddCart }) =
 
 					<button
 						type="button"
-						className="addCart flex-fill"
+						className="addCart flex-grow-1"
 						onClick={() => {
 							handleAddCart(productDetail.id, num, productDetail);
 						}}
 						disabled={isAddCartLoading}
 					>
-						<p>
-							{`加入 ${num} 份商品至購物車`}
-							<span className="fw-semibold ms-sm-4">{`NT$ ${(productDetail?.price * num).toLocaleString()}`}</span>
-							<Loader mode="button" show={isAddCartLoading} className={'ms-2'} />
-						</p>
+						<div className="d-flex flex-column flex-sm-row align-items-center justify-content-center flex-fill">
+							<span>{`加入 ${num} 份商品至購物車`}</span>
+							<div className="d-flex align-items-center">
+								<span className="fw-semibold ms-sm-4">{`NT$ ${(productDetail?.price * num).toLocaleString()}`}</span>
+								<Loader mode="button" show={isAddCartLoading} className={'ms-2'} />
+							</div>
+						</div>
 					</button>
 				</Modal.Footer>
 			</Modal>
