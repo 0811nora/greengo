@@ -31,7 +31,7 @@ const UserDropdown = () => {
     if (isOpen) {
       setTimeout(() => {
         document.addEventListener('mousedown', handleClickOutside);
-      }, 10);
+      }, 300);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, dispatch]);
@@ -45,7 +45,7 @@ const UserDropdown = () => {
   const handleMouseLeave = () => {
     closeTimer.current = setTimeout(() => {
       dispatch(closeUserDropdown());
-    }, 100);
+    }, 500);
   };
 
   // timer cleanup
@@ -107,42 +107,49 @@ const UserDropdown = () => {
               zIndex: 1050,
             }}
           >
-            <button
-              type='button'
-              className='btn btn-link w-100 text-start text-decoration-none text-gray-600 px-3 py-2 d-flex align-items-center'
-              onMouseDown={(e) => {
-                e.stopPropagation(); // 阻止冒泡事件
-                navigate('/member');
-                dispatch(closeUserDropdown());
-              }}
-            >
-              <img
-                className='rounded-5 me-1'
-                width={'28px'}
-                height={'28px'}
-                src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
-                alt=''
-              />
-              會員中心
-            </button>
-            <button
-              type='button'
-              className='btn btn-link w-100 text-start text-decoration-none text-error px-3 py-2'
-              onMouseDown={(e) => {
-                e.stopPropagation(); // 阻止冒泡事件
-                handleLogout();
-              }}
-            >
-              <i className='bi bi-box-arrow-right mx-2' aria-hidden='true'></i>
-              登出
-            </button>
+            <div className=' d-flex flex-column justify-content-start align-items-center py-2 px-3'>
+              <button
+                type='button'
+                className='header__userDropdown-btn'
+                onMouseDown={(e) => {
+                  e.stopPropagation(); // 阻止冒泡事件
+                  navigate('/member');
+                  dispatch(closeUserDropdown());
+                }}
+              >
+                <img
+                  className='rounded-5 me-1'
+                  width={'28px'}
+                  height={'28px'}
+                  src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
+                  alt=''
+                />
+                會員中心
+              </button>
+              <button
+                type='button'
+                className='header__userDropdown-btn '
+                onMouseDown={(e) => {
+                  e.stopPropagation(); // 阻止冒泡事件
+                  handleLogout();
+                }}
+              >
+                <span className='header__logout-btn w-100'>
+                  <i
+                    className='bi bi-box-arrow-right mx-2'
+                    aria-hidden='true'
+                  ></i>
+                  登出
+                </span>
+              </button>
+            </div>
           </div>
         )}
       </div>
       {/* 手機版 dropdown */}
       <button
         type='button'
-        className='btn btn-link p-0 ps-2 d-flex align-items-center text-decoration-none d-lg-none'
+        className='header__userDropdown-btn d-lg-none py-2'
         onClick={() => {
           navigate('/member');
           dispatch(closeUserDropdown());
@@ -150,13 +157,13 @@ const UserDropdown = () => {
         }}
       >
         <img
-          className='rounded-5 me-1'
+          className='rounded-5 me-2'
           width={'28px'}
           height={'28px'}
           src={`${import.meta.env.BASE_URL}img/items/profilePic.webp`}
           alt=''
         />
-        <span className='ms-1 text-gray-400'>會員中心</span>
+        會員中心
       </button>
     </>
   );

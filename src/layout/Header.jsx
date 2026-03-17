@@ -179,18 +179,20 @@ export default function Header() {
                     {isLogin && (
                       <button
                         type='button'
-                        className='btn btn-outline-danger w-100 rounded-pill mt-3'
-                        onClick={() => {
-                          dispatch(logout());
+                        className='header__userDropdown-btn'
+                        onClick={async () => {
+                          await logout();
                           navigate('/');
                           closeMenu();
                         }}
                       >
-                        <i
-                          className='bi bi-box-arrow-right me-2'
-                          aria-hidden='true'
-                        ></i>
-                        登出
+                        <span className='header__logout-btn py-2 w-100'>
+                          <i
+                            className='bi bi-box-arrow-right pe-1 mx-2'
+                            aria-hidden='true'
+                          ></i>
+                          登出
+                        </span>
                       </button>
                     )}
                   </div>
