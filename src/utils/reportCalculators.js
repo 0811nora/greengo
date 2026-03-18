@@ -1,6 +1,4 @@
-// 計算報表邏輯
 // 計算報表統計數據
-
 // 抓訂單狀態（判斷已付款 is_paid 跟 payment_status）
 const isOrderPaid = (order) => {
   // 先檢查 is_paid 或 payment_status === "paid"
@@ -29,9 +27,9 @@ export const calculateStatistics = (orders) => {
     averageOrderValue: 0,
   };
 
-  // 遍歷每筆訂單
+  // 確定每筆訂單正確金額，包含加購金額
   orders.forEach((order) => {
-    const total = order.total || 0;
+    const total = order.user?.final_total || order.total || 0;
     const isPaid = isOrderPaid(order);
 
     // 只有已付款的訂單才計入營業額
@@ -66,12 +64,6 @@ export const calculateStatistics = (orders) => {
     });
   });
 
-  // 計算平均客單價（已付款訂單）
-  stats.averageOrderValue =
-    stats.paidOrderCount > 0
-      ? Math.round(stats.revenue.total / stats.paidOrderCount)
-      : 0;
-
   return stats;
 };
 
@@ -83,7 +75,7 @@ export const calculatePaymentMethod = (orders) => {
 
   orders.forEach((order) => {
     if (isOrderPaid(order)) {
-      const total = order.total || 0;
+      const total = order.user?.final_total || order.total || 0;
       // payment_method 現在在 user 物件裡
       const paymentMethod = order.user?.payment_method;
       if (paymentMethod === 'credit_card') {
@@ -119,7 +111,7 @@ export const calculateSalesTrend = (orders, timeLabels, getTimeLabelFn) => {
       const timeLabel = getTimeLabelFn(order);
       const index = timeLabels.indexOf(timeLabel);
       if (index !== -1) {
-        const total = order.total || 0;
+        const total = order.user?.final_total || order.total || 0;
         // payment_method 現在在 user 物件裡
         const paymentMethod = order.user?.payment_method;
         trendData[index].revenue += total;
@@ -177,7 +169,7 @@ export const calculateTopProducts = (orders, category, topN = 5) => {
       if (shouldCount) {
         const productId = item.product_id;
         const qty = item.qty || 0;
-        const total = item.total || 0;
+        const total = item.final_total || item.total || 0;
 
         if (!productSales[productId]) {
           productSales[productId] = {
@@ -226,7 +218,7 @@ export const calculateCustomTypeStats = (orders) => {
           product?.content?.plan_type ||
           item.customizations?.plan_info?.plan_type;
         const qty = item.qty || 0;
-        const total = item.total || 0;
+        const total = item.final_total || item.total || 0;
 
         if (planType && typeStats[planType]) {
           typeStats[planType].count += qty;

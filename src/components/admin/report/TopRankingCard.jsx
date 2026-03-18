@@ -1,7 +1,7 @@
 // 熱銷排行卡片
-const TopRankingCard = ({ title, data }) => {
+const TopRankingCard = ({ title, data, loading = false }) => {
   // 如果沒有資料就跳提示訊息
-  if (!data || data.length === 0) {
+  if (!loading && (!data || data.length === 0)) {
     return (
       <div className='col-md-6 mb-3'>
         <div className='card adm__report-card h-100'>
@@ -19,43 +19,64 @@ const TopRankingCard = ({ title, data }) => {
       <div className='card adm__report-card h-100'>
         <div className='card-body'>
           <h5 className='card-title text-gray-500 mb-3'>{title}</h5>
-          {/* 排行卡片內容 */}
-          <div className='list-group list-group-flush'>
-            {data.map((item, index) => (
-              <div
-                key={item.id || index}
-                className='list-group-item d-flex justify-content-between align-items-center px-0'
-              >
-                <div className='d-flex align-items-center'>
-                  {/* 排名 badge + 名次顏色排序 */}
-                  <span
-                    className={`badge me-3 ${
-                      index === 0
-                        ? 'bg-error text-white'
-                        : index === 1
-                          ? 'bg-orange-300 text-white'
-                          : 'bg-orange-200 text-white'
-                    }`}
+          {loading ? (
+            <>
+              <div className='list-group list-group-flush'>
+                <div className='d-flex flex-column justify-content-center align-items-center'>
+                  <div
+                    className='spinner-border spinner-border-sm text-primary'
+                    role='status'
                   >
-                    {index + 1}
-                  </span>
-
-                  {/* 商品名稱 */}
-                  <div>
-                    <div className='fw-medium'>{item.name}</div>
-                    <p className='fs-sm text-brown-300'>售出 {item.count} 份</p>
+                    <span className='visually-hidden'>載入中...</span>
                   </div>
-                </div>
-
-                {/* 銷售額 */}
-                <div className='text-end'>
-                  <div className='fw-bold text-gray-500'>
-                    NT$ {item.revenue.toLocaleString()}
-                  </div>
+                  <p className='fs-sm text-brown-300 mt-2'>正在載入資料...</p>
                 </div>
               </div>
-            ))}
-          </div>
+            </>
+          ) : (
+            <>
+              {' '}
+              {/* 排行卡片內容 */}
+              <div className='list-group list-group-flush'>
+                {data.map((item, index) => (
+                  <div
+                    key={item.id || index}
+                    className='list-group-item d-flex justify-content-between align-items-center px-0'
+                  >
+                    <div className='d-flex align-items-center'>
+                      {/* 排名 badge + 名次顏色排序 */}
+                      <span
+                        className={`badge me-3 ${
+                          index === 0
+                            ? 'bg-error text-white'
+                            : index === 1
+                              ? 'bg-orange-300 text-white'
+                              : 'bg-orange-200 text-white'
+                        }`}
+                      >
+                        {index + 1}
+                      </span>
+
+                      {/* 商品名稱 */}
+                      <div>
+                        <div className='fw-medium'>{item.name}</div>
+                        <p className='fs-sm text-brown-300'>
+                          售出 {item.count} 份
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 銷售額 */}
+                    <div className='text-end'>
+                      <div className='fw-bold text-gray-500'>
+                        NT$ {item.revenue.toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

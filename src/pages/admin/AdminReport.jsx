@@ -20,7 +20,13 @@ const AdminReport = () => {
   // 根據選擇時間的類型，抓開始跟結束的時間
   const { startTime, endTime } = getDateRange(rangeType, customRange);
   // 抓取所有訂單資料
-  const { orders: allOrders, loading, error } = useAllOrders();
+  const {
+    orders: allOrders,
+    loading,
+    error,
+    refresh,
+    isInitialLoad,
+  } = useAllOrders();
   // 根據被選擇的時間範圍處理資料
   const reportData = useReportData(allOrders, rangeType, startTime, endTime);
 
@@ -34,8 +40,13 @@ const AdminReport = () => {
     setCustomRange(range);
   };
 
-  // loading (樣式可以再調整)
-  if (loading) {
+  // 處理訂單資料刷新
+  const handleRefresh = () => {
+    refresh();
+  };
+
+  // loading
+  if (loading && isInitialLoad) {
     return (
       <div className='container text-center' style={{ paddingTop: '120px' }}>
         <div className='spinner-border text-primary' role='status'>
@@ -47,11 +58,11 @@ const AdminReport = () => {
   }
 
   // if error
-  if (error) {
+  if (error && allOrders.length === 0) {
     return (
       <div className='container' style={{ paddingTop: '120px' }}>
-        <div className='alert alert-danger' role='alert'>
-          <h4 className='alert-heading'>載入失敗</h4>
+        <div className='text-white bg-warning py-4 w-100' role='alert'>
+          <h4 className='text-white fw-semibold'>載入失敗</h4>
           <p>{error}</p>
         </div>
       </div>
@@ -86,7 +97,20 @@ const AdminReport = () => {
 
   return (
     <div className='container' style={{ paddingTop: '120px' }}>
-      <h2 className='mb-4'>營運報表</h2>
+      <div className='d-flex justify-content-between align-items-center mb-4'>
+        <h2 className='mb-0'>營運報表</h2>
+        <button
+          className='home__btn-link border border-1 rounded-2 p-2'
+          onClick={handleRefresh}
+          disabled={loading}
+        >
+          <i
+            className={`me-2 ${loading ? 'spinner-border spinner-border-sm' : 'bi bi-arrow-clockwise'}`}
+          ></i>
+          {loading ? '更新資料中...' : '重新整理'}
+        </button>
+      </div>
+
       {/* 時間選擇區 */}
       <DateRange
         activeRange={rangeType}
@@ -110,28 +134,47 @@ const AdminReport = () => {
           value={`NT$ ${statistics.revenue.total.toLocaleString()}`}
           subtitle={`信用卡: ${statistics.revenue.creditCard.toLocaleString()} / 現金: ${statistics.revenue.cash.toLocaleString()} / 電子支付: ${statistics.revenue.ePayment.toLocaleString()}`}
           icon='bi bi-cash-stack'
+          loading={loading}
         />
         <StatCard
           title='總訂單數'
           value={statistics.orderCount.total}
           subtitle={`固定套餐: ${statistics.orderCount.fixed} / 自由配: ${statistics.orderCount.custom}`}
           icon='bi bi-receipt'
+          loading={loading}
         />
         <StatCard
           title='已付款訂單'
           value={statistics.paidOrderCount}
           subtitle={`未付款: ${statistics.orderCount.total - statistics.paidOrderCount}`}
           icon='bi bi-check-circle'
+          loading={loading}
         />
       </div>
 
       {/* 今日未付款的提示（ TODAY + unpaidTodayOrders ） */}
       {rangeType === DATE_RANGE_TYPES.TODAY && unpaidTodayOrders.length > 0 && (
         <div className='alert alert-primary mb-4' role='alert'>
-          <i className='bi bi-info-circle me-2'></i>
-          <span>提示：</span>
-          今日尚有 {unpaidTodayOrders.length} 筆未付款訂單（金額：NT${' '}
-          {unpaidTodayAmount.toLocaleString()}），未計入營業額統計。
+          {loading ? (
+            <>
+              <div className='d-flex flex-column justify-content-start align-items-center'>
+                <div
+                  className='spinner-border spinner-border-sm text-primary'
+                  role='status'
+                >
+                  <span className='visually-hidden'>載入中...</span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {' '}
+              <i className='bi bi-info-circle me-2'></i>
+              <span>提示：</span>
+              今日尚有 {unpaidTodayOrders.length} 筆未付款訂單（金額：NT${' '}
+              {unpaidTodayAmount.toLocaleString()}），未計入營業額統計。
+            </>
+          )}
         </div>
       )}
 
@@ -139,11 +182,11 @@ const AdminReport = () => {
       <div className='row mb-4'>
         {/* 折線圖 */}
         <div className='col-lg-8 mb-3'>
-          <SalesTrendChart data={salesTrend} />
+          <SalesTrendChart data={salesTrend} loading={loading} />
         </div>
         {/* 圓餅圖 */}
         <div className='col-lg-4 mb-3'>
-          <PaymentPieChart data={paymentMethod} />
+          <PaymentPieChart data={paymentMethod} loading={loading} />
         </div>
       </div>
 
@@ -152,9 +195,17 @@ const AdminReport = () => {
         <div className='col-12 mb-3'>
           <h4>熱銷排行</h4>
         </div>
-        <TopRankingCard title='固定套餐 Top 5' data={topFixed} />
+        <TopRankingCard
+          title='固定套餐 Top 5'
+          data={topFixed}
+          loading={loading}
+        />
         {/* <TopRankingCard title='自由配 Top 5' data={topCustom} /> */}
-        <TopRankingCard title='其他附餐 Top 5' data={topOthers} />
+        <TopRankingCard
+          title='其他附餐 Top 5'
+          data={topOthers}
+          loading={loading}
+        />
       </div>
 
       {/* 自由配各項統計區 */}
@@ -162,10 +213,26 @@ const AdminReport = () => {
         <div className='col-12 mb-3'>
           <h4>自由配熱銷排行</h4>
         </div>
-        <IngredientRankingCard title='基底 Top 3' data={topBases} />
-        <IngredientRankingCard title='蛋白質 Top 5' data={topProteins} />
-        <IngredientRankingCard title='配菜 Top 5' data={topSides} />
-        <IngredientRankingCard title='醬料 Top 3' data={topSauces} />
+        <IngredientRankingCard
+          title='基底 Top 3'
+          data={topBases}
+          loading={loading}
+        />
+        <IngredientRankingCard
+          title='蛋白質 Top 5'
+          data={topProteins}
+          loading={loading}
+        />
+        <IngredientRankingCard
+          title='配菜 Top 5'
+          data={topSides}
+          loading={loading}
+        />
+        <IngredientRankingCard
+          title='醬料 Top 3'
+          data={topSauces}
+          loading={loading}
+        />
       </div>
     </div>
   );

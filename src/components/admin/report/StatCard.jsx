@@ -6,6 +6,7 @@ const StatCard = ({
   subtitle = '',
   icon = '',
   bgColor = 'bg-white',
+  loading = false,
 }) => {
   return (
     <div className='col-md-6 col-lg-4 mb-3'>
@@ -16,10 +17,28 @@ const StatCard = ({
             <h6 className='card-title  text-gray-900 mb-0'>{title}</h6>
             {icon && <i className={`${icon} fs-4 text-primary`}></i>}
           </div>
-          {/* 卡片的值 */}
-          <div className='fs-3 fw-bold text-gray-600 mb-1'>{value}</div>
-          {/* 補充說明其他資訊 */}
-          {subtitle && <p className='fs-sm text-brown-300'>{subtitle}</p>}
+
+          {loading ? (
+            <>
+              <div className='d-flex flex-column align-items-center'>
+                <div
+                  className='spinner-border spinner-border-sm text-primary'
+                  role='status'
+                >
+                  <span className='visually-hidden'>載入中...</span>
+                </div>
+                <p className='fs-sm text-brown-300 mt-2'>正在載入資料...</p>
+              </div>
+            </>
+          ) : (
+            <>
+              {' '}
+              {/* 卡片的值 */}{' '}
+              <div className='fs-3 fw-bold text-gray-600 mb-1'>{value}</div>
+              {/* 補充說明其他資訊 */}
+              {subtitle && <p className='fs-sm text-brown-300'>{subtitle}</p>}
+            </>
+          )}
         </div>
       </div>
     </div>

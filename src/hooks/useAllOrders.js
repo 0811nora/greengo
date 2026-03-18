@@ -1,12 +1,21 @@
 // 抓所有訂單的 hook
-import { useState, useEffect } from "react";
-import { getAdmOrders } from "../api/ApiAdmin";
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { getAdmOrders } from '../api/ApiAdmin';
 
 // 自訂：抓取所有訂單資料 + 自動處理分頁，把所有訂單都抓回來
 const useAllOrders = () => {
   const [orders, setOrders] = useState([]); // 所有訂單
   const [loading, setLoading] = useState(true); // Loading 狀態
   const [error, setError] = useState(null); // 錯誤訊息
+  const [refreshStatus, setRefreshStatus] = useState(0); // 刷新訂單資料
+
+  // 第一次刷新
+  const isInitialLoadRef = useRef(true);
+  // 刷新資料
+  const refresh = useCallback(() => {
+    isInitialLoadRef.current = false;
+    setRefreshStatus((prev) => prev + 1);
+  }, []);
 
   useEffect(() => {
     const fetchAllOrders = async () => {
@@ -34,24 +43,30 @@ const useAllOrders = () => {
           } else {
             // 如果 API 回傳失敗
             hasNextPage = false;
-            throw new Error("無法取得訂單資料");
+            throw new Error('無法取得訂單資料');
           }
         }
 
         // 設定所有訂單
         setOrders(allOrders);
       } catch (err) {
-        console.error("抓取訂單時發生錯誤:", err);
-        setError(err.message || "載入訂單失敗");
+        console.error('抓取訂單時發生錯誤:', err);
+        setError(err.message || '載入訂單失敗');
       } finally {
         setLoading(false);
       }
     };
 
     fetchAllOrders();
-  }, []); // 空陣列表示只在元件掛載時執行一次
+  }, [refreshStatus]); // 空陣列表示只在元件掛載時執行一次
 
-  return { orders, loading, error };
+  return {
+    orders,
+    loading,
+    error,
+    refresh,
+    isInitialLoad: isInitialLoadRef.current,
+  };
 };
 
 export default useAllOrders;

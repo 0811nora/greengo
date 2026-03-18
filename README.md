@@ -8,7 +8,7 @@
 
 ---
 
-## 目錄
+## 📃目錄
 
 - [線上作品連結](#線上作品連結)
 - [功能展示](#功能展示)
@@ -22,7 +22,7 @@
 
 ---
 
-## 線上作品連結
+## 🔗線上作品連結
 
 [![LIVE DEMO](https://img.shields.io/badge/LIVE_DEMO-2d4918?style=for-the-badge)](https://0811nora.github.io/greengo/) [![ADMIN DEMO](https://img.shields.io/badge/ADMIN_DEMO-fd8546?style=for-the-badge)](https://0811nora.github.io/greengo/#/admin) [![GITHUB](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/0811nora/greengo)
 
@@ -33,7 +33,7 @@
 
 ---
 
-## 功能展示
+## 🔎功能展示
 
 - 前台｜固定餐點流程
   ![固定餐點流程](./docs/demo/fixedOrder.gif)
@@ -49,7 +49,7 @@
 
 ---
 
-## 核心功能
+## 🌟核心功能
 
 ### 前台
 
@@ -70,7 +70,7 @@
 
 ---
 
-## 技術棧
+## 🔑技術棧
 
 ### 核心框架
 
@@ -118,7 +118,7 @@
 
 ---
 
-## 本地安裝與啟動
+## 🖥️本地安裝與啟動
 
 > 建議使用 Node.js v20.19 以上（或 v22+）
 
@@ -143,11 +143,11 @@ http://localhost:5173/
 http://localhost:5173/#/admin
 ```
 
-## 環境變數說明
+## 💡環境變數說明
 
 專案根目錄有 `.env` 設定檔，請確認環境變數已正確設置（如 API Base URL 等）。
 
-## 資料夾結構
+## 🗂️資料夾結構
 
 ```
 greengo/
@@ -176,7 +176,7 @@ greengo/
 
 ---
 
-## 團隊分工
+## 🙌團隊分工
 
 | 成員                                      | 共用 / 架構                                          | 前台                                                 | 後台                                                                      |
 | ----------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------- |
@@ -186,13 +186,13 @@ greengo/
 | [**芋頭**](https://github.com/chichi0127) | 登入與登出驗證、OG MetaData / SEO                    | 關於綠果頁、FAQ 頁（matter.js 動畫）                 | 後台登入、登出驗證與狀態邏輯                                              |
 | [**Angel**](https://github.com/chia-zz)   | 專案開發排程規劃、處理全域 SCSS 變數設定             | 首頁、Header / Footer、登入 / 註冊 Modal、單篇文章頁 | 營運報表頁（時間篩選）                                                    |
 
-## 未來規劃
+## 🚀未來規劃
 
 - 串接 Firebase，建立會員資料庫功能
 - 優化後台訂單搜尋欄，提升查詢體驗
 - 加入更多客製化選項與個人化推薦功能
 
-## 注意事項
+## 📌注意事項
 
 本專案為練習作品，請注意下列事項：
 

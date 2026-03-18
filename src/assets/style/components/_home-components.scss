@@ -197,21 +197,6 @@
         }
       }
     }
-    // .progress-bar {
-    //   position: absolute;
-    //   bottom: 0;
-    //   left: 0;
-    //   height: 3px;
-    //   background: $primary-200;
-    //   width: 0;
-    //   animation: progress linear forwards;
-    //   border-radius: 0 0 0 30px;
-    // }
-
-    // &.active .progress-bar {
-    //   border-radius: 0 0 40px 40px;
-    // }
-
     @media (max-width: 768px) {
       min-height: 120px;
       &.active {

@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const SalesTrendChart = ({ data }) => {
+const SalesTrendChart = ({ data, loading = false }) => {
   // const lineSettings = [
   //   {
   //     id: 'cash',
@@ -39,38 +39,60 @@ const SalesTrendChart = ({ data }) => {
     <div className='card adm__report-card h-100'>
       <div className='card-body'>
         <h5 className='card-title mb-4'>銷售趨勢圖</h5>
+        {loading ? (
+          <>
+            <div className='list-group list-group-flush'>
+              <div className='d-flex flex-column justify-content-center align-items-center'>
+                <div
+                  className='spinner-border spinner-border-sm text-primary'
+                  role='status'
+                >
+                  <span className='visually-hidden'>載入中...</span>
+                </div>
+                <p className='fs-sm text-brown-300 mt-2'>正在載入資料...</p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {' '}
+            {/* 圖表區 */}
+            <ResponsiveContainer width='100%' height={300}>
+              <LineChart data={data}>
+                {/* 網格 */}
+                <CartesianGrid strokeDasharray='3 3' />
+                {/* X 軸（時間） */}
+                <XAxis
+                  dataKey='time'
+                  label={{
+                    value: '時',
+                    position: 'insideBottomRight',
+                    offset: -5,
+                  }}
+                />
+                {/* Y 軸（金額） */}
+                <YAxis
+                  label={{ value: '金額', angle: -90, position: 'insideLeft' }}
+                />
 
-        {/* 圖表區 */}
-        <ResponsiveContainer width='100%' height={300}>
-          <LineChart data={data}>
-            {/* 網格 */}
-            <CartesianGrid strokeDasharray='3 3' />
-            {/* X 軸（時間） */}
-            <XAxis
-              dataKey='time'
-              label={{ value: '時', position: 'insideBottomRight', offset: -5 }}
-            />
-            {/* Y 軸（金額） */}
-            <YAxis
-              label={{ value: '金額', angle: -90, position: 'insideLeft' }}
-            />
+                {/* 滑鼠移過去時提示 */}
+                <Tooltip
+                  formatter={(value) => `NT$ ${value.toLocaleString()}`}
+                />
 
-            {/* 滑鼠移過去時提示 */}
-            <Tooltip formatter={(value) => `NT$ ${value.toLocaleString()}`} />
-
-            {/* 顯示圖例區----- */}
-            <Legend />
-            {/* 折線區 */}
-            <Line
-              type='monotone'
-              dataKey='revenue'
-              stroke='#C54F2D'
-              strokeWidth={3}
-              name='營業額'
-              dot={{ r: 5 }}
-            />
-            {/* 區隔總營業額跟付款方式 */}
-            {/* {sortedLines.map((setting) => (
+                {/* 顯示圖例區----- */}
+                <Legend />
+                {/* 折線區 */}
+                <Line
+                  type='monotone'
+                  dataKey='revenue'
+                  stroke='#C54F2D'
+                  strokeWidth={3}
+                  name='營業額'
+                  dot={{ r: 5 }}
+                />
+                {/* 區隔總營業額跟付款方式 */}
+                {/* {sortedLines.map((setting) => (
               <Line
                 key={setting.id}
                 type="monotone"
@@ -82,8 +104,10 @@ const SalesTrendChart = ({ data }) => {
                 activeDot={{ r: 6 }}
               />
             ))} */}
-          </LineChart>
-        </ResponsiveContainer>
+              </LineChart>
+            </ResponsiveContainer>
+          </>
+        )}
       </div>
     </div>
   );

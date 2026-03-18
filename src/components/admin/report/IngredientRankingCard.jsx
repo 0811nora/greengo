@@ -1,5 +1,5 @@
 // 配料排行卡片
-const IngredientRankingCard = ({ title, data, icon }) => {
+const IngredientRankingCard = ({ title, data, icon, loading = false }) => {
   // 如果沒有資料就跳提示訊息
   if (!data || data.length === 0) {
     return (
@@ -25,44 +25,62 @@ const IngredientRankingCard = ({ title, data, icon }) => {
             {icon && <i className={`${icon} me-2 text-primary`}></i>}
             <h6 className='card-title mb-0'>{title}</h6>
           </div>
-          {/* 排行 */}
-          <div className='list-group list-group-flush'>
-            {data.map((item, index) => (
-              <div
-                key={`${item.name}-${index}`}
-                className='list-group-item px-0 py-2'
-              >
-                <div className='d-flex justify-content-between align-items-center mb-1'>
-                  <div className='d-flex align-items-center flex-grow-1'>
-                    {/* 排名 badge */}
-                    <span
-                      className={`badge me-2 ${
-                        index === 0
-                          ? 'bg-error text-white'
-                          : index === 1
-                            ? 'bg-orange-300'
-                            : 'bg-orange-200 text-white'
-                      }`}
-                      style={{ minWidth: '24px' }}
-                    >
-                      {index + 1}
-                    </span>
-                    {/* 配料名稱 */}
-                    <span
-                      className='fw-medium text-truncate'
-                      style={{ maxWidth: '120px' }}
-                    >
-                      {item.name}
-                    </span>
+          {loading ? (
+            <>
+              <div className='list-group list-group-flush'>
+                <div className='d-flex flex-column justify-content-center align-items-center'>
+                  <div
+                    className='spinner-border spinner-border-sm text-primary'
+                    role='status'
+                  >
+                    <span className='visually-hidden'>載入中...</span>
                   </div>
-                  {/* 計算 */}
-                  <span className='text-gray-500 ms-2'>
-                    售出 {item.count} 份
-                  </span>
+                  <p className='fs-sm text-brown-300 mt-2'>正在載入資料...</p>
                 </div>
               </div>
-            ))}
-          </div>
+            </>
+          ) : (
+            <>
+              {/* 排行 */}
+              <div className='list-group list-group-flush'>
+                {data.map((item, index) => (
+                  <div
+                    key={`${item.name}-${index}`}
+                    className='list-group-item px-0 py-2'
+                  >
+                    <div className='d-flex justify-content-between align-items-center mb-1'>
+                      <div className='d-flex align-items-center flex-grow-1'>
+                        {/* 排名 badge */}
+                        <span
+                          className={`badge me-2 ${
+                            index === 0
+                              ? 'bg-error text-white'
+                              : index === 1
+                                ? 'bg-orange-300'
+                                : 'bg-orange-200 text-white'
+                          }`}
+                          style={{ minWidth: '24px' }}
+                        >
+                          {index + 1}
+                        </span>
+                        {/* 配料名稱 */}
+                        <span
+                          className='fw-medium text-truncate'
+                          style={{ maxWidth: '120px' }}
+                        >
+                          {item.name}
+                        </span>
+                      </div>
+                      {/* 計算 */}
+                      <span className='text-gray-500 ms-2'>
+                        售出 {item.count} 份
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
