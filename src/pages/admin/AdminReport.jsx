@@ -1,8 +1,9 @@
 import { useState } from 'react';
 // import dayjs from 'dayjs';
-import useAllOrders from '../../hooks/useAllOrders';
+// import useAllOrders from '../../hooks/useAllOrders';
 import useReportData from '../../hooks/useReportData';
 import { DATE_RANGE_TYPES, getDateRange } from '../../utils/dateHelpers';
+import { useOutletContext } from 'react-router-dom';
 
 // 元件們
 import DateRange from '../../components/admin/report/DateRange';
@@ -19,14 +20,25 @@ const AdminReport = () => {
   const [customRange, setCustomRange] = useState(null);
   // 根據選擇時間的類型，抓開始跟結束的時間
   const { startTime, endTime } = getDateRange(rangeType, customRange);
-  // 抓取所有訂單資料
+
+  // 抓取所有訂單資料(載入速度慢)
+  // const {
+  //   orders: allOrders,
+  //   loading,
+  //   error,
+  //   refresh,
+  //   isInitialLoad,
+  // } = useAllOrders();
+
+  // 登入時就先在背景載入資料(仍花時間但相對較快)
   const {
-    orders: allOrders,
-    loading,
-    error,
-    refresh,
+    allOrders,
+    ordersLoading: loading,
+    ordersError: error,
+    refreshOrders: refresh,
     isInitialLoad,
-  } = useAllOrders();
+  } = useOutletContext();
+
   // 根據被選擇的時間範圍處理資料
   const reportData = useReportData(allOrders, rangeType, startTime, endTime);
 
@@ -45,7 +57,7 @@ const AdminReport = () => {
     refresh();
   };
 
-  // loading
+  // loading 第一次載入頁面
   if (loading && isInitialLoad) {
     return (
       <div className='container text-center' style={{ paddingTop: '120px' }}>
@@ -61,7 +73,10 @@ const AdminReport = () => {
   if (error && allOrders.length === 0) {
     return (
       <div className='container' style={{ paddingTop: '120px' }}>
-        <div className='text-white bg-warning py-4 w-100' role='alert'>
+        <div
+          className='text-white bg-warning py-4 w-100 rounded-2 p-3'
+          role='alert'
+        >
           <h4 className='text-white fw-semibold'>載入失敗</h4>
           <p>{error}</p>
         </div>
@@ -107,7 +122,7 @@ const AdminReport = () => {
           <i
             className={`me-2 ${loading ? 'spinner-border spinner-border-sm' : 'bi bi-arrow-clockwise'}`}
           ></i>
-          {loading ? '更新資料中...' : '重新整理'}
+          {loading ? '更新資料中' : '重新整理'}
         </button>
       </div>
 
