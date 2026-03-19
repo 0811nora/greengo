@@ -35,7 +35,6 @@ const useReportData = (allOrders, rangeType, startTime, endTime) => {
 
     // 計算 top 排行
     const topFixed = calculateTopProducts(filterOrders, 'fixed', 5);
-    const topCustom = calculateTopProducts(filterOrders, 'custom', 5);
     const topOthers = calculateTopProducts(filterOrders, 'other', 5);
 
     // 計算自由配類型統計
@@ -52,7 +51,6 @@ const useReportData = (allOrders, rangeType, startTime, endTime) => {
       paymentMethod,
       salesTrend, // 銷售趨勢
       topFixed,
-      topCustom, // <- 還要嗎？
       topOthers,
       customTypeStats, // 自由配類型(3種)
       topBases, // 基底

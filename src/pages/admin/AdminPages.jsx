@@ -31,9 +31,9 @@ export default function AdminPages() {
   const {
     orders: allOrders,
     loading: ordersLoading,
+    error: ordersError,
     refresh: refreshOrders,
     isInitialLoad,
-    error: ordersError,
   } = useAllOrders();
 
   // 把管理員模式設定傳到order頁
@@ -42,9 +42,9 @@ export default function AdminPages() {
     handleNavMode,
     allOrders,
     ordersLoading,
+    ordersError,
     refreshOrders,
     isInitialLoad,
-    ordersError,
   };
 
   function handleNavMode(path) {

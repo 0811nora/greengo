@@ -89,7 +89,6 @@ const AdminReport = () => {
     paymentMethod,
     salesTrend,
     topFixed,
-    // topCustom,
     topOthers,
     filterOrders,
     topBases,

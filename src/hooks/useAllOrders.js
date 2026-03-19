@@ -18,6 +18,7 @@ const useAllOrders = () => {
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchAllOrders = async () => {
       try {
         setLoading(true);
@@ -29,7 +30,7 @@ const useAllOrders = () => {
         let hasNextPage = true;
 
         // 一直抓取直到沒有下一頁
-        while (hasNextPage) {
+        while (hasNextPage && isMounted) {
           const response = await getAdmOrders(currentPage);
           const data = response.data;
 
@@ -48,16 +49,27 @@ const useAllOrders = () => {
         }
 
         // 設定所有訂單
-        setOrders(allOrders);
+        if (isMounted) {
+          setOrders(allOrders);
+        }
       } catch (err) {
-        console.error('抓取訂單時發生錯誤:', err);
-        setError(err.message || '載入訂單失敗');
+        if (isMounted) {
+          console.error('抓取訂單時發生錯誤:', err);
+          setError(err.message || '載入訂單失敗');
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchAllOrders();
+
+    // cleanup
+    return () => {
+      isMounted = false;
+    };
   }, [refreshStatus]); // 空陣列表示只在元件掛載時執行一次
 
   return {
